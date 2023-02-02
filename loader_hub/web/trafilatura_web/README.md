@@ -1,4 +1,4 @@
-# Simple Website Loader
+# Trafilatura Website Loader
 
 This loader is a web scraper that fetches the text from static websites using the `trafilatura` Python package.
 
