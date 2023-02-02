@@ -1,6 +1,8 @@
 # Google Doc Loader
 
-This loader takes in IDs of Google Docs and parses their text into `Document`s. To use this loader, you will need to authenticate with a Google Account the first time you run it locally. You can extract a Google Doc's ID directly from its URL. For example, the ID of `https://docs.google.com/document/d/1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec/edit` is `1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec`.
+This loader takes in IDs of Google Docs and parses their text into `Document`s. You can extract a Google Doc's ID directly from its URL. For example, the ID of `https://docs.google.com/document/d/1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec/edit` is `1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec`.
+
+To use this loader, you will need to register with Google and generate a `credentials.json` file in the directory where you run this loader. See [here](https://developers.google.com/workspace/guides/create-credentials) for instructions.
 
 ## Usage
 
@@ -10,7 +12,8 @@ To use this loader, you simply need to pass in an array of Google Doc IDs.
 from loader_hub import GoogleDocsReader
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
-documents = GoogleDocsReader.load_data(document_ids=gdoc_ids)
+loader = GoogleDocsReader()
+documents = loader.load_data(document_ids=gdoc_ids)
 ```
 
 ## Examples
@@ -24,7 +27,8 @@ from loader_hub import GoogleDocsReader
 from gpt_index import GPTSimpleVectorIndex
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
-documents = GoogleDocsReader.load_data(document_ids=gdoc_ids)
+loader = GoogleDocsReader()
+documents = loader.load_data(document_ids=gdoc_ids)
 index = GPTSimpleVectorIndex(documents)
 index.query('Where did the author go to school?')
 ```
@@ -41,7 +45,8 @@ from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
-documents = GoogleDocsReader.load_data(document_ids=gdoc_ids)
+loader = GoogleDocsReader()
+documents = loader.load_data(document_ids=gdoc_ids)
 index = GPTSimpleVectorIndex(documents)
 
 tools = [
