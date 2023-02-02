@@ -56,4 +56,6 @@ memory = ConversationBufferMemory(memory_key="chat_history")
 agent_chain = initialize_agent(
     tools, llm, agent="zero-shot-react-description", memory=memory
 )
+
+output = agent_chain.run(input="Where did the author go to school?")
 ```
