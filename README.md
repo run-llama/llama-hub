@@ -71,4 +71,4 @@ Inside your new directory, create a `__init__.py` file, which can be empty. Next
 
 ### Step 3: Add your loader to the package
 
-Finally, add your loader to the `__init__.py` file in this directory so that it may be imported and used by others. As is exemplified by the current file, import your loader directly from the `base.py` file that it's in. You may add your name as a comment on the same row to denote that you are the author.
+Finally, add your loader to the `loader_hub/__init__.py` file in so that it may be imported and used by others. As is exemplified by the current file, import your loader directly from the `base.py` file that it's in. You may add your name as a comment on the same row to denote that you are the author.
