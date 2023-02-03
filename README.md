@@ -71,4 +71,4 @@ Inside your new directory, create a `__init__.py` file, which can be empty. Next
 
 ### Step 3: Add your loader to the package
 
-Finally, add your loader to the `loader_hub/__init__.py` file in so that it may be imported and used by others. As is exemplified by the current file, import your loader directly from the `base.py` file that it's in. You may add your name as a comment on the same row to denote that you are the author.
+Finally, add your loader to the `loader_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within GPT Index.
