@@ -1,0 +1,22 @@
+{
+  "GoogleDocsReader": {
+    "id": "google_docs",
+    "author": "jerryjliu"
+  },
+  "SimpleDirectoryReader": {
+    "id": "file",
+    "author": "jerryjliu"
+  },
+  "SimpleWebPageReader": {
+    "id": "web/simple_web",
+    "author": "jerryjliu"
+  },
+  "BeautifulSoupWebReader": {
+    "id": "web/beautiful_soup_web",
+    "author": "thejessezhang"
+  },
+  "TrafilaturaWebReader": {
+    "id": "web/trafilatura_web",
+    "author": "jerryjliu"
+  }
+}
