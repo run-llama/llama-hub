@@ -12,7 +12,46 @@
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang"
   },
-  "TrafilaturaWebReader": {
-    "id": "web/trafilatura_web"
+  "DatabaseReader": {
+    "id": "database"
+  },
+  "DiscordReader": {
+    "id": "discord"
+  },
+  "FaissReader": {
+    "id": "faiss"
+  },
+  "SimpleMongoReader": {
+    "id": "mongo"
+  },
+  "NotionPageReader": {
+    "id": "notion"
+  },
+  "ObsidianReader": {
+    "id": "obsidian"
+  },
+  "PineconeReader": {
+    "id": "pinecone"
+  },
+  "QdrantReader": {
+    "id": "qdrant"
+  },
+  "SlackReader": {
+    "id": "slack"
+  },
+  "StringIterableReader": {
+    "id": "string_iterable"
+  },
+  "TwitterTweetReader": {
+    "id": "twitter"
+  },
+  "WeaviateReader": {
+    "id": "weaviate"
+  },
+  "WikipediaReader": {
+    "id": "wikipedia"
+  },
+  "YoutubeTranscriptReader": {
+    "id": "youtube_transcript"
   }
 }
