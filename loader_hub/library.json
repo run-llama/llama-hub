@@ -3,7 +3,17 @@
     "id": "google_docs"
   },
   "SimpleDirectoryReader": {
-    "id": "file"
+    "id": "file",
+    "dependencies": ["PDFReader", "DocxReader", "PptxReader"]
+  },
+  "PDFReader": {
+    "id": "file/pdf"
+  },
+  "DocxReader": {
+    "id": "file/docx"
+  },
+  "PptxReader": {
+    "id": "file/pptx"
   },
   "SimpleWebPageReader": {
     "id": "web/simple_web"

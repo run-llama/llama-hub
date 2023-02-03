@@ -1,27 +1,15 @@
 """Simple reader that reads files of different formats from a directory."""
+
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
-
-from loader_hub.file.base_parser import BaseParser
-from loader_hub.file.docs_parser import DocxParser, PDFParser
-from loader_hub.file.image_parser import ImageParser
-from loader_hub.file.slides_parser import PptxParser
-from loader_hub.file.tabular_parser import CSVParser
-from loader_hub.file.video_audio import VideoAudioParser
 
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 
-DEFAULT_FILE_EXTRACTOR: Dict[str, BaseParser] = {
-    ".pdf": PDFParser(),
-    ".docx": DocxParser(),
-    ".pptx": PptxParser(),
-    ".jpg": ImageParser(),
-    ".png": ImageParser(),
-    ".jpeg": ImageParser(),
-    ".mp3": VideoAudioParser(),
-    ".mp4": VideoAudioParser(),
-    ".csv": CSVParser(),
+DEFAULT_FILE_EXTRACTOR: Dict[str, BaseReader] = {
+    ".pdf": dependencies["PDFReader"](),
+    ".docx": dependencies["DocxReader"](),
+    ".pptx": dependencies["PptxReader"](),
 }
 
 
@@ -57,7 +45,7 @@ class SimpleDirectoryReader(BaseReader):
         errors: str = "ignore",
         recursive: bool = False,
         required_exts: Optional[List[str]] = None,
-        file_extractor: Optional[Dict[str, BaseParser]] = None,
+        file_extractor: Optional[Dict[str, BaseReader]] = None,
         num_files_limit: Optional[int] = None,
         file_metadata: Optional[Callable[[str], Dict]] = None,
         verbose: bool = False,
@@ -110,7 +98,7 @@ class SimpleDirectoryReader(BaseReader):
 
         return new_input_files
 
-    def load_data(self, concatenate: bool = False) -> List[Document]:
+    def load_data(self) -> List[Document]:
         """Load data from the input directory.
 
         Args:
@@ -122,26 +110,24 @@ class SimpleDirectoryReader(BaseReader):
             List[Document]: A list of documents.
 
         """
-        data = ""
-        data_list = []
-        metadata_list = []
+
+        documents = []
         for input_file in self.input_files:
+            metadata = None
+            if self.file_metadata is not None:
+                metadata = self.file_metadata(str(input_file))
+
             if input_file.suffix in self.file_extractor:
-                parser = self.file_extractor[input_file.suffix]
-                if not parser.parser_config_set:
-                    parser.init_parser()
-                data = parser.parse_file(input_file, errors=self.errors)
+                reader = self.file_extractor[input_file.suffix]
+
+                document = reader.load_data(file=input_file, extra_info=metadata)[0]
+                documents.append(document)
             else:
+                data = ""
                 # do standard read
                 with open(input_file, "r", errors=self.errors) as f:
                     data = f.read()
-            data_list.append(data)
-            if self.file_metadata is not None:
-                metadata_list.append(self.file_metadata(str(input_file)))
+                document = Document(data, extra_info=metadata)
+                documents.append(document)
 
-        if concatenate:
-            return [Document("\n".join(data_list))]
-        elif self.file_metadata is not None:
-            return [Document(d, extra_info=m) for d, m in zip(data_list, metadata_list)]
-        else:
-            return [Document(d) for d in data_list]
+        return documents
