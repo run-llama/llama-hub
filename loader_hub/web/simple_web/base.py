@@ -3,8 +3,8 @@ from typing import List
 
 from langchain.utilities import RequestsWrapper
 
-from loader_hub.base import BaseReader
-from loader_hub.schema import Document
+from gpt_index.readers.base import BaseReader
+from gpt_index.readers.schema.base import Document
 
 
 class SimpleWebPageReader(BaseReader):

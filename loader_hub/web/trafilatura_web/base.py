@@ -1,7 +1,7 @@
 from typing import List
 
-from loader_hub.base import BaseReader
-from loader_hub.schema import Document
+from gpt_index.readers.base import BaseReader
+from gpt_index.readers.schema.base import Document
 
 
 class TrafilaturaWebReader(BaseReader):

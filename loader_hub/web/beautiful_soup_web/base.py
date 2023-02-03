@@ -1,8 +1,8 @@
 """Beautiful Soup Web scraper."""
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from loader_hub.base import BaseReader
-from loader_hub.schema import Document
+from gpt_index.readers.base import BaseReader
+from gpt_index.readers.schema.base import Document
 
 
 def _substack_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:

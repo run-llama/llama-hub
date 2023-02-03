@@ -1,23 +1,18 @@
 {
   "GoogleDocsReader": {
-    "id": "google_docs",
-    "updatedAt": "2023-1-4"
+    "id": "google_docs"
   },
   "SimpleDirectoryReader": {
-    "id": "file",
-    "updatedAt": "2023-2-2"
+    "id": "file"
   },
   "SimpleWebPageReader": {
-    "id": "web/simple_web",
-    "updatedAt": "2023-1-10"
+    "id": "web/simple_web"
   },
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
-    "author": "thejessezhang",
-    "updatedAt": "2023-1-29"
+    "author": "thejessezhang"
   },
   "TrafilaturaWebReader": {
-    "id": "web/trafilatura_web",
-    "updatedAt": "2023-1-10"
+    "id": "web/trafilatura_web"
   }
 }

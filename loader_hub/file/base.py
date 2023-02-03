@@ -2,14 +2,15 @@
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
-from loader_hub.base import BaseReader
 from loader_hub.file.base_parser import BaseParser
 from loader_hub.file.docs_parser import DocxParser, PDFParser
 from loader_hub.file.image_parser import ImageParser
 from loader_hub.file.slides_parser import PptxParser
 from loader_hub.file.tabular_parser import CSVParser
 from loader_hub.file.video_audio import VideoAudioParser
-from loader_hub.schema import Document
+
+from gpt_index.readers.base import BaseReader
+from gpt_index.readers.schema.base import Document
 
 DEFAULT_FILE_EXTRACTOR: Dict[str, BaseParser] = {
     ".pdf": PDFParser(),
