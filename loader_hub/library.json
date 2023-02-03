@@ -1,22 +1,23 @@
 {
   "GoogleDocsReader": {
     "id": "google_docs",
-    "author": "jerryjliu"
+    "updatedAt": "2023-1-4"
   },
   "SimpleDirectoryReader": {
     "id": "file",
-    "author": "jerryjliu"
+    "updatedAt": "2023-2-2"
   },
   "SimpleWebPageReader": {
     "id": "web/simple_web",
-    "author": "jerryjliu"
+    "updatedAt": "2023-1-10"
   },
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
-    "author": "thejessezhang"
+    "author": "thejessezhang",
+    "updatedAt": "2023-1-29"
   },
   "TrafilaturaWebReader": {
     "id": "web/trafilatura_web",
-    "author": "jerryjliu"
+    "updatedAt": "2023-1-10"
   }
 }
