@@ -12,15 +12,6 @@ class WikipediaReader(BaseReader):
 
     """
 
-    def __init__(self) -> None:
-        """Initialize with parameters."""
-        try:
-            import wikipedia  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`wikipedia` package not found, please run `pip install wikipedia`"
-            )
-
     def load_data(self, pages: List[str], **load_kwargs: Any) -> List[Document]:
         """Load data from the input directory.
 

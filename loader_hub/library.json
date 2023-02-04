@@ -3,17 +3,37 @@
     "id": "google_docs"
   },
   "SimpleDirectoryReader": {
-    "id": "file",
-    "dependencies": ["PDFReader", "DocxReader", "PptxReader"]
+    "id": "file"
   },
   "PDFReader": {
-    "id": "file/pdf"
+    "id": "file/pdf",
+    "author": "ravitheja"
   },
   "DocxReader": {
     "id": "file/docx"
   },
   "PptxReader": {
     "id": "file/pptx"
+  },
+  "ImageReader": {
+    "id": "file/image",
+    "author": "ravitheja"
+  },
+  "EpubReader": {
+    "id": "file/epub"
+  },
+  "MarkdownReader": {
+    "id": "file/markdown"
+  },
+  "AudioTranscriber": {
+    "id": "file/audio",
+    "author": "ravitheja"
+  },
+  "SimpleCSVReader": {
+    "id": "file/simple_csv"
+  },
+  "PandasCSVReader": {
+    "id": "file/pandas_csv"
   },
   "SimpleWebPageReader": {
     "id": "web/simple_web"

@@ -19,13 +19,7 @@ class YoutubeTranscriptReader(BaseReader):
                 for which transcripts are to be read.
 
         """
-        try:
-            from youtube_transcript_api import YouTubeTranscriptApi
-        except ImportError:
-            raise ValueError(
-                "`youtube_transcript_api` package not found, \
-                    please run `pip install youtube-transcript-api`"
-            )
+        from youtube_transcript_api import YouTubeTranscriptApi
 
         results = []
         for link in ytlinks:

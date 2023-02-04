@@ -6,10 +6,20 @@ from typing import Callable, Dict, List, Optional
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 
+from gpt_index import download_loader
+
 DEFAULT_FILE_EXTRACTOR: Dict[str, BaseReader] = {
-    ".pdf": dependencies["PDFReader"](),
-    ".docx": dependencies["DocxReader"](),
-    ".pptx": dependencies["PptxReader"](),
+    ".pdf": download_loader("PDFReader")(),
+    ".docx": download_loader("DocxReader")(),
+    ".pptx": download_loader("PptxReader")(),
+    ".jpg": download_loader("ImageReader")(),
+    ".png": download_loader("ImageReader")(),
+    ".jpeg": download_loader("ImageReader")(),
+    ".mp3": download_loader("AudioTranscriber")(),
+    ".mp4": download_loader("AudioTranscriber")(),
+    ".csv": download_loader("PandasCSVReader")(),
+    ".epub": download_loader("EpubReader")(),
+    ".md": download_loader("MarkdownReader")(),
 }
 
 
@@ -120,8 +130,10 @@ class SimpleDirectoryReader(BaseReader):
             if input_file.suffix in self.file_extractor:
                 reader = self.file_extractor[input_file.suffix]
 
-                document = reader.load_data(file=input_file, extra_info=metadata)[0]
-                documents.append(document)
+                extracted_documents = reader.load_data(
+                    file=input_file, extra_info=metadata
+                )
+                documents.extend(extracted_documents)
             else:
                 data = ""
                 # do standard read
