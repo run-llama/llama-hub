@@ -17,7 +17,7 @@
   },
   "PptxReader": {
     "id": "file/pptx",
-    "author": "emptycrown"
+    "author": "thejessezhang"
   },
   "ImageReader": {
     "id": "file/image",
@@ -106,5 +106,8 @@
   "YoutubeTranscriptReader": {
     "id": "youtube_transcript",
     "author": "ravi03071991"
+  },
+  "MakeReader": {
+    "id": "make_com"
   }
 }
