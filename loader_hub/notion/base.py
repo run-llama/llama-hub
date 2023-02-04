@@ -3,7 +3,6 @@ import os
 from typing import Any, Dict, List, Optional
 
 import requests  # type: ignore
-
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 

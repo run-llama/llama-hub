@@ -2,6 +2,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
+
 from dataclasses_json import DataClassJsonMixin
 
 

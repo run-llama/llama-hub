@@ -101,4 +101,4 @@ class MarkdownReader(BaseReader):
         """Parse file into string."""
         tups = self.parse_tups(filepath)
         # TODO: don't include headers right now
-        return [Document(value, extra_info) for _, value in tups]
+        return [Document(value, extra_info=extra_info) for _, value in tups]
