@@ -4,7 +4,7 @@ This loader connects to a database (using SQLAlchemy under the hood). The user s
 
 ## Usage
 
-To use this loader, initialize with the following parameters
+Here's an example usage of the DatabaseReader.
 
 ```python
 from gpt_index import download_loader
