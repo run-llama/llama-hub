@@ -1,6 +1,8 @@
+
 # For testing
 pytest==7.2.1
 pytest-dotenv==0.5.2
+https://github.com/jerryjliu/gpt_index/archive/master.zip
 
 # For linting
 # linting stubs
