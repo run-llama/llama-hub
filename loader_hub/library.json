@@ -109,5 +109,13 @@
   },
   "MakeReader": {
     "id": "make_com"
+  },
+  "ArxivReader": {
+    "id": "papers/arxiv",
+    "author": "thejessezhang"
+  },
+  "PubmedReader": {
+    "id": "papers/pubmed",
+    "author": "thejessezhang"
   }
 }
