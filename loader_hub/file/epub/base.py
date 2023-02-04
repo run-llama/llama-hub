@@ -4,7 +4,7 @@ A parser for epub files.
 """
 
 from pathlib import Path
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
@@ -18,8 +18,8 @@ class EpubReader(BaseReader):
     ) -> List[Document]:
         """Parse file."""
         import ebooklib
-        from ebooklib import epub
         import html2text
+        from ebooklib import epub
 
         text_list = []
         book = epub.read_epub(file, options={"ignore_ncx": True})

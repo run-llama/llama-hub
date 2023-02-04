@@ -7,7 +7,9 @@ This loader is a web scraper that fetches the text from static websites using th
 To use this loader, you need to pass in an array of URLs.
 
 ```python
-from loader_hub import TrafilaturaWebReader
+from gpt_index import download_loader
+
+TrafilaturaWebReader = download_loader("TrafilaturaWebReader")
 
 loader = TrafilaturaWebReader()
 documents = loader.load_data(urls=['https://google.com'])

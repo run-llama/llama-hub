@@ -1,12 +1,11 @@
 """Simple reader that reads files of different formats from a directory."""
 
 from pathlib import Path
-from typing import Callable, Dict, List, Optional
-
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from typing import Callable, Dict, List, Optional, Union
 
 from gpt_index import download_loader
+from gpt_index.readers.base import BaseReader
+from gpt_index.readers.schema.base import Document
 
 DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".pdf": "PDFReader",

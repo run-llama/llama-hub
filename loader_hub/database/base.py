@@ -2,12 +2,11 @@
 
 from typing import Any, List, Optional
 
-from sqlalchemy import text
-from sqlalchemy.engine import Engine
-
 from gpt_index.langchain_helpers.sql_wrapper import SQLDatabase
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
+from sqlalchemy import text
+from sqlalchemy.engine import Engine
 
 
 class DatabaseReader(BaseReader):
