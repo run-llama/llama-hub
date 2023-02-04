@@ -83,5 +83,8 @@
   },
   "YoutubeTranscriptReader": {
     "id": "youtube_transcript"
+  },
+  "MakeReader": {
+    "id": "make_com"
   }
 }
