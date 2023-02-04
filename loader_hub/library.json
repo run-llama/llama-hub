@@ -1,88 +1,111 @@
 {
   "GoogleDocsReader": {
-    "id": "google_docs"
+    "id": "google_docs",
+    "author": "jerryjliu"
   },
   "SimpleDirectoryReader": {
-    "id": "file"
+    "id": "file",
+    "author": "jerryjliu"
   },
   "PDFReader": {
     "id": "file/pdf",
-    "author": "ravitheja"
+    "author": "ravi03071991"
   },
   "DocxReader": {
-    "id": "file/docx"
+    "id": "file/docx",
+    "author": ""
   },
   "PptxReader": {
-    "id": "file/pptx"
+    "id": "file/pptx",
+    "author": "thejessezhang"
   },
   "ImageReader": {
     "id": "file/image",
-    "author": "ravitheja"
+    "author": "ravi03071991"
   },
   "EpubReader": {
-    "id": "file/epub"
+    "id": "file/epub",
+    "author": "Haowjy"
   },
   "MarkdownReader": {
-    "id": "file/markdown"
+    "id": "file/markdown",
+    "author": "hursh-desai"
   },
   "AudioTranscriber": {
     "id": "file/audio",
-    "author": "ravitheja"
+    "author": "ravi03071991"
   },
   "SimpleCSVReader": {
-    "id": "file/simple_csv"
+    "id": "file/simple_csv",
+    "author": "vguillet"
   },
   "PandasCSVReader": {
-    "id": "file/pandas_csv"
+    "id": "file/pandas_csv",
+    "author": "ephe-meral"
   },
   "SimpleWebPageReader": {
-    "id": "web/simple_web"
+    "id": "web/simple_web",
+    "author": "thejessezhang"
   },
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang"
   },
   "DatabaseReader": {
-    "id": "database"
+    "id": "database",
+    "author": "kevinqz"
   },
   "DiscordReader": {
-    "id": "discord"
+    "id": "discord",
+    "author": "jerryjliu"
   },
   "FaissReader": {
-    "id": "faiss"
+    "id": "faiss",
+    "author": "jerryjliu"
   },
   "SimpleMongoReader": {
-    "id": "mongo"
+    "id": "mongo",
+    "author": "jerryjliu"
   },
   "NotionPageReader": {
-    "id": "notion"
+    "id": "notion",
+    "author": "jerryjliu"
   },
   "ObsidianReader": {
-    "id": "obsidian"
+    "id": "obsidian",
+    "author": "hursh-desai"
   },
   "PineconeReader": {
-    "id": "pinecone"
+    "id": "pinecone",
+    "author": "jerryjliu"
   },
   "QdrantReader": {
-    "id": "qdrant"
+    "id": "qdrant",
+    "author": "kacperlukawski"
   },
   "SlackReader": {
-    "id": "slack"
+    "id": "slack",
+    "author": "jerryjliu"
   },
   "StringIterableReader": {
-    "id": "string_iterable"
+    "id": "string_iterable",
+    "author": "teoh"
   },
   "TwitterTweetReader": {
-    "id": "twitter"
+    "id": "twitter",
+    "author": "ravi03071991"
   },
   "WeaviateReader": {
-    "id": "weaviate"
+    "id": "weaviate",
+    "author": "jerryjliu"
   },
   "WikipediaReader": {
-    "id": "wikipedia"
+    "id": "wikipedia",
+    "author": "jerryjliu"
   },
   "YoutubeTranscriptReader": {
-    "id": "youtube_transcript"
+    "id": "youtube_transcript",
+    "author": "ravi03071991"
   },
   "MakeReader": {
     "id": "make_com"
