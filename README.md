@@ -4,7 +4,7 @@ This is a simple library of all the data loaders / readers that have been create
 
 ## Usage
 
-These general-purpose loaders are designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. **You can use them with `download_loader` from GPT Index using a single line of code!** For example, see the code snippets below using the Google Docs Loader.
+These general-purpose loaders are designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. **You can use them with `download_loader` from GPT Index in a single line of code!** For example, see the code snippets below using the Google Docs Loader.
 
 ### GPT Index
 
@@ -61,13 +61,13 @@ Adding a loader simply requires forking this repo and making a Pull Request. The
 
 In `loader_hub`, create a new directory for your new loader. It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader.
 
-You can also accomplish all of this by running the following script.
+If you'd like, you can create the new directory and files by running the following script.
 
 ```
 ./loader_hub/add_loader.sh [NAME_OF_NEW_DIRECTORY]
 ```
 
-Finally, make sure to put your dependencies into a `requirements.txt` file in the new directory so the required packages may be automatically installed when your loader is downloaded.
+Make sure to put your dependencies into a `requirements.txt` file in the new directory so the required packages may be automatically installed when your loader is downloaded.
 
 ### Step 2: Write your README
 
