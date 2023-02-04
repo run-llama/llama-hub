@@ -4,8 +4,8 @@ import os
 import time
 from typing import List, Optional
 
+from gpt_index import Document
 from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
 
 logger = logging.getLogger(__name__)
 
