@@ -14,7 +14,7 @@ class ArxivReader(BaseReader):
     Gets a search query, return a list of Documents of the top corresponding scientific papers on Arxiv.
     """
 
-    def _hacky_hash(some_string):
+    def _hacky_hash(self, some_string):
         _hash = hashlib.md5(some_string.encode("utf-8")).hexdigest()
         return _hash
 
