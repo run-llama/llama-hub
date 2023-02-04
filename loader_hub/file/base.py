@@ -8,18 +8,18 @@ from gpt_index.readers.schema.base import Document
 
 from gpt_index import download_loader
 
-DEFAULT_FILE_EXTRACTOR: Dict[str, BaseReader] = {
-    ".pdf": download_loader("PDFReader")(),
-    ".docx": download_loader("DocxReader")(),
-    ".pptx": download_loader("PptxReader")(),
-    ".jpg": download_loader("ImageReader")(),
-    ".png": download_loader("ImageReader")(),
-    ".jpeg": download_loader("ImageReader")(),
-    ".mp3": download_loader("AudioTranscriber")(),
-    ".mp4": download_loader("AudioTranscriber")(),
-    ".csv": download_loader("PandasCSVReader")(),
-    ".epub": download_loader("EpubReader")(),
-    ".md": download_loader("MarkdownReader")(),
+DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
+    ".pdf": "PDFReader",
+    ".docx": "DocxReader",
+    ".pptx": "PptxReader",
+    ".jpg": "ImageReader",
+    ".png": "ImageReader",
+    ".jpeg": "ImageReader",
+    ".mp3": "AudioTranscriber",
+    ".mp4": "AudioTranscriber",
+    ".csv": "PandasCSVReader",
+    ".epub": "EpubReader",
+    ".md": "MarkdownReader",
 }
 
 
@@ -55,7 +55,7 @@ class SimpleDirectoryReader(BaseReader):
         errors: str = "ignore",
         recursive: bool = False,
         required_exts: Optional[List[str]] = None,
-        file_extractor: Optional[Dict[str, BaseReader]] = None,
+        file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         num_files_limit: Optional[int] = None,
         file_metadata: Optional[Callable[[str], Dict]] = None,
         verbose: bool = False,
@@ -129,6 +129,9 @@ class SimpleDirectoryReader(BaseReader):
 
             if input_file.suffix in self.file_extractor:
                 reader = self.file_extractor[input_file.suffix]
+
+                if isinstance(reader, str):
+                    reader = download_loader(reader)()
 
                 extracted_documents = reader.load_data(
                     file=input_file, extra_info=metadata
