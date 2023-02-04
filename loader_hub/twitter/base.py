@@ -40,12 +40,7 @@ class TwitterTweetReader(BaseReader):
             twitterhandles (List[str]): List of user twitter handles to read tweets.
 
         """
-        try:
-            import tweepy
-        except ImportError:
-            raise ValueError(
-                "`tweepy` package not found, please run `pip install tweepy`"
-            )
+        import tweepy
 
         client = tweepy.Client(bearer_token=self.bearer_token)
         results = []

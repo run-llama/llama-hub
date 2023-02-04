@@ -14,10 +14,8 @@ class PDFReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        try:
-            import PyPDF2
-        except ImportError:
-            raise ValueError("PyPDF2 is required to read PDF files.")
+        import PyPDF2
+
         text_list = []
         with open(file, "rb") as fp:
             # Create a PDF object

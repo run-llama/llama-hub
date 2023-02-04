@@ -17,15 +17,9 @@ class EpubReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        try:
-            import ebooklib
-            from ebooklib import epub
-        except ImportError:
-            raise ValueError("`EbookLib` is required to read Epub files.")
-        try:
-            import html2text
-        except ImportError:
-            raise ValueError("`html2text` is required to parse Epub files.")
+        import ebooklib
+        from ebooklib import epub
+        import html2text
 
         text_list = []
         book = epub.read_epub(file, options={"ignore_ncx": True})

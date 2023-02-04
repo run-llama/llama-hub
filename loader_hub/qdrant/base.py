@@ -43,13 +43,7 @@ class QdrantReader(BaseReader):
         """Initialize with parameters."""
         super().__init__(verbose)
 
-        import_err_msg = (
-            "`qdrant-client` package not found, please run `pip install qdrant-client`"
-        )
-        try:
-            import qdrant_client  # noqa: F401
-        except ImportError:
-            raise ValueError(import_err_msg)
+        import qdrant_client  # noqa: F401
 
         self._client = qdrant_client.QdrantClient(
             host=host,

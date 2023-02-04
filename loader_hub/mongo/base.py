@@ -20,13 +20,8 @@ class SimpleMongoReader(BaseReader):
 
     def __init__(self, host: str, port: int, max_docs: int = 1000) -> None:
         """Initialize with parameters."""
-        try:
-            import pymongo  # noqa: F401
-            from pymongo import MongoClient  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`pymongo` package not found, please run `pip install pymongo`"
-            )
+        from pymongo import MongoClient  # noqa: F401
+
         self.client: MongoClient = MongoClient(host, port)
         self.max_docs = max_docs
 

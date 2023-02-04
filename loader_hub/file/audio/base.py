@@ -22,14 +22,7 @@ class AudioTranscriber(BaseReader):
         super().__init__(*args, **kwargs)
         self._model_version = model_version
 
-        try:
-            import whisper
-        except ImportError:
-            raise ValueError(
-                "Please install OpenAI whisper model "
-                "'pip install git+https://github.com/openai/whisper.git' "
-                "to use the model"
-            )
+        import whisper
 
         model = whisper.load_model(self._model_version)
 
@@ -42,10 +35,8 @@ class AudioTranscriber(BaseReader):
         import whisper
 
         if file.name.endswith("mp4"):
-            try:
-                from pydub import AudioSegment  # noqa: F401
-            except ImportError:
-                raise ValueError("Please install pydub 'pip install pydub' ")
+            from pydub import AudioSegment  # noqa: F401
+
             # open file
             video = AudioSegment.from_file(file, format="mp4")
 

@@ -23,12 +23,8 @@ class SlackReader(BaseReader):
 
     def __init__(self, slack_token: Optional[str] = None) -> None:
         """Initialize with parameters."""
-        try:
-            from slack_sdk import WebClient
-        except ImportError:
-            raise ValueError(
-                "`slack_sdk` package not found, please run `pip install slack_sdk`"
-            )
+        from slack_sdk import WebClient
+
         if slack_token is None:
             slack_token = os.environ["SLACK_BOT_TOKEN"]
             if slack_token is None:

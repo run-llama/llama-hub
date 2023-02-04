@@ -1,0 +1,5 @@
+transformers
+Pillow
+torch
+torchvision
+python-pptx

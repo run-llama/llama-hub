@@ -25,14 +25,7 @@ class WeaviateReader(BaseReader):
         auth_client_secret: Optional[Any] = None,
     ) -> None:
         """Initialize with parameters."""
-        try:
-            import weaviate  # noqa: F401
-            from weaviate import Client  # noqa: F401
-            from weaviate.auth import AuthCredentials  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`weaviate` package not found, please run `pip install weaviate-client`"
-            )
+        from weaviate import Client  # noqa: F401
 
         self.client: Client = Client(host, auth_client_secret=auth_client_secret)
 

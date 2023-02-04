@@ -14,10 +14,7 @@ class DocxReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        try:
-            import docx2txt
-        except ImportError:
-            raise ValueError("docx2txt is required to read Microsoft Word files.")
+        import docx2txt
 
         text = docx2txt.process(file)
 

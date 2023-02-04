@@ -23,16 +23,6 @@ class FaissReader(BaseReader):
 
     def __init__(self, index: Any):
         """Initialize with parameters."""
-        import_err_msg = """
-            `faiss` package not found. For instructions on
-            how to install `faiss` please visit
-            https://github.com/facebookresearch/faiss/wiki/Installing-Faiss
-        """
-        try:
-            import faiss  # noqa: F401
-        except ImportError:
-            raise ValueError(import_err_msg)
-
         self._index = index
 
     def load_data(

@@ -12,15 +12,6 @@ class TrafilaturaWebReader(BaseReader):
 
     """
 
-    def __init__(self) -> None:
-        """Initialize with parameters."""
-        try:
-            import trafilatura  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`trafilatura` package not found, please run `pip install trafilatura`"
-            )
-
     def load_data(self, urls: List[str]) -> List[Document]:
         """Load data from the urls.
 

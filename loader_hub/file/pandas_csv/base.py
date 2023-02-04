@@ -56,10 +56,7 @@ class PandasCSVParser(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        try:
-            import pandas as pd
-        except ImportError:
-            raise ValueError("pandas module is required to read CSV files.")
+        import pandas as pd
 
         df = pd.read_csv(file, **self._pandas_config)
 

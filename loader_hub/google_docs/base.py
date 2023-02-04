@@ -31,20 +31,6 @@ class GoogleDocsReader(BaseReader):
 
     """
 
-    def __init__(self) -> None:
-        """Initialize with parameters."""
-        try:
-            import google  # noqa: F401
-            import google_auth_oauthlib  # noqa: F401
-            import googleapiclient  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`google_auth_oauthlib`, `googleapiclient` and `google` "
-                "must be installed to use the GoogleDocsReader.\n"
-                "Please run `pip install --upgrade google-api-python-client "
-                "google-auth-httplib2 google-auth-oauthlib`."
-            )
-
     def load_data(self, document_ids: List[str]) -> List[Document]:
         """Load data from the input directory.
 

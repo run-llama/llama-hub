@@ -8,9 +8,6 @@ from gpt_index.readers.schema.base import Document
 class YoutubeTranscriptReader(BaseReader):
     """Youtube Transcript reader."""
 
-    def __init__(self) -> None:
-        """Initialize with parameters."""
-
     def load_data(self, ytlinks: List[str], **load_kwargs: Any) -> List[Document]:
         """Load data from the input directory.
 

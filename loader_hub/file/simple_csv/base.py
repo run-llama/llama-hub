@@ -29,10 +29,8 @@ class SimpleCSVReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        try:
-            import csv
-        except ImportError:
-            raise ValueError("csv module is required to read CSV files.")
+        import csv
+
         text_list = []
         with open(file, "r") as fp:
             csv_reader = csv.reader(fp)

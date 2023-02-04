@@ -16,12 +16,7 @@ class PineconeReader(BaseReader):
 
     def __init__(self, api_key: str, environment: str):
         """Initialize with parameters."""
-        try:
-            import pinecone  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`pinecone` package not found, please run `pip install pinecone-client`"
-            )
+        import pinecone  # noqa: F401
 
         self._api_key = api_key
         self._environment = environment

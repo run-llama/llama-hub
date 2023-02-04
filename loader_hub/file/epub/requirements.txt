@@ -1,0 +1,2 @@
+ebooklib
+html2text

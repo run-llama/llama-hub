@@ -79,12 +79,6 @@ class DiscordReader(BaseReader):
 
     def __init__(self, discord_token: Optional[str] = None) -> None:
         """Initialize with parameters."""
-        try:
-            import discord  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`discord.py` package not found, please run `pip install discord.py`"
-            )
         if discord_token is None:
             discord_token = os.environ["DISCORD_TOKEN"]
             if discord_token is None:

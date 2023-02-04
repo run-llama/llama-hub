@@ -17,32 +17,11 @@ class PptxReader(BaseReader):
 
     def __init__(self) -> None:
         """Init reader."""
-        try:
-            from pptx import Presentation  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "The package `python-pptx` is required to read Powerpoint files."
-            )
-        try:
-            import torch  # noqa: F401
-        except ImportError:
-            raise ValueError("The package `pytorch` is required to caption images.")
-        try:
-            from transformers import (
-                AutoTokenizer,
-                VisionEncoderDecoderModel,
-                ViTFeatureExtractor,
-            )
-        except ImportError:
-            raise ValueError(
-                "The package `transformers` is required to caption images."
-            )
-        try:
-            from PIL import Image  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "PIL is required to read image files." "Please run `pip install Pillow`"
-            )
+        from transformers import (
+            AutoTokenizer,
+            VisionEncoderDecoderModel,
+            ViTFeatureExtractor,
+        )
 
         model = VisionEncoderDecoderModel.from_pretrained(
             "nlpconnect/vit-gpt2-image-captioning"

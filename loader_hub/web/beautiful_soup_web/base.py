@@ -38,17 +38,6 @@ class BeautifulSoupWebReader(BaseReader):
         website_extractor: Optional[Dict[str, Callable]] = None,
     ) -> None:
         """Initialize with parameters."""
-        try:
-            from urllib.parse import urlparse  # noqa: F401
-
-            import requests  # noqa: F401
-            from bs4 import BeautifulSoup  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`bs4`, `requests`, and `urllib` must be installed to scrape websites."
-                "Please run `pip install bs4 requests urllib`."
-            )
-
         self.website_extractor = website_extractor or DEFAULT_WEBSITE_EXTRACTOR
 
     def load_data(
