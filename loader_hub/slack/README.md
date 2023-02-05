@@ -1,6 +1,6 @@
 # Slack Loader
 
-This loader fetchs the text from a list of Slack channels. You will need to initialize the loader with your Slack API Token or have the `SLACK_BOT_TOKEN` environment variable set.
+This loader fetches the text from a list of Slack channels. You will need to initialize the loader with your Slack API Token or have the `SLACK_BOT_TOKEN` environment variable set.
 
 ## Usage
 
