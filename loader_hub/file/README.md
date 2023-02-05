@@ -1,15 +1,17 @@
 # File Loader
 
-This loader takes in a local directory containing files and extracts `Document`s from each of the files.
+This loader takes in a local directory containing files and extracts `Document`s from each of the files. By default, the loader will utilize the specialized loaders in this library to parse common file extensions (e.g. .pdf, .png, .docx, etc). You can optionally pass in your own custom loaders. Note: if no loader is found for a file extension, and the file extension is not in the list to skip, the file will be read directly.
 
 ## Usage
 
 To use this loader, you simply need to instantiate the `SimpleDirectoryReader` class with a directory, along with other optional settings, such as whether to ignore hidden files. See the code for the complete list.
 
 ```python
-from loader_hub import SimpleDirectoryReader
+from gpt_index import download_loader
 
-loader = SimpleDirectoryReader('data', recursive=True, exclude_hidden=True)
+SimpleDirectoryReader = download_loader(SimpleDirectoryReader)
+
+loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
 ```
 
@@ -20,10 +22,11 @@ This loader is designed to be used as a way to load data into [GPT Index](https:
 ### GPT Index
 
 ```python
-from loader_hub import SimpleDirectoryReader
-from gpt_index import GPTSimpleVectorIndex
+from gpt_index import GPTSimpleVectorIndex, download_loader
 
-loader = SimpleDirectoryReader('data', recursive=True, exclude_hidden=True)
+SimpleDirectoryReader = download_loader(SimpleDirectoryReader)
+
+loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
 index = GPTSimpleVectorIndex(documents)
 index.query('What are these files about?')
@@ -34,13 +37,14 @@ index.query('What are these files about?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from loader_hub import SimpleDirectoryReader
-from gpt_index import GPTSimpleVectorIndex
+from gpt_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
-loader = SimpleDirectoryReader('data', recursive=True, exclude_hidden=True)
+SimpleDirectoryReader = download_loader(SimpleDirectoryReader)
+
+loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
 index = GPTSimpleVectorIndex(documents)
 

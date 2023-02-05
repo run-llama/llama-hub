@@ -23,3 +23,5 @@ query_dict = {}
 reader = SimpleMongoReader(host, port)
 documents = reader.load_data(db_name, collection_name, query_dict=query_dict)
 ```
+
+This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/loader-hub/tree/main) for examples.

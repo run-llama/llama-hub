@@ -1,4 +1,4 @@
-# Twitter Loader
+# String Iterable Loader
 
 This loader converts an iterable (e.g. list) of strings into `Document`s.
 

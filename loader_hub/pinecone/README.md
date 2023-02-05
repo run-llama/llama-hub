@@ -13,7 +13,7 @@ import os
 
 PineconeReader = download_loader('PineconeReader')
 
-# the id_to_text_map specifies a mapping from the ID specified in Pinecone to your text. 
+# the id_to_text_map specifies a mapping from the ID specified in Pinecone to your text.
 id_to_text_map = {
     "id1": "text blob 1",
     "id2": "text blob 2",
@@ -27,10 +27,12 @@ query_vector=[n1, n2, n3, ...]
 
 reader = PineconeReader(api_key=api_key, environment="us-west1-gcp")
 documents = reader.load_data(
-    index_name='quickstart', 
-    id_to_text_map=id_to_text_map, 
-    top_k=3, 
-    vector=query_vector, 
+    index_name='quickstart',
+    id_to_text_map=id_to_text_map,
+    top_k=3,
+    vector=query_vector,
     separate_documents=True
 )
 ```
+
+This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/loader-hub/tree/main) for examples.

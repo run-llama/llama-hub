@@ -20,7 +20,7 @@ query_vector=[n1, n2, n3, ...]
 
 # NOTE: Required args are collection_name, query_vector.
 # See the Python client: https://github.com/qdrant/qdrant_client
-# for more details. 
+# for more details.
 documents = reader.load_data(
     collection_name="demo",
     query_vector=query_vector,
@@ -28,3 +28,5 @@ documents = reader.load_data(
 )
 
 ```
+
+This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/loader-hub/tree/main) for examples.
