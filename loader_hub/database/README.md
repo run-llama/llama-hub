@@ -1,6 +1,6 @@
 # Database Loader
 
-This loader connects to a database (using SQLAlchemy under the hood). The user specifies a query and extracts Document objects corresponding to the results.
+This loader connects to a database (using SQLAlchemy under the hood). The user specifies a query and extracts Document objects corresponding to the results. For instance, you can use this loader to easily connect to a database on AWS, Snowflake, etc. and pass the documents into a `GPTSQLStructStoreIndex` from GPT Index.
 
 ## Usage
 
