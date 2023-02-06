@@ -1,4 +1,4 @@
-# Pandas CSV Loader
+# PDF Loader
 
 This loader extracts the text from a local PDF file using the `PyPDF2` Python package. Any non-text elements are ignored. A single local file is passed in each time you call `load_data`.
 
