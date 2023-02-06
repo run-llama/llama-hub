@@ -1,6 +1,6 @@
 # GPT Index Loader Hub
 
-This is a simple library of all the data loaders / readers that have been created by the community in GPT Index. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that can be used in [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) (e.g. when building a index), [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use), and more. For example, there are loaders to parse Google Docs, PDF files, Powerpoints, and many more. Note that because the loaders produce the same types of Documents, you can easily use them together in the same index.
+This is a simple library of all the data loaders / readers that have been created by the community in GPT Index. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that can be used in [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) (e.g. when building a index), [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use), and more. For example, there are loaders to parse Google Docs, SQL Databases, PDF files, PowerPoints, and many more. Note that because different loaders produce the same types of Documents, you can easily use them together in the same index.
 
 ## Usage
 
@@ -76,3 +76,7 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 ### Step 3: Add your loader to the library
 
 Finally, add your loader to the `loader_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within GPT Index.
+
+# Questions?
+
+Feel free to hop into the [community Discord](https://discord.gg/dGcwcsnxhU) or tag the official [Twitter account](https://twitter.com/gpt_index)!
