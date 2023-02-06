@@ -1,4 +1,4 @@
-# 🦙 Llama Hub
+# Llama Hub 🦙
 
 This is a simple library of all the data loaders / readers that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) (e.g. when building a index) and [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use). For example, there are loaders to parse Google Docs, SQL Databases, PDF files, PowerPoints, Notion, Slack, Obsidian, and many more. Note that because different loaders produce the same types of Documents, you can easily use them together in the same index.
 
