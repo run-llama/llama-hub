@@ -1,7 +1,6 @@
 # Faiss Loader
 
-The Faiss Loader returns a set of texts corresponding to embeddings retrieved from a Faiss Index.
-The user initializes the loader with a Faiss index. They then pass in a query vector.
+The Faiss Loader returns a set of texts corresponding to embeddings retrieved from a [Faiss Index](https://github.com/facebookresearch/faiss), an efficient way to do similar search and clustering, developed by Meta. The user initializes the loader with a Faiss index. They then pass in a query vector.
 
 ## Usage
 

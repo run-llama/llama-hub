@@ -5,7 +5,7 @@ those `channel_ids`.
 
 ## Usage
 
-Here's an example usage of the DiscoredReader.
+Here's an example usage of the DiscordReader.
 
 ```python
 from gpt_index import download_loader
