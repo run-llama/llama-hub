@@ -17,11 +17,8 @@ class PptxReader(BaseReader):
 
     def __init__(self) -> None:
         """Init reader."""
-        from transformers import (
-            AutoTokenizer,
-            VisionEncoderDecoderModel,
-            ViTFeatureExtractor,
-        )
+        from transformers import (AutoTokenizer, VisionEncoderDecoderModel,
+                                  ViTFeatureExtractor)
 
         model = VisionEncoderDecoderModel.from_pretrained(
             "nlpconnect/vit-gpt2-image-captioning"
