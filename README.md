@@ -84,9 +84,9 @@ Create a PR against the main branch. We typically review the PR within a day. To
 the README directly) showing your data loader in action! 
 
 
-## FAQ
+### FAQ
 
-### Should I create a PR against Llama Hub or the GPT Index repo directly?
+#### Should I create a PR against Llama Hub or the GPT Index repo directly?
 
 
 If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases 
