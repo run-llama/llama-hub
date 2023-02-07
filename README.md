@@ -90,7 +90,7 @@ the README directly) showing your data loader in action!
 If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases 
 (for instance, if we think the data loader should be core to the GPT Index repo). 
 
-For all other PR's relevant GPT Index, let's create it directly against the GPT Index repo.
+For all other PR's relevant to GPT Index, let's create it directly against the [GPT Index repo](https://github.com/jerryjliu/gpt_index).
 
 ### Other questions?
 
