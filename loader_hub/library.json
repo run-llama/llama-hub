@@ -117,5 +117,9 @@
   "PubmedReader": {
     "id": "papers/pubmed",
     "author": "thejessezhang"
+  },
+  "MboxReader": {
+    "id": "file/mbox",
+    "author": "minosvasilias"
   }
 }

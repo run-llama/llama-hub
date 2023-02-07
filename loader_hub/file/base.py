@@ -19,6 +19,7 @@ DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".csv": "PandasCSVReader",
     ".epub": "EpubReader",
     ".md": "MarkdownReader",
+    ".mbox": "MboxReader"
 }
 
 
