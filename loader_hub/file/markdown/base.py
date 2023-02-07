@@ -96,9 +96,9 @@ class MarkdownReader(BaseReader):
         return markdown_tups
 
     def load_data(
-        self, filepath: Path, extra_info: Optional[Dict] = None
+        self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file into string."""
-        tups = self.parse_tups(filepath)
+        tups = self.parse_tups(file)
         # TODO: don't include headers right now
         return [Document(value, extra_info=extra_info) for _, value in tups]

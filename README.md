@@ -59,15 +59,13 @@ Adding a loader simply requires forking this repo and making a Pull Request. The
 
 ### Step 1: Create a new directory
 
-In `loader_hub`, create a new directory for your new loader. It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader.
+In `loader_hub`, create a new directory for your new loader. It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
 
-If you'd like, you can create the new directory and files by running the following script.
+If you'd like, you can create the new directory and files by running the following script. Just remember to put your dependencies into a `requirements.txt` file in the new directory.
 
 ```
 ./loader_hub/add_loader.sh [NAME_OF_NEW_DIRECTORY]
 ```
-
-Make sure to put your dependencies into a `requirements.txt` file in the new directory so the required packages may be automatically installed when your loader is downloaded.
 
 ### Step 2: Write your README
 
@@ -77,18 +75,17 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 
 Finally, add your loader to the `loader_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within GPT Index.
 
-### Step 4: Make a Pull Request! 
+### Step 4: Make a Pull Request!
 
 Create a PR against the main branch. We typically review the PR within a day. To help expedite the process, it may be helpful to provide screenshots (either in the PR or in
-the README directly) showing your data loader in action! 
-
+the README directly) showing your data loader in action!
 
 ## FAQ
 
 ### Should I create a PR against Llama Hub or the GPT Index repo directly?
 
-If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases 
-(for instance, if we think the data loader should be core to the GPT Index repo). 
+If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases
+(for instance, if we think the data loader should be core to the GPT Index repo).
 
 For all other PR's relevant to GPT Index, let's create it directly against the [GPT Index repo](https://github.com/jerryjliu/gpt_index).
 

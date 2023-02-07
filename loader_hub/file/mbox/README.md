@@ -1,4 +1,4 @@
-# Mbox Loader
+# Mailbox Loader
 
 This loader extracts the text from a local .mbox dump of emails.
 
@@ -11,7 +11,7 @@ from pathlib import Path
 from gpt_index import download_loader
 
 MboxReader = download_loader("MboxReader")
-documents = MboxReader().load_data('mbox_data_dir', max_count=1000) # Returns list of documents 
+documents = MboxReader().load_data(file='./email.mbox') # Returns list of documents
 
 ```
 

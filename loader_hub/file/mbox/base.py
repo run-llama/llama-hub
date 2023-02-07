@@ -4,8 +4,7 @@ Contains simple parser for mbox files.
 
 """
 from pathlib import Path
-from typing import Any, Dict, List
-import os
+from typing import Any, Dict, List, Optional
 
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
@@ -39,17 +38,6 @@ class MboxReader(BaseReader):
         super().__init__(*args, **kwargs)
         self.max_count = max_count
         self.message_format = message_format
-
-    def _init_parser(self) -> Dict:
-        """Initialize parser."""
-        try:
-            from bs4 import BeautifulSoup  # noqa: F401
-        except ImportError:
-            raise ValueError(
-                "`beautifulsoup4` package not found,"
-                "please run `pip install beautifulsoup4`"
-            )
-        return {}
 
     def parse_file(self, filepath: Path, errors: str = "ignore") -> List[str]:
         """Parse file into string."""
@@ -100,8 +88,9 @@ class MboxReader(BaseReader):
                 break
         return results
 
-
-    def load_data(self, input_dir: str, **load_kwargs: Any) -> List[Document]:
+    def load_data(
+        self, file: Path, extra_info: Optional[Dict] = None
+    ) -> List[Document]:
         """Load data from the input directory.
 
         load_kwargs:
@@ -109,12 +98,7 @@ class MboxReader(BaseReader):
             message_format (str): Message format overriding default.
         """
         docs: List[Document] = []
-        for (dirpath, dirnames, filenames) in os.walk(input_dir):
-            dirnames[:] = [d for d in dirnames if not d.startswith(".")]
-            for filename in filenames:
-                if filename.endswith(".mbox"):
-                    filepath = os.path.join(dirpath, filename)
-                    content = self.parse_file(Path(filepath))
-                    for msg in content:
-                        docs.append(Document(msg))
+        content = self.parse_file(file)
+        for msg in content:
+            docs.append(Document(msg, extra_info=extra_info))
         return docs
