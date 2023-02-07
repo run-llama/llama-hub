@@ -10,7 +10,7 @@ from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 
 
-class PandasCSVParser(BaseReader):
+class PandasCSVReader(BaseReader):
     r"""Pandas-based CSV parser.
 
     Parses CSVs using the separator detection from Pandas `read_csv`function.

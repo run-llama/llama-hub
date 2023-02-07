@@ -15,6 +15,20 @@ loader = BeautifulSoupWebReader()
 documents = loader.load_data(urls=['https://google.com'])
 ```
 
+You can also add your own specific website parsers in `base.py` that automatically get used for certain URLs. Alternatively, you may tell the loader to use a certain parser by passing in the `custom_hostname` argument. For reference, this is what the Beautiful Soup parser looks like for Substack sites:
+
+```python
+def _substack_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:
+    """Extract text from Substack blog post."""
+    extra_info = {
+        "Title of this Substack post": soup.select_one("h1.post-title").getText(),
+        "Subtitle": soup.select_one("h3.subtitle").getText(),
+        "Author": soup.select_one("span.byline-names").getText(),
+    }
+    text = soup.select_one("div.available-content").getText()
+    return text, extra_info
+```
+
 ## Examples
 
 This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.

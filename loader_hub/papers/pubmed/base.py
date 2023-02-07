@@ -26,6 +26,7 @@ class PubmedReader(BaseReader):
             List[Document]: A list of Document objects.
         """
         import xml.etree.ElementTree as xml
+
         import requests
 
         pubmed_search = []

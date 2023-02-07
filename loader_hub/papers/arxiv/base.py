@@ -1,11 +1,11 @@
 """Read Arxiv Papers."""
-import os
 import hashlib
+import os
 from typing import List, Optional
 
+from gpt_index import download_loader
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
-from gpt_index import download_loader
 
 
 class ArxivReader(BaseReader):

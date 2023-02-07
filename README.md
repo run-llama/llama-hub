@@ -1,6 +1,6 @@
-# 🦙 Llama Hub
+# Llama Hub 🦙
 
-This is a simple library of all the data loaders / readers that have been created by the community in GPT Index. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that can be used in [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) (e.g. when building a index), [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use), and more. For example, there are loaders to parse Google Docs, PDF files, Powerpoints, and many more. Note that because the loaders produce the same types of Documents, you can easily use them together in the same index.
+This is a simple library of all the data loaders / readers that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) (e.g. when building a index) and [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use). For example, there are loaders to parse Google Docs, SQL Databases, PDF files, PowerPoints, Notion, Slack, Obsidian, and many more. Note that because different loaders produce the same types of Documents, you can easily use them together in the same index.
 
 ## Usage
 
@@ -77,19 +77,21 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 
 Finally, add your loader to the `loader_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within GPT Index.
 
-
 ### Step 4: Make a Pull Request! 
 
 Create a PR against the main branch. We typically review the PR within a day. To help expedite the process, it may be helpful to provide screenshots (either in the PR or in
 the README directly) showing your data loader in action! 
 
 
-### FAQ
+## FAQ
 
-#### Should I create a PR against Llama Hub or the GPT Index repo directly?
-
+### Should I create a PR against Llama Hub or the GPT Index repo directly?
 
 If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases 
 (for instance, if we think the data loader should be core to the GPT Index repo). 
 
 For all other PR's relevant GPT Index, let's create it directly against the GPT Index repo.
+
+### Other questions?
+
+Feel free to hop into the [community Discord](https://discord.gg/dGcwcsnxhU) or tag the official [Twitter account](https://twitter.com/gpt_index)!
