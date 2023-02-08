@@ -2,9 +2,15 @@
 
 This loader is a web crawler and scraper that fetches text content from websites structed as knowledge bases. Typically these sites have a directory structure with several sections and many articles in each section. This loader crawls and finds all links that match the article path provided, and scrapes the content of each page.
 
-It uses [Playwright](https://playwright.dev/python/) to drive a browser to do the scraping, this reduces the chance of getting blocked by Cloudflare or other CDNs.
+It uses [Playwright](https://playwright.dev/python/) to drive a browser. This reduces the chance of getting blocked by Cloudflare or other CDNs, but makes it a bit more challenging to run on cloud services.
 
 ## Usage
+
+First run
+```
+playwright install
+```
+This installs the browsers that Playwright requires.
 
 To use this loader, you need to pass in the root URL and the string to search for in the URL to tell if the crawler has reached an article. You also need to pass in several CSS selectors so the cralwer knows which links to follow and which elements to extract content from. use 
 
