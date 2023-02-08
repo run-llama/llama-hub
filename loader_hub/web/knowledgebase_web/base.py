@@ -1,6 +1,4 @@
 from typing import List
-import time
-from playwright.sync_api import sync_playwright
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 
@@ -38,6 +36,7 @@ class KnowledgeBaseWebReader(BaseReader):
         self.body_selector = body_selector
 
     def load_data(self) -> List[Document]:
+        from playwright.sync_api import sync_playwright
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=False)
 
