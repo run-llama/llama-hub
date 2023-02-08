@@ -127,5 +127,9 @@
     "id": "file/unstructured",
     "author": "thejessezhang",
     "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io"]
+  },
+  "KnowledgeBaseWebReader": {
+    "id": "web/knowledgebase_web",
+    "author": "jasonwcfan"
   }
 }
