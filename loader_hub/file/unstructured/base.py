@@ -24,12 +24,18 @@ class UnstructuredReader(BaseReader):
         nltk.download("averaged_perceptron_tagger")
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+        self,
+        file: Path,
+        extra_info: Optional[Dict] = None,
+        split_documents: Optional[bool] = False,
     ) -> List[Document]:
         """Parse file."""
         from unstructured.partition.auto import partition
 
         elements = partition(str(file))
-        text = "\n\n".join([" ".join(str(el).split()) for el in elements])
+        text_chunks = [" ".join(str(el).split()) for el in elements]
 
-        return [Document(text, extra_info=extra_info)]
+        if split_documents:
+            return [Document(chunk, extra_info=extra_info) for chunk in text_chunks]
+        else:
+            return [Document("\n\n".join(text_chunks), extra_info=extra_info)]
