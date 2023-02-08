@@ -52,7 +52,7 @@ class PandasCSVReader(BaseReader):
         self._row_joiner = row_joiner
         self._pandas_config = pandas_config
 
-    def parse_file(
+    def load_data(
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
