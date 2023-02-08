@@ -50,7 +50,7 @@
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang",
-    "keywords": ["substack"]
+    "keywords": ["substack", "readthedocs"]
   },
   "DatabaseReader": {
     "id": "database",
