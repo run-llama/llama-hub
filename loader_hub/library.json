@@ -49,7 +49,8 @@
   },
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
-    "author": "thejessezhang"
+    "author": "thejessezhang",
+    "keywords": ["substack"]
   },
   "DatabaseReader": {
     "id": "database",
@@ -121,6 +122,11 @@
   "MboxReader": {
     "id": "file/mbox",
     "author": "minosvasilias"
+  },
+  "UnstructuredReader": {
+    "id": "file/unstructured",
+    "author": "thejessezhang",
+    "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io"]
   },
   "KnowledgeBaseWebReader": {
     "id": "web/knowledgebase_web",
