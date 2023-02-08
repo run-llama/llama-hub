@@ -1,6 +1,6 @@
 # Knowledge Base Website Loader
 
-This loader is a web crawler and scraper that fetches text content from websites structed as knowledge bases. Typically these sites have a directory structure with several sections and many articles in each section. This loader crawls and finds all links that match the article path provided, and scrapes the content of each page.
+This loader is a web crawler and scraper that fetches text content from websites hosting public knowledge bases. Examples are the [Intercom help center](https://www.intercom.com/help/en/) or the [Robinhood help center](https://robinhood.com/us/en/support/). Typically these sites have a directory structure with several sections and many articles in each section. This loader crawls and finds all links that match the article path provided, and scrapes the content of each article. This can be used to create bots that answer customer questions based on public documentation.
 
 It uses [Playwright](https://playwright.dev/python/) to drive a browser. This reduces the chance of getting blocked by Cloudflare or other CDNs, but makes it a bit more challenging to run on cloud services.
 
@@ -21,7 +21,7 @@ KnowledgeBaseWebReader = download_loader("KnowledgeBaseWebReader")
 
 loader = KnowledgeBaseWebReader()
 documents = loader.load_data(
-  root_url='https://support.intercom.com', 
+  root_url='https://www.intercom.com/help', 
   link_selectors=['.article-list a', '.article-list a']
   article_path='/articles'
   body_selector='.article-body'
