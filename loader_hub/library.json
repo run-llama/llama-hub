@@ -129,7 +129,7 @@
     "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io"]
   },
   "KnowledgeBaseWebReader": {
-    "id": "web/knowledgebase_web",
+    "id": "web/knowledge_base",
     "author": "jasonwcfan"
   }
 }
