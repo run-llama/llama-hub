@@ -121,5 +121,9 @@
   "MboxReader": {
     "id": "file/mbox",
     "author": "minosvasilias"
+  },
+  "KnowledgeBaseWebReader": {
+    "id": "web/knowledgebase_web",
+    "author": "jasonwcfan"
   }
 }
