@@ -21,6 +21,7 @@ class UnstructuredReader(BaseReader):
         # Prerequisite for Unstructured.io to work
         import nltk
 
+        nltk.download("punkt")
         nltk.download("averaged_perceptron_tagger")
 
     def load_data(
