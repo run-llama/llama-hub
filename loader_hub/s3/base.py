@@ -4,11 +4,11 @@ A loader that fetches a file or iterates through a directory on AWS S3.
 
 """
 import tempfile
-from typing import Any, Dict, Union, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
+from gpt_index import download_loader
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
-from gpt_index import download_loader
 
 
 class S3Reader(BaseReader):
