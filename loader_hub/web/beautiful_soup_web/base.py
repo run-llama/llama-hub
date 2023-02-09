@@ -16,8 +16,15 @@ def _substack_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:
     return text, extra_info
 
 
+def _readthedocs_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:
+    """Extract text from a ReadTheDocs documentation site"""
+    text = soup.find_all("main", {"id": "main-content"})[0].get_text()
+    return "\n".join([t for t in text.split("\n") if t]), {}
+
+
 DEFAULT_WEBSITE_EXTRACTOR: Dict[str, Callable[[Any], Tuple[str, Dict[str, Any]]]] = {
     "substack.com": _substack_reader,
+    "readthedocs.io": _readthedocs_reader,
 }
 
 
