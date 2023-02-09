@@ -9,7 +9,7 @@ To use this loader, you simply need to instantiate the `SimpleDirectoryReader` c
 ```python
 from gpt_index import download_loader
 
-SimpleDirectoryReader = download_loader(SimpleDirectoryReader)
+SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
@@ -24,7 +24,7 @@ This loader is designed to be used as a way to load data into [GPT Index](https:
 ```python
 from gpt_index import GPTSimpleVectorIndex, download_loader
 
-SimpleDirectoryReader = download_loader(SimpleDirectoryReader)
+SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
@@ -42,7 +42,7 @@ from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
-SimpleDirectoryReader = download_loader(SimpleDirectoryReader)
+SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
