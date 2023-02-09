@@ -20,6 +20,8 @@ DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".epub": "EpubReader",
     ".md": "MarkdownReader",
     ".mbox": "MboxReader",
+    ".eml": "UnstructuredReader",
+    ".html": "UnstructuredReader",
 }
 
 
