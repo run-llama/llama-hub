@@ -1,12 +1,25 @@
 # Google Drive Loader
 
-This loader currently reads files from google drive folder/ file ids.
-
-## Usage
+This loader currently reads files from google drive using folder/ file ids.
 
 To use this loader, you need to pass in a List of file id's or folder id.
 
-You need to get your `credentials.json` file by following the steps mentioned [here](https://developers.google.com/drive/api/v3/quickstart/python) and create duplicate file of `credentials.json` with name `client_secrets.json` which will be used by pydrive for downloading files before proceeding further.
+### folder_id
+You can extract a folder_id directly from its drive URL. 
+
+For example, the folder_id of https://drive.google.com/drive/folders/1w7XryYu6mL9VLmfyqUkA4_fRnDbsCqV- is 1w7XryYu6mL9VLmfyqUkA4_fRnDbsCqV-
+
+### file_id
+You can extract a file_id directly from its sharable drive URL. 
+
+For example, the file_id of https://drive.google.com/file/d/1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y/view?usp=sharing is 1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y
+
+## Usage
+
+We need `credentials.json` and `client_secrets.json` files to use this reader.
+
+1. You need to get your `credentials.json` file by following the steps mentioned [here](https://developers.google.com/drive/api/v3/quickstart/python)
+2. Create duplicate file of `credentials.json` with name `client_secrets.json` which will be used by pydrive for downloading files.
 
 ```python
 from gpt_index import download_loader

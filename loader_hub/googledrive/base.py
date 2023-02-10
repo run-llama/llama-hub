@@ -43,8 +43,6 @@ class GoogleDriveReader(BaseReader):
                  credentials_path: str = "credentials.json",
                  client_secrets_path: str = "client_secrets.json",
                  token_path: str = "token.json",
-                 folder_id: Optional[str] = None,
-                 file_ids: Optional[List[str]] = None,
                  file_extractor: Optional[Dict[str,
                                                Union[str, BaseReader]]] = None,
                  file_metadata: Optional[Callable[[str], Dict]] = None,) -> None:
@@ -52,8 +50,6 @@ class GoogleDriveReader(BaseReader):
         self.credentials_path = credentials_path
         self.client_secrets_path = client_secrets_path
         self.token_path = token_path
-        self.folder_id = folder_id
-        self.file_ids = file_ids
         self.file_extractor = file_extractor or DEFAULT_FILE_EXTRACTOR
         self.file_metadata = file_metadata
 
@@ -99,6 +95,12 @@ class GoogleDriveReader(BaseReader):
         return creds, drive
 
     def _load_from_file_id(self, file_id: str) -> Document:
+        """Load data from file id
+        Args:
+            file_id: file id of the file in google drive.
+        Returns:
+            Document: Document of text.
+        """
 
         try:
 
@@ -132,11 +134,17 @@ class GoogleDriveReader(BaseReader):
                 document = reader.load_data(
                     file=input_file, extra_info=metadata)
 
-            return document
+            return document[0]
         except Exception as e:
             logger.error('Failed with error: {}'.format(e))
 
     def _load_from_file_ids(self, file_ids: List[str]) -> List[Document]:
+        """Load data from file ids
+        Args:
+            file_ids: file ids of the files in google drive.
+        Returns:
+            Document: List of Documents of text.
+        """
 
         try:
             documents = []
@@ -147,6 +155,12 @@ class GoogleDriveReader(BaseReader):
             logger.error('Failed with error: {}'.format(e))
 
     def _load_from_folder(self, folder_id: str) -> List[Document]:
+        """Load data from folder_id
+        Args:
+            folder_id: folder id of the folder in google drive.
+        Returns:
+            Document: List of Documents of text.
+        """
 
         try:
             # create drive api client
@@ -166,11 +180,18 @@ class GoogleDriveReader(BaseReader):
         except Exception as e:
             logger.error('An error occurred: {}'.format(e))
 
-    def load_data(self) -> List[Document]:
+    def load_data(self, folder_id: str = None, file_ids: List[str] = None) -> List[Document]:
+        """Load data from the folder id and file ids.
+        Args:
+            folder_id: folder id of the folder in google drive.
+            file_ids: file ids of the files in google drive.
+        Returns:
+            List[Document]: A list of documents.
+        """
         global creds, drive
         creds, drive = self._get_credentials()
 
-        if self.folder_id:
-            return self._load_from_folder(self.folder_id)
+        if folder_id:
+            return self._load_from_folder(folder_id)
         else:
-            return self._load_from_file_ids(self.file_ids)
+            return self._load_from_file_ids(file_ids)
