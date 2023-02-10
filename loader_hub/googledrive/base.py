@@ -56,7 +56,6 @@ def _get_credentials(self) -> Any:
 
     return creds
 
-
 def _load_from_file_id(self, id: str) -> Document:
     """Load from file id."""
     import io
@@ -82,7 +81,13 @@ def _load_from_file_id(self, id: str) -> Document:
     except HttpError as error:
         logger.error('An error occurred: {}'.format(error))
 
-
+def _load_from_file_ids(self) -> List[Document]:
+    '''Load from multiple file ids'''
+    documents = []
+    for id in self.file_ids:
+        documents.append(self._load_from_file_id(id))
+    return documents
+    
 def _load_files_from_folder(self) -> List[Document]:
     """Load files from a folder."""
     from googleapiclient.discovery import build
@@ -113,4 +118,4 @@ def load_data(self) -> List[Document]:
     if self.folder_id:
         return self._load_files_from_folder()
     else:
-        return [self._load_from_file_id()]
+        return self._load_from_file_ids()
