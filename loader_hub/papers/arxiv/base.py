@@ -1,5 +1,6 @@
 """Read Arxiv Papers."""
 import hashlib
+import logging
 import os
 from typing import List, Optional
 
@@ -16,10 +17,9 @@ class ArxivReader(BaseReader):
 
     def __init__(
         self,
-        verbose: bool = False,
     ):
         """Initialize with parameters."""
-        super().__init__(verbose)
+        super().__init__()
 
     def _hacky_hash(self, some_string):
         _hash = hashlib.md5(some_string.encode("utf-8")).hexdigest()
@@ -50,8 +50,7 @@ class ArxivReader(BaseReader):
             sort_by=arxiv.SortCriterion.Relevance,
         )
         search_results = list(arxiv_search.results())
-        if self.verbose:
-            print(f"> Successfully fetched {len(search_results)} paperes")
+        logging.debug(f"> Successfully fetched {len(search_results)} paperes")
 
         if not os.path.exists(papers_dir):
             os.makedirs(papers_dir)
@@ -68,8 +67,7 @@ class ArxivReader(BaseReader):
                 # "summary": paper.summary
             }
             paper.download_pdf(dirpath=papers_dir, filename=filename)
-            if self.verbose:
-                print(f"> Downloading {filename}...")
+            logging.debug(f"> Downloading {filename}...")
 
         def get_paper_metadata(filename):
             return paper_lookup[filename]
@@ -88,11 +86,9 @@ class ArxivReader(BaseReader):
         try:
             for f in os.listdir(papers_dir):
                 os.remove(os.path.join(papers_dir, f))
-                if self.verbose:
-                    print(f"> Deleted file: {f}")
+                logging.debug(f"> Deleted file: {f}")
             os.rmdir(papers_dir)
-            if self.verbose:
-                print(f"> Deleted directory: {papers_dir}")
+            logging.debug(f"> Deleted directory: {papers_dir}")
         except OSError:
             print("Unable to delete files or directory")
 

@@ -19,7 +19,7 @@ index = GPTSimpleVectorIndex.load_from_disk('../vector_indices/index_simple.json
 
 # query index
 query_str = "What did the author do growing up?"
-response = index.query(query_str, verbose=True)
+response = index.query(query_str)
 
 # Send response to Make.com webhook
 wrapper = MakeWrapper()

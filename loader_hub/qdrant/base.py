@@ -38,10 +38,9 @@ class QdrantReader(BaseReader):
         api_key: Optional[str] = None,
         prefix: Optional[str] = None,
         timeout: Optional[float] = None,
-        verbose: bool = False,
     ):
         """Initialize with parameters."""
-        super().__init__(verbose)
+        super().__init__()
 
         import qdrant_client  # noqa: F401
 

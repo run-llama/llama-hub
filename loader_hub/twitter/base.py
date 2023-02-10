@@ -24,10 +24,9 @@ class TwitterTweetReader(BaseReader):
         self,
         bearer_token: str,
         num_tweets: Optional[int] = 100,
-        verbose: bool = False,
     ) -> None:
         """Initialize with parameters."""
-        super().__init__(verbose=verbose)
+        super().__init__()
         self.bearer_token = bearer_token
         self.num_tweets = num_tweets
 
