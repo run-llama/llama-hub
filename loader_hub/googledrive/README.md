@@ -11,7 +11,7 @@ You need to get your `credentials.json` file by following the steps mentioned [h
 ```python
 from gpt_index import download_loader
 
-YoutubeTranscriptReader = download_loader("GoogleDriveReader")
+GoogleDriveReader = download_loader("GoogleDriveReader")
 
 loader = GoogleDriveReader()
 documents = loader.load_data(folder_id="folderid")
