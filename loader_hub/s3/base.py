@@ -4,6 +4,7 @@ A loader that fetches a file or iterates through a directory on AWS S3.
 
 """
 import tempfile
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
 from gpt_index import download_loader
@@ -68,12 +69,16 @@ class S3Reader(BaseReader):
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.key:
-                filepath = f"{temp_dir}/{self.key}"
+                suffix = Path(self.key).suffix
+                filepath = f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
                 s3_client.download_file(self.bucket, self.key, filepath)
             else:
                 bucket = s3.Bucket(self.bucket)
                 for obj in bucket.objects.filter(Prefix=self.prefix):
-                    filepath = f"{temp_dir}/{obj.key}"
+                    suffix = Path(obj.key).suffix
+                    filepath = (
+                        f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
+                    )
                     s3_client.download_file(self.bucket, obj.key, filepath)
 
             SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
