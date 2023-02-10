@@ -9,7 +9,6 @@ As a result, any page or type of file is supported. For instance, if a `.txt` ur
 To use this loader, you need to pass in a `Path` to a local file. Optionally, you may specify a `file_extractor` for the `SimpleDirectoryReader` to use, other than the default one.
 
 ```python
-from pathlib import Path
 from gpt_index import download_loader
 
 RemoteReader = download_loader("RemoteReader")
