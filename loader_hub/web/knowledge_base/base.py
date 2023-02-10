@@ -1,16 +1,18 @@
 from typing import List
+
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 
+
 class KnowledgeBaseWebReader(BaseReader):
     """Knowledge base reader.
-    
+
     Crawls and reads articles from a knowledge base/help center with Playwright.
-    Tested on Zendesk and Intercom CMS, may work on others. 
+    Tested on Zendesk and Intercom CMS, may work on others.
     Can be run in headless mode but it may be blocked by Cloudflare. Run it headed to be safe.
     Times out occasionally, just increase the default time out if it does.
     Requires the `playwright` package.
-    
+
     Args:
         root_url (string): the base url of the knowledge base, with no trailing slash
             e.g. 'https://support.intercom.com'
@@ -26,7 +28,15 @@ class KnowledgeBaseWebReader(BaseReader):
             e.g. '.article-body'
     """
 
-    def __init__(self, root_url, link_selectors, article_path, title_selector, subtitle_selector, body_selector) -> None:
+    def __init__(
+        self,
+        root_url,
+        link_selectors,
+        article_path,
+        title_selector,
+        subtitle_selector,
+        body_selector,
+    ) -> None:
         """Initialize with parameters."""
         self.root_url = root_url
         self.link_selectors = link_selectors
@@ -37,49 +47,77 @@ class KnowledgeBaseWebReader(BaseReader):
 
     def load_data(self) -> List[Document]:
         from playwright.sync_api import sync_playwright
+
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=False)
 
             # Crawl
-            article_urls = self.get_article_urls(browser, self.root_url, self.root_url, self.link_selectors, self.article_path)
+            article_urls = self.get_article_urls(
+                browser,
+                self.root_url,
+                self.root_url,
+                self.link_selectors,
+                self.article_path,
+            )
 
             # Scrape
             documents = []
             for url in article_urls:
-                article = self.scrape_article(browser, url, self.title_selector, self.subtitle_selector, self.body_selector)
-                extra_info = {'title': article['title'], 'subtitle': article['subtitle'], 'url': article['url']}
-                documents.append(Document(article['body'], extra_info=extra_info))
+                article = self.scrape_article(
+                    browser,
+                    url,
+                    self.title_selector,
+                    self.subtitle_selector,
+                    self.body_selector,
+                )
+                extra_info = {
+                    "title": article["title"],
+                    "subtitle": article["subtitle"],
+                    "url": article["url"],
+                }
+                documents.append(Document(article["body"], extra_info=extra_info))
 
             browser.close()
 
             return documents
 
-    def scrape_article(self, browser, url, title_selector, subtitle_selector, body_selector):
+    def scrape_article(
+        self, browser, url, title_selector, subtitle_selector, body_selector
+    ):
         page = browser.new_page(ignore_https_errors=True)
         page.set_default_timeout(60000)
-        page.goto(url, wait_until='domcontentloaded')
+        page.goto(url, wait_until="domcontentloaded")
 
-        title = (page.query_selector(title_selector).evaluate("node => node.innerText")) if title_selector else ''
-        subtitle = (page.query_selector(subtitle_selector).evaluate("node => node.innerText")) if subtitle_selector else ''
-        body = (page.query_selector(body_selector).evaluate("node => node.innerText")) if body_selector else ''
+        title = (
+            (page.query_selector(title_selector).evaluate("node => node.innerText"))
+            if title_selector
+            else ""
+        )
+        subtitle = (
+            (page.query_selector(subtitle_selector).evaluate("node => node.innerText"))
+            if subtitle_selector
+            else ""
+        )
+        body = (
+            (page.query_selector(body_selector).evaluate("node => node.innerText"))
+            if body_selector
+            else ""
+        )
 
         page.close()
-        print('scraped:', url)
-        return {
-            'title': title,
-            'subtitle': subtitle,
-            'body': body,
-            'url': url
-        }
-    
-    def get_article_urls(self, browser, root_url, current_url, link_selectors, article_path):
+        print("scraped:", url)
+        return {"title": title, "subtitle": subtitle, "body": body, "url": url}
+
+    def get_article_urls(
+        self, browser, root_url, current_url, link_selectors, article_path
+    ):
         page = browser.new_page(ignore_https_errors=True)
         page.set_default_timeout(60000)
         page.goto(current_url, wait_until="domcontentloaded")
 
         # If this is a leaf node aka article page, return itself
         if article_path in current_url:
-            print('Found an article: ', current_url)
+            print("Found an article: ", current_url)
             page.close()
             return [current_url]
 
@@ -93,7 +131,11 @@ class KnowledgeBaseWebReader(BaseReader):
 
         for link in links:
             url = root_url + page.evaluate("(node) => node.getAttribute('href')", link)
-            article_urls.extend(self.get_article_urls(browser, root_url, url, link_selectors, article_path))
+            article_urls.extend(
+                self.get_article_urls(
+                    browser, root_url, url, link_selectors, article_path
+                )
+            )
 
         page.close()
 

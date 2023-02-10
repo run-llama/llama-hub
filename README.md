@@ -63,10 +63,10 @@ Adding a loader simply requires forking this repo and making a Pull Request. The
 
 In `loader_hub`, create a new directory for your new loader. It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
 
-If you'd like, you can create the new directory and files by running the following script. Just remember to put your dependencies into a `requirements.txt` file in the new directory.
+If you'd like, you can create the new directory and files by running the following script in the `loader_hub` directory. Just remember to put your dependencies into a `requirements.txt` file.
 
 ```
-./loader_hub/add_loader.sh [NAME_OF_NEW_DIRECTORY]
+./add_loader.sh [NAME_OF_NEW_DIRECTORY]
 ```
 
 ### Step 2: Write your README
