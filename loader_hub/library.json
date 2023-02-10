@@ -50,7 +50,7 @@
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang",
-    "keywords": ["substack", "readthedocs"]
+    "keywords": ["substack", "readthedocs", "documentation"]
   },
   "DatabaseReader": {
     "id": "database",
@@ -130,7 +130,13 @@
   },
   "KnowledgeBaseWebReader": {
     "id": "web/knowledge_base",
-    "author": "jasonwcfan"
+    "author": "jasonwcfan",
+    "keywords": ["documentation"]
+  },
+  "S3Reader": {
+    "id": "s3",
+    "author": "thejessezhang",
+    "keywords": ["aws s3", "bucket", "amazon web services"]
   },
   "RemoteReader": {
     "id": "remote",
