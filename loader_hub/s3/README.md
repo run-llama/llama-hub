@@ -6,7 +6,9 @@ All files are temporarily downloaded locally and subsequently parsed with `Simpl
 
 ## Usage
 
-To use this loader, you need to pass in the name of your S3 Bucket. After that, if you want to just parse a single file, pass in its key. Otherwise, you may specify a prefix if you only want to parse certain files in the Bucket, or a subdirectory. AWS Access Key credentials may either be passed in during initialization or stored locally (see above).
+To use this loader, you need to pass in the name of your S3 Bucket. After that, if you want to just parse a single file, pass in its key. Note that if the file is nested in a subdirectory, the key should contain that, so like `subdirectory/input.txt`.
+
+Otherwise, you may specify a prefix if you only want to parse certain files in the Bucket, or a subdirectory. AWS Access Key credentials may either be passed in during initialization or stored locally (see above).
 
 ```python
 from gpt_index import download_loader
