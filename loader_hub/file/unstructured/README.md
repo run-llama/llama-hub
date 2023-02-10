@@ -39,4 +39,4 @@ This loader is designed to be used as a way to load data into [GPT Index](https:
 
 ## Troubleshooting
 
-**"failed to find libmagic" error**: Try `pip install python-magic-bin==0.4.14`. Solution documented here: https://github.com/Yelp/elastalert/issues/1927#issuecomment-425040424. On MacOS, you may also try `brew install libmagic`.
+**"failed to find libmagic" error**: Try `pip install python-magic-bin==0.4.14`. Solution documented [here](https://github.com/Yelp/elastalert/issues/1927#issuecomment-425040424). On MacOS, you may also try `brew install libmagic`.
