@@ -4,6 +4,8 @@ This is a simple library of all the data loaders / readers that have been create
 
 Check out our website here: https://llamahub.ai/.
 
+![Website screenshot](https://scrabble-dictionary.s3.us-west-2.amazonaws.com/Screen+Shot+2023-02-11+at+12.42.38+PM.png)
+
 ## Usage
 
 These general-purpose loaders are designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. **You can use them with `download_loader` from GPT Index in a single line of code!** For example, see the code snippets below using the Google Docs Loader.
