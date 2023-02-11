@@ -75,6 +75,8 @@ class S3Reader(BaseReader):
             else:
                 bucket = s3.Bucket(self.bucket)
                 for obj in bucket.objects.filter(Prefix=self.prefix):
+                    if obj.key.endswith("/"):  # skip folders
+                        continue
                     suffix = Path(obj.key).suffix
                     filepath = (
                         f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
