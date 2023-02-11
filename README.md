@@ -4,7 +4,7 @@ This is a simple library of all the data loaders / readers that have been create
 
 Check out our website here: https://llamahub.ai/.
 
-![Website screenshot](https://scrabble-dictionary.s3.us-west-2.amazonaws.com/Screen+Shot+2023-02-11+at+12.42.38+PM.png)
+![Website screenshot](https://scrabble-dictionary.s3.us-west-2.amazonaws.com/Screen+Shot+2023-02-11+at+12.45.44+PM.png)
 
 ## Usage
 
