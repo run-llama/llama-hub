@@ -172,7 +172,8 @@
       "repository",
       "git",
       "code",
-      "source code"
+      "source code",
+      "placeholder"
     ],
     "extra_files": [
       "github_client.py",
