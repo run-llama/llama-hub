@@ -23,24 +23,19 @@ from typing import Any, Callable, List, Optional, Tuple
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
 
-import importlib 
+from github_client import (
+    BaseGithubClient,
+    GitBranchResponseModel,
+    GitCommitResponseModel,
+    GithubClient,
+    GitTreeResponseModel,
+)
 
-importlib.import_module
-
-# from github_client import (
-#     BaseGithubClient,
-#     GitBranchResponseModel,
-#     GitCommitResponseModel,
-#     GithubClient,
-#     GitTreeResponseModel,
-# )
-
-import utils
-# from utils import (
-#     BufferedGitBlobDataIterator,
-#     print_if_verbose,
-#     get_file_extension,
-# )
+from utils import (
+    BufferedGitBlobDataIterator,
+    print_if_verbose,
+    get_file_extension,
+)
 from gpt_index.readers.schema.base import Document
 
 logging.basicConfig(level=logging.INFO)
@@ -70,7 +65,7 @@ class GithubRepositoryReader(BaseReader):
         self,
         owner: str,
         repo: str,
-        github_client: github_client.BaseGithubClient = github_client.GithubClient(),
+        github_client: BaseGithubClient = GithubClient(),
         use_parser: bool = True,
         verbose: bool = False,
         concurrent_requests: int = 5,
@@ -133,7 +128,7 @@ class GithubRepositoryReader(BaseReader):
         :return: True if the tree object should be allowed, False otherwise
         """
         filter_directories, filter_type = self._filter_directories
-        utils.print_if_verbose(
+        print_if_verbose(
             self._verbose,
             f"Checking {tree_obj_path} whether to {filter_type} it"
             + f" based on the filter directories: {filter_directories}",
@@ -166,16 +161,16 @@ class GithubRepositoryReader(BaseReader):
         :return: True if the tree object should be allowed, False otherwise
         """
         filter_file_extensions, filter_type = self._filter_file_extensions
-        utils.print_if_verbose(
+        print_if_verbose(
             self._verbose,
             f"Checking {tree_obj_path} whether to {filter_type} it"
             + f" based on the filter file extensions: {filter_file_extensions}",
         )
 
         if filter_type == self.FilterType.EXCLUDE:
-            return utils.get_file_extension(tree_obj_path) not in filter_file_extensions
+            return get_file_extension(tree_obj_path) not in filter_file_extensions
         elif filter_type == self.FilterType.INCLUDE:
-            return utils.get_file_extension(tree_obj_path) in filter_file_extensions
+            return get_file_extension(tree_obj_path) in filter_file_extensions
         else:
             raise ValueError(
                 f"Unknown filter type: {filter_type}. "
@@ -209,14 +204,14 @@ class GithubRepositoryReader(BaseReader):
 
         :return: list of documents
         """
-        commit_response: github_client.GitCommitResponseModel = self._loop.run_until_complete(
+        commit_response: GitCommitResponseModel = self._loop.run_until_complete(
             self._github_client.get_commit(self._owner, self._repo, commit_sha)
         )
 
         tree_sha = commit_response.commit.tree.sha
         blobs_and_paths = self._loop.run_until_complete(self._recurse_tree(tree_sha))
 
-        utils.print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
+        print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
 
         return self._loop.run_until_complete(
             self._generate_documents(blobs_and_paths=blobs_and_paths)
@@ -232,14 +227,14 @@ class GithubRepositoryReader(BaseReader):
 
         :return: list of documents
         """
-        branch_data: github_client.GitBranchResponseModel = self._loop.run_until_complete(
+        branch_data: GitBranchResponseModel = self._loop.run_until_complete(
             self._github_client.get_branch(self._owner, self._repo, branch)
         )
 
         tree_sha = branch_data.commit.commit.tree.sha
         blobs_and_paths = self._loop.run_until_complete(self._recurse_tree(tree_sha))
 
-        utils.print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
+        print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
 
         return self._loop.run_until_complete(
             self._generate_documents(blobs_and_paths=blobs_and_paths)
@@ -290,15 +285,15 @@ class GithubRepositoryReader(BaseReader):
         :return: list of tuples of
             (tree object, file's full path realtive to the root of the repo)
         """
-        blobs_and_full_paths: List[Tuple[github_client.GitTreeResponseModel.GitTreeObject, str]] = []
-        utils.print_if_verbose(
+        blobs_and_full_paths: List[Tuple[GitTreeResponseModel.GitTreeObject, str]] = []
+        print_if_verbose(
             self._verbose, "\t" * current_depth + f"current path: {current_path}"
         )
 
-        tree_data: github_client.GitTreeResponseModel = await self._github_client.get_tree(
+        tree_data: GitTreeResponseModel = await self._github_client.get_tree(
             self._owner, self._repo, tree_sha
         )
-        utils.print_if_verbose(
+        print_if_verbose(
             self._verbose, "\t" * current_depth + f"processing tree {tree_sha}"
         )
         for tree_obj in tree_data.tree:
@@ -306,14 +301,14 @@ class GithubRepositoryReader(BaseReader):
 
             # filter tree object here
             if not self._allow_tree_obj(file_path):
-                utils.print_if_verbose(
+                print_if_verbose(
                     self._verbose,
                     "\t" * current_depth + f"ignoring {tree_obj.path} due to filter",
                 )
                 continue
 
             if tree_obj.type == "tree":
-                utils.print_if_verbose(
+                print_if_verbose(
                     self._verbose,
                     "\t" * current_depth + f"recursing into {tree_obj.path}",
                 )
@@ -322,14 +317,14 @@ class GithubRepositoryReader(BaseReader):
                     await self._recurse_tree(tree_obj.sha, file_path, current_depth + 1)
                 )
             elif tree_obj.type == "blob":
-                utils.print_if_verbose(
+                print_if_verbose(
                     self._verbose, "\t" * current_depth + f"found blob {tree_obj.path}"
                 )
                 blobs_and_full_paths.append((tree_obj, file_path))
         return blobs_and_full_paths
 
     async def _generate_documents(
-        self, blobs_and_paths: List[Tuple[github_client.GitTreeResponseModel.GitTreeObject, str]]
+        self, blobs_and_paths: List[Tuple[GitTreeResponseModel.GitTreeObject, str]]
     ) -> List[Document]:
         """
         Generate documents from a list of blobs and their full paths.
@@ -338,7 +333,7 @@ class GithubRepositoryReader(BaseReader):
             (tree object, file's full path in the repo realtive to the root of the repo)
         :return: list of documents
         """
-        buffered_iterator = utils.BufferedGitBlobDataIterator(
+        buffered_iterator = BufferedGitBlobDataIterator(
             blobs_and_paths=blobs_and_paths,
             github_client=self._github_client,
             owner=self._owner,
@@ -350,7 +345,7 @@ class GithubRepositoryReader(BaseReader):
 
         documents = []
         async for blob_data, full_path in buffered_iterator:
-            utils.print_if_verbose(self._verbose, f"generating document for {full_path}")
+            print_if_verbose(self._verbose, f"generating document for {full_path}")
             assert (
                 blob_data.encoding == "base64"
             ), f"blob encoding {blob_data.encoding} not supported"
@@ -359,7 +354,7 @@ class GithubRepositoryReader(BaseReader):
                 decoded_bytes = base64.b64decode(blob_data.content)
                 del blob_data.content
             except binascii.Error:
-                utils.print_if_verbose(
+                print_if_verbose(
                     self._verbose, f"could not decode {full_path} as base64"
                 )
                 continue
@@ -374,7 +369,7 @@ class GithubRepositoryReader(BaseReader):
                 if document is not None:
                     documents.append(document)
                     continue
-                utils.print_if_verbose(
+                print_if_verbose(
                     self._verbose,
                     f"could not parse {full_path} as a supported file type"
                     + " - falling back to decoding as utf-8 raw text",
@@ -385,11 +380,11 @@ class GithubRepositoryReader(BaseReader):
                     raise ValueError("decoded_bytes is None")
                 decoded_text = decoded_bytes.decode("utf-8")
             except UnicodeDecodeError:
-                utils.print_if_verbose(
+                print_if_verbose(
                     self._verbose, f"could not decode {full_path} as utf-8"
                 )
                 continue
-            utils.print_if_verbose(
+            print_if_verbose(
                 self._verbose,
                 f"got {len(decoded_text)} characters"
                 + f"- adding to documents - {full_path}",
@@ -415,10 +410,10 @@ class GithubRepositoryReader(BaseReader):
         :param `file_content`: content of the file
         :return: Document if the file is supported by a parser, None otherwise
         """
-        file_extension = utils.get_file_extension(file_path)
+        file_extension = get_file_extension(file_path)
         if (parser := DEFAULT_FILE_EXTRACTOR.get(file_extension)) is not None:
             parser.init_parser()
-            utils.print_if_verbose(
+            print_if_verbose(
                 self._verbose,
                 f"parsing {file_path}"
                 + f"as {file_extension} with "
@@ -431,7 +426,7 @@ class GithubRepositoryReader(BaseReader):
                     mode="w+b",
                     delete=False,
                 ) as tmpfile:
-                    utils.print_if_verbose(
+                    print_if_verbose(
                         self._verbose,
                         "created a temporary file"
                         + f"{tmpfile.name} for parsing {file_path}",
@@ -443,7 +438,7 @@ class GithubRepositoryReader(BaseReader):
                         parsed_file = parser.parse_file(pathlib.Path(tmpfile.name))
                         parsed_file = "\n\n".join(parsed_file)
                     except Exception as e:
-                        utils.print_if_verbose(
+                        print_if_verbose(
                             self._verbose, f"error while parsing {file_path}"
                         )
                         logger.error(
@@ -482,7 +477,7 @@ if __name__ == "__main__":
 
         return wrapper
 
-    github_client = github_client.GithubClient(github_token=os.environ["GITHUB_TOKEN"], verbose=True)
+    github_client = GithubClient(github_token=os.environ["GITHUB_TOKEN"], verbose=True)
 
     reader1 = GithubRepositoryReader(
         github_client=github_client,
