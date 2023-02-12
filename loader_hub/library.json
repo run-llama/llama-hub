@@ -173,6 +173,10 @@
       "git",
       "code",
       "source code"
+    ],
+    "extra_files": [
+      "github_client.py",
+      "utils.py"
     ]
   }
 }
