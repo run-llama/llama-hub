@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any, Union, Callable
 import os
 import logging
+import tempfile
 
 from gpt_index import download_loader
 from gpt_index.readers.base import BaseReader
@@ -19,21 +20,8 @@ from googleapiclient.discovery import build
 
 logger = logging.getLogger(__name__)
 
+# Scope for reading and downloading google drive files
 SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
-
-DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
-    ".pdf": "PDFReader",
-    ".docx": "DocxReader",
-    ".pptx": "PptxReader",
-    ".jpg": "ImageReader",
-    ".png": "ImageReader",
-    ".jpeg": "ImageReader",
-    ".mp3": "AudioTranscriber",
-    ".mp4": "AudioTranscriber",
-    ".csv": "PandasCSVReader",
-    ".txt": "UnstructuredReader",
-    ".html": "UnstructuredReader"
-}
 
 
 class GoogleDriveReader(BaseReader):
@@ -42,16 +30,11 @@ class GoogleDriveReader(BaseReader):
     def __init__(self,
                  credentials_path: str = "credentials.json",
                  client_secrets_path: str = "client_secrets.json",
-                 token_path: str = "token.json",
-                 file_extractor: Optional[Dict[str,
-                                               Union[str, BaseReader]]] = None,
-                 file_metadata: Optional[Callable[[str], Dict]] = None,) -> None:
+                 token_path: str = "token.json") -> None:
         """Initialize with parameters."""
         self.credentials_path = credentials_path
         self.client_secrets_path = client_secrets_path
         self.token_path = token_path
-        self.file_extractor = file_extractor or DEFAULT_FILE_EXTRACTOR
-        self.file_metadata = file_metadata
 
     def _get_credentials(self) -> Any:
         """
@@ -94,49 +77,97 @@ class GoogleDriveReader(BaseReader):
 
         return creds, drive
 
-    def _load_from_file_id(self, file_id: str) -> Document:
-        """Load data from file id
+    def _get_fileids_meta(self, folder_id: str = None, file_id: str = None) -> List[str]:
+        """Get file ids present in folder/ file id
         Args:
-            file_id: file id of the file in google drive.
+            folder_id: folder id of the folder in google drive.
+            file_id: file id of the file in google drive
         Returns:
-            Document: Document of text.
+            metadata: List of metadata of filde ids.
+        """
+        try:
+
+            service = build("drive", "v3", credentials=creds)
+            if folder_id:
+                fileids_meta = []
+                query = "'" + folder_id + "' in parents"
+                results = service.files().list(
+                    q=query, fields="*").execute()
+                items = results.get("files", [])
+                for item in items:
+                    if item["mimeType"] == 'application/vnd.google-apps.folder':
+                        fileids_meta.extend(
+                            self._get_fileids_meta(folder_id=item["id"]))
+                    else:
+                        fileids_meta.append(
+                            (item["id"], item["owners"][0]['displayName'], item["name"], item["createdTime"], item["modifiedTime"]))
+            else:
+                # Get the file details
+                file = service.files().get(fileId=file_id, fields="*").execute()
+
+                # Get metadata of the file
+                fileids_meta = (file["id"], file["owners"][0]['displayName'],
+                                file["name"], file["createdTime"], file["modifiedTime"])
+
+            return fileids_meta
+
+        except Exception as e:
+            logger.error(
+                'An error occurred while getting fileids metadata: {}'.format(e))
+
+    def _download_file(self, fileid: str, filename: str) -> None:
+        """Download the file with fileid and filename
+        Args:
+            fileid: file id of the file in google drive
+            filename: filename with which it will be downloaded
+        Returns:
+            None
+        """
+        try:
+            file = drive.CreateFile({'id': fileid})
+            # download file with filename
+            file.GetContentFile(filename)
+        except Exception as e:
+            logger.error(
+                'An error occurred while downloading file: {}'.format(e))
+
+    def _load_data_fileids_meta(self, fileids_meta: str) -> List[Document]:
+        """Load data from fileids metadata
+        Args:
+            fileids_meta: metadata of fileids in google drive.
+        Returns:
+            Lis[Document]: List of Document of data present in fileids
         """
 
         try:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                def get_metadata(filename):
+                    return metadata[filename]
 
-            # Authenticate and build the Drive API client
-            service = build('drive', 'v3', credentials=creds)
+                temp_dir = Path(temp_dir)
+                metadata = {}
 
-            # Get the file details
-            file = service.files().get(fileId=file_id).execute()
+                for fileid_meta in fileids_meta:
+                    filename = fileid_meta[2]
+                    filepath = os.path.join(temp_dir, filename)
+                    fileid = fileid_meta[0]
+                    self._download_file(fileid, filepath)
+                    metadata[filepath] = {
+                        "author": fileid_meta[1],
+                        "filename": filename,
+                        "createdTime": fileid_meta[3],
+                        "modifiedTime": fileid_meta[4]
+                    }
+                SimpleDirectoryReader = download_loader(
+                    "SimpleDirectoryReader")
+                loader = SimpleDirectoryReader(
+                    temp_dir, file_metadata=get_metadata)
+                documents = loader.load_data()
 
-            # Get file name that will be downloaded
-            input_file = file['name']
-
-            # Download the file locally
-            file_obj = drive.CreateFile({'id': file_id})
-            file_obj.GetContentFile(input_file)
-
-            # Get suffix to read the content
-            suffix = Path(input_file).suffix
-
-            # Get metadata of the file
-            metadata = None
-            if self.file_metadata is not None:
-                metadata = self.file_metadata(str(input_file))
-
-            document = ""
-
-            # If suffix in fileextractor, user reader
-            if suffix in self.file_extractor:
-                reader = self.file_extractor[suffix]
-                reader = download_loader(reader)()
-                document = reader.load_data(
-                    file=input_file, extra_info=metadata)
-
-            return document[0]
+            return documents
         except Exception as e:
-            logger.error('Failed with error: {}'.format(e))
+            logger.error(
+                'An error occurred while loading data from fileids meta: {}'.format(e))
 
     def _load_from_file_ids(self, file_ids: List[str]) -> List[Document]:
         """Load data from file ids
@@ -147,12 +178,15 @@ class GoogleDriveReader(BaseReader):
         """
 
         try:
-            documents = []
+            fileids_meta = []
             for file_id in file_ids:
-                documents.append(self._load_from_file_id(file_id))
+                fileids_meta.append(self._get_fileids_meta(file_id=file_id))
+            documents = self._load_data_fileids_meta(fileids_meta)
+
             return documents
         except Exception as e:
-            logger.error('Failed with error: {}'.format(e))
+            logger.error(
+                'An error occurred while loading with fileid: {}'.format(e))
 
     def _load_from_folder(self, folder_id: str) -> List[Document]:
         """Load data from folder_id
@@ -161,24 +195,13 @@ class GoogleDriveReader(BaseReader):
         Returns:
             Document: List of Documents of text.
         """
-
         try:
-            # create drive api client
-            service = build('drive', 'v3', credentials=creds)
-            # Make a GET request to the files endpoint and filter results to only include files in the specified folder
-            query = f"'{folder_id}' in parents"
-            results = service.files().list(
-                q=query, fields="nextPageToken, files(id)").execute()
-
-            # Return the list of files
-            files = results.get("files", [])
-
-            fileids = [file['id'] for file in files]
-            documents = self._load_from_file_ids(fileids)
-
+            fileids_meta = self._get_fileids_meta(folder_id=folder_id)
+            documents = self._load_data_fileids_meta(fileids_meta)
             return documents
         except Exception as e:
-            logger.error('An error occurred: {}'.format(e))
+            logger.error(
+                'An error occurred while loading from folder: {}'.format(e))
 
     def load_data(self, folder_id: str = None, file_ids: List[str] = None) -> List[Document]:
         """Load data from the folder id and file ids.
