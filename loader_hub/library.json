@@ -50,7 +50,11 @@
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang",
-    "keywords": ["substack", "readthedocs", "documentation"]
+    "keywords": [
+      "substack",
+      "readthedocs",
+      "documentation"
+    ]
   },
   "DatabaseReader": {
     "id": "database",
@@ -126,21 +130,49 @@
   "UnstructuredReader": {
     "id": "file/unstructured",
     "author": "thejessezhang",
-    "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io"]
+    "keywords": [
+      "sec",
+      "html",
+      "eml",
+      "10k",
+      "10q",
+      "unstructured.io"
+    ]
   },
   "KnowledgeBaseWebReader": {
     "id": "web/knowledge_base",
     "author": "jasonwcfan",
-    "keywords": ["documentation"]
+    "keywords": [
+      "documentation"
+    ]
   },
   "S3Reader": {
     "id": "s3",
     "author": "thejessezhang",
-    "keywords": ["aws s3", "bucket", "amazon web services"]
+    "keywords": [
+      "aws s3",
+      "bucket",
+      "amazon web services"
+    ]
   },
   "RemoteReader": {
     "id": "remote",
     "author": "thejessezhang",
-    "keywords": ["hosted", "url", "gutenberg"]
+    "keywords": [
+      "hosted",
+      "url",
+      "gutenberg"
+    ]
+  },
+  "GithubRepositoryReader": {
+    "id": "github_repo",
+    "author": "ahmetkca",
+    "keywords": [
+      "github",
+      "repository",
+      "git",
+      "code",
+      "source code"
+    ]
   }
 }
