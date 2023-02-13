@@ -302,18 +302,24 @@ class GithubRepositoryReader(BaseReader):
             file_path = os.path.join(current_path, tree_obj.path)
 
             # filter tree object here
-            if not self._allow_tree_obj(file_path):
-                print_if_verbose(
-                    self._verbose,
-                    "\t" * current_depth + f"ignoring {tree_obj.path} due to filter",
-                )
-                continue
+            # if not self._allow_tree_obj(file_path):
+            #     print_if_verbose(
+            #         self._verbose,
+            #         "\t" * current_depth + f"ignoring {tree_obj.path} due to filter",
+            #     )
+            #     continue
 
             if tree_obj.type == "tree":
                 print_if_verbose(
                     self._verbose,
                     "\t" * current_depth + f"recursing into {tree_obj.path}",
                 )
+                if not self._check_filter_directories(file_path):
+                    print_if_verbose(
+                        self._verbose,
+                        "\t" * current_depth + f"ignoring directory {tree_obj.path} due to filter",
+                    )
+                    continue
 
                 blobs_and_full_paths.extend(
                     await self._recurse_tree(tree_obj.sha, file_path, current_depth + 1)
@@ -322,6 +328,13 @@ class GithubRepositoryReader(BaseReader):
                 print_if_verbose(
                     self._verbose, "\t" * current_depth + f"found blob {tree_obj.path}"
                 )
+                if not self._check_filter_files(file_path):
+                    print_if_verbose(
+                        self._verbose,
+                        "\t" * current_depth + f"ignoring file {tree_obj.path} due to filter",
+                    )
+                    continue
+                
                 blobs_and_full_paths.append((tree_obj, file_path))
         return blobs_and_full_paths
 
