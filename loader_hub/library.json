@@ -3,6 +3,10 @@
     "id": "google_docs",
     "author": "jerryjliu"
   },
+  "GoogleDriveReader": {
+    "id": "google_drive",
+    "author": "ravi03071991"
+  },
   "SimpleDirectoryReader": {
     "id": "file",
     "author": "jerryjliu"
