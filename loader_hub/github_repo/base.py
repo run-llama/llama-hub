@@ -60,6 +60,15 @@ class GithubRepositoryReader(BaseReader):
     """
 
     class FilterType(enum.Enum):
+        """
+        Filter type.
+        
+        Used to determine whether the filter is inclusive or exclusive.
+
+        Attributes:
+            - EXCLUDE: Exclude the files in the directories or with the extensions.
+            - INCLUDE: Include only the files in the directories or with the extensions.
+        """
         EXCLUDE = enum.auto()
         INCLUDE = enum.auto()
 
