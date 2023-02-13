@@ -65,9 +65,9 @@ class GithubRepositoryReader(BaseReader):
 
     def __init__(
         self,
+        github_client: BaseGithubClient,
         owner: str,
         repo: str,
-        github_client: BaseGithubClient = GithubClient(),
         use_parser: bool = True,
         verbose: bool = False,
         concurrent_requests: int = 5,
