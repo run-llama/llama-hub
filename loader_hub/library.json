@@ -177,7 +177,8 @@
     ],
     "extra_files": [
       "github_client.py",
-      "utils.py"
+      "utils.py",
+      "__init__.py"
     ]
   }
 }
