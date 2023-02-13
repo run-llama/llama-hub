@@ -1,6 +1,6 @@
 # Microsoft PowerPoint Loader
 
-This loader extracts the text from a local Microsoft PowerPoint (.pptx) file. Image elements are automatically captioned and inserted as text into the final `Document` using [GPT2 Image Captioning model](https://huggingface.co/nlpconnect/vit-gpt2-image-captioning). A single local file is passed in each time you call `load_data`.
+This loader extracts the text from a local Microsoft PowerPoint (.pptx) file. Image elements are optionally captioned and inserted as text into the final `Document` using [GPT2 Image Captioning model](https://huggingface.co/nlpconnect/vit-gpt2-image-captioning). For example, a team photo might be converted into "three people smiling in front of skyscrapers". To use this feature, initialize the loader with `caption_images = True`. A single local file is passed in each time you call `load_data`.
 
 ## Usage
 
