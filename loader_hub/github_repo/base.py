@@ -301,14 +301,6 @@ class GithubRepositoryReader(BaseReader):
         for tree_obj in tree_data.tree:
             file_path = os.path.join(current_path, tree_obj.path)
 
-            # filter tree object here
-            # if not self._allow_tree_obj(file_path):
-            #     print_if_verbose(
-            #         self._verbose,
-            #         "\t" * current_depth + f"ignoring {tree_obj.path} due to filter",
-            #     )
-            #     continue
-
             if tree_obj.type == "tree":
                 print_if_verbose(
                     self._verbose,
@@ -328,7 +320,7 @@ class GithubRepositoryReader(BaseReader):
                 print_if_verbose(
                     self._verbose, "\t" * current_depth + f"found blob {tree_obj.path}"
                 )
-                if not self._check_filter_files(file_path):
+                if not self._check_filter_file_extensions(file_path):
                     print_if_verbose(
                         self._verbose,
                         "\t" * current_depth + f"ignoring file {tree_obj.path} due to filter",
