@@ -1,20 +1,18 @@
 # Google Drive Loader
 
-This loader reads files from Google Drive using folder or file ids.
-
-To use this loader, you need to pass in a list of file id's or folder id.
+This loader reads files from Google Drive using folder or file ids. To use this loader, you need to pass in a list of file id's or folder id.
 
 ### folder_id
 
 You can extract a folder_id directly from its drive URL.
 
-For example, the folder_id of https://drive.google.com/drive/folders/1w7XryYu6mL9VLmfyqUkA4_fRnDbsCqV- is 1w7XryYu6mL9VLmfyqUkA4_fRnDbsCqV-
+For example, the folder_id of `https://drive.google.com/drive/folders/1w7XryYu6mL9VLmfyqUkA4_fRnDbsCqV-` is `1w7XryYu6mL9VLmfyqUkA4_fRnDbsCqV-`.
 
 ### file_id
 
 You can extract a file_id directly from its sharable drive URL.
 
-For example, the file_id of https://drive.google.com/file/d/1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y/view?usp=sharing is 1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y
+For example, the file_id of `https://drive.google.com/file/d/1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y/view?usp=sharing` is `1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y`.
 
 ## Usage
 
