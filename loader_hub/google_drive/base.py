@@ -159,7 +159,7 @@ class GoogleDriveReader(BaseReader):
         except Exception as e:
             logger.error("An error occurred while downloading file: {}".format(e))
 
-    def _load_data_fileids_meta(self, fileids_meta: List[str]) -> List[Document]:
+    def _load_data_fileids_meta(self, fileids_meta: List[List[str]]) -> List[Document]:
         """Load data from fileids metadata
         Args:
             fileids_meta: metadata of fileids in google drive.
