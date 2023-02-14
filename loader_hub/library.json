@@ -15,6 +15,10 @@
     "id": "file/pdf",
     "author": "ravi03071991"
   },
+  "JapanesePDFReader": {
+    "id": "file/japanese_pdf",
+    "author": "JiroShimaya"
+  },
   "DocxReader": {
     "id": "file/docx",
     "author": "thejessezhang"
