@@ -7,10 +7,10 @@ from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 
 
-class JapanesePDFReader(BaseReader):
-    """Japanese PDF reader.
+class CJKPDFReader(BaseReader):
+    """CJK PDF reader.
 
-    Extract text from PDF including shift-jis encoded characters using pdfminer.six.
+    Extract text from PDF including CJK (Chinese, Japanese and Korean) languages using pdfminer.six.
 
     Args:
         concat_pages (bool): whether to concatenate all pages into one document.

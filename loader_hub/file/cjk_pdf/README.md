@@ -10,9 +10,9 @@ To use this loader, you need to pass in a `Path` to a local file.
 from pathlib import Path
 from gpt_index import download_loader
 
-PDFReader = download_loader("JapanesePDFReader")
+PDFReader = download_loader("CJKPDFReader")
 
-loader = JapanesePDFReader()
+loader = CJKPDFReader()
 documents = loader.load_data(file=Path('./article.pdf'))
 ```
 
