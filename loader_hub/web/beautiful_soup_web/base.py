@@ -56,7 +56,7 @@ def _readmedocs_reader(soup: Any,url: str) -> Tuple[str, Dict[str, Any]]:
             docs_links[i] = url + docs_links[i]
             
     texts = []
-    for doc_link in docs_links[:5]:
+    for doc_link in docs_links:
         import requests
         from bs4 import BeautifulSoup 
         page_link = requests.get(doc_link)
