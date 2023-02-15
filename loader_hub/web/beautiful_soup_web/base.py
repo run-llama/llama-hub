@@ -1,5 +1,6 @@
 """Beautiful Soup Web scraper."""
 from typing import Any, Callable, Dict, List, Optional, Tuple
+from urllib.parse import urljoin
 
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
@@ -25,7 +26,7 @@ def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
         rtd_links.append(link["href"])
     for i in range(len(rtd_links)):
         if not rtd_links[i].startswith("http"):
-            rtd_links[i] = url + rtd_links[i]
+            rtd_links[i] = urljoin(url, rtd_links[i])
     texts = []
 
     for doc_link in rtd_links:
@@ -52,7 +53,7 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     docs_links = list(set(docs_links))
     for i in range(len(docs_links)):
         if not docs_links[i].startswith("http"):
-            docs_links[i] = url + docs_links[i]
+            docs_links[i] = urljoin(url, docs_links[i])
 
     texts = []
     for doc_link in docs_links:
