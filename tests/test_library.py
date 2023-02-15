@@ -7,7 +7,6 @@ from pathlib import Path
 
 def test_library_matches() -> None:
     """Check that library.json corresponds to valid files."""
-    # TODO: add more validation checks
     hub_dir = Path(__file__).parent.parent / "loader_hub"
     library_path = hub_dir / "library.json"
     library_dict = json.load(open(library_path, "r"))
