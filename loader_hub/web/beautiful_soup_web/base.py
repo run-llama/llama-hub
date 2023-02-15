@@ -15,50 +15,52 @@ def _substack_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:
     text = soup.select_one("div.available-content").getText()
     return text, extra_info
 
-def _readthedocs_reader(soup: Any,url: str) -> Tuple[str, Dict[str, Any]]:
-    """Extract text from a ReadTheDocs documentation site
 
-    """
-    links = soup.find_all('a', {'class': 'reference internal'})
+def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
+    """Extract text from a ReadTheDocs documentation site"""
+    links = soup.find_all("a", {"class": "reference internal"})
     rtd_links = []
-    
+
     for link in links:
-        rtd_links.append(link['href'])   
+        rtd_links.append(link["href"])
     for i in range(len(rtd_links)):
         if not rtd_links[i].startswith("http"):
             rtd_links[i] = url + rtd_links[i]
     texts = []
-    
+
     for doc_link in rtd_links:
         import requests
-        from bs4 import BeautifulSoup 
-        page_link = requests.get(doc_link)        
-        soup = BeautifulSoup(page_link.text, 'html.parser')
+        from bs4 import BeautifulSoup
+
+        page_link = requests.get(doc_link)
+        soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = soup.find(attrs={"role": "main"}).get_text()
-            
+
         except IndexError:
             text = None
         if text:
             texts.append("\n".join([t for t in text.split("\n") if t]))
-    return '\n'.join(texts), {}
-            
-def _readmedocs_reader(soup: Any,url: str) -> Tuple[str, Dict[str, Any]]:
+    return "\n".join(texts), {}
+
+
+def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site"""
-    
+
     links = soup.find_all("a")
     docs_links = [link["href"] for link in links if "/docs/" in link["href"]]
     docs_links = list(set(docs_links))
     for i in range(len(docs_links)):
         if not docs_links[i].startswith("http"):
             docs_links[i] = url + docs_links[i]
-            
+
     texts = []
     for doc_link in docs_links:
         import requests
-        from bs4 import BeautifulSoup 
+        from bs4 import BeautifulSoup
+
         page_link = requests.get(doc_link)
-        soup = BeautifulSoup(page_link.text, 'html.parser')
+        soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = soup.find_all("article", {"id": "content"})[0].get_text()
         except IndexError:
@@ -67,7 +69,7 @@ def _readmedocs_reader(soup: Any,url: str) -> Tuple[str, Dict[str, Any]]:
 
         if text:
             texts.append("\n".join([t for t in text.split("\n") if t]))
-    return '\n'.join(texts), {}
+    return "\n".join(texts), {}
 
 
 DEFAULT_WEBSITE_EXTRACTOR: Dict[str, Callable[[Any], Tuple[str, Dict[str, Any]]]] = {
@@ -82,7 +84,7 @@ class BeautifulSoupWebReader(BaseReader):
 
     Reads pages from the web.
     Requires the `bs4` and `urllib` packages.
-    
+
     Args:
         website_extractor (Optional[Dict[str, Callable]]): A mapping of website
             hostname (e.g. google.com) to a function that specifies how to
@@ -129,11 +131,12 @@ class BeautifulSoupWebReader(BaseReader):
             data = ""
             extra_info = {"URL": url}
             if hostname in self.website_extractor:
-                data = self.website_extractor[hostname](soup,url)
+                data, metadata = self.website_extractor[hostname](soup, url)
+                extra_info.update(metadata)
+
             else:
                 data = soup.getText()
 
             documents.append(Document(data, extra_info=extra_info))
 
         return documents
-
