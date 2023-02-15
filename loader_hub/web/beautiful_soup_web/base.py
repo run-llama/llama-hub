@@ -28,11 +28,10 @@ def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
         if not rtd_links[i].startswith("http"):
             rtd_links[i] = urljoin(url, rtd_links[i])
     texts = []
+    import requests
+    from bs4 import BeautifulSoup
 
     for doc_link in rtd_links:
-        import requests
-        from bs4 import BeautifulSoup
-
         page_link = requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
@@ -56,10 +55,10 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
             docs_links[i] = urljoin(url, docs_links[i])
 
     texts = []
-    for doc_link in docs_links:
-        import requests
-        from bs4 import BeautifulSoup
+    import requests
+    from bs4 import BeautifulSoup
 
+    for doc_link in docs_links:
         page_link = requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
@@ -73,7 +72,9 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     return "\n".join(texts), {}
 
 
-DEFAULT_WEBSITE_EXTRACTOR: Dict[str, Callable[[Any], Tuple[str, Dict[str, Any]]]] = {
+DEFAULT_WEBSITE_EXTRACTOR: Dict[
+    str, Callable[[Any, str], Tuple[str, Dict[str, Any]]]
+] = {
     "substack.com": _substack_reader,
     "readthedocs.io": _readthedocs_reader,
     "readme.com": _readmedocs_reader,
