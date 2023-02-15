@@ -19,6 +19,9 @@ def _substack_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:
 
 def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadTheDocs documentation site"""
+    import requests
+    from bs4 import BeautifulSoup
+
     links = soup.find_all("a", {"class": "reference internal"})
     rtd_links = []
 
@@ -27,10 +30,8 @@ def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     for i in range(len(rtd_links)):
         if not rtd_links[i].startswith("http"):
             rtd_links[i] = urljoin(url, rtd_links[i])
-    texts = []
-    import requests
-    from bs4 import BeautifulSoup
 
+    texts = []
     for doc_link in rtd_links:
         page_link = requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
@@ -46,6 +47,8 @@ def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
 
 def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site"""
+    import requests
+    from bs4 import BeautifulSoup
 
     links = soup.find_all("a")
     docs_links = [link["href"] for link in links if "/docs/" in link["href"]]
@@ -55,9 +58,6 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
             docs_links[i] = urljoin(url, docs_links[i])
 
     texts = []
-    import requests
-    from bs4 import BeautifulSoup
-
     for doc_link in docs_links:
         page_link = requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
