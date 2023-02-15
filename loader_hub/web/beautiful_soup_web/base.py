@@ -28,7 +28,6 @@ def _readthedocs_reader(soup: Any,url: str) -> Tuple[str, Dict[str, Any]]:
         if not rtd_links[i].startswith("http"):
             rtd_links[i] = url + rtd_links[i]
     texts = []
-    broken_docs = []
     
     for doc_link in rtd_links:
         import requests
@@ -40,7 +39,6 @@ def _readthedocs_reader(soup: Any,url: str) -> Tuple[str, Dict[str, Any]]:
             
         except IndexError:
             text = None
-            broken_docs.append(doc_link)
         if text:
             texts.append("\n".join([t for t in text.split("\n") if t]))
     return '\n'.join(texts), {}
