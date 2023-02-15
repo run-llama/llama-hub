@@ -1,6 +1,9 @@
 """Check that the string iterable loader is working as expected."""
+import sys
 
-from ..loader_hub.string_iterable import StringIterableReader
+sys.path.append("..")
+
+from loader_hub.string_iterable.base import StringIterableReader
 
 
 def test_string_iterable() -> None:

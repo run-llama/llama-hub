@@ -1,9 +1,11 @@
 """Test file reader."""
-
+import sys
 from tempfile import TemporaryDirectory
 from typing import Any, Dict
 
-from ..loader_hub.file.base import SimpleDirectoryReader
+sys.path.append("..")
+
+from loader_hub.file.base import SimpleDirectoryReader
 
 
 def test_recursive() -> None:
