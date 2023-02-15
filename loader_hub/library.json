@@ -15,6 +15,10 @@
     "id": "file/pdf",
     "author": "ravi03071991"
   },
+  "CJKPDFReader": {
+    "id": "file/cjk_pdf",
+    "author": "JiroShimaya"
+  },
   "DocxReader": {
     "id": "file/docx",
     "author": "thejessezhang"
