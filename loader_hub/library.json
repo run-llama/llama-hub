@@ -17,7 +17,8 @@
   },
   "CJKPDFReader": {
     "id": "file/cjk_pdf",
-    "author": "JiroShimaya"
+    "author": "JiroShimaya",
+    "keywords": ["Japanese", "Chinese", "Korean"]
   },
   "DocxReader": {
     "id": "file/docx",

@@ -1,6 +1,6 @@
-# Japanese PDF Loader
+# Chinese/Japanese/Korean PDF Loader
 
-This loader extracts the text from a local PDF file using the `pdfminer.six` Python package, which is used instead of `PyPDF2` in order to load shift-jis encoded Japanese text. Any non-text elements are ignored. A single local file is passed in each time you call `load_data`.
+This loader extracts the text from a local PDF file using the `pdfminer.six` Python package, which is used instead of `PyPDF2` in order to load Asian languages, e.g. shift-jis encoded Japanese text. The officially supported characters are those in CJK (Chinese, Japanese, and Korean), though it may work for other languages as well. Any non-text elements are ignored. A single local file is passed in each time you call `load_data`.
 
 ## Usage
 
