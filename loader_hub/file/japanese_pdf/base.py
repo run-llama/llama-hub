@@ -28,20 +28,51 @@ class JapanesePDFReader(BaseReader):
         super().__init__(*args, **kwargs)
         self._concat_pages = concat_pages
 
+    # Define a function to extract text from PDF
+    def _extract_text_by_page(self, pdf_path: Path) -> List[str]:
+        # Import pdfminer
+        from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+        from pdfminer.converter import TextConverter
+        from pdfminer.layout import LAParams
+        from pdfminer.pdfpage import PDFPage
+        from io import StringIO
+        # Create a resource manager
+        rsrcmgr = PDFResourceManager()
+        # Create an object to store the text
+        retstr = StringIO()
+        # Create a text converter
+        codec = 'utf-8'
+        laparams = LAParams()
+        device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+        # Create a PDF interpreter
+        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        # Open the PDF file
+        fp = open(pdf_path, 'rb')
+        # Create a list to store the text of each page
+        text_list = []
+        # Extract text from each page
+        for page in PDFPage.get_pages(fp):
+            interpreter.process_page(page)
+            # Get the text
+            text = retstr.getvalue()
+            # Add the text to the list
+            text_list.append(text)
+            # Clear the text
+            retstr.truncate(0)
+            retstr.seek(0)
+        # Close the file
+        fp.close()
+        # Close the device
+        device.close()
+        # Return the text list
+        return text_list
+
     def load_data(
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        import pdfminer.high_level
 
-        # get pdf page object
-        pages = pdfminer.high_level.extract_pages(file)
-
-        text_list = []
-        for page in pages:
-            # get page text
-            text = "".join([obj.get_text() for obj in page if hasattr(obj, "get_text")])
-            text_list.append(text)
+        text_list = self._extract_text_by_page(file)
 
         if self._concat_pages:
             return [Document("\n".join(text_list), extra_info=extra_info)]
