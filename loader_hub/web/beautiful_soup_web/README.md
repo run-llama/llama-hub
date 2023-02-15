@@ -77,3 +77,10 @@ agent_chain = initialize_agent(
 
 output = agent_chain.run(input="What language is on this website?")
 ```
+
+## Custom hostname example:
+To use a custom hostname like readme.co,substack.com or any other custom hostname, you can pass in the `custom_hostname` argument. Do not include a trailing slash for readme.com links.
+```python
+documents = loader.load_data(urls=["https://langchain.readthedocs.io/en/latest/"], custom_hostname="readthedocs.io")
+```
+
