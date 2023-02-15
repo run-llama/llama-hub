@@ -23,7 +23,7 @@ from typing import Any, Callable, List, Optional, Tuple
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
 
-from github_client import (
+from gpt_index.readers.llamahub_modules.github_repo.github_client import (
     BaseGithubClient,
     GitBranchResponseModel,
     GitCommitResponseModel,
@@ -31,7 +31,7 @@ from github_client import (
     GitTreeResponseModel,
 )
 
-from utils import (
+from gpt_index.readers.llamahub_modules.github_repo.utils import (
     BufferedGitBlobDataIterator,
     print_if_verbose,
     get_file_extension,
