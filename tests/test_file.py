@@ -3,7 +3,7 @@ import sys
 from tempfile import TemporaryDirectory
 from typing import Any, Dict
 
-sys.path.append("..")
+sys.path.append(Path(__file__).parent.parent)
 
 from loader_hub.file.base import SimpleDirectoryReader
 
