@@ -1,5 +1,5 @@
 """Simple Reader that reads transcript of youtube video."""
-from typing import Any, List
+from typing import Any, List, Optional
 
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
@@ -8,7 +8,7 @@ from gpt_index.readers.schema.base import Document
 class YoutubeTranscriptReader(BaseReader):
     """Youtube Transcript reader."""
 
-    def load_data(self, ytlinks: List[str], languages: List[str] = ['en'], **load_kwargs: Any) -> List[Document]:
+    def load_data(self, ytlinks: List[str], languages: Optional[List[str]] = ['en'], **load_kwargs: Any) -> List[Document]:
         """Load data from the input directory.
 
         Args:
