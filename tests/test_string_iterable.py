@@ -1,7 +1,7 @@
 """Check that the string iterable loader is working as expected."""
 import sys
 
-sys.path.append("..")
+sys.path.append(Path(__file__).parent.parent)
 
 from loader_hub.string_iterable.base import StringIterableReader
 
