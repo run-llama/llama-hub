@@ -1,4 +1,5 @@
 """Asana reader."""
+import asana
 import logging
 from typing import List
 
@@ -16,12 +17,6 @@ class AsanaReader(BaseReader):
 
     def __init__(self, asana_token: str) -> None:
         """Initialize Asana reader."""
-        try:
-            import asana
-        except ImportError:
-            raise ValueError(
-                "`asana` package not found, please run `pip install asana`"
-            )
         self.client = asana.Client.access_token(asana_token)
 
     def load_data(self, workspace_id: str) -> List[Document]:
