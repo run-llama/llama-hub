@@ -1,4 +1,5 @@
 """Test file reader."""
+from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
 from typing import Any, Dict
