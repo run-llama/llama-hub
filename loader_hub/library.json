@@ -1,4 +1,8 @@
 {
+  "AsanaReader": {
+    "id": "asana",
+    "author": "daveey"
+  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
