@@ -78,7 +78,7 @@ agent_chain = initialize_agent(
 output = agent_chain.run(input="What language is on this website?")
 ```
 
-## Custom hostname example:
+## Custom hostname example
 
 To use a custom hostname like readme.co, substack.com or any other commonly-used website template, you can pass in the `custom_hostname` argument to guarantee that a custom parser is used (if it exists). Check out the code to see which ones are currently implemented.
 

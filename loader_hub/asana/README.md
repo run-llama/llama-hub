@@ -1,8 +1,6 @@
 # Asana Loader
 
-This loader loads documents from Asana. The user specifies an API token to initialize
-the AsanaReader. They then specify a `workspace_id` to load in
-the corresponding Document objects.
+This loader loads documents from Asana. The user specifies an API token to initialize the AsanaReader. They then specify a `workspace_id` to load in the corresponding Document objects.
 
 ## Usage
 

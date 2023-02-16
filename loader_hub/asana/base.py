@@ -1,6 +1,4 @@
 """Asana reader."""
-import asana
-import logging
 from typing import List
 
 from gpt_index.readers.base import BaseReader
@@ -17,6 +15,8 @@ class AsanaReader(BaseReader):
 
     def __init__(self, asana_token: str) -> None:
         """Initialize Asana reader."""
+        import asana
+
         self.client = asana.Client.access_token(asana_token)
 
     def load_data(self, workspace_id: str) -> List[Document]:
