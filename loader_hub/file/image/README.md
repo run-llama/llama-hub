@@ -1,6 +1,6 @@
 # Image Loader
 
-This loader extracts the text from an image that has text in it (e.g. a receipt). The [Donut](https://huggingface.co/docs/transformers/model_doc/donut) transformer model is used. The file extensions .png, .jpg, and .jpeg are preferred. A single local file is passed in each time you call `load_data`.
+This loader extracts the text from an image that has text in it (e.g. a receipt (key-value pairs) or plain text image). For plain text it uses [pytesseract](https://pypi.org/project/pytesseract/) and for key-value pairs image [Donut](https://huggingface.co/docs/transformers/model_doc/donut) transformer model is used. The file extensions .png, .jpg, and .jpeg are preferred. A single local file is passed in each time you call `load_data`.
 
 ## Usage
 
@@ -12,7 +12,9 @@ from gpt_index import download_loader
 
 ImageReader = download_loader("ImageReader")
 
-loader = ImageReader()
+# If Image has key-value pairs text, use text_type = "key_value"
+# If Image has plain test, use use text_type = "plain_text" for plain text
+loader = ImageReader(text_type = "plain_text")
 documents = loader.load_data(file=Path('./receipt.png'))
 ```
 
