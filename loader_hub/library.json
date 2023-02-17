@@ -72,7 +72,8 @@
   },
   "DatabaseReader": {
     "id": "database",
-    "author": "kevinqz"
+    "author": "kevinqz",
+    "keywords": ["sql", "postgres", "snowflake", "aws rds"]
   },
   "DiscordReader": {
     "id": "discord",
