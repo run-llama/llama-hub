@@ -160,5 +160,10 @@
     "id": "remote",
     "author": "thejessezhang",
     "keywords": ["hosted", "url", "gutenberg"]
+  },
+  "DadJokesReader": {
+    "id": "dad_jokes",
+    "author": "sidu",
+    "keywords": ["jokes", "dad jokes"]
   }
 }
