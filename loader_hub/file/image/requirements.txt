@@ -3,3 +3,4 @@ Pillow
 torch
 torchvision
 sentencepiece
+pytesseract
