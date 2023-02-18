@@ -23,10 +23,7 @@ class ImageReader(BaseReader):
         """Init parser."""
 
         if text_type == "plain_text":
-            try:
-                import pytesseract
-            except ImportError:
-                raise ValueError("pytesseract should be installed. Try 'sudo apt-get update, sudo apt-get install tesseract-ocr, pip install pytesseract'")
+            import pytesseract
             processor = None
             model = pytesseract
         else:
