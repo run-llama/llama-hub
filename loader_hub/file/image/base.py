@@ -24,27 +24,11 @@ class ImageReader(BaseReader):
 
         if text_type == "plain_text":
             import pytesseract
+
             processor = None
             model = pytesseract
         else:
-            try:
-                import torch  # noqa: F401
-            except ImportError:
-                raise ValueError("install pytorch to use the model")
-            try:
-                from transformers import DonutProcessor, VisionEncoderDecoderModel
-            except ImportError:
-                raise ValueError("transformers is required for using DONUT model.")
-            try:
-                import sentencepiece  # noqa: F401
-            except ImportError:
-                raise ValueError("sentencepiece is required for using DONUT model.")
-            try:
-                from PIL import Image  # noqa: F401
-            except ImportError:
-                raise ValueError(
-                    "PIL is required to read image files." "Please run `pip install Pillow`"
-                )
+            from transformers import DonutProcessor, VisionEncoderDecoderModel
 
             processor = DonutProcessor.from_pretrained(
                 "naver-clova-ix/donut-base-finetuned-cord-v2"
@@ -59,14 +43,12 @@ class ImageReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-
         from PIL import Image
-        
+
         model = self.parser_config["model"]
         processor = self.parser_config["processor"]
 
         if processor:
-
             import torch
 
             device = "cuda" if torch.cuda.is_available() else "cpu"

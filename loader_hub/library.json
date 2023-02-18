@@ -34,7 +34,8 @@
   },
   "ImageReader": {
     "id": "file/image",
-    "author": "ravi03071991"
+    "author": "ravi03071991",
+    "keywords": ["invoice", "receipt"]
   },
   "EpubReader": {
     "id": "file/epub",

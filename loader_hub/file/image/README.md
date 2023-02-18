@@ -1,6 +1,6 @@
 # Image Loader
 
-This loader extracts the text from an image that has text in it (e.g. a receipt (key-value pairs) or plain text image). If image has plain text, it uses [pytesseract](https://pypi.org/project/pytesseract/) and If image has for key-value pairs text (Invoice receipts) [Donut](https://huggingface.co/docs/transformers/model_doc/donut) transformer model is used. The file extensions .png, .jpg, and .jpeg are preferred. A single local file is passed in each time you call `load_data`.
+This loader extracts the text from an image that has text in it, e.g. a receipt (key-value pairs) or a plain text image. If the image has plain text, the loader uses [pytesseract](https://pypi.org/project/pytesseract/). If image has text in key-value pairs like an invoice, the [Donut](https://huggingface.co/docs/transformers/model_doc/donut) transformer model is used. The file extensions .png, .jpg, and .jpeg are preferred. A single local file is passed in each time you call `load_data`.
 
 ## Usage
 
