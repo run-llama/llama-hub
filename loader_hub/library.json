@@ -167,5 +167,10 @@
     "id": "dad_jokes",
     "author": "sidu",
     "keywords": ["jokes", "dad jokes"]
+  },
+  "WhatsappChatLoader": {
+    "id": "whatsapp",
+    "author": "batmanscode",
+    "keywords": ["whatsapp", "chat"]
   }
 }
