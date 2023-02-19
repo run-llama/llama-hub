@@ -1,5 +1,6 @@
 """Whatsapp chat data loader"""
 
+import logging
 from pathlib import Path
 from typing import List
 
@@ -20,12 +21,9 @@ class WhatsappChatLoader(BaseReader):
         
         self.file_path = path
 
-    def load_data(self, verbose=False) -> List[Document]:
+    def load_data(self) -> List[Document]:
         """
         Parse Whatsapp file into Documents
-
-        Args:
-            verbose (bool): Shows progress by printing "Added {count} of {total} messages".
         """
 
         import pandas as pd
@@ -37,7 +35,7 @@ class WhatsappChatLoader(BaseReader):
         parser.parse_file()
         df = parser.parsed_messages.get_df()
 
-        print(f"Number of messages: {len(df)}.")
+        logging.debug(f"> Number of messages: {len(df)}.")
 
         docs = []
         n = 0
@@ -50,8 +48,8 @@ class WhatsappChatLoader(BaseReader):
             
             docs.append(Document(str(row.timestamp) + " " + row.author + ":" + " " + row.message, extra_info=extra_info))
 
-            if verbose:
-                n += 1
-                print(f"Added {n} of {len(df)} messages.")
+            n += 1
+            logging.debug(f"Added {n} of {len(df)} messages.")
 
+        logging.debug(f"> Document creation for {path} is complete.")
         return docs
