@@ -173,6 +173,10 @@
     "author": "batmanscode",
     "keywords": ["whatsapp", "chat"]
   },
+  "BilibiliTranscriptReader": {
+    "id": "bilibili",
+    "author": "alexzhangji"
+  },
   "RedditReader": {
     "id": "reddit",
     "author": "vanessahlyan",
