@@ -86,6 +86,10 @@ the README directly) showing your data loader in action!
 
 ## FAQ
 
+### How do I test my loader before it's merged?
+
+There is an argument called `loader_hub_url` in [`download_loader`](https://github.com/jerryjliu/gpt_index/blob/main/gpt_index/readers/download.py) that defaults to the main branch of this repo. You can set it to your branch or fork to test your new loader.
+
 ### Should I create a PR against Llama Hub or the GPT Index repo directly?
 
 If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases
