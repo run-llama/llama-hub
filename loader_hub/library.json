@@ -172,5 +172,9 @@
     "id": "whatsapp",
     "author": "batmanscode",
     "keywords": ["whatsapp", "chat"]
-  }
+  },
+  "BilibiliTranscriptReader": {
+    "id": "bilibili",
+    "author": "alexzhangji"
+  },
 }

@@ -7,7 +7,7 @@ from gpt_index.readers.schema.base import Document
 
 
 class BilibiliTranscriptReader(BaseReader):
-    """Bilibili Transcript and video infor reader."""
+    """Bilibili Transcript and video info reader."""
 
     @staticmethod
     def get_bilibili_info_and_subs(bili_url):
