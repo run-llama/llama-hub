@@ -1,4 +1,4 @@
-# Llama Hub 🦙
+# LlamaHub 🦙
 
 This is a simple library of all the data loaders / readers that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) (e.g. when building a index) and [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use). For example, there are loaders to parse Google Docs, SQL Databases, PDF files, PowerPoints, Notion, Slack, Obsidian, and many more. Note that because different loaders produce the same types of Documents, you can easily use them together in the same index.
 
@@ -8,9 +8,9 @@ Check out our website here: https://llamahub.ai/.
 
 ## Usage
 
-These general-purpose loaders are designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. **You can use them with `download_loader` from GPT Index in a single line of code!** For example, see the code snippets below using the Google Docs Loader.
+These general-purpose loaders are designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. **You can use them with `download_loader` from LlamaIndex in a single line of code!** For example, see the code snippets below using the Google Docs Loader.
 
-### GPT Index
+### LlamaIndex
 
 ```python
 from gpt_index import GPTSimpleVectorIndex, download_loader
@@ -73,7 +73,7 @@ If you'd like, you can create the new directory and files by running the followi
 
 ### Step 2: Write your README
 
-Inside your new directory, create a `README.md` that mirrors that of the existing ones. It should have a summary of what your loader does, its inputs, and how its used in the context of GPT Index and LangChain.
+Inside your new directory, create a `README.md` that mirrors that of the existing ones. It should have a summary of what your loader does, its inputs, and how its used in the context of LlamaIndex and LangChain.
 
 ### Step 3: Add your loader to the library.json file
 
@@ -90,12 +90,12 @@ the README directly) showing your data loader in action!
 
 There is an argument called `loader_hub_url` in [`download_loader`](https://github.com/jerryjliu/gpt_index/blob/main/gpt_index/readers/download.py) that defaults to the main branch of this repo. You can set it to your branch or fork to test your new loader.
 
-### Should I create a PR against Llama Hub or the GPT Index repo directly?
+### Should I create a PR against LlamaHub or the LlamaIndex repo directly?
 
-If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases
-(for instance, if we think the data loader should be core to the GPT Index repo).
+If you have a data loader PR, by default let's try to create it against LlamaHub! We will make exceptions in certain cases
+(for instance, if we think the data loader should be core to the LlamaIndex repo).
 
-For all other PR's relevant to GPT Index, let's create it directly against the [GPT Index repo](https://github.com/jerryjliu/gpt_index).
+For all other PR's relevant to LlamaIndex, let's create it directly against the [LlamaIndex repo](https://github.com/jerryjliu/gpt_index).
 
 ### Other questions?
 
