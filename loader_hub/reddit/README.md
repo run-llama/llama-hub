@@ -2,7 +2,6 @@
 
 For any subreddit(s) you're interested in, search for relevant posts using keyword(s) and load the resulting text in the post and and top-level comments into LLMs/ LangChains.
 
-
 ## Get your Reddit credentials ready
 
 1. Visit Reddit App Preferences (https://www.reddit.com/prefs/apps)
@@ -11,12 +10,30 @@ For any subreddit(s) you're interested in, search for relevant posts using keywo
 4. Now you should be able to see the personal use script, secret, and name of your app. Store those as environment variables REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, and REDDIT_USER_AGENT respecitvely.
 5. Additionally store the environment variables REDDIT_USERNAME and REDDIT_PASSWORD, which correspond to the credentials for your Reddit acccount.
 
-
 ## Usage
+
+### LlamaIndex
 
 ```python
 from gpt_index import GPTSimpleVectorIndex, download_loader
-from loader_hub import 
+
+RedditReader = download_loader('RedditReader')
+
+subreddits = ['MachineLearning']
+search_keys = ['PyTorch', 'deploy']
+post_limit = 10
+
+loader = RedditReader()
+documents = loader.load_data(subreddits=subreddits, search_keys=search_keys, post_limit=post_limit)
+index = GPTSimpleVectorIndex(documents)
+
+index.query("What are the pain points of PyTorch users?")
+```
+
+### LangChain
+
+```python
+from gpt_index import GPTSimpleVectorIndex, download_loader
 
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
