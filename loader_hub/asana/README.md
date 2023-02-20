@@ -7,7 +7,7 @@ This loader loads documents from Asana. The user specifies an API token to initi
 Here's an example usage of the AsanaReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 AsanaReader = download_loader('AsanaReader')

@@ -7,7 +7,7 @@ This loader converts an iterable (e.g. list) of strings into `Document`s.
 To use this loader, you need to pass in an iterable of arbitrary strings.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 StringIterableReader = download_loader("StringIterableReader")
 

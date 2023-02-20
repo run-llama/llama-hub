@@ -9,7 +9,7 @@ it is designed so that you can plug in GPT Index Response objects into downstrea
 Here's an example usage of the `MakeWrapper`.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 MakeWrapper = download_loader('MakeWrapper')

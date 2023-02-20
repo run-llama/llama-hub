@@ -7,7 +7,7 @@ This loader fetches a joke from icanhazdadjoke.
 To use this loader, load it.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 DadJokeReader = download_loader("DadJokeReader")
 

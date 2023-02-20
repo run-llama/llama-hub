@@ -8,7 +8,7 @@ those `channel_ids`.
 Here's an example usage of the DiscordReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 DiscordReader = download_loader('DiscordReader')

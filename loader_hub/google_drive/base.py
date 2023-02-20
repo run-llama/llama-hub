@@ -6,9 +6,9 @@ import tempfile
 from pathlib import Path
 from typing import Any, List
 
-from gpt_index import download_loader
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index import download_loader
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 logger = logging.getLogger(__name__)
 

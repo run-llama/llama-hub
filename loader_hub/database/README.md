@@ -7,7 +7,7 @@ This loader connects to a database (using SQLAlchemy under the hood). The user s
 Here's an example usage of the DatabaseReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 DatabaseReader = download_loader('DatabaseReader')
 

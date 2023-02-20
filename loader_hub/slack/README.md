@@ -7,7 +7,7 @@ This loader fetches the text from a list of Slack channels. You will need to ini
 To use this loader, you need to pass in a list of Slack channel ids.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 SlackReader = download_loader("SlackReader")
 

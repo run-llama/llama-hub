@@ -7,7 +7,7 @@ This loader fetches the text from the Tweets of a list of Twitter users, using t
 To use this loader, you need to pass in an array of Twitter handles.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 TwitterTweetReader = download_loader("TwitterTweetReader")
 

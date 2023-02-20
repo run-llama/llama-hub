@@ -7,7 +7,7 @@ The Faiss Loader returns a set of texts corresponding to embeddings retrieved fr
 Here's an example usage of the FaissReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import faiss
 
 FaissReader = download_loader('FaissReader')

@@ -7,7 +7,7 @@ This loader is a web scraper that fetches the text from websites using the `Beau
 To use this loader, you need to pass in an array of URLs.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 BeautifulSoupWebReader = download_loader("BeautifulSoupWebReader")
 
@@ -36,7 +36,7 @@ This loader is designed to be used as a way to load data into [GPT Index](https:
 ### GPT Index
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 
 BeautifulSoupWebReader = download_loader("BeautifulSoupWebReader")
 
@@ -51,7 +51,7 @@ index.query('What language is on this website?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory

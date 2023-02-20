@@ -13,7 +13,7 @@ These general-purpose loaders are designed to be used as a way to load data into
 ### GPT Index
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 
 GoogleDocsReader = download_loader('GoogleDocsReader')
 
@@ -29,7 +29,7 @@ index.query('Where did the author go to school?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory

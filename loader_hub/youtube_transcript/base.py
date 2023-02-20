@@ -1,8 +1,8 @@
 """Simple Reader that reads transcript of youtube video."""
 from typing import Any, List, Optional
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class YoutubeTranscriptReader(BaseReader):

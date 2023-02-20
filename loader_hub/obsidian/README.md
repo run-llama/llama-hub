@@ -7,7 +7,7 @@ This loader loads documents from a markdown directory (for instance, an Obsidian
 Here's an example usage of the ObsidianReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 ObsidianReader = download_loader('ObsidianReader')

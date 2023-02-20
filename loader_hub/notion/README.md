@@ -9,7 +9,7 @@ the corresponding Document objects.
 Here's an example usage of the NotionPageReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 NotionPageReader = download_loader('NotionPageReader')

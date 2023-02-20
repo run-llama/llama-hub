@@ -24,7 +24,7 @@ We need `credentials.json` and `client_secrets.json` files to use this reader.
 Finally, make sure you enable "Google Drive API" in the console of your Google App.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 GoogleDriveReader = download_loader("GoogleDriveReader")
 

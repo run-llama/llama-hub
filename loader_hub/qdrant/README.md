@@ -8,7 +8,7 @@ The user initializes the loader with a Qdrant index. They then pass in a query v
 Here's an example usage of the QdrantReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 reader = QdrantReader(host="localhost")

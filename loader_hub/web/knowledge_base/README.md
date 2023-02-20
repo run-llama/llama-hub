@@ -15,7 +15,7 @@ This installs the browsers that Playwright requires.
 To use this loader, you need to pass in the root URL and the string to search for in the URL to tell if the crawler has reached an article. You also need to pass in several CSS selectors so the cralwer knows which links to follow and which elements to extract content from. use 
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 KnowledgeBaseWebReader = download_loader("KnowledgeBaseWebReader")
 
@@ -37,7 +37,7 @@ This loader is designed to be used as a way to load data into [GPT Index](https:
 ### GPT Index
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 
 KnowledgeBaseWebReader = download_loader("KnowledgeBaseWebReader")
 
@@ -59,7 +59,7 @@ index.query('What languages does Intercom support?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory

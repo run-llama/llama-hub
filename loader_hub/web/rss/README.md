@@ -8,7 +8,7 @@ to fetch the feed and optionally the `html2text` module to sanitize it.
 To use this loader, pass in an array of URL's.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 RssReader = download_loader("RssReader")
 

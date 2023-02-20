@@ -1,8 +1,8 @@
 """Simple reader that reads tweets of a twitter handle."""
 from typing import Any, List, Optional
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class TwitterTweetReader(BaseReader):

@@ -8,7 +8,7 @@ The user initializes the loader with a Pinecone index. They then pass in a query
 Here's an example usage of the PineconeReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 PineconeReader = download_loader('PineconeReader')

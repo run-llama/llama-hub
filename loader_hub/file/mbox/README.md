@@ -8,7 +8,7 @@ To use this loader, you need to pass in a `Path` to a local file.
 
 ```python
 from pathlib import Path
-from gpt_index import download_loader
+from llama_index import download_loader
 
 MboxReader = download_loader("MboxReader")
 documents = MboxReader().load_data(file='./email.mbox') # Returns list of documents

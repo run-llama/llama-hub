@@ -10,7 +10,7 @@ To use this loader, you need to pass in a `Path` to a local file. Optionally, yo
 
 ```python
 from pathlib import Path
-from gpt_index import download_loader
+from llama_index import download_loader
 
 UnstructuredReader = download_loader("UnstructuredReader")
 
@@ -22,7 +22,7 @@ You can also easily use this loader in conjunction with `SimpleDirectoryReader` 
 
 ```python
 from pathlib import Path
-from gpt_index import download_loader
+from llama_index import download_loader
 
 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 

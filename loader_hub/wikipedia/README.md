@@ -7,7 +7,7 @@ This loader fetches the text from Wikipedia articles using the `wikipedia` Pytho
 To use this loader, you need to pass in an array of Wikipedia pages.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 WikipediaReader = download_loader("WikipediaReader")
 

@@ -9,7 +9,7 @@ fetch the relevant docs.
 Here's an example usage of the SimpleMongoReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 SimpleMongoReader = download_loader('SimpleMongoReader')

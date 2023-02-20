@@ -7,7 +7,7 @@ This loader fetchs the text from the most relevant scientific papers on Pubmed s
 To use this loader, you need to pass in the search query. You may also optionally specify the maximum number of papers you want to parse for your search query (default is 10).
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 PubmedReader = download_loader("PubmedReader")
 

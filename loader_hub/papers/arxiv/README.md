@@ -7,7 +7,7 @@ This loader fetchs the text from the most relevant scientific papers on Arxiv sp
 To use this loader, you need to pass in the search query. You may also optionally specify a local directory to temporarily store the paper PDFs (they are deleted automatically) and the maximum number of papers you want to parse for your search query (default is 10).
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 ArxivReader = download_loader("ArxivReader")
 

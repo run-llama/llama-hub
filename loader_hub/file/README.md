@@ -7,7 +7,7 @@ This loader takes in a local directory containing files and extracts `Document`s
 To use this loader, you simply need to instantiate the `SimpleDirectoryReader` class with a directory, along with other optional settings, such as whether to ignore hidden files. See the code for the complete list.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
@@ -22,7 +22,7 @@ This loader is designed to be used as a way to load data into [GPT Index](https:
 ### GPT Index
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 
 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
@@ -37,7 +37,7 @@ index.query('What are these files about?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory

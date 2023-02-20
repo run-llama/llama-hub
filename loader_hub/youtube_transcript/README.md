@@ -7,7 +7,7 @@ This loader fetches the text transcript of Youtube videos using the `youtube_tra
 To use this loader, you need to pass in an array of Youtube links.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")
 
