@@ -1,4 +1,4 @@
-# Reddit reader
+# Reddit Reader
 
 For any subreddit(s) you're interested in, search for relevant posts using keyword(s) and load the resulting text in the post and and top-level comments into LLMs/ LangChains.
 
