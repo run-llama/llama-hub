@@ -172,5 +172,10 @@
     "id": "whatsapp",
     "author": "batmanscode",
     "keywords": ["whatsapp", "chat"]
+  },
+  "RedditReader": {
+    "id": "reddit",
+    "author": "vanessahlyan",
+    "keywords": ["reddit", "subreddit", "search", "comments"]
   }
 }
