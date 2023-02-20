@@ -6,8 +6,7 @@ from gpt_index.readers.schema.base import Document
 
 class RedditReader(BaseReader):
     """
-    Subreddit reader for Reddit
-
+    Subreddit post and top-level comments reader for Reddit
     """
 
     def load_data(self, subreddits: List[str], search_keys: List[str], post_limit: Optional[int] = [10]) -> List[Document]:

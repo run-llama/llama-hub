@@ -1,5 +1,8 @@
 # Reddit reader
 
+For any subreddit(s) you're interested in, search for relevant posts using keyword(s) and load the resulting text in the post and and top-level comments into LLMs/ LangChains.
+
+
 ## Get your Reddit credentials ready
 
 1. Visit Reddit App Preferences (https://www.reddit.com/prefs/apps)
@@ -10,8 +13,6 @@
 
 
 ## Usage
-
-- For any subreddit(s) you're interested in, search for revelant posts using keyword(s) and load the resulting text description and top-level comments into LLMs/ LangChains.
 
 ```python
 from gpt_index import GPTSimpleVectorIndex, download_loader
