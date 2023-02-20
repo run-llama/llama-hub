@@ -17,9 +17,9 @@ documents = loader.load_data(urls=['https://google.com'])
 
 ## Examples
 
-This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
-### GPT Index
+### LlamaIndex
 
 ```python
 from llama_index import GPTSimpleVectorIndex, download_loader
