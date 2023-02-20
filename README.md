@@ -1,4 +1,4 @@
-# Llama Hub 🦙
+# LlamaHub 🦙
 
 This is a simple library of all the data loaders / readers that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) (e.g. when building a index) and [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use). For example, there are loaders to parse Google Docs, SQL Databases, PDF files, PowerPoints, Notion, Slack, Obsidian, and many more. Note that because different loaders produce the same types of Documents, you can easily use them together in the same index.
 
@@ -86,9 +86,13 @@ the README directly) showing your data loader in action!
 
 ## FAQ
 
-### Should I create a PR against Llama Hub or the LlamaIndex repo directly?
+### How do I test my loader before it's merged?
 
-If you have a data loader PR, by default let's try to create it against Llama Hub! We will make exceptions in certain cases
+There is an argument called `loader_hub_url` in [`download_loader`](https://github.com/jerryjliu/gpt_index/blob/main/gpt_index/readers/download.py) that defaults to the main branch of this repo. You can set it to your branch or fork to test your new loader.
+
+### Should I create a PR against LlamaHub or the LlamaIndex repo directly?
+
+If you have a data loader PR, by default let's try to create it against LlamaHub! We will make exceptions in certain cases
 (for instance, if we think the data loader should be core to the LlamaIndex repo).
 
 For all other PR's relevant to LlamaIndex, let's create it directly against the [LlamaIndex repo](https://github.com/jerryjliu/gpt_index).
