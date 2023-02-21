@@ -181,5 +181,10 @@
     "id": "reddit",
     "author": "vanessahlyan",
     "keywords": ["reddit", "subreddit", "search", "comments"]
+  },
+  "MemosReader": {
+    "id": "memos",
+    "author": "bubu",
+    "keywords": ["memos", "note"]
   }
 }
