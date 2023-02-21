@@ -7,7 +7,7 @@ This loader fetchs text from self-hosted [memos](https://github.com/usememos/mem
 To use this loader, you need to specify the host where memos is deployed. If you need to filter, pass the [corresponding parameter](https://github.com/usememos/memos/blob/4fe8476169ecd2fc4b164a25611aae6861e36812/api/memo.go#L76) in `load_data`.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 MemosReader = download_loader("MemosReader")
 loader = MemosReader("https://demo.usememos.com/")
