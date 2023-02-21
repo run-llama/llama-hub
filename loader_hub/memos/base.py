@@ -1,6 +1,6 @@
 """Simple Reader for Memos"""
 
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
@@ -19,11 +19,11 @@ class MemosReader(BaseReader):
         
         self._memoUrl = urljoin(host, "api/memo")
 
-    def load_data(self, params: Optional[Any] = 101) -> List[Document]:
+    def load_data(self, params: Dict = {}) -> List[Document]:
         """Load data from RSS feeds.
 
         Args:
-            params (Any): Filtering parameters.
+            params (Dict): Filtering parameters.
 
         Returns:
             List[Document]: List of documents.
@@ -34,13 +34,18 @@ class MemosReader(BaseReader):
         documents = []
         realUrl = self._memoUrl
         
-        if ~params:
-            params = {}
-            realUrl = urljoin(self._memoUrl, "/all")
+        if not params:
+            realUrl = urljoin(self._memoUrl, "all", False)
 
-        req = requests.get(realUrl, params)
-        res = req.json()
-        
+        try:
+            req = requests.get(realUrl, params)
+            res = req.json()
+        except:
+            raise ValueError("Your Memo URL is not valid")
+            
+        if not "data" in res:
+            raise ValueError("Invalid Memo response")
+            
         memos = res["data"]
         for memo in memos:
             content = memo["content"]
