@@ -16,7 +16,6 @@ class MemosReader(BaseReader):
     def __init__(self, host: str = "https://demo.usememos.com/") -> None:
         """Initialize with parameters.
         """
-        import requests
         
         self._memoUrl = host + "api/memo"
 
@@ -30,18 +29,22 @@ class MemosReader(BaseReader):
             List[Document]: List of documents.
 
         """
+        import requests
 
         documents = []
 
         realUrl = self._memoUrl
         if creator_id:
-            realUrl += "?creatorId=" + creator_id + "&rowStatus=NORMAL"
+            realUrl += f'?creatorId={creator_id}&rowStatus=NORMAL'
         else:
             realUrl += "/all"
 
         req = requests.get(realUrl)
-        res = req.json()
         
+        if ~req.ok:
+            return documents
+        
+        res = req.json()
         memos = res["data"]
         
         for memo in memos:
