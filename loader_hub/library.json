@@ -184,6 +184,7 @@
   },
   "MemosReader": {
     "id": "memos",
-    "author": "bubu"
+    "author": "bubu",
+    "keywords": ["memos", "note"]
   }
 }
