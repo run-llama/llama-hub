@@ -7,9 +7,9 @@ Currently cannot load documents.
 from typing import Any, List, Optional
 
 import requests
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
-from gpt_index.response.schema import Response, SourceNode
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
+from llama_index.response.schema import Response, SourceNode
 
 
 class MakeWrapper(BaseReader):

@@ -13,7 +13,7 @@ These general-purpose loaders are designed to be used as a way to load data into
 ### LlamaIndex
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 
 GoogleDocsReader = download_loader('GoogleDocsReader')
 
@@ -29,7 +29,7 @@ index.query('Where did the author go to school?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
@@ -77,7 +77,7 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 
 ### Step 3: Add your loader to the library.json file
 
-Finally, add your loader to the `loader_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within GPT Index.
+Finally, add your loader to the `loader_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within LlamaIndex.
 
 ### Step 4: Make a Pull Request!
 

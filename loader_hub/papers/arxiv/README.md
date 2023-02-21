@@ -7,7 +7,7 @@ This loader fetchs the text from the most relevant scientific papers on Arxiv sp
 To use this loader, you need to pass in the search query. You may also optionally specify a local directory to temporarily store the paper PDFs (they are deleted automatically) and the maximum number of papers you want to parse for your search query (default is 10).
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 ArxivReader = download_loader("ArxivReader")
 
@@ -15,4 +15,4 @@ loader = ArxivReader()
 documents = loader.load_data(search_query=['au:Karpathy'])
 ```
 
-This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

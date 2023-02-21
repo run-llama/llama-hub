@@ -7,7 +7,7 @@ This loader is a simple web scraper that fetches the text from static websites b
 To use this loader, you need to pass in an array of URLs.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 SimpleWebPageReader = download_loader("SimpleWebPageReader")
 
@@ -17,12 +17,12 @@ documents = loader.load_data(urls=['https://google.com'])
 
 ## Examples
 
-This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
-### GPT Index
+### LlamaIndex
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 
 SimpleWebPageReader = download_loader("SimpleWebPageReader")
 
@@ -37,7 +37,7 @@ index.query('What language is on this website?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory

@@ -9,7 +9,7 @@ As a prerequisite, you will need to register with Google and generate a `credent
 To use this loader, you simply need to pass in an array of Google Doc IDs.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 GoogleDocsReader = download_loader('GoogleDocsReader')
 
@@ -20,12 +20,12 @@ documents = loader.load_data(document_ids=gdoc_ids)
 
 ## Examples
 
-This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
-### GPT Index
+### LlamaIndex
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 
 GoogleDocsReader = download_loader('GoogleDocsReader')
 
@@ -41,7 +41,7 @@ index.query('Where did the author go to school?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from gpt_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTSimpleVectorIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory

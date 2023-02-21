@@ -1,8 +1,8 @@
 """Simple reader that turns an iterable of strings into a list of Documents."""
 from typing import List
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class StringIterableReader(BaseReader):
@@ -13,7 +13,7 @@ class StringIterableReader(BaseReader):
     Example:
         .. code-block:: python
 
-            from gpt_index import StringIterableReader, GPTTreeIndex
+            from llama_index import StringIterableReader, GPTTreeIndex
 
             documents = StringIterableReader().load_data(
                 texts=["I went to the store", "I bought an apple"])

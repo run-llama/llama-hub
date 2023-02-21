@@ -1,8 +1,8 @@
 """Read Pubmed Papers."""
 from typing import List, Optional
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class PubmedReader(BaseReader):

@@ -10,7 +10,7 @@ Here's an example usage of the PineconeReader.
 
 ```python
 import weaviate
-from gpt_index import download_loader
+from llama_index import download_loader
 import os
 
 WeaviateReader = download_loader('WeaviateReader')

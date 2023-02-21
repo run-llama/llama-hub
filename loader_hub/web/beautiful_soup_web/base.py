@@ -2,8 +2,8 @@
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from urllib.parse import urljoin
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 def _substack_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:

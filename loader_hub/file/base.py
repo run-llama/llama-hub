@@ -4,9 +4,9 @@ import logging
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Union
 
-from gpt_index import download_loader
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index import download_loader
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".pdf": "PDFReader",

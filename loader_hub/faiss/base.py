@@ -3,15 +3,15 @@
 from typing import Any, Dict, List
 
 import numpy as np
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class FaissReader(BaseReader):
     """Faiss reader.
 
     Retrieves documents through an existing in-memory Faiss index.
-    These documents can then be used in a downstream GPT Index data structure.
+    These documents can then be used in a downstream LlamaIndex data structure.
     If you wish use Faiss itself as an index to to organize documents,
     insert documents, and perform queries on them, please use GPTFaissIndex.
 

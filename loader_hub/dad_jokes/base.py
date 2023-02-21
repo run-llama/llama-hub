@@ -3,8 +3,8 @@
 import requests
 from typing import List
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 class DadJokesReader(BaseReader):
     """Dad jokes reader.

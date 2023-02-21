@@ -7,7 +7,7 @@ The Faiss Loader returns a set of texts corresponding to embeddings retrieved fr
 Here's an example usage of the FaissReader.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 import faiss
 
 FaissReader = download_loader('FaissReader')
@@ -33,4 +33,4 @@ documents = reader.load_data(query=query, id_to_text_map=id_to_text_map, k=k)
 
 ```
 
-This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

@@ -9,7 +9,7 @@ As a result, any page or type of file is supported. For instance, if a `.txt` ur
 To use this loader, you need to pass in a `Path` to a local file. Optionally, you may specify a `file_extractor` for the `SimpleDirectoryReader` to use, other than the default one.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 RemoteReader = download_loader("RemoteReader")
 
@@ -17,4 +17,4 @@ loader = RemoteReader()
 documents = loader.load_data(url="https://en.wikipedia.org/wiki/File:Example.jpg")
 ```
 
-This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

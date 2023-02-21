@@ -7,7 +7,7 @@ This loader fetches the text from the Tweets of a list of Twitter users, using t
 To use this loader, you need to pass in an array of Twitter handles.
 
 ```python
-from gpt_index import download_loader
+from llama_index import download_loader
 
 TwitterTweetReader = download_loader("TwitterTweetReader")
 
@@ -15,4 +15,4 @@ loader = TwitterTweetReader(bearer_token="[YOUR_TOKEN]")
 documents = loader.load_data(twitterhandles=['elonmusk', 'taylorswift13', 'barackobama'])
 ```
 
-This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
