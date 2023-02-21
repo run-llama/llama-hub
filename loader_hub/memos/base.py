@@ -5,6 +5,7 @@ from typing import List, Optional, Any
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.schema.base import Document
 
+from urllib.parse import urljoin
 
 class MemosReader(BaseReader):
     """Memos reader.
@@ -16,7 +17,7 @@ class MemosReader(BaseReader):
     def __init__(self, host: str = "https://demo.usememos.com/") -> None:
         """Init params."""
         
-        self._memoUrl = host + "api/memo"
+        self._memoUrl = urljoin(host, "api/memo")
 
     def load_data(self, params: Optional[Any] = 101) -> List[Document]:
         """Load data from RSS feeds.
@@ -31,21 +32,16 @@ class MemosReader(BaseReader):
         import requests
         
         documents = []
-
         realUrl = self._memoUrl
+        
         if ~params:
             params = {}
-            realUrl += "/all"
+            realUrl = urljoin(self._memoUrl, "/all")
 
         req = requests.get(realUrl, params)
-        
-        if ~req.ok:
-            return documents
-        
         res = req.json()
         
         memos = res["data"]
-        
         for memo in memos:
             content = memo["content"]
             extra_info = {"creator": memo["creator"], "resource_list": memo["resourceList"], id: memo["id"]}
