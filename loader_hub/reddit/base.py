@@ -22,6 +22,7 @@ class RedditReader(BaseReader):
         
         import praw
         import os
+        from praw.models import MoreComments
 
         reddit = praw.Reddit(
             client_id=os.getenv('REDDIT_CLIENT_ID'),
