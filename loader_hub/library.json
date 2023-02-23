@@ -11,6 +11,10 @@
     "id": "google_drive",
     "author": "ravi03071991"
   },
+  "GoogleCalendarReader": {
+    "id": "google_calendar",
+    "author": "ong"
+  },
   "SimpleDirectoryReader": {
     "id": "file",
     "author": "jerryjliu"
