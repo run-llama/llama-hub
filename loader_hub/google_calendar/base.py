@@ -2,8 +2,7 @@
 
 import os
 import datetime
-from typing import Any, List, Optional
-
+from typing import Any, List, Optional, Union
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -30,21 +29,36 @@ class GoogleCalendarReader(BaseReader):
 
     """
 
-    def load_data(self, number_of_results: Optional[int] = 100) -> List[Document]:
+    def load_data(self, number_of_results: Optional[int] = 100, start_date: Optional[Union[str, datetime.date]] = None) -> List[Document]:
+
         """Load data from user's calendar.
             
             Args:
             	number_of_results (Optional[int]): the number of events to return. Defaults to 100.
+                start_date (Optional[Union[str, datetime.date]]): the start date to return events from. Defaults to today.
         """
         
         from googleapiclient.discovery import build
 
         credentials = self._get_credentials()
         service = build("calendar", "v3", credentials=credentials)
-        now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-        events_result = service.events().list(calendarId='primary', timeMin=now,
-                                              maxResults=number_of_results, singleEvents=True,
-                                              orderBy='startTime').execute()
+
+        if start_date is None:
+            start_date = datetime.date.today()
+        elif isinstance(start_date, str):
+            start_date = datetime.date.fromisoformat(start_date)
+
+        start_datetime = datetime.datetime.combine(start_date, datetime.time.min)
+        start_datetime_utc = start_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        
+        events_result = service.events().list(
+            calendarId='primary',
+            timeMin=start_datetime_utc,
+            maxResults=number_of_results,
+            singleEvents=True,
+            orderBy='startTime'
+        ).execute()
+
         events = events_result.get('items', [])
 
         if not events:
