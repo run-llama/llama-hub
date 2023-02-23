@@ -1,6 +1,6 @@
 # Google Calendar Loader
 
-This loader reads your upcoming calendar events and parses the relevant info into `Documents`. 
+This loader reads your upcoming Google Calendar events and parses the relevant info into `Documents`. 
 
 As a prerequisite, you will need to register with Google and generate a `credentials.json` file in the directory where you run this loader. See [here](https://developers.google.com/workspace/guides/create-credentials) for instructions.
 
@@ -17,9 +17,9 @@ loader = GoogleCalendarReader()
 documents = loader.load_data()
 ```
 
-## Examples
+## Example
 
-This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/llama_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
 ### LlamaIndex
 
