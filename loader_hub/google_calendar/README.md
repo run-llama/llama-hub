@@ -6,7 +6,7 @@ As a prerequisite, you will need to register with Google and generate a `credent
 
 ## Usage
 
-Here's an example usage of the GoogleCalendar. It will retrieve up to 100 future events, unless an optional `number_of_results` argument is passed.
+Here's an example usage of the GoogleCalendar. It will retrieve up to 100 future events, unless an optional `number_of_results` argument is passed. It will also retrieve only future events, unless an optional `start_date` argument is passed.
 
 ```python
 from llama_index import download_loader
