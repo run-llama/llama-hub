@@ -190,5 +190,10 @@
     "id": "memos",
     "author": "bubu",
     "keywords": ["memos", "note"]
+  },
+  "SpotifyReader": {
+    "id": "spotify",
+    "author": "ong",
+    "keywords": ["spotify", "music"]
   }
 }
