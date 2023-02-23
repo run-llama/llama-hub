@@ -4,8 +4,8 @@ This loader reads your Spotify account and loads saved albums, tracks, or playli
 
 As a prerequisite, you will need to register with [Spotify for Developers](https://developer.spotify.com) and create an app in order to get a `client_id` and a `client_secret`. You should then set a `redirect_uri` for the app (in the web dashboard under app settings). The `redirect_uri` does not need to be functional. You should then set the `client_id`, `client_secret`, and `redirect_uri` as environmental variables.
 
-`export SPOTIPY_CLIENT_ID='xxxxxxxxxxxxxxxxx'`
-`export SPOTIPY_CLIENT_SECRET='xxxxxxxxxxxxxxxxxx'`
+`export SPOTIPY_CLIENT_ID='xxxxxxxxxxxxxxxxx'`\
+`export SPOTIPY_CLIENT_SECRET='xxxxxxxxxxxxxxxxxx'`\
 `export SPOTIPY_REDIRECT_URI='http://localhost:8080/redirect'`
 
 
@@ -36,5 +36,5 @@ SpotifyReader = download_loader('SpotifyReader')
 loader = SpotifyReader()
 documents = loader.load_data()
 index = GPTSimpleVectorIndex(documents)
-index.query('When albums am I listening to?')
+index.query('When are some other artists i might like based on what i listen to ?')
 ```
