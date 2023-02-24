@@ -26,15 +26,11 @@ class ChromaReader(BaseReader):
         import_err_msg = (
             "`chromadb` package not found, please run `pip install chromadb`"
         )
-        try:
-            import chromadb  # noqa: F401
-        except ImportError:
-            raise ValueError(import_err_msg)
+        import chromadb  # noqa: F401
+        from chromadb.config import Settings
 
         if (collection_name is None) or (persist_directory is None):
             raise ValueError("Please provide a collection name and persist directory.")
-
-        from chromadb.config import Settings
 
         self._client = chromadb.Client(
             Settings(

@@ -8,8 +8,8 @@ The user initializes the loader with a Qdrant index. They then pass in a query v
 Here's an example usage of the ChromaReader.
 
 ```python
-from gpt_index.readers.chroma import ChromaReader
-from gpt_index.indices import GPTListIndex
+from llama_index.readers.chroma import ChromaReader
+from llama_index.indices import GPTListIndex
 
 # The chroma reader loads data from a persisted Chroma collection.
 # This requires a collection name and a persist directory.
