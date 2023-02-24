@@ -6,7 +6,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-def _substack_reader(soup: Any) -> Tuple[str, Dict[str, Any]]:
+def _substack_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     """Extract text from Substack blog post."""
     extra_info = {
         "Title of this Substack post": soup.select_one("h1.post-title").getText(),
