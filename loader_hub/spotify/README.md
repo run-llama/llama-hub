@@ -11,7 +11,7 @@ As a prerequisite, you will need to register with [Spotify for Developers](https
 
 ## Usage
 
-Here's an example usage of the SpotifyReader. It will retrieve your saved albums, unless an optional `collection` argument is passed. Acceptable arguments are "albums', "tracks", and "playlists 
+Here's an example usage of the SpotifyReader. It will retrieve your saved albums, unless an optional `collection` argument is passed. Acceptable arguments are "albums", "tracks", and "playlists".
 
 ```python
 from llama_index import download_loader
