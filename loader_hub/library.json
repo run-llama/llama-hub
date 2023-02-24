@@ -108,6 +108,10 @@
     "id": "qdrant",
     "author": "kacperlukawski"
   },
+  "ChromaReader": {
+    "id": "chroma",
+    "author": "atroyn"
+  },
   "SlackReader": {
     "id": "slack",
     "author": "jerryjliu"
