@@ -3,6 +3,10 @@ import unittest
 from unittest.mock import MagicMock
 import pytest
 from unittest.mock import AsyncMock
+ 
+# Skip by default due to network request.
+# Remove this to test changes to GithubRepositoryReader.
+pytest.skip()
 
 from  loader_hub.github_repo import GithubRepositoryReader, GithubClient
 
@@ -24,7 +28,6 @@ def github_client():
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="Skip by default due to network request")
 async def test_github_client(github_client):
     owner = "emptycrown"
     repo = "llama-hub"
