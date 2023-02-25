@@ -208,5 +208,10 @@
     "id": "spotify",
     "author": "ong",
     "keywords": ["spotify", "music"]
+  },
+  "RDFReader": {
+    "id": "file/rdf",
+    "author": "mommi84",
+    "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
   }
 }
