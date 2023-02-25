@@ -13,18 +13,23 @@ import logging
 import os
 import pathlib
 import tempfile
-from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
-from dataclasses_json import DataClassJsonMixin
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
-from gpt_index.readers.llamahub_modules.github_repo.github_client import (
-    BaseGithubClient, GitBranchResponseModel, GitCommitResponseModel,
-    GithubClient, GitTreeResponseModel)
-from gpt_index.readers.llamahub_modules.github_repo.utils import (
-    BufferedGitBlobDataIterator, get_file_extension, print_if_verbose)
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
+from llama_index.readers.llamahub_modules.github_repo.github_client import (
+    BaseGithubClient,
+    GitBranchResponseModel,
+    GitCommitResponseModel,
+    GithubClient,
+    GitTreeResponseModel,
+)
+from llama_index.readers.llamahub_modules.github_repo.utils import (
+    BufferedGitBlobDataIterator,
+    get_file_extension,
+    print_if_verbose,
+)
+from llama_index.readers.schema.base import Document
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

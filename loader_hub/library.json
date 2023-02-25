@@ -279,7 +279,6 @@
       "utils.py",
       "__init__.py"
     ]
-    "keywords": ["spotify", "music"]
   },
   "RDFReader": {
     "id": "file/rdf",
