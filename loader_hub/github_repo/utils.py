@@ -10,10 +10,7 @@ from abc import ABC, abstractmethod
 from typing import List, Tuple
 
 from gpt_index.readers.github_readers.github_api_client import (
-    GitBlobResponseModel,
-    GithubClient,
-    GitTreeResponseModel,
-)
+    GitBlobResponseModel, GithubClient, GitTreeResponseModel)
 
 
 def print_if_verbose(verbose: bool, message: str) -> None:

@@ -5,37 +5,25 @@ Retrieves the contents of a Github repository and returns a list of documents.
 The documents are either the contents of the files in the repository or
 the text extracted from the files using the parser.
 """
-import os
-from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
-
-from dataclasses_json import DataClassJsonMixin
 import asyncio
 import base64
 import binascii
+import enum
 import logging
 import os
 import pathlib
 import tempfile
-import enum
-from typing import Any, Callable, List, Optional, Tuple
+from dataclasses import dataclass
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from dataclasses_json import DataClassJsonMixin
 from gpt_index.readers.base import BaseReader
 from gpt_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
-
 from gpt_index.readers.llamahub_modules.github_repo.github_client import (
-    BaseGithubClient,
-    GitBranchResponseModel,
-    GitCommitResponseModel,
-    GithubClient,
-    GitTreeResponseModel,
-)
-
+    BaseGithubClient, GitBranchResponseModel, GitCommitResponseModel,
+    GithubClient, GitTreeResponseModel)
 from gpt_index.readers.llamahub_modules.github_repo.utils import (
-    BufferedGitBlobDataIterator,
-    print_if_verbose,
-    get_file_extension,
-)
+    BufferedGitBlobDataIterator, get_file_extension, print_if_verbose)
 from gpt_index.readers.schema.base import Document
 
 logging.basicConfig(level=logging.INFO)
@@ -60,13 +48,14 @@ class GithubRepositoryReader(BaseReader):
     class FilterType(enum.Enum):
         """
         Filter type.
-        
+
         Used to determine whether the filter is inclusive or exclusive.
 
         Attributes:
             - EXCLUDE: Exclude the files in the directories or with the extensions.
             - INCLUDE: Include only the files in the directories or with the extensions.
         """
+
         EXCLUDE = enum.auto()
         INCLUDE = enum.auto()
 
@@ -316,7 +305,8 @@ class GithubRepositoryReader(BaseReader):
                 if not self._check_filter_directories(file_path):
                     print_if_verbose(
                         self._verbose,
-                        "\t" * current_depth + f"ignoring directory {tree_obj.path} due to filter",
+                        "\t" * current_depth
+                        + f"ignoring directory {tree_obj.path} due to filter",
                     )
                     continue
 
@@ -330,10 +320,11 @@ class GithubRepositoryReader(BaseReader):
                 if not self._check_filter_file_extensions(file_path):
                     print_if_verbose(
                         self._verbose,
-                        "\t" * current_depth + f"ignoring file {tree_obj.path} due to filter",
+                        "\t" * current_depth
+                        + f"ignoring file {tree_obj.path} due to filter",
                     )
                     continue
-                
+
                 blobs_and_full_paths.append((tree_obj, file_path))
         return blobs_and_full_paths
 
