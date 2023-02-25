@@ -171,6 +171,15 @@
     "author": "thejessezhang",
     "keywords": ["hosted", "url", "gutenberg"]
   },
+  "RemoteDepthReader": {
+    "id": "remote_depth",
+    "author": "simonMoisselin",
+    "keywords": [
+      "hosted",
+      "url",
+      "multiple"
+    ]
+  },
   "DadJokesReader": {
     "id": "dad_jokes",
     "author": "sidu",
