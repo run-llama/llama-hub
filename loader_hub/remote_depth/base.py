@@ -1,7 +1,6 @@
 """Remote file reader.
 
-A loader that fetches an arbitrary remote page or file by URL and parses its contents.
-
+A loader that fetches any remote page or file by URL and retrieves child pages with certain constraints. The class also parses the contents of each page and provides access to the parsed data.
 """
 from typing import Any, Dict, List, Optional, Union
 
