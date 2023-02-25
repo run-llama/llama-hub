@@ -6,13 +6,21 @@ from typing import Dict, List, Optional
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-from rdflib import Graph, URIRef
-from rdflib.namespace import RDFS, RDF
-
 
 class RDFReader(BaseReader):
     """RDF reader."""
 
+     def __init__(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
+        """Initialize loader."""
+        
+        super().__init__(*args, **kwargs)
+        
+        from rdflib import Graph, URIRef
+        from rdflib.namespace import RDFS, RDF
 
     def fetch_labels(self, uri: URIRef, graph: Graph, lang: str):
         """Fetch all labels of a URI by language."""
@@ -20,7 +28,6 @@ class RDFReader(BaseReader):
         return list(filter(
             lambda x: x.language in [lang, None], 
             graph.objects(uri, RDFS.label)))
-
 
     def fetch_label_in_graphs(self, uri: URIRef, lang: str = 'en'):
         """Fetch one label of a URI by language from the local or global graph."""
@@ -35,7 +42,6 @@ class RDFReader(BaseReader):
         
         raise Exception(f"Label not found for: {uri}")
         
-
     def load_data(
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
