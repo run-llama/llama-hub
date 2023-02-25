@@ -11,7 +11,6 @@ from llama_index.readers.schema.base import Document
 
 
 class RemoteDepthReader(BaseReader):
-
     def __init__(
         self,
         *args: Any,
@@ -28,14 +27,14 @@ class RemoteDepthReader(BaseReader):
     def load_data(self, url: str) -> List[Document]:
         from tqdm.auto import tqdm
 
-        """Parse whatever is at the URL."""""
+        """Parse whatever is at the URL.""" ""
         RemoteReader = download_loader("RemoteReader")
         remote_reader = RemoteReader(file_extractor=self.file_extractor)
         documents = []
         links = self.get_links(url)
         urls = {-1: [url]}  # -1 is the starting point
         links_visited = []
-        for i in range(self.depth+1):
+        for i in range(self.depth + 1):
             urls[i] = []
             new_links = []
             print(f"Reading links at depth {i}...")
@@ -62,30 +61,37 @@ class RemoteDepthReader(BaseReader):
     @staticmethod
     def is_url(href) -> bool:
         """Check if a link is a URL."""
-        return href.startswith('http')
+        return href.startswith("http")
 
     def get_links(self, url) -> List[str]:
-        from bs4 import BeautifulSoup
         from urllib.parse import urljoin, urlparse, urlunparse
+
+        from bs4 import BeautifulSoup
+
         """Get all links from a page."""
         page = requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
 
-        links = soup.find_all('a')
+        links = soup.find_all("a")
         result = []
         for link in links:
             if isinstance(link, str):
                 href = link
             else:
-                href = link.get('href')
+                href = link.get("href")
             if href is not None:
                 if not self.is_url(href):
                     href = urljoin(url, href)
 
             url_parsed = urlparse(href)
             url_without_query_string = urlunparse(
-                (url_parsed.scheme, url_parsed.netloc, url_parsed.path, '', '', ''))
+                (url_parsed.scheme, url_parsed.netloc, url_parsed.path, "", "", "")
+            )
 
-            if url_without_query_string not in result and url_without_query_string and url_without_query_string.startswith('http'):
+            if (
+                url_without_query_string not in result
+                and url_without_query_string
+                and url_without_query_string.startswith("http")
+            ):
                 result.append(url_without_query_string)
         return result

@@ -1,9 +1,9 @@
 """Simple Web scraper."""
 from typing import List
 
+from langchain.utilities import RequestsWrapper
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from langchain.utilities import RequestsWrapper
 
 
 class SimpleWebPageReader(BaseReader):

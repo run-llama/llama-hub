@@ -1,9 +1,9 @@
 """Simple Reader that reads transcript and general infor of Bilibili video."""
-from typing import Any, List, Optional
 import warnings
+from typing import Any, List
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class BilibiliTranscriptReader(BaseReader):
@@ -11,10 +11,11 @@ class BilibiliTranscriptReader(BaseReader):
 
     @staticmethod
     def get_bilibili_info_and_subs(bili_url):
-        import re
-        from bilibili_api import sync, video
-        import requests
         import json
+        import re
+
+        import requests
+        from bilibili_api import sync, video
 
         bvid = re.search(r"BV\w+", bili_url).group()
         # Create credential object

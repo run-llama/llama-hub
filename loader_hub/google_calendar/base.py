@@ -1,12 +1,13 @@
 """Google Calendar reader."""
 
-import os
 import datetime
+import os
 from typing import Any, List, Optional, Union
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 
 # Copyright 2018 Google LLC
 #
@@ -22,22 +23,27 @@ SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 class GoogleCalendarReader(BaseReader):
     """Google Calendar reader.
 
-    	Reads events from Google Calendar
+    Reads events from Google Calendar
 
     """
 
-    def load_data(self, number_of_results: Optional[int] = 100, start_date: Optional[Union[str, datetime.date]] = None) -> List[Document]:
+    def load_data(
+        self,
+        number_of_results: Optional[int] = 100,
+        start_date: Optional[Union[str, datetime.date]] = None,
+    ) -> List[Document]:
 
         """Load data from user's calendar.
-            
-            Args:
-            	number_of_results (Optional[int]): the number of events to return. Defaults to 100.
-                start_date (Optional[Union[str, datetime.date]]): the start date to return events from. Defaults to today.
+
+        Args:
+            number_of_results (Optional[int]): the number of events to return. Defaults to 100.
+            start_date (Optional[Union[str, datetime.date]]): the start date to return events from. Defaults to today.
         """
-        
+
         from googleapiclient.discovery import build
 
         credentials = self._get_credentials()
@@ -50,45 +56,49 @@ class GoogleCalendarReader(BaseReader):
 
         start_datetime = datetime.datetime.combine(start_date, datetime.time.min)
         start_datetime_utc = start_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-        
-        events_result = service.events().list(
-            calendarId='primary',
-            timeMin=start_datetime_utc,
-            maxResults=number_of_results,
-            singleEvents=True,
-            orderBy='startTime'
-        ).execute()
 
-        events = events_result.get('items', [])
+        events_result = (
+            service.events()
+            .list(
+                calendarId="primary",
+                timeMin=start_datetime_utc,
+                maxResults=number_of_results,
+                singleEvents=True,
+                orderBy="startTime",
+            )
+            .execute()
+        )
+
+        events = events_result.get("items", [])
 
         if not events:
             return []
 
         results = []
         for event in events:
-            if 'dateTime' in event['start']:
-                start_time = event['start']['dateTime']
+            if "dateTime" in event["start"]:
+                start_time = event["start"]["dateTime"]
             else:
-                start_time = event['start']['date']
+                start_time = event["start"]["date"]
 
-            if 'dateTime' in event['end']:
-                end_time = event['end']['dateTime']
+            if "dateTime" in event["end"]:
+                end_time = event["end"]["dateTime"]
             else:
-                end_time = event['end']['date']
-                
+                end_time = event["end"]["date"]
+
             event_string = f"Status: {event['status']}, "
             event_string += f"Summary: {event['summary']}, "
             event_string += f"Start time: {start_time}, "
             event_string += f"End time: {end_time}, "
-            
-            organizer = event.get('organizer', {})
-            display_name = organizer.get('displayName', 'N/A')
-            email = organizer.get('email', 'N/A')
-            if display_name != 'N/A':
+
+            organizer = event.get("organizer", {})
+            display_name = organizer.get("displayName", "N/A")
+            email = organizer.get("email", "N/A")
+            if display_name != "N/A":
                 event_string += f"Organizer: {display_name} ({email})"
             else:
                 event_string += f"Organizer: {email}"
-    		
+
             results.append(Document(event_string))
 
         return results
@@ -125,8 +135,7 @@ class GoogleCalendarReader(BaseReader):
 
         return creds
 
+
 if __name__ == "__main__":
     reader = GoogleCalendarReader()
-    print(
-        reader.load_data()
-    )
+    print(reader.load_data())

@@ -18,7 +18,7 @@ class WhatsappChatLoader(BaseReader):
 
     def __init__(self, path: str):
         """Initialize with path."""
-        
+
         self.file_path = path
 
     def load_data(self) -> List[Document]:
@@ -41,12 +41,17 @@ class WhatsappChatLoader(BaseReader):
         n = 0
         for row in df.itertuples():
             extra_info = {
-                "source": str(path).split("/")[-1].replace(".txt", ""), 
-                "author": row.author, 
-                "timestamp": str(row.timestamp)
+                "source": str(path).split("/")[-1].replace(".txt", ""),
+                "author": row.author,
+                "timestamp": str(row.timestamp),
             }
-            
-            docs.append(Document(str(row.timestamp) + " " + row.author + ":" + " " + row.message, extra_info=extra_info))
+
+            docs.append(
+                Document(
+                    str(row.timestamp) + " " + row.author + ":" + " " + row.message,
+                    extra_info=extra_info,
+                )
+            )
 
             n += 1
             logging.debug(f"Added {n} of {len(df)} messages.")
