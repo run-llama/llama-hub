@@ -10,7 +10,7 @@ from llama_index.readers.schema.base import Document
 class RDFReader(BaseReader):
     """RDF reader."""
 
-     def __init__(
+    def __init__(
         self,
         *args: Any,
         **kwargs: Any,
