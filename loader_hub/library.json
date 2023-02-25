@@ -26,7 +26,11 @@
   "CJKPDFReader": {
     "id": "file/cjk_pdf",
     "author": "JiroShimaya",
-    "keywords": ["Japanese", "Chinese", "Korean"]
+    "keywords": [
+      "Japanese",
+      "Chinese",
+      "Korean"
+    ]
   },
   "DocxReader": {
     "id": "file/docx",
@@ -39,7 +43,10 @@
   "ImageReader": {
     "id": "file/image",
     "author": "ravi03071991",
-    "keywords": ["invoice", "receipt"]
+    "keywords": [
+      "invoice",
+      "receipt"
+    ]
   },
   "EpubReader": {
     "id": "file/epub",
@@ -68,17 +75,30 @@
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang",
-    "keywords": ["substack", "readthedocs", "documentation"]
+    "keywords": [
+      "substack",
+      "readthedocs",
+      "documentation"
+    ]
   },
   "RssReader": {
     "id": "web/rss",
     "author": "bborn",
-    "keywords": ["feed", "rss", "atom"]
+    "keywords": [
+      "feed",
+      "rss",
+      "atom"
+    ]
   },
   "DatabaseReader": {
     "id": "database",
     "author": "kevinqz",
-    "keywords": ["sql", "postgres", "snowflake", "aws rds"]
+    "keywords": [
+      "sql",
+      "postgres",
+      "snowflake",
+      "aws rds"
+    ]
   },
   "DiscordReader": {
     "id": "discord",
@@ -154,22 +174,39 @@
   "UnstructuredReader": {
     "id": "file/unstructured",
     "author": "thejessezhang",
-    "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io"]
+    "keywords": [
+      "sec",
+      "html",
+      "eml",
+      "10k",
+      "10q",
+      "unstructured.io"
+    ]
   },
   "KnowledgeBaseWebReader": {
     "id": "web/knowledge_base",
     "author": "jasonwcfan",
-    "keywords": ["documentation"]
+    "keywords": [
+      "documentation"
+    ]
   },
   "S3Reader": {
     "id": "s3",
     "author": "thejessezhang",
-    "keywords": ["aws s3", "bucket", "amazon web services"]
+    "keywords": [
+      "aws s3",
+      "bucket",
+      "amazon web services"
+    ]
   },
   "RemoteReader": {
     "id": "remote",
     "author": "thejessezhang",
-    "keywords": ["hosted", "url", "gutenberg"]
+    "keywords": [
+      "hosted",
+      "url",
+      "gutenberg"
+    ]
   },
   "RemoteDepthReader": {
     "id": "remote_depth",
@@ -183,12 +220,18 @@
   "DadJokesReader": {
     "id": "dad_jokes",
     "author": "sidu",
-    "keywords": ["jokes", "dad jokes"]
+    "keywords": [
+      "jokes",
+      "dad jokes"
+    ]
   },
   "WhatsappChatLoader": {
     "id": "whatsapp",
     "author": "batmanscode",
-    "keywords": ["whatsapp", "chat"]
+    "keywords": [
+      "whatsapp",
+      "chat"
+    ]
   },
   "BilibiliTranscriptReader": {
     "id": "bilibili",
@@ -197,16 +240,45 @@
   "RedditReader": {
     "id": "reddit",
     "author": "vanessahlyan",
-    "keywords": ["reddit", "subreddit", "search", "comments"]
+    "keywords": [
+      "reddit",
+      "subreddit",
+      "search",
+      "comments"
+    ]
   },
   "MemosReader": {
     "id": "memos",
     "author": "bubu",
-    "keywords": ["memos", "note"]
+    "keywords": [
+      "memos",
+      "note"
+    ]
   },
   "SpotifyReader": {
     "id": "spotify",
     "author": "ong",
+    "keywords": [
+      "spotify",
+      "music"
+    ]
+  },
+  "GithubRepositoryReader": {
+    "id": "github_repo",
+    "author": "ahmetkca",
+    "keywords": [
+      "github",
+      "repository",
+      "git",
+      "code",
+      "source code",
+      "placeholder"
+    ],
+    "extra_files": [
+      "github_client.py",
+      "utils.py",
+      "__init__.py"
+    ]
     "keywords": ["spotify", "music"]
   },
   "RDFReader": {
