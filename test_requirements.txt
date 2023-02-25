@@ -2,7 +2,10 @@
 # For testing
 pytest==7.2.1
 pytest-dotenv==0.5.2
+# TODO: remove gpt_index after migration
 https://github.com/jerryjliu/gpt_index/archive/master.zip
+
+llama-index
 
 # For linting
 # linting stubs

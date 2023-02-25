@@ -1,7 +1,19 @@
 {
+  "AsanaReader": {
+    "id": "asana",
+    "author": "daveey"
+  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
+  },
+  "GoogleDriveReader": {
+    "id": "google_drive",
+    "author": "ravi03071991"
+  },
+  "GoogleCalendarReader": {
+    "id": "google_calendar",
+    "author": "ong"
   },
   "SimpleDirectoryReader": {
     "id": "file",
@@ -10,6 +22,15 @@
   "PDFReader": {
     "id": "file/pdf",
     "author": "ravi03071991"
+  },
+  "CJKPDFReader": {
+    "id": "file/cjk_pdf",
+    "author": "JiroShimaya",
+    "keywords": [
+      "Japanese",
+      "Chinese",
+      "Korean"
+    ]
   },
   "DocxReader": {
     "id": "file/docx",
@@ -21,7 +42,11 @@
   },
   "ImageReader": {
     "id": "file/image",
-    "author": "ravi03071991"
+    "author": "ravi03071991",
+    "keywords": [
+      "invoice",
+      "receipt"
+    ]
   },
   "EpubReader": {
     "id": "file/epub",
@@ -56,9 +81,24 @@
       "documentation"
     ]
   },
+  "RssReader": {
+    "id": "web/rss",
+    "author": "bborn",
+    "keywords": [
+      "feed",
+      "rss",
+      "atom"
+    ]
+  },
   "DatabaseReader": {
     "id": "database",
-    "author": "kevinqz"
+    "author": "kevinqz",
+    "keywords": [
+      "sql",
+      "postgres",
+      "snowflake",
+      "aws rds"
+    ]
   },
   "DiscordReader": {
     "id": "discord",
@@ -87,6 +127,10 @@
   "QdrantReader": {
     "id": "qdrant",
     "author": "kacperlukawski"
+  },
+  "ChromaReader": {
+    "id": "chroma",
+    "author": "atroyn"
   },
   "SlackReader": {
     "id": "slack",
@@ -162,6 +206,52 @@
       "hosted",
       "url",
       "gutenberg"
+    ]
+  },
+  "DadJokesReader": {
+    "id": "dad_jokes",
+    "author": "sidu",
+    "keywords": [
+      "jokes",
+      "dad jokes"
+    ]
+  },
+  "WhatsappChatLoader": {
+    "id": "whatsapp",
+    "author": "batmanscode",
+    "keywords": [
+      "whatsapp",
+      "chat"
+    ]
+  },
+  "BilibiliTranscriptReader": {
+    "id": "bilibili",
+    "author": "alexzhangji"
+  },
+  "RedditReader": {
+    "id": "reddit",
+    "author": "vanessahlyan",
+    "keywords": [
+      "reddit",
+      "subreddit",
+      "search",
+      "comments"
+    ]
+  },
+  "MemosReader": {
+    "id": "memos",
+    "author": "bubu",
+    "keywords": [
+      "memos",
+      "note"
+    ]
+  },
+  "SpotifyReader": {
+    "id": "spotify",
+    "author": "ong",
+    "keywords": [
+      "spotify",
+      "music"
     ]
   },
   "GithubRepositoryReader": {

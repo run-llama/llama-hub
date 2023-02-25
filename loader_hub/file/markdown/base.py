@@ -7,8 +7,8 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, cast
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class MarkdownReader(BaseReader):

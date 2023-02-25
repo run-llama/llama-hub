@@ -2,14 +2,14 @@
 
 from typing import Dict, List, Optional
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class SimpleMongoReader(BaseReader):
     """Simple mongo reader.
 
-    Concatenates each Mongo doc into Document used by GPT Index.
+    Concatenates each Mongo doc into Document used by LlamaIndex.
 
     Args:
         host (str): Mongo host.

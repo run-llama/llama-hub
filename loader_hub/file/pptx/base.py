@@ -4,8 +4,8 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class PptxReader(BaseReader):
@@ -15,29 +15,34 @@ class PptxReader(BaseReader):
 
     """
 
-    def __init__(self) -> None:
+    def __init__(self, caption_images: Optional[bool] = False) -> None:
         """Init reader."""
-        from transformers import (AutoTokenizer, VisionEncoderDecoderModel,
-                                  ViTFeatureExtractor)
+        self.caption_images = caption_images
+        if caption_images:
+            from transformers import (AutoTokenizer, VisionEncoderDecoderModel,
+                                      ViTFeatureExtractor)
 
-        model = VisionEncoderDecoderModel.from_pretrained(
-            "nlpconnect/vit-gpt2-image-captioning"
-        )
-        feature_extractor = ViTFeatureExtractor.from_pretrained(
-            "nlpconnect/vit-gpt2-image-captioning"
-        )
-        tokenizer = AutoTokenizer.from_pretrained(
-            "nlpconnect/vit-gpt2-image-captioning"
-        )
+            model = VisionEncoderDecoderModel.from_pretrained(
+                "nlpconnect/vit-gpt2-image-captioning"
+            )
+            feature_extractor = ViTFeatureExtractor.from_pretrained(
+                "nlpconnect/vit-gpt2-image-captioning"
+            )
+            tokenizer = AutoTokenizer.from_pretrained(
+                "nlpconnect/vit-gpt2-image-captioning"
+            )
 
-        self.parser_config = {
-            "feature_extractor": feature_extractor,
-            "model": model,
-            "tokenizer": tokenizer,
-        }
+            self.parser_config = {
+                "feature_extractor": feature_extractor,
+                "model": model,
+                "tokenizer": tokenizer,
+            }
 
-    def caption_image(self, tmp_image_file: str) -> str:
+    def generate_image_caption(self, tmp_image_file: str) -> str:
         """Generate text caption of image."""
+        if not self.caption_images:
+            return ""
+
         import torch
         from PIL import Image
 
@@ -67,7 +72,9 @@ class PptxReader(BaseReader):
         return preds[0].strip()
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+        self,
+        file: Path,
+        extra_info: Optional[Dict] = None,
     ) -> List[Document]:
         """Parse file."""
         from pptx import Presentation
@@ -77,7 +84,7 @@ class PptxReader(BaseReader):
         for i, slide in enumerate(presentation.slides):
             result += f"\n\nSlide #{i}: \n"
             for shape in slide.shapes:
-                if hasattr(shape, "image"):
+                if self.caption_images and hasattr(shape, "image"):
                     image = shape.image
                     # get image "file" contents
                     image_bytes = image.blob
@@ -85,7 +92,9 @@ class PptxReader(BaseReader):
                     image_filename = f"tmp_image.{image.ext}"
                     with open(image_filename, "wb") as f:
                         f.write(image_bytes)
-                    result += f"\n Image: {self.caption_image(image_filename)}\n\n"
+                    result += (
+                        f"\n Image: {self.generate_image_caption(image_filename)}\n\n"
+                    )
 
                     os.remove(image_filename)
                 if hasattr(shape, "text"):

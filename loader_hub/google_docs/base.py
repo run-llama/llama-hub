@@ -3,8 +3,8 @@
 import os
 from typing import Any, List
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 SCOPES = ["https://www.googleapis.com/auth/documents.readonly"]
 

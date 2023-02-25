@@ -6,8 +6,8 @@ A transcriber for the audio of mp3, mp4 files.
 from pathlib import Path
 from typing import Any, Dict, List, Optional, cast
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class AudioTranscriber(BaseReader):

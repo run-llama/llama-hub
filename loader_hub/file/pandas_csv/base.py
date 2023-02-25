@@ -6,8 +6,8 @@ A parser for tabular data files using pandas.
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 class PandasCSVReader(BaseReader):

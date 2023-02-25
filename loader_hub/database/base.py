@@ -2,9 +2,9 @@
 
 from typing import Any, List, Optional
 
-from gpt_index.langchain_helpers.sql_wrapper import SQLDatabase
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
+from llama_index.langchain_helpers.sql_wrapper import SQLDatabase
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 from sqlalchemy import text
 from sqlalchemy.engine import Engine
 
@@ -12,7 +12,7 @@ from sqlalchemy.engine import Engine
 class DatabaseReader(BaseReader):
     """Simple Database reader.
 
-    Concatenates each row into Document used by GPT Index.
+    Concatenates each row into Document used by LlamaIndex.
 
     Args:
         sql_database (Optional[SQLDatabase]): SQL database to use,
