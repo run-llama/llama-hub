@@ -4,17 +4,15 @@ A loader that fetches an arbitrary remote page or file by URL and parses its con
 
 """
 from typing import Any, Dict, List, Optional, Union
-from urllib.parse import urljoin, urlparse, urlunparse
 
 import requests
-from bs4 import BeautifulSoup
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from tqdm.auto import tqdm
 
 
 class RemoteDepthReader(BaseReader):
+
     def __init__(
         self,
         *args: Any,
@@ -29,6 +27,8 @@ class RemoteDepthReader(BaseReader):
         self.depth = depth
 
     def load_data(self, url: str) -> List[Document]:
+        from tqdm.auto import tqdm
+
         """Parse whatever is at the URL."""""
         RemoteReader = download_loader("RemoteReader")
         remote_reader = RemoteReader(file_extractor=self.file_extractor)
@@ -66,6 +66,8 @@ class RemoteDepthReader(BaseReader):
         return href.startswith('http')
 
     def get_links(self, url) -> List[str]:
+        from bs4 import BeautifulSoup
+        from urllib.parse import urljoin, urlparse, urlunparse
         """Get all links from a page."""
         page = requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
