@@ -24,6 +24,7 @@ def github_client():
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip(reason="Skip by default due to network request")
 async def test_github_client(github_client):
     owner = "emptycrown"
     repo = "llama-hub"
