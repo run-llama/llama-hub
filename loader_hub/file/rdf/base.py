@@ -21,11 +21,15 @@ class RDFReader(BaseReader):
         from rdflib import Graph, URIRef
         from rdflib.namespace import RDF, RDFS
 
+        self.Graph = Graph
+        self.RDF = RDF
+        self.RDFS = RDFS
+
     def fetch_labels(self, uri: Any, graph: Any, lang: str):
         """Fetch all labels of a URI by language."""
 
         return list(
-            filter(lambda x: x.language in [lang, None], graph.objects(uri, RDFS.label))
+            filter(lambda x: x.language in [lang, None], graph.objects(uri, self.RDFS.label))
         )
 
     def fetch_label_in_graphs(self, uri: Any, lang: str = "en"):
@@ -48,17 +52,17 @@ class RDFReader(BaseReader):
 
         lang = extra_info["lang"] if extra_info is not None else "en"
 
-        self.g_local = Graph()
+        self.g_local = self.Graph()
         self.g_local.parse(file)
 
-        self.g_global = Graph()
-        self.g_global.parse(str(RDF))
-        self.g_global.parse(str(RDFS))
+        self.g_global = self.Graph()
+        self.g_global.parse(str(self.RDF))
+        self.g_global.parse(str(self.RDFS))
 
         text_list = []
 
         for s, p, o in self.g_local:
-            if p == RDFS.label:
+            if p == self.RDFS.label:
                 continue
             triple = (
                 f"<{self.fetch_label_in_graphs(s, lang=lang)}> "
