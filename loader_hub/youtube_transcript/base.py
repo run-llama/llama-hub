@@ -1,4 +1,5 @@
 """Simple Reader that reads transcript of youtube video."""
+import re
 from typing import Any, List, Optional
 
 from llama_index.readers.base import BaseReader
@@ -7,6 +8,22 @@ from llama_index.readers.schema.base import Document
 
 class YoutubeTranscriptReader(BaseReader):
     """Youtube Transcript reader."""
+
+    @staticmethod
+    def _extract_video_id(yt_link) -> Optional[str]:
+        # regular expressions to match the different syntax of YouTube links
+        patterns = [
+            r'^https:\/\/www\.youtube\.com\/watch\?v=(\w+)',
+            r'^https:\/\/www\.youtube\.com\/embed\/(\w+)',
+        ]
+
+        for pattern in patterns:
+            match = re.search(pattern, yt_link)
+            if match:
+                return match.group(1)
+
+        # return None if no match is found
+        return None
 
     def load_data(
         self,
@@ -25,8 +42,9 @@ class YoutubeTranscriptReader(BaseReader):
 
         results = []
         for link in ytlinks:
-            video_id = link.split("?v=")[-1]
-            srt = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
+            video_id = self._extract_video_id(link)
+            srt = YouTubeTranscriptApi.get_transcript(
+                video_id, languages=languages)
             transcript = ""
             for chunk in srt:
                 transcript = transcript + chunk["text"] + "\n"
