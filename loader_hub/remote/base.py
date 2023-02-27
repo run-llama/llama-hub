@@ -33,7 +33,7 @@ class RemoteReader(BaseReader):
         Returns True if the given URL is a video on YouTube, False otherwise.
         """
         # Regular expression pattern to match YouTube video URLs
-        youtube_pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([^\s&]+)'
+        youtube_pattern = r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([^\s&]+)"
 
         # Match the pattern against the URL
         match = re.match(youtube_pattern, url)
@@ -60,8 +60,7 @@ class RemoteReader(BaseReader):
             text = "\n\n".join([str(el.decode("utf-8-sig")) for el in result])
             documents = [Document(text, extra_info=extra_info)]
         elif self._is_youtube_video(url):
-            YoutubeTranscriptReader = download_loader(
-                "YoutubeTranscriptReader")
+            YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")
             youtube_reader = YoutubeTranscriptReader()
             # TODO should we have another langauge, like english / french?
             documents = youtube_reader.load_data([url])

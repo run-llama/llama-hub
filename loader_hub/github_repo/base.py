@@ -18,17 +18,10 @@ from typing import Any, Callable, List, Optional, Tuple
 from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
 from llama_index.readers.llamahub_modules.github_repo.github_client import (
-    BaseGithubClient,
-    GitBranchResponseModel,
-    GitCommitResponseModel,
-    GithubClient,
-    GitTreeResponseModel,
-)
+    BaseGithubClient, GitBranchResponseModel, GitCommitResponseModel,
+    GithubClient, GitTreeResponseModel)
 from llama_index.readers.llamahub_modules.github_repo.utils import (
-    BufferedGitBlobDataIterator,
-    get_file_extension,
-    print_if_verbose,
-)
+    BufferedGitBlobDataIterator, get_file_extension, print_if_verbose)
 from llama_index.readers.schema.base import Document
 
 logging.basicConfig(level=logging.INFO)

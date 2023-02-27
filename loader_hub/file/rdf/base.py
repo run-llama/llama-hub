@@ -29,7 +29,10 @@ class RDFReader(BaseReader):
         """Fetch all labels of a URI by language."""
 
         return list(
-            filter(lambda x: x.language in [lang, None], graph.objects(uri, self.RDFS.label))
+            filter(
+                lambda x: x.language in [lang, None],
+                graph.objects(uri, self.RDFS.label),
+            )
         )
 
     def fetch_label_in_graphs(self, uri: Any, lang: str = "en"):
