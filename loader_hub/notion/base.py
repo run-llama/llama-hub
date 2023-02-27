@@ -90,7 +90,7 @@ class NotionPageReader(BaseReader):
         """Read a page."""
         return self._read_block(page_id)
 
-    def query_database(self, database_id: str, query_dict: dict = {"page_size": 100}) -> List[str]:
+    def query_database(self, database_id: str, query_dict: Dict[str, Any] = {"page_size": 100}) -> List[str]:
         """Get all the pages from a Notion database."""
         pages = []
 
