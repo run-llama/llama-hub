@@ -72,8 +72,7 @@ class RemoteReader(BaseReader):
                 with open(filepath, "wb") as output:
                     output.write(result.read())
 
-                SimpleDirectoryReader = download_loader(
-                    "SimpleDirectoryReader")
+                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
                 loader = SimpleDirectoryReader(
                     temp_dir,
                     file_metadata=(lambda _: extra_info),
