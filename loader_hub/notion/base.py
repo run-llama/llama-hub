@@ -90,9 +90,8 @@ class NotionPageReader(BaseReader):
         """Read a page."""
         return self._read_block(page_id)
 
-    def query_database(self, database_id: str) -> List[str]:
+    def query_database(self, database_id: str, query_dict: dict = {"page_size": 100}) -> List[str]:
         """Get all the pages from a Notion database."""
-        query_dict = {"page_size": 100}
         pages = []
 
         res = requests.post(
@@ -100,20 +99,21 @@ class NotionPageReader(BaseReader):
             headers=self.headers,
             json=query_dict,
         )
-        if res.ok:
+        res.raise_for_status()
+        data = res.json()
+
+        pages.extend(data.get("results"))
+
+        while data.get("has_more"):
+            query_dict["start_cursor"] = data.get("next_cursor")
+            res = requests.post(
+                DATABASE_URL_TMPL.format(database_id=database_id),
+                headers=self.headers,
+                json=query_dict,
+            )
+            res.raise_for_status()
             data = res.json()
             pages.extend(data.get("results"))
-
-            while data.get("has_more"):
-                query_dict["start_cursor"] = data.get("next_cursor")
-                res = requests.post(
-                    DATABASE_URL_TMPL.format(database_id=database_id),
-                    headers=self.headers,
-                    json=query_dict,
-                )
-                if res.ok:
-                    data = res.json()
-                    pages.extend(data.get("results"))
 
         page_ids = [page["id"] for page in pages]
         return page_ids
@@ -149,6 +149,7 @@ class NotionPageReader(BaseReader):
 
         Args:
             page_ids (List[str]): List of page ids to load.
+            database_id (str): Database_id from which to load page ids.
 
         Returns:
             List[Document]: List of documents.
