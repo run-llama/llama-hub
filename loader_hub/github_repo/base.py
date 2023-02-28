@@ -46,17 +46,35 @@ if "pytest" in sys.modules:
         get_file_extension,
     )
 else:
-    from llama_index.readers.llamahub_modules.github_repo.github_client import (
-        GithubClient,
-        GitBranchResponseModel,
-        GitCommitResponseModel,
-        GitTreeResponseModel,
-    )
-    from llama_index.readers.llamahub_modules.github_repo.utils import (
-        BufferedGitBlobDataIterator,
-        print_if_verbose,
-        get_file_extension,
-    )
+    try:
+        from llama_index.readers.llamahub_modules.github_repo.github_client import (
+            GithubClient,
+            GitBranchResponseModel,
+            GitCommitResponseModel,
+            GitTreeResponseModel,
+        )
+        from llama_index.readers.llamahub_modules.github_repo.utils import (
+            BufferedGitBlobDataIterator,
+            print_if_verbose,
+            get_file_extension,
+        )
+    except ImportError:
+        ...
+
+    try:
+        from gpt_index.readers.llamahub_modules.github_repo.github_client import (
+            GithubClient,
+            GitBranchResponseModel,
+            GitCommitResponseModel,
+            GitTreeResponseModel,
+        )
+        from gpt_index.readers.llamahub_modules.github_repo.utils import (
+            BufferedGitBlobDataIterator,
+            print_if_verbose,
+            get_file_extension,
+        )
+    except ImportError:
+        ...
 
 # from typing import Any, Callable, List, Optional, Tuple
 
