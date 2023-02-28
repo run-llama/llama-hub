@@ -72,7 +72,7 @@ class SlackReader(BaseReader):
 
         return "\n\n".join(messages_text)
 
-    def _read_channel(self, channel_id: str) -> str:
+    def _read_channel(self, channel_id: str, reverse_chronological: bool) -> str:
         from slack_sdk.errors import SlackApiError
 
         """Read a channel."""
@@ -112,10 +112,10 @@ class SlackReader(BaseReader):
                     time.sleep(int(e.response.headers["retry-after"]))
                 else:
                     logger.error("Error parsing conversation replies: {}".format(e))
+        
+        return "\n\n".join(result_messages) if reverse_chronological else "\n\n".join(result_messages[::-1])
 
-        return "\n\n".join(result_messages)
-
-    def load_data(self, channel_ids: List[str]) -> List[Document]:
+    def load_data(self, channel_ids: List[str], reverse_chronological: bool = True) -> List[Document]:
         """Load data from the input directory.
 
         Args:
@@ -127,7 +127,7 @@ class SlackReader(BaseReader):
         """
         results = []
         for channel_id in channel_ids:
-            channel_content = self._read_channel(channel_id)
+            channel_content = self._read_channel(channel_id, reverse_chronological=reverse_chronological)
             results.append(
                 Document(channel_content, extra_info={"channel": channel_id})
             )
