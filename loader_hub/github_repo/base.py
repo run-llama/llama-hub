@@ -48,6 +48,7 @@ if "pytest" in sys.modules:
 else:
     try:
         from llama_index.readers.llamahub_modules.github_repo.github_client import (
+            BaseGithubClient,
             GithubClient,
             GitBranchResponseModel,
             GitCommitResponseModel,
@@ -63,6 +64,7 @@ else:
 
     try:
         from gpt_index.readers.llamahub_modules.github_repo.github_client import (
+            BaseGithubClient,
             GithubClient,
             GitBranchResponseModel,
             GitCommitResponseModel,
