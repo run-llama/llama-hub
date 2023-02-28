@@ -1,17 +1,17 @@
 # Github Repository Loader
 
-This loader takes in `owner`, `repo`, `branch`, `commit` and other optional parameters such as for filtering dicrectories or only  allowing some files with given extensions etc. It then fetches all the contents of the GitHub repository.
+This loader takes in `owner`, `repo`, `branch`, `commit` and other optional parameters such as for filtering dicrectories or only allowing some files with given extensions etc. It then fetches all the contents of the GitHub repository.
 
 As a prerequisite, you will need to generate a person access token. See [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for instructions.
 
 ## Usage
 
-To use this loader, you simply need to pass in the `owner` and `repo` and either `branch` or `commit` for example, you can  `owner = jerryjliu` and `repo = gpt_index` and also either branch or commit `branch = main` or `commit = a6c89159bf8e7086bea2f4305cff3f0a4102e370`
+To use this loader, you simply need to pass in the `owner` and `repo` and either `branch` or `commit` for example, you can `owner = jerryjliu` and `repo = gpt_index` and also either branch or commit `branch = main` or `commit = a6c89159bf8e7086bea2f4305cff3f0a4102e370`
 
 ```python
 import os
 
-from gpt_index import download_loader
+from llama_index import download_loader
 download_loader("GithubRepositoryReader")
 
 from modules.github_repo import GithubRepositoryReader, GithubClient
@@ -36,9 +36,9 @@ for doc in docs:
 
 ## Examples
 
-This loader designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader designed to be used as a way to load data into [Llama Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
-### GPT Index
+### Llama Index
 
 ```python
 import pickle
@@ -48,7 +48,7 @@ assert (
     os.getenv("OPENAI_API_KEY") is not None
 ), "Please set the OPENAI_API_KEY environment variable."
 
-from gpt_index import download_loader
+from llama_index import download_loader
 download_loader("GithubRepositoryReader")
 
 from modules.github_repo import GithubClient, GithubRepositoryReader
@@ -79,5 +79,5 @@ if docs is None:
 
 index = GPTSimpleVectorIndex(docs)
 
-index.query("Explain each GPTIndex class?")
+index.query("Explain each LlamaIndex class?")
 ```

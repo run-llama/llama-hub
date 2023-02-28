@@ -1,11 +1,11 @@
 """Simple Reader for Memos"""
 
-from typing import List, Optional, Any, Dict
-
-from gpt_index.readers.base import BaseReader
-from gpt_index.readers.schema.base import Document
-
+from typing import Dict, List
 from urllib.parse import urljoin
+
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
+
 
 class MemosReader(BaseReader):
     """Memos reader.
@@ -16,7 +16,7 @@ class MemosReader(BaseReader):
 
     def __init__(self, host: str = "https://demo.usememos.com/") -> None:
         """Init params."""
-        
+
         self._memoUrl = urljoin(host, "api/memo")
 
     def load_data(self, params: Dict = {}) -> List[Document]:
@@ -30,10 +30,10 @@ class MemosReader(BaseReader):
 
         """
         import requests
-        
+
         documents = []
         realUrl = self._memoUrl
-        
+
         if not params:
             realUrl = urljoin(self._memoUrl, "all", False)
 
@@ -42,14 +42,18 @@ class MemosReader(BaseReader):
             res = req.json()
         except:
             raise ValueError("Your Memo URL is not valid")
-            
+
         if not "data" in res:
             raise ValueError("Invalid Memo response")
-            
+
         memos = res["data"]
         for memo in memos:
             content = memo["content"]
-            extra_info = {"creator": memo["creator"], "resource_list": memo["resourceList"], id: memo["id"]}
+            extra_info = {
+                "creator": memo["creator"],
+                "resource_list": memo["resourceList"],
+                id: memo["id"],
+            }
             documents.append(Document(content, extra_info=extra_info))
 
         return documents

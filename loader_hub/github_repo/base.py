@@ -46,18 +46,28 @@ if "pytest" in sys.modules:
         get_file_extension,
     )
 else:
-    from github_client import (
-        BaseGithubClient,
+    from llama_index.readers.llamahub_modules.github_repo.github_client import (
         GithubClient,
         GitBranchResponseModel,
         GitCommitResponseModel,
         GitTreeResponseModel,
     )
-    from utils import (
+    from llama_index.readers.llamahub_modules.github_repo.utils import (
         BufferedGitBlobDataIterator,
         print_if_verbose,
         get_file_extension,
     )
+
+# from typing import Any, Callable, List, Optional, Tuple
+
+# from llama_index.readers.base import BaseReader
+# from llama_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
+# from llama_index.readers.llamahub_modules.github_repo.github_client import (
+#     BaseGithubClient, GitBranchResponseModel, GitCommitResponseModel,
+#     GithubClient, GitTreeResponseModel)
+# from llama_index.readers.llamahub_modules.github_repo.utils import (
+#     BufferedGitBlobDataIterator, get_file_extension, print_if_verbose)
+# from llama_index.readers.schema.base import Document
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

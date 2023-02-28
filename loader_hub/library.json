@@ -208,6 +208,15 @@
       "gutenberg"
     ]
   },
+  "RemoteDepthReader": {
+    "id": "remote_depth",
+    "author": "simonMoisselin",
+    "keywords": [
+      "hosted",
+      "url",
+      "multiple"
+    ]
+  },
   "DadJokesReader": {
     "id": "dad_jokes",
     "author": "sidu",
@@ -270,5 +279,10 @@
       "utils.py",
       "__init__.py"
     ]
+  },
+  "RDFReader": {
+    "id": "file/rdf",
+    "author": "mommi84",
+    "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
   }
 }
