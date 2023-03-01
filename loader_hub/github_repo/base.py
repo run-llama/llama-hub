@@ -6,12 +6,10 @@ The documents are either the contents of the files in the repository or
 the text extracted from the files using the parser.
 """
 import os
-from typing import Any, List, Optional
 import asyncio
 import base64
 import binascii
 import logging
-import os
 import pathlib
 import tempfile
 import enum
@@ -50,16 +48,6 @@ else:
         get_file_extension,
     )
 
-# from typing import Any, Callable, List, Optional, Tuple
-
-# from llama_index.readers.base import BaseReader
-# from llama_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
-# from llama_index.readers.llamahub_modules.github_repo.github_client import (
-#     BaseGithubClient, GitBranchResponseModel, GitCommitResponseModel,
-#     GithubClient, GitTreeResponseModel)
-# from llama_index.readers.llamahub_modules.github_repo.utils import (
-#     BufferedGitBlobDataIterator, get_file_extension, print_if_verbose)
-# from llama_index.readers.schema.base import Document
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
