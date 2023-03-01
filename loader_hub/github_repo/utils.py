@@ -17,23 +17,11 @@ if "pytest" in sys.modules:
         GitTreeResponseModel,
     )
 else:
-    try:
-        from llama_index.readers.llamahub_modules.github_repo.github_client import (
-            GitBlobResponseModel,
-            GithubClient,
-            GitTreeResponseModel,
-        )
-    except ImportError:
-        ...
-
-    try:
-        from gpt_index.readers.llamahub_modules.github_repo.github_client import (
-            GitBlobResponseModel,
-            GithubClient,
-            GitTreeResponseModel,
-        )
-    except ImportError:
-        ...
+    from llama_index.readers.llamahub_modules.github_repo.github_client import (
+        GitBlobResponseModel,
+        GithubClient,
+        GitTreeResponseModel,
+    )
 
 
 def print_if_verbose(verbose: bool, message: str) -> None:
