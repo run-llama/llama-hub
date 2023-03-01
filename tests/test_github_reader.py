@@ -1,4 +1,4 @@
-from gpt_index import Document
+from llama_index import Document
 import httpx
 import pytest
 import asyncio
