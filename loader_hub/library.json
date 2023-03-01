@@ -132,6 +132,10 @@
     "id": "chroma",
     "author": "atroyn"
   },
+  "ElasticsearchReader": {
+    "id": "elasticsearch",
+    "author": "jaylmiller"
+  },
   "SlackReader": {
     "id": "slack",
     "author": "jerryjliu"
