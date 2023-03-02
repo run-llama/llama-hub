@@ -62,14 +62,24 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
         page_link = requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
-            text = soup.find_all("article", {"id": "content"})[0].get_text()
+            text = ""
+            for element in soup.find_all("article", {"id": "content"}):
+                for child in element.descendants:
+                    if child.name == "a" and child.has_attr("href"):
+                        url = child.get('href')
+                        if url is not None and "edit" in url:
+                            text += child.text
+                        else:
+                            text += f"{child.text} (Reference url: {doc_link}{url}) "
+                    elif child.string:
+                        text += child.string.strip() + " "
         except IndexError:
             text = None
-            raise IndexError("No content found")
-
-        if text:
-            texts.append("\n".join([t for t in text.split("\n") if t]))
+            print(f"Could not find article with id 'content' in {doc_link}")
+            continue
+        texts.append("\n".join([t for t in text.split("\n") if t]))
     return "\n".join(texts), {}
+
 
 
 DEFAULT_WEBSITE_EXTRACTOR: Dict[
