@@ -9,9 +9,9 @@ To use this loader, load it.
 ```python
 from llama_index import download_loader
 
-DadJokeReader = download_loader("DadJokeReader")
+DadJokesReader = download_loader("DadJokesReader")
 
-loader = DadJokeReader()
+loader = DadJokesReader()
 documents = loader.load_data()
 ```
 
