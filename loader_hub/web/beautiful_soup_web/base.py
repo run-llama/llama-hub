@@ -1,9 +1,13 @@
 """Beautiful Soup Web scraper."""
+
+import logging
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from urllib.parse import urljoin
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+
+logger = logging.getLogger(__name__)
 
 
 def _substack_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
@@ -66,7 +70,7 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
             for element in soup.find_all("article", {"id": "content"}):
                 for child in element.descendants:
                     if child.name == "a" and child.has_attr("href"):
-                        url = child.get('href')
+                        url = child.get("href")
                         if url is not None and "edit" in url:
                             text += child.text
                         else:
@@ -75,11 +79,10 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
                         text += child.string.strip() + " "
         except IndexError:
             text = None
-            print(f"Could not find article with id 'content' in {doc_link}")
+            logger.error(f"Could not extract text from {doc_link}")
             continue
         texts.append("\n".join([t for t in text.split("\n") if t]))
     return "\n".join(texts), {}
-
 
 
 DEFAULT_WEBSITE_EXTRACTOR: Dict[
