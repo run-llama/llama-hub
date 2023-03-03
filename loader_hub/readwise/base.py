@@ -1,6 +1,6 @@
 """Simple Reader that loads highlights from readwise.io"""
 import requests
-from typing import List, Optional
+from typing import List
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
