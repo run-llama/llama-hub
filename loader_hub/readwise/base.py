@@ -16,7 +16,6 @@ def _get_readwise_data(api_key, updated_after=None):
   """
   next_page = None
   while True:
-    # See https://readwise.io/api_deets for more info
     response = requests.get(
       url="https://readwise.io/api/v2/export/",
       params={"pageCursor": next_page, "updatedAfter": updated_after},
