@@ -42,4 +42,4 @@ class ReadwiseReader(BaseReader):
         Args:
             updated_after (datetime.datetime): The datetime to load highlights after. Useful for updating indexes over time.
         """
-        return [*_get_readwise_data(api_key=self.api_key, updated_after=updated_after)]
+        return [*_get_readwise_data(api_key=self._api_key, updated_after=updated_after)]
