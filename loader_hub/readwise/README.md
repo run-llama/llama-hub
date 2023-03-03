@@ -14,8 +14,8 @@ Here is an example usage of the Readwise Reader:
 from llama_index import GPTSimpleVectorIndex, download_loader
 
 ReadwiseReader = download_loader("ReadwiseReader")
-
 token = os.getenv("READWISE_API_KEY")
+loader = ReadwiseReader(api_key = token)
 documents = loader.load_data()
 index = GPTSimpleVectorIndex(documents)
 
@@ -30,8 +30,8 @@ import datetime
 from llama_index import GPTSimpleVectorIndex, download_loader
 
 ReadwiseReader = download_loader("ReadwiseReader")
-
 token = os.getenv("READWISE_API_KEY")
+loader = ReadwiseReader(api_key = token)
 last_fetch_time = datetime.datetime.now() - datetime.timedelta(days=7)
 timestamp = last_fetch_time.isoformat()
 documents = loader.load_data(updated_after=timestamp)

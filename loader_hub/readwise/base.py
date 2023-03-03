@@ -1,5 +1,6 @@
 """Simple Reader that loads highlights from readwise.io"""
 import requests
+import json
 from typing import List
 
 from llama_index.readers.base import BaseReader
@@ -42,4 +43,4 @@ class ReadwiseReader(BaseReader):
         Args:
             updated_after (datetime.datetime): The datetime to load highlights after. Useful for updating indexes over time.
         """
-        return [*_get_readwise_data(api_key=self._api_key, updated_after=updated_after)]
+        return [json.dumps(d) for d in _get_readwise_data(api_key=self._api_key, updated_after=updated_after)]
