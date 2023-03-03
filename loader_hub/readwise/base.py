@@ -20,6 +20,7 @@ def _get_readwise_data(api_key, updated_after=None):
       url="https://readwise.io/api/v2/export/",
       params={"pageCursor": next_page, "updatedAfter": updated_after},
       headers={"Authorization": f"Token {api_key}"})
+    response.raise_for_status()
     yield from response.json()["results"]
     next_page = response.json().get("nextPageCursor")
     if not next_page: break
