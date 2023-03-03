@@ -6,13 +6,12 @@ from llama_index.readers.schema.base import Document
 
 def _get_readwise_data(api_key, updated_after=None):
   """
-  Uses Readwise's export API to export all highlights,
-  optionally after a specified date.
+  Uses Readwise's export API to export all highlights, optionally after a specified date.
+
+  See https://readwise.io/api_deets for details.
 
   Args:
       updated_after (datetime.datetime): The datetime to load highlights after. Useful for updating indexes over time.
-
-  See https://readwise.io/api_deets for details.
   """
   next_page = None
   while True:
