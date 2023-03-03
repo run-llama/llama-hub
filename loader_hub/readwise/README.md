@@ -19,8 +19,6 @@ token = os.getenv("READWISE_API_KEY")
 documents = loader.load_data()
 index = GPTSimpleVectorIndex(documents)
 
-this_weeks_documents = 
-
 index.query("What was the paper 'Attention is all you need' about?")
 ```
 
