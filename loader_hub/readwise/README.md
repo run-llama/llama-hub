@@ -11,6 +11,7 @@ Use Readwise's export API to fetch your highlights from web articles, epubs, pdf
 Here is an example usage of the Readwise Reader:
 
 ```python
+import os
 from llama_index import GPTSimpleVectorIndex, download_loader
 
 ReadwiseReader = download_loader("ReadwiseReader")
