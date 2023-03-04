@@ -1,12 +1,15 @@
-"""Simple Reader that loads highlights from readwise.io"""
+"""Simple Reader that loads highlights from Readwise.io"""
 import requests
 import json
-from typing import List
+import datetime
+from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-def _get_readwise_data(api_key, updated_after=None):
+
+def _get_readwise_data(api_key: str,
+                       updated_after: Optional[datetime.datetime] = None):
   """
   Uses Readwise's export API to export all highlights, optionally after a specified date.
 
@@ -19,36 +22,36 @@ def _get_readwise_data(api_key, updated_after=None):
   while True:
     response = requests.get(
       url="https://readwise.io/api/v2/export/",
-      params={"pageCursor": next_page, "updatedAfter": updated_after},
+      params={
+        "pageCursor": next_page,
+        "updatedAfter": updated_after.isoformat() if updated_after else None
+      },
       headers={"Authorization": f"Token {api_key}"})
     response.raise_for_status()
     yield from response.json()["results"]
     next_page = response.json().get("nextPageCursor")
     if not next_page: break
 
+
 class ReadwiseReader(BaseReader):
-    """
+  """
     Reader for Readwise highlights.
     """
-    def __init__(self, api_key):
-        self._api_key = api_key
 
-    def load_data(
-        self,
-        updated_after = None,
-    ) -> List[Document]:
-        """
+  def __init__(self, api_key: str):
+    self._api_key = api_key
+
+  def load_data(
+    self,
+    updated_after: Optional[datetime.datetime] = None,
+  ) -> List[Document]:
+    """
         Load your Readwise.io highlights.
 
         Args:
             updated_after (datetime.datetime): The datetime to load highlights after. Useful for updating indexes over time.
         """
-        docs = [*_get_readwise_data(api_key=self._api_key, updated_after=updated_after)]
-        print("docs:")
-        for d in docs[:2]:
-          print(d)
-        print("A", docs[0].keys())
-        result = [Document(d) for d in docs]
-        for x in result:
-          print("text:", x.get_text())
-        return result
+    readwise_response = _get_readwise_data(api_key=self._api_key,
+                                           updated_after=updated_after)
+    result = [Document(json.dumps(d)) for d in readwise_response]
+    return result

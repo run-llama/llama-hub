@@ -15,7 +15,7 @@ from llama_index import GPTSimpleVectorIndex, download_loader
 
 ReadwiseReader = download_loader("ReadwiseReader")
 token = os.getenv("READWISE_API_KEY")
-loader = ReadwiseReader(api_key = token)
+loader = ReadwiseReader(api_key=token)
 documents = loader.load_data()
 index = GPTSimpleVectorIndex(documents)
 
@@ -31,10 +31,9 @@ from llama_index import GPTSimpleVectorIndex, download_loader
 
 ReadwiseReader = download_loader("ReadwiseReader")
 token = os.getenv("READWISE_API_KEY")
-loader = ReadwiseReader(api_key = token)
-last_fetch_time = datetime.datetime.now() - datetime.timedelta(days=7)
-timestamp = last_fetch_time.isoformat()
-documents = loader.load_data(updated_after=timestamp)
+loader = ReadwiseReader(api_key=token)
+seven_days_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+documents = loader.load_data(updated_after=seven_days_ago)
 index = GPTSimpleVectorIndex(documents)
 
 index.query("What has Elon Musk done this time?")
