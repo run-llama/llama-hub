@@ -288,5 +288,10 @@
     "id": "file/rdf",
     "author": "mommi84",
     "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
+  },
+  "ReadwiseReader": {
+    "id": "readwise",
+    "author": "alexbowe",
+    "keywords": ["readwise", "highlights", "reading", "pkm"]
   }
 }
