@@ -18,6 +18,7 @@ def _get_readwise_data(api_key: str,
   Args:
       updated_after (datetime.datetime): The datetime to load highlights after. Useful for updating indexes over time.
   """
+  result = []
   next_page = None
   while True:
     response = requests.get(
@@ -28,10 +29,10 @@ def _get_readwise_data(api_key: str,
       },
       headers={"Authorization": f"Token {api_key}"})
     response.raise_for_status()
-    yield from response.json()["results"]
+    result.extend(response.json()["results"])
     next_page = response.json().get("nextPageCursor")
     if not next_page: break
-
+  return result
 
 class ReadwiseReader(BaseReader):
   """
