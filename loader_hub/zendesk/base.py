@@ -1,10 +1,9 @@
 """Zendesk reader."""
-from typing import List
 import json
-import requests
+from typing import List
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from bs4 import BeautifulSoup
 
 
 class ZendeskReader(BaseReader):
@@ -26,18 +25,20 @@ class ZendeskReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
+        from bs4 import BeautifulSoup
+
         results = []
 
         articles = self.get_all_articles()
         for article in articles:
-            body = article['body']
-            soup = BeautifulSoup(body, 'html.parser')
+            body = article["body"]
+            soup = BeautifulSoup(body, "html.parser")
             body = soup.get_text()
             extra_info = {
-                "id": article['id'],
-                "title": article['title'],
-                "url": article['html_url'],
-                "updated_at": article['updated_at']
+                "id": article["id"],
+                "title": article["title"],
+                "url": article["html_url"],
+                "updated_at": article["updated_at"],
             }
 
             results.append(
@@ -55,8 +56,8 @@ class ZendeskReader(BaseReader):
 
         while True:
             response = self.get_articles_page(next_page)
-            articles.extend(response['articles'])
-            next_page = response['next_page']
+            articles.extend(response["articles"])
+            next_page = response["next_page"]
 
             if next_page is None:
                 break
@@ -64,6 +65,8 @@ class ZendeskReader(BaseReader):
         return articles
 
     def get_articles_page(self, next_page: str = None):
+        import requests
+
         if next_page is None:
             url = f"https://{self.zendesk_subdomain}.zendesk.com/api/v2/help_center/en-us/articles?per_page=100"
         else:
@@ -73,11 +76,8 @@ class ZendeskReader(BaseReader):
 
         response_json = json.loads(response.text)
 
-        next_page = response_json.get('next_page', None)
+        next_page = response_json.get("next_page", None)
 
-        articles = response_json.get('articles', [])
+        articles = response_json.get("articles", [])
 
-        return {
-            "articles": articles,
-            "next_page": next_page
-        }
+        return {"articles": articles, "next_page": next_page}

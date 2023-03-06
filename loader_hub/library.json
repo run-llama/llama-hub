@@ -293,5 +293,20 @@
     "id": "readwise",
     "author": "alexbowe",
     "keywords": ["readwise", "highlights", "reading", "pkm"]
+  },
+  "ZendeskReader": {
+    "id": "zendesk",
+    "author": "bbornsztein",
+    "keywords": ["zendesk", "knowledge base", "help center"]
+  },
+  "IntercomReader": {
+    "id": "intercom",
+    "author": "bbornsztein",
+    "keywords": ["intercom", "knowledge base", "help center"]
+  },
+  "WordpressReader": {
+    "id": "wordpress",
+    "author": "bbornsztein",
+    "keywords": ["wordpress", "blog"]
   }
 }

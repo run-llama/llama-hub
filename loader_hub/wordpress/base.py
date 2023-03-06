@@ -1,10 +1,9 @@
 """Wordpress reader."""
-from typing import List
 import json
-import requests
+from typing import List
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from bs4 import BeautifulSoup
 
 
 class WordpressReader(BaseReader):
@@ -25,27 +24,29 @@ class WordpressReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
+        from bs4 import BeautifulSoup
+
         results = []
 
         articles = self.get_all_posts()
 
         for article in articles:
-            body = article.get('content', {}).get('rendered', None)
+            body = article.get("content", {}).get("rendered", None)
             if not body:
                 body = article.get("content")
 
-            soup = BeautifulSoup(body, 'html.parser')
+            soup = BeautifulSoup(body, "html.parser")
             body = soup.get_text()
 
-            title = article.get("title", {}).get('rendered', None)
+            title = article.get("title", {}).get("rendered", None)
             if not title:
                 title = article.get("title")
 
             extra_info = {
-                "id": article['id'],
+                "id": article["id"],
                 "title": title,
-                "url": article['link'],
-                "updated_at": article['modified']
+                "url": article["link"],
+                "updated_at": article["modified"],
             }
 
             results.append(
@@ -62,8 +63,8 @@ class WordpressReader(BaseReader):
 
         while True:
             response = self.get_posts_page(next_page)
-            posts.extend(response['articles'])
-            next_page = response['next_page']
+            posts.extend(response["articles"])
+            next_page = response["next_page"]
 
             if next_page is None:
                 break
@@ -71,13 +72,15 @@ class WordpressReader(BaseReader):
         return posts
 
     def get_posts_page(self, current_page: int = 1):
+        import requests
+
         url = f"{self.url}/wp-json/wp/v2/posts?per_page=100&page={current_page}"
 
         response = requests.get(url)
         headers = response.headers
 
-        if 'X-WP-TotalPages' in headers:
-            num_pages = int(headers['X-WP-TotalPages'])
+        if "X-WP-TotalPages" in headers:
+            num_pages = int(headers["X-WP-TotalPages"])
         else:
             num_pages = 1
 
@@ -90,7 +93,4 @@ class WordpressReader(BaseReader):
 
         articles = response_json
 
-        return {
-            "articles": articles,
-            "next_page": next_page
-        }
+        return {"articles": articles, "next_page": next_page}

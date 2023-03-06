@@ -1,10 +1,8 @@
 """Intercom reader."""
 from typing import List
-import requests
 import json
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from bs4 import BeautifulSoup
 
 
 class IntercomReader(BaseReader):
@@ -27,6 +25,8 @@ class IntercomReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
+        from bs4 import BeautifulSoup
+
         results = []
 
         articles = self.get_all_articles()
@@ -68,6 +68,7 @@ class IntercomReader(BaseReader):
         return articles
 
     def get_articles_page(self, next_page: str = None):
+        import requests
         if next_page is None:
             url = "https://api.intercom.io/articles"
         else:
