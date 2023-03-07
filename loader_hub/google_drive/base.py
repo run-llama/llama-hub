@@ -1,3 +1,12 @@
+"""Google Drive files reader."""
+
+import logging
+import os
+import tempfile
+from pathlib import Path
+from typing import Any, List
+
+from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -23,22 +32,22 @@ class GoogleDriveReader(BaseReader):
 
         self._creds = None
         self._drive = None
-        
+
         # Download Google Docs/Slides/Sheets as actual files
         # See https://developers.google.com/drive/v3/web/mime-types
         self._mimetypes = {
-            'application/vnd.google-apps.document': {
-                'mimetype': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'extension': '.docx'
+            "application/vnd.google-apps.document": {
+                "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "extension": ".docx",
             },
-            'application/vnd.google-apps.spreadsheet': {
-                'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'extension': '.xlsx'
+            "application/vnd.google-apps.spreadsheet": {
+                "mimetype": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "extension": ".xlsx",
             },
-            'application/vnd.google-apps.presentation': {
-                'mimetype': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                'extension': '.pptx'
-            }
+            "application/vnd.google-apps.presentation": {
+                "mimetype": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                "extension": ".pptx",
+            },
         }
 
     def _get_credentials(self) -> Any:
@@ -160,9 +169,9 @@ class GoogleDriveReader(BaseReader):
         """
         try:
             file = self._drive.CreateFile({"id": fileid})
-            if file['mimeType'] in self._mimetypes:
-                download_mimetype = self._mimetypes[file['mimeType']]["mimetype"]
-                download_extension = self._mimetypes[file['mimeType']]["extension"]
+            if file["mimeType"] in self._mimetypes:
+                download_mimetype = self._mimetypes[file["mimeType"]]["mimetype"]
+                download_extension = self._mimetypes[file["mimeType"]]["extension"]
                 new_filename = filename + download_extension
                 # download file with filename and mimetype
                 file.GetContentFile(new_filename, mimetype=download_mimetype)
