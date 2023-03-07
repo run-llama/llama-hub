@@ -10,7 +10,7 @@ from llama_index.readers.schema.base import Document
 logger = logging.getLogger(__name__)
 
 
-def _substack_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
+def _substack_reader(soup: Any, **kwargs) -> Tuple[str, Dict[str, Any]]:
     """Extract text from Substack blog post."""
     extra_info = {
         "Title of this Substack post": soup.select_one("h1.post-title").getText(),
@@ -21,7 +21,7 @@ def _substack_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     return text, extra_info
 
 
-def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
+def _readthedocs_reader(soup: Any, url: str, **kwargs) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadTheDocs documentation site"""
     import requests
     from bs4 import BeautifulSoup
@@ -49,7 +49,7 @@ def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     return "\n".join(texts), {}
 
 
-def _readmedocs_reader(soup: Any, url: str,include_url_in_text: bool = True) -> Tuple[str, Dict[str, Any]]:
+def _readmedocs_reader(soup: Any, url: str, include_url_in_text: bool = True) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site"""
     import requests
     from bs4 import BeautifulSoup
@@ -149,7 +149,11 @@ class BeautifulSoupWebReader(BaseReader):
             data = ""
             extra_info = {"URL": url}
             if hostname in self.website_extractor:
-                data, metadata = self.website_extractor[hostname](soup, url,include_url_in_text)
+                data, metadata = self.website_extractor[hostname](
+                    soup=soup,
+                    url=url,
+                    include_url_in_text=include_url_in_text
+                )
                 extra_info.update(metadata)
 
             else:
