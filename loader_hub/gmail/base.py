@@ -1,6 +1,4 @@
 """Google Mail reader."""
-import os
-from googleapiclient.discovery import build
 import email
 from typing import Any, List
 from llama_index.readers.base import BaseReader
@@ -30,6 +28,8 @@ class GmailReader(BaseReader, BaseModel):
             number_of_results (Optional[int]): the number of events to return. Defaults to 100.
             start_date (Optional[Union[str, datetime.date]]): the start date to return events from. Defaults to today.
         """
+        from googleapiclient.discovery import build
+
         credentials = self._get_credentials()
         self.service = build('gmail', 'v1', credentials=credentials)
 
@@ -53,6 +53,7 @@ class GmailReader(BaseReader, BaseModel):
         Returns:
             Credentials, the obtained credential.
         """
+        import os
         from google.auth.transport.requests import Request
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
