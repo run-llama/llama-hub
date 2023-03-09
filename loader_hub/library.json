@@ -312,5 +312,10 @@
     "id": "wordpress",
     "author": "bbornsztein",
     "keywords": ["wordpress", "blog"]
+  },
+  "SteamshipFileReader": {
+    "id": "steamship",
+    "author": "douglas-reid",
+    "keywords": ["steamship"]
   }
 }
