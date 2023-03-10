@@ -11,6 +11,8 @@ Here's an example usage of the QdrantReader.
 from llama_index import download_loader
 import os
 
+QdrantReader = download_loader("QdrantReader")
+
 reader = QdrantReader(host="localhost")
 # the query_vector is an embedding representation of your query_vector
 # Example query vector:

@@ -33,16 +33,31 @@ class GoogleDriveReader(BaseReader):
         self._creds = None
         self._drive = None
 
+        # Download Google Docs/Slides/Sheets as actual files
+        # See https://developers.google.com/drive/v3/web/mime-types
+        self._mimetypes = {
+            "application/vnd.google-apps.document": {
+                "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "extension": ".docx",
+            },
+            "application/vnd.google-apps.spreadsheet": {
+                "mimetype": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "extension": ".xlsx",
+            },
+            "application/vnd.google-apps.presentation": {
+                "mimetype": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                "extension": ".pptx",
+            },
+        }
+
     def _get_credentials(self) -> Any:
         """Authenticate with Google and save credentials.
-
         Download the credentials.json file with these instructions: https://developers.google.com/drive/api/v3/quickstart/python.
             Copy credentials.json file and rename it to client_secrets.json file which will be used by pydrive for downloading files.
             So, we need two files:
                 1. credentials.json
                 2. client_secrets.json
             Both 1, 2 are esentially same but needed with two different names according to google-api-python-client, google-auth-httplib2, google-auth-oauthlib and pydrive libraries.
-
         Returns:
             credentials, pydrive object
         """
@@ -144,18 +159,27 @@ class GoogleDriveReader(BaseReader):
                 "An error occurred while getting fileids metadata: {}".format(e)
             )
 
-    def _download_file(self, fileid: str, filename: str) -> None:
+    def _download_file(self, fileid: str, filename: str) -> str:
         """Download the file with fileid and filename
         Args:
             fileid: file id of the file in google drive
             filename: filename with which it will be downloaded
         Returns:
-            None
+            The downloaded filename, which which may have a new extension
         """
         try:
             file = self._drive.CreateFile({"id": fileid})
-            # download file with filename
-            file.GetContentFile(filename)
+            if file["mimeType"] in self._mimetypes:
+                download_mimetype = self._mimetypes[file["mimeType"]]["mimetype"]
+                download_extension = self._mimetypes[file["mimeType"]]["extension"]
+                new_filename = filename + download_extension
+                # download file with filename and mimetype
+                file.GetContentFile(new_filename, mimetype=download_mimetype)
+                return new_filename
+            else:
+                # download file with filename
+                file.GetContentFile(filename)
+                return filename
         except Exception as e:
             logger.error("An error occurred while downloading file: {}".format(e))
 
@@ -180,8 +204,8 @@ class GoogleDriveReader(BaseReader):
                     filename = next(tempfile._get_candidate_names())
                     filepath = os.path.join(temp_dir, filename)
                     fileid = fileid_meta[0]
-                    self._download_file(fileid, filepath)
-                    metadata[filepath] = {
+                    final_filepath = self._download_file(fileid, filepath)
+                    metadata[final_filepath] = {
                         "author": fileid_meta[1],
                         "file name": fileid_meta[2],
                         "created at": fileid_meta[3],

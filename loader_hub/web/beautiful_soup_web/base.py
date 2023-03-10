@@ -1,12 +1,16 @@
 """Beautiful Soup Web scraper."""
+
+import logging
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from urllib.parse import urljoin
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+logger = logging.getLogger(__name__)
 
-def _substack_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
+
+def _substack_reader(soup: Any, **kwargs) -> Tuple[str, Dict[str, Any]]:
     """Extract text from Substack blog post."""
     extra_info = {
         "Title of this Substack post": soup.select_one("h1.post-title").getText(),
@@ -17,7 +21,7 @@ def _substack_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     return text, extra_info
 
 
-def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
+def _readthedocs_reader(soup: Any, url: str, **kwargs) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadTheDocs documentation site"""
     import requests
     from bs4 import BeautifulSoup
@@ -45,7 +49,7 @@ def _readthedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
     return "\n".join(texts), {}
 
 
-def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
+def _readmedocs_reader(soup: Any, url: str, include_url_in_text: bool = True) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site"""
     import requests
     from bs4 import BeautifulSoup
@@ -62,13 +66,24 @@ def _readmedocs_reader(soup: Any, url: str) -> Tuple[str, Dict[str, Any]]:
         page_link = requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
-            text = soup.find_all("article", {"id": "content"})[0].get_text()
+            text = ""
+            for element in soup.find_all("article", {"id": "content"}):
+                for child in element.descendants:
+                    if child.name == "a" and child.has_attr("href"):
+                        if include_url_in_text:
+                            url = child.get("href")
+                            if url is not None and "edit" in url:
+                                text += child.text
+                            else:
+                                text += f"{child.text} (Reference url: {doc_link}{url}) "
+                    elif child.string and child.string.strip():
+                        text += child.string.strip() + " "  
+                            
         except IndexError:
             text = None
-            raise IndexError("No content found")
-
-        if text:
-            texts.append("\n".join([t for t in text.split("\n") if t]))
+            logger.error(f"Could not extract text from {doc_link}")
+            continue
+        texts.append("\n".join([t for t in text.split("\n") if t]))
     return "\n".join(texts), {}
 
 
@@ -101,7 +116,7 @@ class BeautifulSoupWebReader(BaseReader):
         self.website_extractor = website_extractor or DEFAULT_WEBSITE_EXTRACTOR
 
     def load_data(
-        self, urls: List[str], custom_hostname: Optional[str] = None
+        self, urls: List[str], custom_hostname: Optional[str] = None,include_url_in_text: Optional[bool] = True
     ) -> List[Document]:
         """Load data from the urls.
 
@@ -109,6 +124,7 @@ class BeautifulSoupWebReader(BaseReader):
             urls (List[str]): List of URLs to scrape.
             custom_hostname (Optional[str]): Force a certain hostname in the case
                 a website is displayed under custom URLs (e.g. Substack blogs)
+            include_url_in_text (Optional[bool]): Include the reference url in the text of the document
 
         Returns:
             List[Document]: List of documents.
@@ -133,7 +149,11 @@ class BeautifulSoupWebReader(BaseReader):
             data = ""
             extra_info = {"URL": url}
             if hostname in self.website_extractor:
-                data, metadata = self.website_extractor[hostname](soup, url)
+                data, metadata = self.website_extractor[hostname](
+                    soup=soup,
+                    url=url,
+                    include_url_in_text=include_url_in_text
+                )
                 extra_info.update(metadata)
 
             else:

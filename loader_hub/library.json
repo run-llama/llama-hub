@@ -52,6 +52,10 @@
     "id": "file/epub",
     "author": "Haowjy"
   },
+  "JSONReader": {
+    "id": "file/json",
+    "author": "yisding"
+  },
   "MarkdownReader": {
     "id": "file/markdown",
     "author": "hursh-desai"
@@ -131,6 +135,10 @@
   "ChromaReader": {
     "id": "chroma",
     "author": "atroyn"
+  },
+  "ElasticsearchReader": {
+    "id": "elasticsearch",
+    "author": "jaylmiller"
   },
   "SlackReader": {
     "id": "slack",
@@ -284,5 +292,30 @@
     "id": "file/rdf",
     "author": "mommi84",
     "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
+  },
+  "ReadwiseReader": {
+    "id": "readwise",
+    "author": "alexbowe",
+    "keywords": ["readwise", "highlights", "reading", "pkm"]
+  },
+  "ZendeskReader": {
+    "id": "zendesk",
+    "author": "bbornsztein",
+    "keywords": ["zendesk", "knowledge base", "help center"]
+  },
+  "IntercomReader": {
+    "id": "intercom",
+    "author": "bbornsztein",
+    "keywords": ["intercom", "knowledge base", "help center"]
+  },
+  "WordpressReader": {
+    "id": "wordpress",
+    "author": "bbornsztein",
+    "keywords": ["wordpress", "blog"]
+  },
+  "SteamshipFileReader": {
+    "id": "steamship",
+    "author": "douglas-reid",
+    "keywords": ["steamship"]
   }
 }

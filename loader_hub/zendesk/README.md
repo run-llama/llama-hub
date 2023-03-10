@@ -1,17 +1,17 @@
-# DadJoke Loader
+# Zendesk Loader
 
-This loader fetches a joke from icanhazdadjoke.
+This loader fetches the text from Zendesk help articles using the Zendesk API. It also uses the BeautifulSoup library to parse the HTML and extract the text from the articles.
 
 ## Usage
 
-To use this loader, load it.
+To use this loader, you need to pass in the subdomain of a Zendesk account. No authentication is required.
 
 ```python
 from llama_index import download_loader
 
-DadJokesReader = download_loader("DadJokesReader")
+ZendeskReader = download_loader("ZendeskReader")
 
-loader = DadJokesReader()
+loader = ZendeskReader(zendesk_subdomain="my_subdomain")
 documents = loader.load_data()
 ```
 
