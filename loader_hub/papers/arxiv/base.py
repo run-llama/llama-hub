@@ -92,4 +92,4 @@ class ArxivReader(BaseReader):
         except OSError:
             print("Unable to delete files or directory")
 
-        return arxiv_documents + abstract_documents
+        return arxiv_documents, abstract_documents
