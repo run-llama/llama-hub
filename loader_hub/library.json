@@ -76,6 +76,13 @@
     "id": "web/simple_web",
     "author": "thejessezhang"
   },
+  "RenderedWebPageReader": {
+    "id": "web/fully_rendered_web",
+    "author": "pandazki",
+    "extra_files": [
+      "Readability.js"
+    ]
+  },
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang",
