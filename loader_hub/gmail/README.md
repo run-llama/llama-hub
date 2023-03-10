@@ -11,8 +11,8 @@ To use this loader, you simply need to pass in a search query string.
 ```python
 from llama_index import download_loader
 
-GoogleDocsReader = download_loader('GmailReader')
-loader = GoogleDocsReader(query="from: me label:inbox")
+GmailReader = download_loader('GmailReader')
+loader = GmailReader(query="from: me label:inbox")
 documents = loader.load_data()
 ```
 

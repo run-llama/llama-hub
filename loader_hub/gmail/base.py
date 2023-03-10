@@ -14,6 +14,9 @@ class GmailReader(BaseReader, BaseModel):
 
     Reads emails
 
+    Args:
+        query (str): Gmail query. Defaults to None.
+        max_results (int): Max number of results. Defaults to 10.
     """
     query: str = None
     max_results: int = 10
@@ -23,15 +26,12 @@ class GmailReader(BaseReader, BaseModel):
         self
     ) -> List[Document]:
         """Load emails from the user's account
-
-        Args:
-            number_of_results (Optional[int]): the number of events to return. Defaults to 100.
-            start_date (Optional[Union[str, datetime.date]]): the start date to return events from. Defaults to today.
         """
         from googleapiclient.discovery import build
 
         credentials = self._get_credentials()
-        self.service = build('gmail', 'v1', credentials=credentials)
+        if not self.service:
+            self.service = build('gmail', 'v1', credentials=credentials)
 
         messsages = self.search_messages()
 
