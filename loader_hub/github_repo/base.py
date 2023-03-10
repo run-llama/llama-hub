@@ -6,12 +6,10 @@ The documents are either the contents of the files in the repository or
 the text extracted from the files using the parser.
 """
 import os
-from typing import Any, List, Optional
 import asyncio
 import base64
 import binascii
 import logging
-import os
 import pathlib
 import tempfile
 import enum

@@ -1,4 +1,4 @@
-from gpt_index import Document
+from llama_index import Document
 import httpx
 import pytest
 import asyncio
@@ -9,7 +9,7 @@ import unittest
 from typing import List, Tuple
 
 # Remove this to test changes to GithubRepositoryReader.
-# pytest.skip("Skip by default due to network request.", allow_module_level=True)
+pytest.skip("Skip by default due to network request.", allow_module_level=True)
 
 from loader_hub.github_repo.utils import (
     BufferedAsyncIterator,
