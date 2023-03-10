@@ -293,5 +293,9 @@
     "id": "readwise",
     "author": "alexbowe",
     "keywords": ["readwise", "highlights", "reading", "pkm"]
+  },
+  "PandasExcelReader": {
+    "id": "pandas_excel",
+    "author": "maccarini"
   }
 }
