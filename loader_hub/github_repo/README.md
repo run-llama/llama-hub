@@ -14,7 +14,7 @@ import os
 from llama_index import download_loader
 download_loader("GithubRepositoryReader")
 
-from modules.github_repo import GithubRepositoryReader, GithubClient
+from llama_index.readers.llamahub_modules.github_repo import GithubRepositoryReader, GithubClient
 
 github_client = GithubClient(os.getenv("GITHUB_TOKEN"))
 loader = GithubRepositoryReader(
@@ -51,7 +51,7 @@ assert (
 from llama_index import download_loader
 download_loader("GithubRepositoryReader")
 
-from modules.github_repo import GithubClient, GithubRepositoryReader
+from llama_index.readers.llamahub_modules.github_repo import GithubClient, GithubRepositoryReader
 
 docs = None
 
