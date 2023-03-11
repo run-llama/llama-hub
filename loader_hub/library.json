@@ -299,7 +299,7 @@
     "keywords": ["readwise", "highlights", "reading", "pkm"]
   },
   "PandasExcelReader": {
-    "id": "pandas_excel",
+    "id": "file/pandas_excel",
     "author": "maccarini"
   },
   "ZendeskReader": {
