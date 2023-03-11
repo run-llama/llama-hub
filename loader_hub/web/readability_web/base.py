@@ -1,4 +1,3 @@
-"""Fully Rendered Web scraper."""
 from typing import Dict, List, Literal, Optional
 
 from llama_index.readers.base import BaseReader
@@ -24,18 +23,18 @@ inject_readability = f"""
 """
 
 
-class RenderedWebPageReader(BaseReader):
-    """Fully Rendered Webpage Loader
+class ReadabilityWebPageReader(BaseReader):
+    """Readability Webpage Loader
 
     Extracting relevant information from a fully rendered web page.
     During the processing, it is always assumed that web pages used as data sources contain textual content.
 
-    1. Load the page and wait for it fully loaded. (playwright)
+    1. Load the page and wait for it rendered. (playwright)
     2. Inject Readability.js to extract the main content.
 
     Args:
         proxy (Optional[str], optional): Proxy server. Defaults to None.
-
+        wait_until (Optional[Literal["commit", "domcontentloaded", "load", "networkidle"]], optional): Wait until the page is loaded. Defaults to "domcontentloaded".
     """
 
     def __init__(self, proxy: Optional[str] = None, wait_until: Optional[

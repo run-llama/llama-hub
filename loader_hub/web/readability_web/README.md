@@ -1,11 +1,11 @@
-# Fully Rendered Webpage Loader
+# Readability Webpage Loader
 
 Extracting relevant information from a fully rendered web page.
 During the processing, it is always assumed that web pages used as data sources contain textual content.
 
 It is particularly effective for websites that use client-side rendering.
 
-1. Load the page and wait for it fully loaded. (playwright)
+1. Load the page and wait for it rendered. (playwright)
 2. Inject Readability.js to extract the main content.
 
 ## Usage
@@ -15,11 +15,11 @@ To use this loader, you need to pass in a single of URL.
 ```python
 from llama_index import download_loader
 
-RenderedWebPageReader = download_loader("RenderedWebPageReader")
+ReadabilityWebPageReader = download_loader("ReadabilityWebPageReader")
 
-# or set proxy server for playwright: loader = RenderedWebPageReader(proxy="http://your-proxy-server:port")
-# For some specific web pages, you may need to set "wait_until" to "networkidle". loader = RenderedWebPageReader(wait_until="networkidle")
-loader = RenderedWebPageReader()
+# or set proxy server for playwright: loader = ReadabilityWebPageReader(proxy="http://your-proxy-server:port")
+# For some specific web pages, you may need to set "wait_until" to "networkidle". loader = ReadabilityWebPageReader(wait_until="networkidle")
+loader = ReadabilityWebPageReader()
 
 documents = loader.load_data(url='https://support.squarespace.com/hc/en-us/articles/206795137-Pages-and-content-basics')
 ```
@@ -33,13 +33,13 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ```python
 from llama_index import download_loader
 
-RenderedWebPageReader = download_loader("RenderedWebPageReader")
+ReadabilityWebPageReader = download_loader("ReadabilityWebPageReader")
 
-loader = RenderedWebPageReader()
+loader = ReadabilityWebPageReader()
 documents = loader.load_data(url='https://support.squarespace.com/hc/en-us/articles/206795137-Pages-and-content-basics')
 
 index = GPTSimpleVectorIndex(documents)
-print(index.query('what is pages?'))
+print(index.query('What is pages?'))
 
 ```
 
@@ -53,9 +53,9 @@ from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
-RenderedWebPageReader = download_loader("RenderedWebPageReader")
+ReadabilityWebPageReader = download_loader("ReadabilityWebPageReader")
 
-loader = RenderedWebPageReader()
+loader = ReadabilityWebPageReader()
 documents = loader.load_data(url='https://support.squarespace.com/hc/en-us/articles/206795137-Pages-and-content-basics')
 
 index = GPTSimpleVectorIndex(documents)
