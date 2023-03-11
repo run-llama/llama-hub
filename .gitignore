@@ -1,7 +1,4 @@
 *.egg-info/
 .modules
-/**/*/__pycache__/
-.python-version
-poetry.lock
-pyproject.toml
-.vscode/
+
+**/__pycache__/
