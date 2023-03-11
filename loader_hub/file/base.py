@@ -23,6 +23,7 @@ DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".mbox": "MboxReader",
     ".eml": "UnstructuredReader",
     ".html": "UnstructuredReader",
+    ".json": "JSONReader"
 }
 
 

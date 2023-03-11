@@ -36,7 +36,7 @@ class SimpleWebPageReader(BaseReader):
         requests = RequestsWrapper()
         documents = []
         for url in urls:
-            response = requests.run(url)
+            response = requests.get(url)
             if self._html_to_text:
                 import html2text
 
