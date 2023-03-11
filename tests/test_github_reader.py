@@ -9,7 +9,10 @@ import unittest
 from typing import List, Tuple
 
 # Remove this to test changes to GithubRepositoryReader.
-pytest.skip("Skip by default due to network request.", allow_module_level=True)
+pytest.skip(
+    "Skip by default due to dependence on network request and github api token.",
+    allow_module_level=True,
+)
 
 from loader_hub.github_repo.utils import (
     BufferedAsyncIterator,
@@ -351,6 +354,13 @@ class TestGithubRepositoryReader(unittest.TestCase):
         tree_obj_paths = [
             "src/file.py",
             "src/file.txt",
+            "src/Path.To.Folder/file1.js",
+            "src/Path.To.Folder/file2.cpp",
+            "src/Path.To.Folder/file4.rs",
+            "src/Path.To.Folder/file5.ts",
+            "src/Path.To.Folder/file6.h",
+            "src/Path.To.Folder/file7.c",
+            "src/Path.To.Folder/file8.java",
             "src/dir1/file.js",
             "src/assets/file.png",
             "src/assets/file.jpg",
@@ -390,6 +400,10 @@ class TestGithubRepositoryReader(unittest.TestCase):
         expected_tree_obj_paths = [
             "src/file.py",
             "src/file.txt",
+            "src/Path.To.Folder/file1.js",
+            "src/Path.To.Folder/file4.rs",
+            "src/Path.To.Folder/file5.ts",
+            "src/Path.To.Folder/file8.java",
             "src/dir1/file.js",
             "src/dir2/subdir/file.hpp",
             "src/dir2/subdir/file.java",
@@ -410,7 +424,7 @@ class TestGithubRepositoryReader(unittest.TestCase):
         ), "Tree object paths are incorrect"
 
         self.reader._filter_directories = (
-            ["src/dir2/subdir", "src/documents"],
+            ["src/dir2/subdir", "src/documents", "src/Path.To.Folder"],
             GithubRepositoryReader.FilterType.INCLUDE,
         )
         self.reader._filter_file_extensions = (
@@ -419,6 +433,12 @@ class TestGithubRepositoryReader(unittest.TestCase):
         )
 
         expected_tree_obj_paths = [
+            "src/Path.To.Folder/file1.js",
+            "src/Path.To.Folder/file2.cpp",
+            "src/Path.To.Folder/file4.rs",
+            "src/Path.To.Folder/file5.ts",
+            "src/Path.To.Folder/file6.h",
+            "src/Path.To.Folder/file7.c",
             "src/documents/file.pdf",
             "src/documents/file.doc",
             "src/documents/file.docx",
