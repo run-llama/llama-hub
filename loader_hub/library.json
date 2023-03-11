@@ -298,6 +298,10 @@
     "author": "alexbowe",
     "keywords": ["readwise", "highlights", "reading", "pkm"]
   },
+  "PandasExcelReader": {
+    "id": "file/pandas_excel",
+    "author": "maccarini"
+  },
   "ZendeskReader": {
     "id": "zendesk",
     "author": "bbornsztein",
