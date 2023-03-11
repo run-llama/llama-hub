@@ -76,7 +76,7 @@
     "id": "web/simple_web",
     "author": "thejessezhang"
   },
-  "ReadabilityPageReader": {
+  "ReadabilityWebPageReader": {
     "id": "web/readability_web",
     "author": "pandazki",
     "extra_files": [
