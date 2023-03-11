@@ -1,9 +1,8 @@
-from typing import Dict, List, Literal, Optional
+from typing import Dict, List, Literal, Optional, Any, cast
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-from playwright.sync_api._generated import Browser
 
 from pathlib import Path
 path = Path(__file__).parent / "Readability.js"
@@ -84,7 +83,7 @@ class ReadabilityWebPageReader(BaseReader):
 
     def scrape_page(
         self,
-        browser: Browser,
+        browser: Any,
         url: str,
     ) -> Dict[str, str]:
         """Scrape a single article url.
@@ -106,6 +105,8 @@ class ReadabilityWebPageReader(BaseReader):
             lang: content language
 
         """
+        from playwright.sync_api._generated import Browser
+        browser = cast(Browser, browser)
         page = browser.new_page(ignore_https_errors=True)
         page.set_default_timeout(60000)
         page.goto(url, wait_until=self._wait_until)
