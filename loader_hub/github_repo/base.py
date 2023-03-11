@@ -48,7 +48,6 @@ else:
         get_file_extension,
     )
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -86,7 +85,7 @@ class GithubRepositoryReader(BaseReader):
         github_client: BaseGithubClient,
         owner: str,
         repo: str,
-        use_parser: bool = True,
+        use_parser: bool = False,
         verbose: bool = False,
         concurrent_requests: int = 5,
         filter_directories: Optional[Tuple[List[str], FilterType]] = None,
@@ -156,24 +155,22 @@ class GithubRepositoryReader(BaseReader):
             + f" based on the filter directories: {filter_directories}",
         )
 
-        match filter_type:
-            case self.FilterType.EXCLUDE:
-                return not any(
-                    tree_obj_path.startswith(directory)
-                    or directory.startswith(tree_obj_path)
-                    for directory in filter_directories
-                )
-            case self.FilterType.INCLUDE:
-                return any(
-                    tree_obj_path.startswith(directory)
-                    or directory.startswith(tree_obj_path)
-                    for directory in filter_directories
-                )
-            case _:
-                raise ValueError(
-                    f"Unknown filter type: {filter_type}. "
-                    "Please use either 'INCLUDE' or 'EXCLUDE'."
-                )
+        if filter_type == self.FilterType.EXCLUDE:
+            return not any(
+                tree_obj_path.startswith(directory)
+                or directory.startswith(tree_obj_path)
+                for directory in filter_directories
+            )
+        if filter_type == self.FilterType.INCLUDE:
+            return any(
+                tree_obj_path.startswith(directory)
+                or directory.startswith(tree_obj_path)
+                for directory in filter_directories
+            )
+        raise ValueError(
+            f"Unknown filter type: {filter_type}. "
+            "Please use either 'INCLUDE' or 'EXCLUDE'."
+        )
 
     def _check_filter_file_extensions(self, tree_obj_path: str) -> bool:
         """
@@ -192,21 +189,16 @@ class GithubRepositoryReader(BaseReader):
             + f" based on the filter file extensions: {filter_file_extensions}",
         )
 
-        match filter_type:
-            case self.FilterType.EXCLUDE:
-                return (
-                    get_file_extension(tree_obj_path)
-                    not in filter_file_extensions
-                )
-            case self.FilterType.INCLUDE:
-                return (
-                    get_file_extension(tree_obj_path) in filter_file_extensions
-                )
-            case _:
-                raise ValueError(
-                    f"Unknown filter type: {filter_type}. "
-                    "Please use either 'INCLUDE' or 'EXCLUDE'."
-                )
+        if filter_type == self.FilterType.EXCLUDE:
+            return (
+                get_file_extension(tree_obj_path) not in filter_file_extensions
+            )
+        if filter_type == self.FilterType.INCLUDE:
+            return get_file_extension(tree_obj_path) in filter_file_extensions
+        raise ValueError(
+            f"Unknown filter type: {filter_type}. "
+            "Please use either 'INCLUDE' or 'EXCLUDE'."
+        )
 
     def _allow_tree_obj(self, tree_obj_path: str) -> bool:
         """
