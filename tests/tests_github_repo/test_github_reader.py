@@ -527,6 +527,7 @@ def get_mocked_github_client():
         #   │   ├────tests
         #   │   │    ├────test_file1.py
         #   │   │    └────test_file2.js
+        #   │   └────__init__.py
         #   ├───README.md
         #   ├───LICENSE
         #   └───setup.py
@@ -1001,6 +1002,175 @@ def test_load_data_with_filters2():
     assert len(docs) == len(
         expected_docs
     ), "Should have 5 docs since only .yml, .png, .js, .md files are included. However, the docs/guides and src/package/subpackage directories are excluded."
+
+    print("Expected docs:")
+    for doc in expected_docs:
+        print(doc)
+
+    print("Actual docs:")
+    for doc in docs:
+        print(doc)
+
+    for expected, actual in zip(
+        sorted(expected_docs, key=lambda x: x.extra_info["file_name"]),
+        sorted(docs, key=lambda x: x.extra_info["file_name"]),
+    ):
+        assert expected.text == actual.text, (
+            "The content of the expected doc and the actual doc should be the same"
+            f"Expected: {expected.text}"
+            f"Actual: {actual.text}"
+        )
+        assert (
+            expected.extra_info["file_path"] == actual.extra_info["file_path"]
+        )
+        assert (
+            expected.extra_info["file_name"] == actual.extra_info["file_name"]
+        )
+
+
+def test_load_data_with_filters3():
+    branch_name = "test-branch-name"
+    github_client = get_mocked_github_client()
+
+    reader = GithubRepositoryReader(
+        github_client=github_client,
+        owner="owner",
+        repo="repo",
+        verbose=True,
+        filter_directories=(
+            ["src/package/subpackage", "docs/guides", "src/tests"],
+            GithubRepositoryReader.FilterType.INCLUDE,
+        ),
+        filter_file_extensions=(
+            [".png", ".js", ".md"],
+            GithubRepositoryReader.FilterType.EXCLUDE,
+        ),
+    )
+
+    expected_docs = [
+        Document(
+            text="this is the file content for test_file1.py",
+            extra_info={
+                "file_path": "src/tests/test_file1.py",
+                "file_name": "test_file1.py",
+            },
+        ),
+        Document(
+            text="this is the file content for example_subpackage.py",
+            extra_info={
+                "file_path": "src/package/subpackage/example_subpackage.py",
+                "file_name": "example_subpackage.py",
+            },
+        ),
+    ]
+
+    docs = reader.load_data(branch=branch_name)
+
+    assert len(docs) == len(
+        expected_docs
+    ), f"There are 4 files in total. Only 2 files should pass the filters but {len(docs)} files were returned."
+
+    print("Expected docs:")
+    for doc in expected_docs:
+        print(doc)
+
+    print("Actual docs:")
+    for doc in docs:
+        print(doc)
+
+    for expected, actual in zip(
+        sorted(expected_docs, key=lambda x: x.extra_info["file_name"]),
+        sorted(docs, key=lambda x: x.extra_info["file_name"]),
+    ):
+        assert expected.text == actual.text, (
+            "The content of the expected doc and the actual doc should be the same"
+            f"Expected: {expected.text}"
+            f"Actual: {actual.text}"
+        )
+        assert (
+            expected.extra_info["file_path"] == actual.extra_info["file_path"]
+        )
+        assert (
+            expected.extra_info["file_name"] == actual.extra_info["file_name"]
+        )
+
+
+def test_load_data_with_filters4():
+    branch_name = "test-branch-name"
+    github_client = get_mocked_github_client()
+
+    reader = GithubRepositoryReader(
+        github_client=github_client,
+        owner="owner",
+        repo="repo",
+        verbose=True,
+        filter_directories=(
+            ["docs/gallery", "src/package/subpackage"],
+            GithubRepositoryReader.FilterType.EXCLUDE,
+        ),
+        filter_file_extensions=(
+            [".md", ".yml", ".js"],
+            GithubRepositoryReader.FilterType.EXCLUDE,
+        ),
+    )
+
+    expected_docs = [
+        Document(
+            text="this is the file content for settings.json",
+            extra_info={
+                "file_path": ".vscode/settings.json",
+                "file_name": "settings.json",
+            },
+        ),
+        Document(
+            text="this is the file content for index.rst",
+            extra_info={
+                "file_path": "docs/index.rst",
+                "file_name": "index.rst",
+            },
+        ),
+        Document(
+            text="this is the file content for test_file1.py",
+            extra_info={
+                "file_path": "src/tests/test_file1.py",
+                "file_name": "test_file1.py",
+            },
+        ),
+        Document(
+            text="this is the file content for setup.py",
+            extra_info={
+                "file_path": "setup.py",
+                "file_name": "setup.py",
+            },
+        ),
+        Document(
+            text="this is the file content for example_package.py",
+            extra_info={
+                "file_path": "src/package/example_package.py",
+                "file_name": "example_package.py",
+            },
+        ),
+        Document(
+            text="this is the file content for __init__.py",
+            extra_info={
+                "file_path": "src/__init__.py",
+                "file_name": "__init__.py",
+            },
+        ),
+        Document(
+            text="this is the file content for LICENSE",
+            extra_info={
+                "file_path": "LICENSE",
+                "file_name": "LICENSE",
+            },
+        ),
+    ]
+
+    docs = reader.load_data(branch=branch_name)
+
+    assert len(docs) == len(
+        expected_docs
+    ), f"There are 7 files in total. Only 7 files should pass the filters but {len(docs)} files were returned."
 
     print("Expected docs:")
     for doc in expected_docs:
