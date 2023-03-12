@@ -2,10 +2,8 @@
 # For testing
 pytest==7.2.1
 pytest-dotenv==0.5.2
-pytest-asyncio
 # TODO: remove gpt_index after migration
 https://github.com/jerryjliu/gpt_index/archive/master.zip
-httpx
 
 llama-index
 
