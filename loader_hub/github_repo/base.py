@@ -364,6 +364,11 @@ class GithubRepositoryReader(BaseReader):
                 )
                 continue
 
+            print_if_verbose(
+                self._verbose,
+                "\t" * current_depth + f"tree object: {tree_obj}",
+            )
+
             if tree_obj.type == "tree":
                 print_if_verbose(
                     self._verbose,
@@ -382,6 +387,12 @@ class GithubRepositoryReader(BaseReader):
                 )
 
                 blobs_and_full_paths.append((tree_obj, file_path))
+
+            print_if_verbose(
+                self._verbose,
+                "\t" * current_depth
+                + f"blob and full paths: {blobs_and_full_paths}",
+            )
         return blobs_and_full_paths
 
     async def _generate_documents(
