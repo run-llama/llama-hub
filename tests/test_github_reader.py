@@ -311,11 +311,16 @@ isort==5.11.4
 
 class TestGithubRepositoryReader(unittest.TestCase):
     def setUp(self):
+        self.maxDiff = None
         self.github_client = MagicMock()
         self.owner = "owner"
         self.repo = "repo"
         self.reader = GithubRepositoryReader(
-            self.github_client, self.owner, self.repo
+            self.github_client,
+            self.owner,
+            self.repo,
+            verbose=True,
+            use_parser=False,
         )
 
     def test__check_filter_directories(self):
@@ -350,43 +355,62 @@ class TestGithubRepositoryReader(unittest.TestCase):
             self.reader._check_filter_file_extensions(tree_obj_path)
         )
 
-    def test__allow_tree_obj(self):
+    def test__allow_tree_obj_with_files_only(self):
         tree_obj_paths = [
-            "src/file.py",
-            "src/file.txt",
-            "src/Path.To.Folder/file1.js",
-            "src/Path.To.Folder/file2.cpp",
-            "src/Path.To.Folder/file4.rs",
-            "src/Path.To.Folder/file5.ts",
-            "src/Path.To.Folder/file6.h",
-            "src/Path.To.Folder/file7.c",
-            "src/Path.To.Folder/file8.java",
-            "src/dir1/file.js",
-            "src/assets/file.png",
-            "src/assets/file.jpg",
-            "src/assets/file.jpeg",
-            "src/assets/file.gif",
-            "src/assets/file.svg",
-            "src/assets/file.ico",
-            "src/documents/file.pdf",
-            "src/documents/file.doc",
-            "src/documents/file.docx",
-            "src/documents/file.xls",
-            "src/documents/file.xlsx",
-            "src/documents/file.ppt",
-            "src/documents/file.pptx",
-            "src/documents/file.odt",
-            "src/documents/file.ods",
-            "src/dir2/subdir/file.cpp",
-            "src/dir2/subdir/file.c",
-            "src/dir2/subdir/file.h",
-            "src/dir2/subdir/file.hpp",
-            "src/dir2/subdir/file.java",
-            "src/dir2/foo.cc",
-            "src/dir2/foo.svg",
-            "src/dir2/subdir/file.go",
-            "src/sub/folder/loading.svg",
-            "src/sub/folder/loading.ico",
+            ("src", "tree"),
+            ("src/file.py", "blob"),
+            ("src/file.txt", "blob"),
+            ("src/file.md", "blob"),
+            ("src/Path.To.Folder", "tree"),
+            ("src/Path.To.Folder/file1.js", "blob"),
+            ("src/Path.To.Folder/file2.cpp", "blob"),
+            ("src/Path.To.Folder/file4.rs", "blob"),
+            ("src/Path.To.Folder/file5.ts", "blob"),
+            ("src/Path.To.Folder/file6.h", "blob"),
+            ("src/Path.To.Folder/file7.c", "blob"),
+            ("src/Path.To.Folder/file8.java", "blob"),
+            ("src/assets/file.png", "blob"),
+            ("src/assets/file.jpg", "blob"),
+            ("src/assets/file.jpeg", "blob"),
+            ("src/assets/file.gif", "blob"),
+            ("src/assets/file.svg", "blob"),
+            ("src/assets/file.ico", "blob"),
+            ("src/documents", "tree"),
+            ("src/documents/file.pdf", "blob"),
+            ("src/documents/file.doc", "blob"),
+            ("src/documents/file.docx", "blob"),
+            ("src/documents/file.xls", "blob"),
+            ("src/documents/file.xlsx", "blob"),
+            ("src/documents/file.ppt", "blob"),
+            ("src/documents/file.pptx", "blob"),
+            ("src/documents/file.odt", "blob"),
+            ("src/documents/file.ods", "blob"),
+            ("src/dir1", "tree"),
+            ("src/dir1/file.js", "blob"),
+            ("src/dir2", "tree"),
+            ("src/dir2/file.py", "blob"),
+            ("src/dir2/foo.cc", "blob"),
+            ("src/dir2/foo.svg", "blob"),
+            ("src/dir2/subdir", "tree"),
+            ("src/dir2/subdir/file.cpp", "blob"),
+            ("src/dir2/subdir/file.c", "blob"),
+            ("src/dir2/subdir/file.h", "blob"),
+            ("src/dir2/subdir/file.hpp", "blob"),
+            ("src/dir2/subdir/file.java", "blob"),
+            ("src/dir2/subdir/file.go", "blob"),
+            ("src/sub", "tree"),
+            ("src/sub/folder", "tree"),
+            ("src/sub/folder/loading.svg", "blob"),
+            ("src/sub/folder/loading.ico", "blob"),
+            ("out", "tree"),
+            ("out/file.py", "blob"),
+            ("out/assets", "tree"),
+            ("out/assets/file.png", "blob"),
+            ("out/Path.To.Folder", "tree"),
+            ("out/Path.To.Folder/file1.js", "blob"),
+            ("out/sub", "tree"),
+            ("out/sub/folder", "tree"),
+            ("out/sub/folder/loading.svg", "blob"),
         ]
         self.reader._filter_directories = (
             ["src/assets", "src/documents"],
@@ -398,71 +422,130 @@ class TestGithubRepositoryReader(unittest.TestCase):
         )
 
         expected_tree_obj_paths = [
+            "src",
             "src/file.py",
             "src/file.txt",
+            "src/file.md",
+            "src/Path.To.Folder",
             "src/Path.To.Folder/file1.js",
+            # "src/Path.To.Folder/file2.cpp",   # It should be excluded because of the extension in the filter
             "src/Path.To.Folder/file4.rs",
             "src/Path.To.Folder/file5.ts",
+            # "src/Path.To.Folder/file6.h",
+            # "src/Path.To.Folder/file7.c",
             "src/Path.To.Folder/file8.java",
+            # "src/assets",                     # The whole directory should be excluded because of the filter
+            # "src/assets/file.png",
+            # "src/assets/file.jpg",
+            # "src/assets/file.jpeg",
+            # "src/assets/file.gif",
+            # "src/assets/file.svg",
+            # "src/assets/file.ico"
+            # "src/documents",                  # The whole directory should be excluded because of the filter
+            # "src/documents/file.pdf",
+            # "src/documents/file.doc",
+            # "src/documents/file.docx",
+            # "src/documents/file.xls",
+            # "src/documents/file.xlsx",
+            # "src/documents/file.ppt",
+            # "src/documents/file.pptx",
+            # "src/documents/file.odt",
+            # "src/documents/file.ods",
+            "src/dir1",
             "src/dir1/file.js",
+            "src/dir2",
+            "src/dir2/file.py",
+            "src/dir2/foo.cc",
+            # "src/dir2/foo.svg",               # It should be excluded because of the extension in the filter
+            "src/dir2/subdir",
+            # "src/dir2/subdir/file.cpp",       # It should be excluded because of the extension in the filter
+            # "src/dir2/subdir/file.c",         # It should be excluded because of the extension in the filter
+            # "src/dir2/subdir/file.h",         # It should be excluded because of the extension in the filter
             "src/dir2/subdir/file.hpp",
             "src/dir2/subdir/file.java",
-            "src/dir2/foo.cc",
             "src/dir2/subdir/file.go",
+            "src/sub",
+            "src/sub/folder",
+            # "src/sub/folder/loading.svg",     # It should be excluded because of the extension in the filter
+            # "src/sub/folder/loading.ico",     # It should be excluded because of the extension in the filter
+            "out",
+            "out/file.py",
+            "out/assets",
+            "out/assets/file.png",
+            "out/Path.To.Folder",
+            "out/Path.To.Folder/file1.js",
+            "out/sub",
+            "out/sub/folder",
+            # "out/sub/folder/loading.svg",     # It should be excluded because of the extension in the filter
         ]
 
         actual_tree_obj_paths = [
             tree_obj_path
-            for tree_obj_path in tree_obj_paths
-            if self.reader._allow_tree_obj(tree_obj_path)
+            for tree_obj_path, tree_obj_type in tree_obj_paths
+            if self.reader._allow_tree_obj(tree_obj_path, tree_obj_type)
         ]
 
-        print(f"Expected: {expected_tree_obj_paths}")
-        print(f"Actual: {actual_tree_obj_paths}")
         self.assertCountEqual(
             expected_tree_obj_paths, actual_tree_obj_paths
         ), "Tree object paths are incorrect"
 
         self.reader._filter_directories = (
-            ["src/dir2/subdir", "src/documents", "src/Path.To.Folder"],
+            [
+                "src/dir2/subdir",
+                "src/documents",
+                "src/Path.To.Folder",
+                "out/assets",
+                "out/sub/folder",
+            ],
             GithubRepositoryReader.FilterType.INCLUDE,
         )
         self.reader._filter_file_extensions = (
-            [".png", ".svg", ".ico", "jpg", ".java"],
+            [".png", ".svg", ".ico", "jpg", ".java", ".doc", ".pptx"],
             GithubRepositoryReader.FilterType.EXCLUDE,
         )
 
         expected_tree_obj_paths = [
+            "out",
+            "out/assets",
+            # "out/assets/file.png",  # It should be excluded by extension
+            "out/sub",
+            "out/sub/folder",
+            "src",
+            # "out/sub/folder/loading.svg", # It should be excluded by extension
+            "src/Path.To.Folder",
             "src/Path.To.Folder/file1.js",
             "src/Path.To.Folder/file2.cpp",
             "src/Path.To.Folder/file4.rs",
             "src/Path.To.Folder/file5.ts",
             "src/Path.To.Folder/file6.h",
             "src/Path.To.Folder/file7.c",
-            "src/documents/file.pdf",
-            "src/documents/file.doc",
-            "src/documents/file.docx",
-            "src/documents/file.xls",
-            "src/documents/file.xlsx",
-            "src/documents/file.ppt",
-            "src/documents/file.pptx",
-            "src/documents/file.odt",
-            "src/documents/file.ods",
+            # "src/Path.To.Folder/file8.java", # It should be excluded by extension
+            "src/dir2",
+            "src/dir2/subdir",
             "src/dir2/subdir/file.cpp",
             "src/dir2/subdir/file.c",
             "src/dir2/subdir/file.h",
             "src/dir2/subdir/file.hpp",
+            # "src/dir2/subdir/file.java", # It should be excluded by extension
             "src/dir2/subdir/file.go",
+            "src/documents",
+            "src/documents/file.pdf",
+            # "src/documents/file.doc", # It should be excluded by extension
+            "src/documents/file.docx",
+            "src/documents/file.xls",
+            "src/documents/file.xlsx",
+            "src/documents/file.ppt",
+            # "src/documents/file.pptx", # It should be excluded by extension
+            "src/documents/file.odt",
+            "src/documents/file.ods",
         ]
 
         actual_tree_obj_paths = [
             tree_obj_path
-            for tree_obj_path in tree_obj_paths
-            if self.reader._allow_tree_obj(tree_obj_path)
+            for tree_obj_path, tree_obj_type in tree_obj_paths
+            if self.reader._allow_tree_obj(tree_obj_path, tree_obj_type)
         ]
 
-        print(f"Expected: {expected_tree_obj_paths}")
-        print(f"Actual: {actual_tree_obj_paths}")
         self.assertCountEqual(
             expected_tree_obj_paths, actual_tree_obj_paths
         ), "Tree object paths are incorrect"

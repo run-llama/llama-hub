@@ -156,12 +156,19 @@ class GithubRepositoryReader(BaseReader):
         )
 
         if filter_type == self.FilterType.EXCLUDE:
+            print_if_verbose(
+                self._verbose,
+                f"Checking if {tree_obj_path} is not a subdirectory of any of the filter directories",
+            )
             return not any(
                 tree_obj_path.startswith(directory)
-                or directory.startswith(tree_obj_path)
                 for directory in filter_directories
             )
         if filter_type == self.FilterType.INCLUDE:
+            print_if_verbose(
+                self._verbose,
+                f"Checking if {tree_obj_path} is a subdirectory of any of the filter directories",
+            )
             return any(
                 tree_obj_path.startswith(directory)
                 or directory.startswith(tree_obj_path)
@@ -200,7 +207,7 @@ class GithubRepositoryReader(BaseReader):
             "Please use either 'INCLUDE' or 'EXCLUDE'."
         )
 
-    def _allow_tree_obj(self, tree_obj_path: str) -> bool:
+    def _allow_tree_obj(self, tree_obj_path: str, tree_obj_type: str) -> bool:
         """
         Check if a tree object should be allowed.
 
@@ -209,17 +216,19 @@ class GithubRepositoryReader(BaseReader):
         :return: True if the tree object should be allowed, False otherwise
 
         """
-        is_dir_allowed = True
-        if self._filter_directories is not None:
-            is_dir_allowed = self._check_filter_directories(tree_obj_path)
 
-        is_file_ext_allowed = True
-        if self._filter_file_extensions is not None:
-            is_file_ext_allowed = self._check_filter_file_extensions(
+        if self._filter_directories is not None and tree_obj_type == "tree":
+            return self._check_filter_directories(tree_obj_path)
+
+        if (
+            self._filter_file_extensions is not None
+            and tree_obj_type == "blob"
+        ):
+            return self._check_filter_directories(
                 tree_obj_path
-            )
+            ) and self._check_filter_file_extensions(tree_obj_path)
 
-        return is_dir_allowed and is_file_ext_allowed
+        return True
 
     def _load_data_from_commit(self, commit_sha: str) -> List[Document]:
         """
@@ -340,12 +349,14 @@ class GithubRepositoryReader(BaseReader):
             self._owner, self._repo, tree_sha
         )
         print_if_verbose(
+            self._verbose, "\t" * current_depth + f"tree data: {tree_data}"
+        )
+        print_if_verbose(
             self._verbose, "\t" * current_depth + f"processing tree {tree_sha}"
         )
         for tree_obj in tree_data.tree:
             file_path = os.path.join(current_path, tree_obj.path)
-
-            if not self._allow_tree_obj(file_path):
+            if not self._allow_tree_obj(file_path, tree_obj.type):
                 print_if_verbose(
                     self._verbose,
                     "\t" * current_depth
