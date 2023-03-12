@@ -5,23 +5,12 @@ This module contains utility functions for the Github readers.
 """
 import asyncio
 import os
-import sys
 import time
 from abc import ABC, abstractmethod
 from typing import List, Tuple
 
-if "pytest" in sys.modules:
-    from loader_hub.github_repo.github_client import (
-        GitBlobResponseModel,
-        GithubClient,
-        GitTreeResponseModel,
-    )
-else:
-    from llama_index.readers.llamahub_modules.github_repo.github_client import (
-        GitBlobResponseModel,
-        GithubClient,
-        GitTreeResponseModel,
-    )
+from gpt_index.readers.github_readers.github_api_client import (
+    GitBlobResponseModel, GithubClient, GitTreeResponseModel)
 
 
 def print_if_verbose(verbose: bool, message: str) -> None:
@@ -164,8 +153,7 @@ class BufferedGitBlobDataIterator(BufferedAsyncIterator):
         if self._verbose:
             end_t = time.time()
             blob_names_and_sizes = [
-                (blob.path, blob.size)
-                for blob, _ in self._blobs_and_paths[start:end]
+                (blob.path, blob.size) for blob, _ in self._blobs_and_paths[start:end]
             ]
             print(
                 "Time to get blobs ("
@@ -175,7 +163,5 @@ class BufferedGitBlobDataIterator(BufferedAsyncIterator):
 
         self._buffer = [
             (result, path)
-            for result, (_, path) in zip(
-                results, self._blobs_and_paths[start:end]
-            )
+            for result, (_, path) in zip(results, self._blobs_and_paths[start:end])
         ]
