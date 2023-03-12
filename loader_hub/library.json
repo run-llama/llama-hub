@@ -324,7 +324,12 @@
     "author": "bbornsztein",
     "keywords": ["wordpress", "blog"]
   },
-  "SteamshipFileReader": {
+  "GmailReader": {
+    "id": "gmail",
+    "author": "bbornsztein",
+    "keywords": ["gmail", "email"]
+  },
+ "SteamshipFileReader": {
     "id": "steamship",
     "author": "douglas-reid",
     "keywords": ["steamship"]
