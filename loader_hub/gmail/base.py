@@ -127,7 +127,7 @@ class GmailReader(BaseReader, BaseModel):
             if 'text/html' in mime_msg:
                 soup = BeautifulSoup(body, 'html.parser')
                 body = soup.get_text()
-            return str(body)
+            return body.decode("ascii")
         except Exception as e:
             raise Exception("Can't parse message body" + str(e))
 
