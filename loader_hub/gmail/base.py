@@ -19,6 +19,7 @@ class GmailReader(BaseReader, BaseModel):
         max_results (int): Max number of results. Defaults to 10.
     """
     query: str = None
+    use_iterative_parser: bool = False
     max_results: int = 10
     service: Any
 
@@ -69,7 +70,7 @@ class GmailReader(BaseReader, BaseModel):
                 flow = InstalledAppFlow.from_client_secrets_file(
                     "credentials.json", SCOPES
                 )
-                creds = flow.run_local_server(port=0)
+                creds = flow.run_local_server(port=8080)
             # Save the credentials for the next run
             with open("token.json", "w") as token:
                 token.write(creds.to_json())
@@ -105,7 +106,10 @@ class GmailReader(BaseReader, BaseModel):
             format="raw",
             userId='me',
             id=message_id).execute()
-        body = self.extract_message_body(message_data)
+        if self.use_iterative_parser:
+            body = self.extract_message_body_iterative(message_data)
+        else:
+            body = self.extract_message_body(message_data)
 
         if not body:
             return None
@@ -116,6 +120,25 @@ class GmailReader(BaseReader, BaseModel):
             "snippet": message_data['snippet'],
             "body": body,
         }
+    
+    def extract_message_body_iterative(self, message:dict):
+        if message['raw']:
+            body = base64.urlsafe_b64decode(message['raw'].encode('utf8'))
+            mime_msg = email.message_from_bytes(body)
+        else:
+            mime_msg = message
+        
+        body_text = ''
+        if mime_msg.get_content_type() == 'text/plain':
+            plain_text = mime_msg.get_payload(decode=True)
+            body_text = plain_text.decode('UTF-8')
+            
+        elif mime_msg.get_content_maintype() == 'multipart':
+            msg_parts = mime_msg.get_payload()
+            for msg_part in msg_parts:
+                body_text += self.extract_message_body_iterative(msg_part)
+                
+        return body_text
 
     def extract_message_body(self, message: dict):
         from bs4 import BeautifulSoup
