@@ -68,6 +68,10 @@
     "id": "file/simple_csv",
     "author": "vguillet"
   },
+  "PagedCSVReader": {
+    "id": "file/paged_csv",
+    "author": "thejessezhang"
+  },
   "PandasCSVReader": {
     "id": "file/pandas_csv",
     "author": "ephe-meral"

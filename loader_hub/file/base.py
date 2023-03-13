@@ -17,13 +17,13 @@ DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".jpeg": "ImageReader",
     ".mp3": "AudioTranscriber",
     ".mp4": "AudioTranscriber",
-    ".csv": "PandasCSVReader",
+    ".csv": "PagedCSVReader",
     ".epub": "EpubReader",
     ".md": "MarkdownReader",
     ".mbox": "MboxReader",
     ".eml": "UnstructuredReader",
     ".html": "UnstructuredReader",
-    ".json": "JSONReader"
+    ".json": "JSONReader",
 }
 
 
