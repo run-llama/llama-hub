@@ -16,10 +16,6 @@ class PagedCSVReader(BaseReader):
     Displayed each row in an LLM-friendly format on a separate document.
     """
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Init params."""
-        super().__init__(*args, **kwargs)
-
     def load_data(
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
