@@ -104,7 +104,8 @@ class GitCommitResponseModel(DataClassJsonMixin):
         tree: Tree
 
     commit: Commit
-
+    url: str
+    sha: str
 
 @dataclass
 class GitBranchResponseModel(DataClassJsonMixin):
@@ -137,7 +138,14 @@ class GitBranchResponseModel(DataClassJsonMixin):
 
         commit: Commit
 
+    @dataclass
+    class Links(DataClassJsonMixin):
+        self: str
+        html: str
+
     commit: Commit
+    name: str
+    _links: Links  
 
 
 from typing import Protocol
