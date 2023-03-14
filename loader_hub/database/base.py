@@ -2,11 +2,12 @@
 
 from typing import Any, List, Optional
 
+from sqlalchemy import text
+from sqlalchemy.engine import Engine
+
 from llama_index.langchain_helpers.sql_wrapper import SQLDatabase
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from sqlalchemy import text
-from sqlalchemy.engine import Engine
 
 
 class DatabaseReader(BaseReader):
@@ -90,5 +91,7 @@ class DatabaseReader(BaseReader):
                 result = connection.execute(text(query))
 
             for item in result.fetchall():
-                documents.append(Document(item[0]))
+                # fetch each item
+                doc_str = ", ".join([str(entry) for entry in item])
+                documents.append(Document(doc_str))
         return documents

@@ -68,6 +68,10 @@
     "id": "file/simple_csv",
     "author": "vguillet"
   },
+  "PagedCSVReader": {
+    "id": "file/paged_csv",
+    "author": "thejessezhang"
+  },
   "PandasCSVReader": {
     "id": "file/pandas_csv",
     "author": "ephe-meral"
@@ -75,6 +79,13 @@
   "SimpleWebPageReader": {
     "id": "web/simple_web",
     "author": "thejessezhang"
+  },
+  "ReadabilityWebPageReader": {
+    "id": "web/readability_web",
+    "author": "pandazki",
+    "extra_files": [
+      "Readability.js"
+    ]
   },
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
@@ -317,7 +328,12 @@
     "author": "bbornsztein",
     "keywords": ["wordpress", "blog"]
   },
-  "SteamshipFileReader": {
+  "GmailReader": {
+    "id": "gmail",
+    "author": "bbornsztein",
+    "keywords": ["gmail", "email"]
+  },
+ "SteamshipFileReader": {
     "id": "steamship",
     "author": "douglas-reid",
     "keywords": ["steamship"]
