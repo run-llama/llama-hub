@@ -17,7 +17,7 @@ class SimpleMongoReader(BaseReader):
 
     """
 
-    def __init__(self, host: str, port: int, mongo_db_url: Optional[Dict] = None  max_docs: int = 1000) -> None:
+    def __init__(self, host: str, port: int, mongo_db_url: Optional[Dict] = None, max_docs: int = 1000) -> None:
         """Initialize with parameters."""
         from pymongo import MongoClient  # noqa: F401
 
