@@ -42,7 +42,6 @@ class RemoteDepthReader(BaseReader):
 
             for link in tqdm(links):
                 print(link)
-                print(url)
                 """Checking if the link belongs the provided domain. """
                 if (domain_lock and link>url):
                     print("Loading link: " + link)
