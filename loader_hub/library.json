@@ -337,5 +337,10 @@
     "id": "steamship",
     "author": "douglas-reid",
     "keywords": ["steamship"]
+  },
+ "ZendeskTicketReader": {
+    "id": "zendesk_tickets",
+    "author": "robert4dt",
+    "keywords": ["zendesk","tickets"]
   }
 }
