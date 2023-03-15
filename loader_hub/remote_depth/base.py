@@ -38,7 +38,7 @@ class RemoteDepthReader(BaseReader):
         for i in range(self.depth + 1):
             urls[i] = []
             new_links = []
-            print(f"Reading links at depth {i}...")
+            print(f"Reading linkss at depth {i}...")
             for link in tqdm(links):
                 if link in links_visited:
                     continue
