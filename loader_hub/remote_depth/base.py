@@ -16,7 +16,6 @@ class RemoteDepthReader(BaseReader):
         *args: Any,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         depth: int = 1,
-        domain_lock: bool = False,
         **kwargs: Any,
     ) -> None:
         """Init params."""
@@ -25,11 +24,11 @@ class RemoteDepthReader(BaseReader):
         self.file_extractor = file_extractor
         self.depth = depth
         self.domain_lock = domain_lock
+
+    def load_data(self, url: str, domain_lock: bool=False) -> List[Document]:
+        from tqdm.auto import tqdm
         print("***** I am loading *****")
         print(str(domain_lock))
-
-    def load_data(self, url: str) -> List[Document]:
-        from tqdm.auto import tqdm
 
         """Parse whatever is at the URL.""" ""
         RemoteReader = download_loader("RemoteReader")
