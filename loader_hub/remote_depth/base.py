@@ -24,6 +24,7 @@ class RemoteDepthReader(BaseReader):
 
         self.file_extractor = file_extractor
         self.depth = depth
+        self.domain_lock = domain_lock
         print("***** I am loading *****")
         print(str(domain_lock))
 
