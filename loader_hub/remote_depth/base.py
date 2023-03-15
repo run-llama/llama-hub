@@ -41,13 +41,16 @@ class RemoteDepthReader(BaseReader):
             urls[i] = []
             new_links = []
             print(f"Reading linkss at depth {i}...")
-            for link in tqdm(links):
-                if link in links_visited:
-                    continue
-                if link:
-                    urls[i].append(link)
-                    new_links.extend(self.get_links(link))
-                links_visited.append(link)
+            for link in tqdm(links):]
+                print(link)
+                pprint(url)
+                if (self.domainlock && link>url):
+                    if link in links_visited:
+                        continue
+                    if link:
+                        urls[i].append(link)
+                        new_links.extend(self.get_links(link))
+                    links_visited.append(link)
             new_links = list(set(new_links))
             links = new_links
         print(f"Found {len(urls)} links at depth {self.depth}.")
