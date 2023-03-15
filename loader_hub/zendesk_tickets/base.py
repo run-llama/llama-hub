@@ -1,10 +1,5 @@
 """Zendesk reader."""
-import re
-from zenpy import Zenpy
-from bs4 import BeautifulSoup
-import json
 from typing import List
-
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -30,6 +25,8 @@ class ZendeskTicketReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
+        import re
+        from zenpy import Zenpy
         from bs4 import BeautifulSoup
         # Liste der bekannten Grußformeln
         greeting_regex = r"(Mit freundlichen Grüßen|Freundliche Grüße|Beste Grüße|Viele Grüße|Herzliche Grüße|Liebe Grüße|Alles Gute|Bis bald|Bis später|Bis zum nächsten Mal|Mit besten Grüßen|lg\n|Gruß|Grüße)"
@@ -65,35 +62,3 @@ class ZendeskTicketReader(BaseReader):
             )
 
         return results
-
-    def get_all_articles(self):
-        articles = []
-        next_page = None
-
-        while True:
-            response = self.get_articles_page(next_page)
-            articles.extend(response["articles"])
-            next_page = response["next_page"]
-
-            if next_page is None:
-                break
-
-        return articles
-
-    def get_articles_page(self, next_page: str = None):
-        import requests
-
-        if next_page is None:
-            url = f"https://{self.zendesk_subdomain}.zendesk.com/api/v2/help_center/articles?per_page=100"
-        else:
-            url = next_page
-
-        response = requests.get(url)
-
-        response_json = json.loads(response.text)
-
-        next_page = response_json.get("next_page", None)
-
-        articles = response_json.get("articles", [])
-
-        return {"articles": articles, "next_page": next_page}
