@@ -25,7 +25,7 @@ class RemoteDepthReader(BaseReader):
         self.file_extractor = file_extractor
         self.depth = depth
         print("***** I am loading *****")
-        print(domain_lock)
+        print(str(domain_lock))
 
     def load_data(self, url: str) -> List[Document]:
         from tqdm.auto import tqdm
