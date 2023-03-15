@@ -1,0 +1,2 @@
+beautifulsoup4==4.11.1
+zenpy==2.0.25
