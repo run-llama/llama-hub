@@ -44,7 +44,7 @@ class RemoteDepthReader(BaseReader):
                 print(link)
                 print(url)
                 """Checking if the link belongs the provided domain. """
-                if (self.domain_lock and link>url):
+                if (domain_lock and link>url):
                     if link in links_visited:
                         continue
                     if link:
