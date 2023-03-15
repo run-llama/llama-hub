@@ -27,8 +27,6 @@ class RemoteDepthReader(BaseReader):
 
     def load_data(self, url: str) -> List[Document]:
         from tqdm.auto import tqdm
-        print("***** I am loading *****")
-        print(str(self.domain_lock))
 
         """Parse whatever is at the URL.""" ""
         RemoteReader = download_loader("RemoteReader")
