@@ -16,7 +16,7 @@ class RemoteDepthReader(BaseReader):
         *args: Any,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         depth: int = 1,
-        domain_lock: bool=False,
+        domain_lock: bool = False,
         **kwargs: Any,
     ) -> None:
         """Init params."""
