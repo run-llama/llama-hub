@@ -20,10 +20,8 @@ class RemoteDepthReader(BaseReader):
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
-
         self.file_extractor = file_extractor
         self.depth = depth
-        self.domain_lock = domain_lock
 
     def load_data(self, url: str, domain_lock: bool=False) -> List[Document]:
         from tqdm.auto import tqdm
