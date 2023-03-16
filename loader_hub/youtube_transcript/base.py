@@ -12,9 +12,9 @@ class YoutubeTranscriptReader(BaseReader):
     @staticmethod
     def _extract_video_id(yt_link) -> Optional[str]:
         # regular expressions to match the different syntax of YouTube links
-        patterns = [r'^https?://(?:www\.)?youtube\.com/watch\?v=(\w+)',
-                    r'^https?://(?:www\.)?youtube\.com/embed/(\w+)',
-                    r'^https?://youtu\.be/(\w+)',]  # youtu.be does not use www
+        patterns = [r'^https?://(?:www\.)?youtube\.com/watch\?v=([\w-]+)',
+                    r'^https?://(?:www\.)?youtube\.com/embed/([\w-]+)',
+                    r'^https?://youtu\.be/([\w-]+)',]  # youtu.be does not use www
 
         for pattern in patterns:
             match = re.search(pattern, yt_link)
