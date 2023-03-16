@@ -131,7 +131,8 @@ class GmailReader(BaseReader, BaseModel):
         body_text = ''
         if mime_msg.get_content_type() == 'text/plain':
             plain_text = mime_msg.get_payload(decode=True)
-            body_text = plain_text.decode('UTF-8')
+            charset = mime_msg.get_content_charset('utf-8')
+            body_text = plain_text.decode(charset).encode('utf-8').decode('utf-8')
             
         elif mime_msg.get_content_maintype() == 'multipart':
             msg_parts = mime_msg.get_payload()
