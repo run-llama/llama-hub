@@ -19,7 +19,7 @@ class GmailReader(BaseReader, BaseModel):
         max_results (int): Max number of results. Defaults to 10.
     """
     query: str = None
-    use_iterative_parser: bool = False
+    use_iterative_parser: bool = True
     max_results: int = 10
     service: Any
 
