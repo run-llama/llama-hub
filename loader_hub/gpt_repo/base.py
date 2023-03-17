@@ -38,20 +38,23 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-def get_ignore_list(ignore_file_path):
+def get_ignore_list(ignore_file_path) -> List[str]:
     ignore_list = []
     with open(ignore_file_path, 'r') as ignore_file:
         for line in ignore_file:
             ignore_list.append(line.strip())
     return ignore_list
 
-def should_ignore(file_path, ignore_list):
+def should_ignore(file_path, ignore_list) -> bool:
     for pattern in ignore_list:
         if fnmatch.fnmatch(file_path, pattern):
             return True
     return False
 
-def process_repository(repo_path, ignore_list, output_text):
+def process_repository(repo_path, ignore_list, concatenate: bool = False) -> List[str]:
+    """Process repository."""
+    result_texts = []
+    result_text = ""
     for root, _, files in os.walk(repo_path):
         for file in files:
             file_path = os.path.join(root, file)
@@ -60,9 +63,18 @@ def process_repository(repo_path, ignore_list, output_text):
             if not should_ignore(relative_file_path, ignore_list):
                 with open(file_path, 'r', errors='ignore') as file:
                     contents = file.read()
-                output_text.write("-" * 4 + "\n")
-                output_text.write(f"{relative_file_path}\n")
-                output_text.write(f"{contents}\n")
+                result_text += "-" * 4 + "\n"
+                result_text += f"{relative_file_path}\n"
+                result_text += f"{contents}\n"
+                if not concatenate:
+                    result_texts.append(result_text)
+                    result_text = ""
+
+    if concatenate:
+        result_texts.append(result_text)
+
+    return result_texts
+
 
 class GPTRepoReader(BaseReader):
     """GPTRepoReader.
@@ -70,11 +82,14 @@ class GPTRepoReader(BaseReader):
     Reads a github repo in a prompt-friendly format.
 
     """
+    def __init__(self, concatenate: bool = False) -> None:
+        """Initialize."""
+        self.concatenate = concatenate
 
     def load_data(
         self, 
         repo_path: str, 
-        preamble_file: Optional[str] = None
+        preamble_str: Optional[str] = None
     ) -> List[Document]:
         """Load data from the input directory.
 
@@ -90,11 +105,9 @@ class GPTRepoReader(BaseReader):
             ignore_list = []
 
         output_text = ""
-        if preamble_file:
-            with open(preamble_file, 'r') as pf:
-                preamble_text = pf.read()
-                output_text += f"{preamble_text}\n"
-        else:
+        if preamble_str:
+            output_text += f"{preamble_str}\n"
+        elif self.concatenate:
             output_text += (
                 "The following text is a Git repository with code. "
                 "The structure of the text are sections that begin with ----, "
@@ -105,7 +118,27 @@ class GPTRepoReader(BaseReader):
                 "--END-- are meant to be interpreted as instructions using the "
                 "aforementioned Git repository as context.\n"
             )
-        process_repository(repo_path, ignore_list, output_text)
-        output_text += "--END--\n"
+        else:
+            # self.concatenate is False
+            output_text += (
+                "The following text is a file in a Git repository. "
+                "The structure of the text are sections that begin with ----, "
+                "followed by a single line containing the file path and file "
+                "name, followed by a variable amount of lines containing the "
+                "file contents. The text representing the file ends "
+                "when the symbols --END-- are encounted. Any further text beyond "
+                "--END-- are meant to be interpreted as instructions using the "
+                "aforementioned file as context.\n"
+            )
+        text_list = process_repository(
+            repo_path, 
+            ignore_list, 
+            concatenate=self.concatenate
+        )
+        docs = []
+        for text in text_list:
+            doc_text = output_text + text + "\n--END--\n"
+            docs.append(Document(doc_text))
 
-        return [Document(output_text)]
+        return docs
+
