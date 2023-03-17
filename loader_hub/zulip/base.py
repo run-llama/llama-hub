@@ -23,16 +23,32 @@ class ZulipReader(BaseReader):
         # Initialize Zulip client here with provided parameters
         self.client = zulip.Client(api_key=zulip_token, email=zulip_email, site=zulip_domain)
 
-    def _read_message(self, stream_id: str, message_id: str) -> str:
-        """Read a message."""
-        # Read message logic here
-        message = self.client.get_message(message_id)
-        return message["content"]
+    def _get_stream_name(self, stream_id: str) -> str:
+        """Retrieve the stream name given a stream ID."""
+        streams_data = self.client.get_streams()["streams"]
+        stream_name = None
+        for stream in streams_data:
+            if str(stream["stream_id"]) == stream_id:
+                stream_name = stream["name"]
+                break
+        if stream_name is None:
+            raise ValueError(f"Stream with ID {stream_id} not found.")
+
+        return stream_name
 
     def _read_stream(self, stream_id: str, reverse_chronological: bool) -> str:
         """Read a stream."""
         # Read stream logic here
-        messages = self.client.get_messages({"stream_id": stream_id, "num_before": 100})
+        stream_name = self._get_stream_name(stream_id)
+
+        params = {
+            "narrow": [{"operator": "stream", "operand": stream_name}],
+            "anchor": "newest",
+            "num_before": 100,
+            "num_after": 0,
+        }
+        response = self.client.get_messages(params)
+        messages = response["messages"]
         if reverse_chronological:
             messages.reverse()
         return " ".join([message["content"] for message in messages])
