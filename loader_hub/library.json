@@ -338,6 +338,10 @@
     "author": "douglas-reid",
     "keywords": ["steamship"]
   },
+  "GPTRepoReader": {
+    "id": "gpt_repo",
+    "author": "mpoon"
+  },
   "AirtableReader": {
     "id": "airtable",
     "author": "smyja"
