@@ -55,6 +55,8 @@ class SlackReader(BaseReader):
                 self.latest_date_timestamp = latest_date.timestamp()
             else:
                 self.latest_date_timestamp = datetime.now().timestamp()
+        else:
+            self.earliest_date_timestamp = None
         res = self.client.api_test()
         if not res["ok"]:
             raise ValueError(f"Error initializing Slack API: {res['error']}")

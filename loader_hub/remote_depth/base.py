@@ -16,13 +16,14 @@ class RemoteDepthReader(BaseReader):
         *args: Any,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         depth: int = 1,
+        domain_lock: bool = False,
         **kwargs: Any,
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
-
         self.file_extractor = file_extractor
         self.depth = depth
+        self.domain_lock = domain_lock
 
     def load_data(self, url: str) -> List[Document]:
         from tqdm.auto import tqdm
@@ -39,12 +40,17 @@ class RemoteDepthReader(BaseReader):
             new_links = []
             print(f"Reading links at depth {i}...")
             for link in tqdm(links):
-                if link in links_visited:
-                    continue
-                if link:
-                    urls[i].append(link)
-                    new_links.extend(self.get_links(link))
-                links_visited.append(link)
+                """Checking if the link belongs the provided domain. """
+                if ((self.domain_lock and link.find(url)>-1) or (not self.domain_lock)):
+                    print("Loading link: " + link)
+                    if link in links_visited:
+                        continue
+                    if link:
+                        urls[i].append(link)
+                        new_links.extend(self.get_links(link))
+                    links_visited.append(link)
+                else:
+                    print("Link ignored: " +link)
             new_links = list(set(new_links))
             links = new_links
         print(f"Found {len(urls)} links at depth {self.depth}.")

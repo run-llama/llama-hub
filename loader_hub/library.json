@@ -341,5 +341,9 @@
   "GPTRepoReader": {
     "id": "gpt_repo",
     "author": "mpoon"
+  },
+  "AirtableReader": {
+    "id": "airtable",
+    "author": "smyja"
   }
 }
