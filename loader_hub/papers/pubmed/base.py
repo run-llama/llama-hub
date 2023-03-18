@@ -102,7 +102,7 @@ class PubmedReader(BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
-        from datetime import datetime
+        import time
         import xml.etree.ElementTree as xml
 
         import requests
@@ -146,8 +146,9 @@ class PubmedReader(BaseReader):
                             "text": raw_text,
                         }
                     )
+                    time.sleep(1)  # API rate limits
                 except Exception as e:
-                    print(e)
+                    print(f"Unable to parse PMC{_id} or it does not exist:", e)
                     pass
 
         # Then get documents from Pubmed text, which includes abstracts
