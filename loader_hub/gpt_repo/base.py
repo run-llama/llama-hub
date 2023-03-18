@@ -31,19 +31,19 @@ SOFTWARE.
 #!/usr/bin/env python3
 
 import os
-import sys
 import fnmatch
-from typing import List, Any, Optional
+from typing import List, Optional
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
 def get_ignore_list(ignore_file_path) -> List[str]:
     ignore_list = []
-    with open(ignore_file_path, 'r') as ignore_file:
+    with open(ignore_file_path, "r") as ignore_file:
         for line in ignore_file:
             ignore_list.append(line.strip())
     return ignore_list
+
 
 def should_ignore(file_path, ignore_list) -> bool:
     for pattern in ignore_list:
@@ -51,7 +51,13 @@ def should_ignore(file_path, ignore_list) -> bool:
             return True
     return False
 
-def process_repository(repo_path, ignore_list, concatenate: bool = False) -> List[str]:
+
+def process_repository(
+    repo_path,
+    ignore_list,
+    concatenate: bool = False,
+    extensions: Optional[List[str]] = None,
+) -> List[str]:
     """Process repository."""
     result_texts = []
     result_text = ""
@@ -60,8 +66,14 @@ def process_repository(repo_path, ignore_list, concatenate: bool = False) -> Lis
             file_path = os.path.join(root, file)
             relative_file_path = os.path.relpath(file_path, repo_path)
 
-            if not should_ignore(relative_file_path, ignore_list):
-                with open(file_path, 'r', errors='ignore') as file:
+            _, file_ext = os.path.splitext(file_path)
+            is_correct_extension = extensions is None or file_ext in extensions
+
+            if (
+                not should_ignore(relative_file_path, ignore_list)
+                and is_correct_extension
+            ):
+                with open(file_path, "r", errors="ignore") as file:
                     contents = file.read()
                 result_text += "-" * 4 + "\n"
                 result_text += f"{relative_file_path}\n"
@@ -82,14 +94,16 @@ class GPTRepoReader(BaseReader):
     Reads a github repo in a prompt-friendly format.
 
     """
+
     def __init__(self, concatenate: bool = False) -> None:
         """Initialize."""
         self.concatenate = concatenate
 
     def load_data(
-        self, 
-        repo_path: str, 
-        preamble_str: Optional[str] = None
+        self,
+        repo_path: str,
+        preamble_str: Optional[str] = None,
+        extensions: Optional[List[str]] = None,
     ) -> List[Document]:
         """Load data from the input directory.
 
@@ -131,9 +145,7 @@ class GPTRepoReader(BaseReader):
                 "aforementioned file as context.\n"
             )
         text_list = process_repository(
-            repo_path, 
-            ignore_list, 
-            concatenate=self.concatenate
+            repo_path, ignore_list, concatenate=self.concatenate, extensions=extensions
         )
         docs = []
         for text in text_list:
@@ -141,4 +153,3 @@ class GPTRepoReader(BaseReader):
             docs.append(Document(doc_text))
 
         return docs
-
