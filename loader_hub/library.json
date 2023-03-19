@@ -345,5 +345,10 @@
   "AirtableReader": {
     "id": "airtable",
     "author": "smyja"
+  },
+  "HatenaBlogReader": {
+    "id": "hatena_blog",
+    "author": "Shoya SHIRAKI",
+    "keywords": ["hatena", "blog"]
   }
 }
