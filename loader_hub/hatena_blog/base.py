@@ -1,20 +1,21 @@
 """Hatena Blog reader."""
 
-from typing import List
+from typing import List, Dict
+from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 ATOM_PUB_ENTRY_URL = '{root_endpoint}/entry'
 
 
-class Article():
+class Article:
     def __init__(self) -> None:
         self.title = ''
         self.content = ''
         self.published = ''
 
 
-class HatenaBlogReader():
-    """Hatena Blog reader
+class HatenaBlogReader(BaseReader):
+    """Hatena Blog reader.
 
     Args:
         root_endpoint (str): AtomPub root endpoint.
@@ -51,7 +52,7 @@ class HatenaBlogReader():
 
         return articles
 
-    def get_articles(self, url: str):
+    def get_articles(self, url: str) -> Dict:
         import requests
         from requests.auth import HTTPBasicAuth
         from bs4 import BeautifulSoup
