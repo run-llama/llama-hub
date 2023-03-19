@@ -86,6 +86,33 @@ def _readmedocs_reader(soup: Any, url: str, include_url_in_text: bool = True) ->
         texts.append("\n".join([t for t in text.split("\n") if t]))
     return "\n".join(texts), {}
 
+def _gitbook_reader(soup: Any, url: str, include_url_in_text: bool = True) -> Tuple[str, Dict[str, Any]]:
+    """Extract text from a ReadMe documentation site"""
+    import requests
+    from bs4 import BeautifulSoup
+
+    links = soup.find_all("a")
+    docs_links = [link["href"] for link in links if "/docs/" in link["href"]]
+    docs_links = list(set(docs_links))
+    for i in range(len(docs_links)):
+        if not docs_links[i].startswith("http"):
+            docs_links[i] = urljoin(url, docs_links[i])
+
+    texts = []
+    for doc_link in docs_links:
+        page_link = requests.get(doc_link)
+        soup = BeautifulSoup(page_link.text, "html.parser")
+        try:
+            text = ""
+            text = soup.find("main")
+            clean_text = clean_text = ", ".join([tag.get_text() for tag in text])
+        except IndexError:
+            text = None
+            logger.error(f"Could not extract text from {doc_link}")
+            continue
+        texts.append(clean_text)
+    return "\n".join(texts), {}
+
 
 DEFAULT_WEBSITE_EXTRACTOR: Dict[
     str, Callable[[Any, str], Tuple[str, Dict[str, Any]]]
@@ -93,6 +120,7 @@ DEFAULT_WEBSITE_EXTRACTOR: Dict[
     "substack.com": _substack_reader,
     "readthedocs.io": _readthedocs_reader,
     "readme.com": _readmedocs_reader,
+    "gitbook.io": _gitbook_reader,
 }
 
 
