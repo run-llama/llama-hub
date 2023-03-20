@@ -4,14 +4,14 @@ This loader fetches the text from Zendesk help articles using the Zendesk API. I
 
 ## Usage
 
-To use this loader, you need to pass in the subdomain of a Zendesk account. No authentication is required.
+To use this loader, you need to pass in the subdomain of a Zendesk account. No authentication is required. You can also set the locale of articles as needed.
 
 ```python
 from llama_index import download_loader
 
 ZendeskReader = download_loader("ZendeskReader")
 
-loader = ZendeskReader(zendesk_subdomain="my_subdomain")
+loader = ZendeskReader(zendesk_subdomain="my_subdomain", locale="en-us")
 documents = loader.load_data()
 ```
 
