@@ -11,11 +11,13 @@ class ZendeskReader(BaseReader):
 
     Args:
         zendesk_subdomain (str): Zendesk subdomain
+        locale (str): Locale of articles
     """
 
-    def __init__(self, zendesk_subdomain: str) -> None:
+    def __init__(self, zendesk_subdomain: str, locale: str = "en-us") -> None:
         """Initialize Zendesk reader."""
         self.zendesk_subdomain = zendesk_subdomain
+        self.locale = locale
 
     def load_data(self) -> List[Document]:
         """Load data from the workspace.
@@ -68,7 +70,7 @@ class ZendeskReader(BaseReader):
         import requests
 
         if next_page is None:
-            url = f"https://{self.zendesk_subdomain}.zendesk.com/api/v2/help_center/en-us/articles?per_page=100"
+            url = f"https://{self.zendesk_subdomain}.zendesk.com/api/v2/help_center/{self.locale}/articles?per_page=100"
         else:
             url = next_page
 
