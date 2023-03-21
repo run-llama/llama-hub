@@ -206,6 +206,7 @@ class GoogleDriveReader(BaseReader):
                     fileid = fileid_meta[0]
                     final_filepath = self._download_file(fileid, filepath)
                     metadata[final_filepath] = {
+                        "file id": fileid_meta[0],
                         "author": fileid_meta[1],
                         "file name": fileid_meta[2],
                         "created at": fileid_meta[3],
