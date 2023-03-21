@@ -43,6 +43,7 @@ This loader designed to be used as a way to load data into [Llama Index](https:/
 ```python
 import pickle
 import os
+from llama_index import GPTSimpleVectorIndex
 
 assert (
     os.getenv("OPENAI_API_KEY") is not None
