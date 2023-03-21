@@ -6,7 +6,7 @@ the corresponding Document objects, if both are specified the union of both sets
 
 ## Usage
 
-Here's an example usage of the NotionPageReader.
+Here's an example usage of the ConfluenceReader.
 
 ```python
 from llama_index import download_loader

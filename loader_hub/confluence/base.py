@@ -45,7 +45,7 @@ class ConfluenceReader(BaseReader):
 
         self.confluence = Confluence(url=base_url, username=user_name, password=api_token, cloud=True)
 
-    def load_data(self, space_id: Optional[str] = None, page_ids: Optional[List[str]] = []) -> List[Document]:
+    def load_data(self, space_id: Optional[str] = None, page_ids: Optional[List[str]] = None) -> List[Document]:
         """Load data from the confluence instance.
 
         Args:
@@ -64,6 +64,7 @@ class ConfluenceReader(BaseReader):
         except ImportError:
             raise ImportError("`html2text` package not found, please run `pip install html2text`")
 
+        page_ids = page_ids or []
         if not space_id and len(page_ids) == 0:
             raise ValueError("Must specify either `space_id` or `page_ids` or both.")
 
