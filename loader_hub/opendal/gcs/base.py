@@ -17,7 +17,7 @@ class OpendalGcsReader(BaseReader):
     def __init__(
         self,
         bucket: str,
-        path: Optional[str] = None,
+        path: str = "/",
         endpoint: Optional[str] = None,
         credentials: Optional[str] = None,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
@@ -28,7 +28,7 @@ class OpendalGcsReader(BaseReader):
 
         Args:
         bucket (str): the name of your gcs bucket
-        path (Optional[str]): the path of the data. If none is provided,
+        path (str): the path of the data. If none is provided,
             this loader will iterate through the entire bucket. If path is endswith `/`, this loader will iterate through the entire dir. Otherwise, this loeader will load the file.
         endpoint Optional[str]: the endpoint of the azblob service.
         credentials (Optional[str]): provide credential string for GCS OAuth2 directly.

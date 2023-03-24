@@ -17,7 +17,7 @@ class OpendalS3Reader(BaseReader):
     def __init__(
         self,
         bucket: str,
-        path: Optional[str] = None,
+        path: str = "/",
         endpoint: Optional[str] = None,
         region: Optional[str] = None,
         access_key_id: Optional[str] = None,
@@ -30,7 +30,7 @@ class OpendalS3Reader(BaseReader):
 
         Args:
         bucket (str): the name of your S3 bucket
-        path (Optional[str]): the path of the data. If none is provided,
+        path (str): the path of the data. If none is provided,
             this loader will iterate through the entire bucket. If path is endswith `/`, this loader will iterate through the entire dir. Otherwise, this loeader will load the file.
         endpoint Optional[str]: the endpoint of the S3 service.
         region: Optional[str]: the region of the S3 service.

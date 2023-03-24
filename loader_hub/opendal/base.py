@@ -20,7 +20,7 @@ class OpendalReader(BaseReader):
     def __init__(
         self,
         scheme: str,
-        path: Optional[str] = None,
+        path: str = "/",
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         **kwargs,
     ) -> None:
@@ -29,7 +29,7 @@ class OpendalReader(BaseReader):
 
         Args:
         scheme (str): the scheme of the service
-        path (Optional[str]): the path of the data. If none is provided,
+        path (str): the path of the data. If none is provided,
             this loader will iterate through the entire bucket. If path is endswith `/`, this loader will iterate through the entire dir. Otherwise, this loeader will load the file.
         file_extractor (Optional[Dict[str, BaseParser]]): A mapping of file
             extension to a BaseParser class that specifies how to convert that file

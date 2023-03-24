@@ -17,7 +17,7 @@ class OpendalAzblobReader(BaseReader):
     def __init__(
         self,
         container: str,
-        path: Optional[str] = None,
+        path: str = "/",
         endpoint: Optional[str] = None,
         account_name: Optional[str] = None,
         account_key: Optional[str] = None,
@@ -29,7 +29,7 @@ class OpendalAzblobReader(BaseReader):
 
         Args:
         container (str): the name of your azblob bucket
-        path (Optional[str]): the path of the data. If none is provided,
+        path (str): the path of the data. If none is provided,
             this loader will iterate through the entire bucket. If path is endswith `/`, this loader will iterate through the entire dir. Otherwise, this loeader will load the file.
         endpoint Optional[str]: the endpoint of the azblob service.
         account_name (Optional[str]): provide azblob access key directly.
