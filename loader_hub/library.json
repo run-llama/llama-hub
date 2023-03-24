@@ -410,5 +410,13 @@
       "storage",
       "gcs"
     ]
+  },
+  "ConfluenceReader": {
+    "id": "confluence",
+    "author": "zywilliamli"
+  },
+  "ChatGPTRetrievalPluginReader": {
+    "id": "chatgpt_plugin",
+    "author": "jerryjliu"
   }
 }
