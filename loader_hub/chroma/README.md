@@ -1,7 +1,7 @@
 # Chroma Loader
 
 The Chroma Loader returns a set of texts corresponding to embeddings retrieved from a Chroma Index.
-The user initializes the loader with a Qdrant index. They then pass in a query vector.
+The user initializes the loader with a Chroma index. They then pass in a query vector.
 
 ## Usage
 
