@@ -13,6 +13,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 import opendal
 
+
 class OpendalReader(BaseReader):
     """General reader for any opendal operator."""
 
@@ -49,8 +50,7 @@ class OpendalReader(BaseReader):
             if not self.path.endswith("/"):
                 asyncio.run(download_file_from_opendal(self.op, temp_dir, self.path))
             else:
-                for obj in self.op.scan(self.path):
-                    asyncio.run(download_file_from_opendal(self.op, temp_dir, obj.path))
+                asyncio.run(download_dir_from_opendal(self.op, temp_dir, self.path))
 
             SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
             loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor)
@@ -71,3 +71,10 @@ async def download_file_from_opendal(
             w.write(await r.read())
 
     return filepath
+
+
+async def download_dir_from_opendal(
+    op: opendal.AsyncOperator, temp_dir: str, dir: str
+) -> str:
+    for obj in await op.scan(dir):
+        await download_file_from_opendal(op, temp_dir, obj.path)
