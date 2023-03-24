@@ -350,5 +350,13 @@
     "id": "hatena_blog",
     "author": "Shoya SHIRAKI",
     "keywords": ["hatena", "blog"]
+  },
+  "ConfluenceReader": {
+    "id": "confluence",
+    "author": "zywilliamli"
+  },
+  "ChatGPTRetrievalPluginReader": {
+    "id": "chatgpt_plugin",
+    "author": "jerryjliu"
   }
 }
