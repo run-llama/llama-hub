@@ -22,6 +22,7 @@ class OpendalReader(BaseReader):
         scheme: str,
         path: Optional[str] = None,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
+        **kwargs,
     ) -> None:
         """Initialize opendal operator, along with credentials if needed.
 
