@@ -75,5 +75,5 @@ async def download_file_from_opendal(
 async def download_dir_from_opendal(
     op: opendal.AsyncOperator, temp_dir: str, dir: str
 ) -> str:
-    for obj in await op.scan(dir):
+    async for obj in await op.scan(dir):
         await download_file_from_opendal(op, temp_dir, obj.path)
