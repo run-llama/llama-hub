@@ -65,7 +65,7 @@ async def download_file_from_opendal(
     suffix = Path(path).suffix
     filepath = f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
 
-    with op.open_reader(path) as r:
+    async with op.open_reader(path) as r:
         with open(filepath, "wb") as w:
             w.write(await r.read())
 
