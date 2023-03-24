@@ -16,7 +16,6 @@ class OpendalS3Reader(BaseReader):
 
     def __init__(
         self,
-        *args: Any,
         bucket: str,
         path: Optional[str] = None,
         endpoint: Optional[str] = None,
@@ -24,7 +23,6 @@ class OpendalS3Reader(BaseReader):
         access_key_id: Optional[str] = None,
         secret_access_key: Optional[str] = None,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
-        **kwargs: Any,
     ) -> None:
         """Initialize S3 bucket and key, along with credentials if needed.
 

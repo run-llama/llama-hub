@@ -19,11 +19,9 @@ class OpendalReader(BaseReader):
 
     def __init__(
         self,
-        *args: Any,
         scheme: str,
         path: Optional[str] = None,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
-        **kwargs: Any,
     ) -> None:
         """Initialize opendal operator, along with credentials if needed.
 

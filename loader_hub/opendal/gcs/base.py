@@ -16,13 +16,11 @@ class OpendalGcsReader(BaseReader):
 
     def __init__(
         self,
-        *args: Any,
         bucket: str,
         path: Optional[str] = None,
         endpoint: Optional[str] = None,
         credentials: Optional[str] = None,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
-        **kwargs: Any,
     ) -> None:
         """Initialize Gcs container, along with credentials if needed.
 

@@ -16,14 +16,12 @@ class OpendalAzblobReader(BaseReader):
 
     def __init__(
         self,
-        *args: Any,
         container: str,
         path: Optional[str] = None,
         endpoint: Optional[str] = None,
         account_name: Optional[str] = None,
         account_key: Optional[str] = None,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
-        **kwargs: Any,
     ) -> None:
         """Initialize Azblob container, along with credentials if needed.
 
