@@ -41,7 +41,7 @@ class OpendalAzblobReader(BaseReader):
             to text. See `SimpleDirectoryReader` for more details.
 
         """
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
         self.path = path
         self.file_extractor = file_extractor

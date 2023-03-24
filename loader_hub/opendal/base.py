@@ -36,7 +36,7 @@ class OpendalReader(BaseReader):
             extension to a BaseParser class that specifies how to convert that file
             to text. See `SimpleDirectoryReader` for more details.
         """
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
         self.path = path
         self.file_extractor = file_extractor
