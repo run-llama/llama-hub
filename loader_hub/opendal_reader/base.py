@@ -5,13 +5,12 @@ A loader that fetches a file or iterates through a directory on AWS S3 or other 
 """
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, cast
 import asyncio
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import opendal
 
 
 class OpendalReader(BaseReader):
@@ -35,6 +34,8 @@ class OpendalReader(BaseReader):
             extension to a BaseParser class that specifies how to convert that file
             to text. See `SimpleDirectoryReader` for more details.
         """
+        import opendal
+
         super().__init__()
 
         self.path = path
@@ -58,9 +59,11 @@ class OpendalReader(BaseReader):
 
 
 async def download_file_from_opendal(
-    op: opendal.AsyncOperator, temp_dir: str, path: str
+    op: Any, temp_dir: str, path: str
 ) -> str:
     """Download file from OpenDAL."""
+    import opendal
+    op = cast(opendal.AsyncOperator, op)
 
     suffix = Path(path).suffix
     filepath = f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
@@ -73,7 +76,11 @@ async def download_file_from_opendal(
 
 
 async def download_dir_from_opendal(
-    op: opendal.AsyncOperator, temp_dir: str, dir: str
+    op: Any, temp_dir: str, dir: str
 ) -> str:
+    """Download directory from opendal."""
+
+    import opendal
+    op = cast(opendal.AsyncOperator, op)
     async for obj in await op.scan(dir):
         await download_file_from_opendal(op, temp_dir, obj.path)

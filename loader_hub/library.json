@@ -381,14 +381,14 @@
     ]
   },
   "OpendalReader": {
-    "id": "opendal",
+    "id": "opendal_reader",
     "author": "OpenDAL Contributors",
     "keywords": [
       "storage"
     ]
   },
   "OpendalS3Reader": {
-    "id": "opendal/s3",
+    "id": "opendal_reader/s3",
     "author": "OpenDAL Contributors",
     "keywords": [
       "storage",
@@ -396,7 +396,7 @@
     ]
   },
   "OpendalAzblobReader": {
-    "id": "opendal/azblob",
+    "id": "opendal_reader/azblob",
     "author": "OpenDAL Contributors",
     "keywords": [
       "storage",
@@ -404,7 +404,7 @@
     ]
   },
   "OpendalGcsReader": {
-    "id": "opendal/gcs",
+    "id": "opendal_reader/gcs",
     "author": "OpenDAL Contributors",
     "keywords": [
       "storage",
