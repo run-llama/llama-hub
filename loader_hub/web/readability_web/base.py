@@ -44,7 +44,8 @@ class ReadabilityWebPageReader(BaseReader):
 
     def __init__(self, proxy: Optional[str] = None, wait_until: Optional[
             Literal["commit", "domcontentloaded", "load", "networkidle"]
-        ] = "domcontentloaded", text_splitter: TextSplitter = None,
+        ] = "domcontentloaded", 
+        text_splitter: Optional[TextSplitter] = None,
         normalize: Optional[Callable[[str], str]] = nfkc_normalize
     ) -> None:
         self._launch_options = {
@@ -87,7 +88,8 @@ class ReadabilityWebPageReader(BaseReader):
                 "siteName",
             ]}
 
-            article["textContent"] = self._normalize(article["textContent"])
+            if self._normalize is not None:
+                article["textContent"] = self._normalize(article["textContent"])
             texts = []
             if self._text_splitter is not None:
                 texts = self._text_splitter.split_text(article["textContent"])
