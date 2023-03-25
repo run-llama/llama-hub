@@ -302,12 +302,22 @@
   "RDFReader": {
     "id": "file/rdf",
     "author": "mommi84",
-    "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
+    "keywords": [
+      "rdf",
+      "n-triples",
+      "graph",
+      "knowledge graph"
+    ]
   },
   "ReadwiseReader": {
     "id": "readwise",
     "author": "alexbowe",
-    "keywords": ["readwise", "highlights", "reading", "pkm"]
+    "keywords": [
+      "readwise",
+      "highlights",
+      "reading",
+      "pkm"
+    ]
   },
   "PandasExcelReader": {
     "id": "file/pandas_excel",
@@ -316,27 +326,43 @@
   "ZendeskReader": {
     "id": "zendesk",
     "author": "bbornsztein",
-    "keywords": ["zendesk", "knowledge base", "help center"]
+    "keywords": [
+      "zendesk",
+      "knowledge base",
+      "help center"
+    ]
   },
   "IntercomReader": {
     "id": "intercom",
     "author": "bbornsztein",
-    "keywords": ["intercom", "knowledge base", "help center"]
+    "keywords": [
+      "intercom",
+      "knowledge base",
+      "help center"
+    ]
   },
   "WordpressReader": {
     "id": "wordpress",
     "author": "bbornsztein",
-    "keywords": ["wordpress", "blog"]
+    "keywords": [
+      "wordpress",
+      "blog"
+    ]
   },
   "GmailReader": {
     "id": "gmail",
     "author": "bbornsztein",
-    "keywords": ["gmail", "email"]
+    "keywords": [
+      "gmail",
+      "email"
+    ]
   },
- "SteamshipFileReader": {
+  "SteamshipFileReader": {
     "id": "steamship",
     "author": "douglas-reid",
-    "keywords": ["steamship"]
+    "keywords": [
+      "steamship"
+    ]
   },
   "GPTRepoReader": {
     "id": "gpt_repo",
@@ -349,7 +375,41 @@
   "HatenaBlogReader": {
     "id": "hatena_blog",
     "author": "Shoya SHIRAKI",
-    "keywords": ["hatena", "blog"]
+    "keywords": [
+      "hatena",
+      "blog"
+    ]
+  },
+  "OpendalReader": {
+    "id": "opendal_reader",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage"
+    ]
+  },
+  "OpendalS3Reader": {
+    "id": "opendal_reader/s3",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage",
+      "s3"
+    ]
+  },
+  "OpendalAzblobReader": {
+    "id": "opendal_reader/azblob",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage",
+      "azblob"
+    ]
+  },
+  "OpendalGcsReader": {
+    "id": "opendal_reader/gcs",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage",
+      "gcs"
+    ]
   },
   "ConfluenceReader": {
     "id": "confluence",
