@@ -1,8 +1,10 @@
-from typing import Dict, List, Literal, Optional, Any, cast
+from typing import Callable, Dict, List, Literal, Optional, Any, cast
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+from llama_index.langchain_helpers.text_splitter import TextSplitter
 
+import unicodedata
 
 from pathlib import Path
 path = Path(__file__).parent / "Readability.js"
@@ -21,6 +23,8 @@ inject_readability = f"""
     }}())
 """
 
+def nfkc_normalize(text: str) -> str:
+    return unicodedata.normalize('NFKC', text)
 
 class ReadabilityWebPageReader(BaseReader):
     """Readability Webpage Loader
@@ -34,11 +38,16 @@ class ReadabilityWebPageReader(BaseReader):
     Args:
         proxy (Optional[str], optional): Proxy server. Defaults to None.
         wait_until (Optional[Literal["commit", "domcontentloaded", "load", "networkidle"]], optional): Wait until the page is loaded. Defaults to "domcontentloaded".
+        text_splitter (TextSplitter, optional): Text splitter. Defaults to None.
+        normalizer (Optional[Callable[[str], str]], optional): Text normalizer. Defaults to nfkc_normalize.
     """
 
     def __init__(self, proxy: Optional[str] = None, wait_until: Optional[
             Literal["commit", "domcontentloaded", "load", "networkidle"]
-        ] = "domcontentloaded") -> None:
+        ] = "domcontentloaded", 
+        text_splitter: Optional[TextSplitter] = None,
+        normalize: Optional[Callable[[str], str]] = nfkc_normalize
+    ) -> None:
         self._launch_options = {
             "headless": True,
         }
@@ -47,6 +56,8 @@ class ReadabilityWebPageReader(BaseReader):
             self._launch_options["proxy"] = {
                 "server": proxy,
             }
+        self._text_splitter = text_splitter
+        self._normalize = normalize
 
     def load_data(self, url: str) -> List[Document]:
         """render and load data content from url.
@@ -77,9 +88,17 @@ class ReadabilityWebPageReader(BaseReader):
                 "siteName",
             ]}
 
+            if self._normalize is not None:
+                article["textContent"] = self._normalize(article["textContent"])
+            texts = []
+            if self._text_splitter is not None:
+                texts = self._text_splitter.split_text(article["textContent"])
+            else:
+                texts = [article["textContent"]]
+                
             browser.close()
 
-            return [Document(article["textContent"], extra_info=extra_info)]
+            return [Document(x, extra_info=extra_info) for x in texts]
 
     def scrape_page(
         self,
