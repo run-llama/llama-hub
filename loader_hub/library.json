@@ -418,5 +418,10 @@
   "ChatGPTRetrievalPluginReader": {
     "id": "chatgpt_plugin",
     "author": "jerryjliu"
+  },
+  "JiraReader": {
+    "id": "jira",
+    "author": "bearguy",
+    "keywords": ["jira"]
   }
 }
