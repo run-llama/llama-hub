@@ -4,8 +4,15 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 class JiraReader(BaseReader):
+    """Jira reader. Reads data from Jira issues from passwed query.
 
-    def __init__(self, email, api_token, server_url) -> None:
+    Args:
+        email (str): Jira email.
+        api_token (str): Jira API token.
+        server_url (str): Jira server url.
+    """
+
+    def __init__(self, email: str, api_token: str, server_url: str) -> None:
 
         from jira import JIRA
 
@@ -14,7 +21,7 @@ class JiraReader(BaseReader):
             server=f'https://{server_url}'
         )
 
-    def load_data(self, query) -> List[Document]:
+    def load_data(self, query: str) -> List[Document]:
         relevant_issues = self.jira.search_issues(query)
 
         issues = []
