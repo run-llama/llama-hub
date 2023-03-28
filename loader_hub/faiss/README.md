@@ -20,7 +20,7 @@ index = faiss.IndexFlatL2(d)
 # add embeddings to the index
 index.add(...)
 
-# initalize reader
+# initialize reader
 reader = FaissReader(index)
 # To load data from the Faiss index, you must specify:
 # k: top nearest neighbors
