@@ -19,6 +19,7 @@ from typing import Any, Callable, List, Optional, Tuple
 from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_EXTRACTOR
 from llama_index.readers.schema.base import Document
+from llama_index.langchain_helpers.text_splitter import TextSplitter, SentenceSplitter
 
 
 if "pytest" in sys.modules:
@@ -90,6 +91,9 @@ class GithubRepositoryReader(BaseReader):
         concurrent_requests: int = 5,
         filter_directories: Optional[Tuple[List[str], FilterType]] = None,
         filter_file_extensions: Optional[Tuple[List[str], FilterType]] = None,
+        text_splitter: Optional[TextSplitter] = SentenceSplitter(
+            chunk_size=1024, chunk_overlap=512
+        ),
     ):
         """
         Initialize params.
@@ -118,6 +122,7 @@ class GithubRepositoryReader(BaseReader):
             - `ValueError`: If the github_token is not provided and
                 the GITHUB_TOKEN environment variable is not set.
         """
+        self._text_splitter = text_splitter
         super().__init__()
 
         self._owner = owner
@@ -161,8 +166,7 @@ class GithubRepositoryReader(BaseReader):
                 f"Checking if {tree_obj_path} is not a subdirectory of any of the filter directories",
             )
             return not any(
-                tree_obj_path.startswith(directory)
-                for directory in filter_directories
+                tree_obj_path.startswith(directory) for directory in filter_directories
             )
         if filter_type == self.FilterType.INCLUDE:
             print_if_verbose(
@@ -197,9 +201,7 @@ class GithubRepositoryReader(BaseReader):
         )
 
         if filter_type == self.FilterType.EXCLUDE:
-            return (
-                get_file_extension(tree_obj_path) not in filter_file_extensions
-            )
+            return get_file_extension(tree_obj_path) not in filter_file_extensions
         if filter_type == self.FilterType.INCLUDE:
             return get_file_extension(tree_obj_path) in filter_file_extensions
         raise ValueError(
@@ -220,10 +222,7 @@ class GithubRepositoryReader(BaseReader):
         if self._filter_directories is not None and tree_obj_type == "tree":
             return self._check_filter_directories(tree_obj_path)
 
-        if (
-            self._filter_file_extensions is not None
-            and tree_obj_type == "blob"
-        ):
+        if self._filter_file_extensions is not None and tree_obj_type == "blob":
             return self._check_filter_directories(
                 tree_obj_path
             ) and self._check_filter_file_extensions(tree_obj_path)
@@ -240,18 +239,12 @@ class GithubRepositoryReader(BaseReader):
 
         :return: list of documents
         """
-        commit_response: GitCommitResponseModel = (
-            self._loop.run_until_complete(
-                self._github_client.get_commit(
-                    self._owner, self._repo, commit_sha
-                )
-            )
+        commit_response: GitCommitResponseModel = self._loop.run_until_complete(
+            self._github_client.get_commit(self._owner, self._repo, commit_sha)
         )
 
         tree_sha = commit_response.commit.tree.sha
-        blobs_and_paths = self._loop.run_until_complete(
-            self._recurse_tree(tree_sha)
-        )
+        blobs_and_paths = self._loop.run_until_complete(self._recurse_tree(tree_sha))
 
         print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
 
@@ -274,9 +267,7 @@ class GithubRepositoryReader(BaseReader):
         )
 
         tree_sha = branch_data.commit.commit.tree.sha
-        blobs_and_paths = self._loop.run_until_complete(
-            self._recurse_tree(tree_sha)
-        )
+        blobs_and_paths = self._loop.run_until_complete(self._recurse_tree(tree_sha))
 
         print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
 
@@ -331,15 +322,13 @@ class GithubRepositoryReader(BaseReader):
         :param `current_path`: current path of the tree
         :param `current_depth`: current depth of the tree
         :return: list of tuples of
-            (tree object, file's full path realtive to the root of the repo)
+            (tree object, file's full path relative to the root of the repo)
         """
 
         if max_depth != -1 and current_depth > max_depth:
             return []
 
-        blobs_and_full_paths: List[
-            Tuple[GitTreeResponseModel.GitTreeObject, str]
-        ] = []
+        blobs_and_full_paths: List[Tuple[GitTreeResponseModel.GitTreeObject, str]] = []
         print_if_verbose(
             self._verbose,
             "\t" * current_depth + f"current path: {current_path}",
@@ -359,8 +348,7 @@ class GithubRepositoryReader(BaseReader):
             if not self._allow_tree_obj(file_path, tree_obj.type):
                 print_if_verbose(
                     self._verbose,
-                    "\t" * current_depth
-                    + f"ignoring {tree_obj.path} due to filter",
+                    "\t" * current_depth + f"ignoring {tree_obj.path} due to filter",
                 )
                 continue
 
@@ -390,8 +378,7 @@ class GithubRepositoryReader(BaseReader):
 
             print_if_verbose(
                 self._verbose,
-                "\t" * current_depth
-                + f"blob and full paths: {blobs_and_full_paths}",
+                "\t" * current_depth + f"blob and full paths: {blobs_and_full_paths}",
             )
         return blobs_and_full_paths
 
@@ -403,7 +390,7 @@ class GithubRepositoryReader(BaseReader):
         Generate documents from a list of blobs and their full paths.
 
         :param `blobs_and_paths`: list of tuples of
-            (tree object, file's full path in the repo realtive to the root of the repo)
+            (tree object, file's full path in the repo relative to the root of the repo)
         :return: list of documents
         """
         buffered_iterator = BufferedGitBlobDataIterator(
@@ -418,9 +405,7 @@ class GithubRepositoryReader(BaseReader):
 
         documents = []
         async for blob_data, full_path in buffered_iterator:
-            print_if_verbose(
-                self._verbose, f"generating document for {full_path}"
-            )
+            print_if_verbose(self._verbose, f"generating document for {full_path}")
             assert (
                 blob_data.encoding == "base64"
             ), f"blob encoding {blob_data.encoding} not supported"
@@ -441,7 +426,10 @@ class GithubRepositoryReader(BaseReader):
                     tree_sha=blob_data.sha,
                     tree_path=full_path,
                 )
-                if document is not None:
+                if isinstance(document, list):
+                    documents.extend(document)
+                    continue
+                elif document is not None:
                     documents.append(document)
                     continue
                 print_if_verbose(
@@ -514,9 +502,7 @@ class GithubRepositoryReader(BaseReader):
                     tmpfile.flush()
                     tmpfile.close()
                     try:
-                        parsed_file = parser.parse_file(
-                            pathlib.Path(tmpfile.name)
-                        )
+                        parsed_file = parser.parse_file(pathlib.Path(tmpfile.name))
                         parsed_file = "\n\n".join(parsed_file)
                     except Exception as e:
                         print_if_verbose(
@@ -532,6 +518,19 @@ class GithubRepositoryReader(BaseReader):
                         os.remove(tmpfile.name)
                     if parsed_file is None:
                         return None
+                    if self._text_splitter is not None:
+                        texts = self._text_splitter.split_text(parsed_file)
+                        return [
+                            Document(
+                                text=text,
+                                doc_id=tree_sha,
+                                extra_info={
+                                    "file_path": file_path,
+                                    "file_name": tree_path,
+                                },
+                            )
+                            for text in texts
+                        ]
                     return Document(
                         text=parsed_file,
                         doc_id=tree_sha,
@@ -550,7 +549,7 @@ if __name__ == "__main__":
         """Time a function."""
 
         def wrapper(*args: Any, **kwargs: Any) -> None:
-            """Callcuate time taken to run a function."""
+            """Calculate time taken to run a function."""
             start = time.time()
             func(*args, **kwargs)
             end = time.time()
@@ -558,18 +557,16 @@ if __name__ == "__main__":
 
         return wrapper
 
-    github_client = GithubClient(
-        github_token=os.environ["GITHUB_TOKEN"], verbose=True
-    )
+    github_client = GithubClient(github_token=os.environ["GITHUB_TOKEN"], verbose=True)
 
     reader1 = GithubRepositoryReader(
         github_client=github_client,
         owner="jerryjliu",
-        repo="gpt_index",
+        repo="llama_index",
         use_parser=False,
         verbose=True,
         filter_directories=(
-            ["docs"],
+            ["docs", "gpt_index"],
             GithubRepositoryReader.FilterType.INCLUDE,
         ),
         filter_file_extensions=(

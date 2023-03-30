@@ -1,6 +1,6 @@
 # Github Repository Loader
 
-This loader takes in `owner`, `repo`, `branch`, `commit` and other optional parameters such as for filtering dicrectories or only allowing some files with given extensions etc. It then fetches all the contents of the GitHub repository.
+This loader takes in `owner`, `repo`, `branch`, `commit` and other optional parameters such as for filtering directories or only allowing some files with given extensions etc. It then fetches all the contents of the GitHub repository.
 
 As a prerequisite, you will need to generate a person access token. See [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for instructions.
 
@@ -53,8 +53,6 @@ from llama_index import download_loader
 download_loader("GithubRepositoryReader")
 
 from llama_index.readers.llamahub_modules.github_repo import GithubClient, GithubRepositoryReader
-
-docs = None
 
 docs = None
 if os.path.exists("docs.pkl"):
