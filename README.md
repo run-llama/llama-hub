@@ -44,7 +44,7 @@ langchain_documents = [d.to_langchain_format() for d in documents]
 llm = OpenAI(temperature=0)
 qa_chain = load_qa_chain(llm)
 question="<query here>"
-answer = chain.run(input_documents=langchain_documents, question=question)
+answer = qa_chain.run(input_documents=langchain_documents, question=question)
 
 ```
 
