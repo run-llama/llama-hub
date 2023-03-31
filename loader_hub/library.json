@@ -424,6 +424,14 @@
     "author": "bearguy",
     "keywords": ["jira"]
   },
+  "UnstructuredURLLoader": {
+    "id": "web/unstructured_web",
+    "author": "kravetsmic",
+    "keywords": [
+       "unstructured.io",
+       "url"
+    ]
+  },
   "GoogleSheetsReader": {
     "id": "google_sheets",
     "author": "piroz"
