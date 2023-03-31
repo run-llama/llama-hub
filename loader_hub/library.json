@@ -431,5 +431,9 @@
        "unstructured.io",
        "url"
     ]
+  },
+  "GoogleSheetsReader": {
+    "id": "google_sheets",
+    "author": "piroz"
   }
 }
