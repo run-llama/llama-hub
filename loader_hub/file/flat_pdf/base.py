@@ -9,12 +9,7 @@ from llama_index.readers.schema.base import Document
 
 
 class FlatPdfReader(BaseReader):
-
-    pdf_dir: Path
-    pdf_name: str
-    pdf_pages_count: int
-    pdf_content: str = ""
-    work_dir: str
+    image_loader: BaseReader
 
     def __init__(self, image_loader: BaseReader):
         """
@@ -40,18 +35,20 @@ class FlatPdfReader(BaseReader):
             if not file.is_file() and file.suffix != ".pdf":
                 raise Exception("Invalid file")
 
-            self.pdf_dir = file
-            self.pdf_name = file.name
-            self.work_dir = str(pathlib.Path().resolve()) + "/flat_pdf/{file_name}".format(
-                file_name=self.pdf_name.replace(file.suffix, ""))
+            pdf_dir: Path = file
+            work_dir: str = str(pathlib.Path().resolve()) + "/flat_pdf/{file_name}".format(
+                file_name=file.name.replace(file.suffix, ""))
+            pdf_content: str = ""
 
             shutil.rmtree(str(pathlib.Path().resolve()) + f"/flat_pdf", ignore_errors=True)
-            os.makedirs(self.work_dir)
-            self.convert_pdf_in_images()
-            for page_number in range(0, self.pdf_pages_count):
-                document = self.image_loader.load_data(file=Path(self.work_dir + f"/page-{page_number}.png"))
-                self.pdf_content += document.text
-            return Document(text=self.pdf_content)
+            os.makedirs(work_dir)
+
+            pdf_pages_count: int = self.convert_pdf_in_images(pdf_dir=pdf_dir, work_dir=work_dir)
+
+            for page_number in range(0, pdf_pages_count):
+                document = self.image_loader.load_data(file=Path(work_dir + f"/page-{page_number}.png"))
+                pdf_content += document.text
+            return Document(text=pdf_content)
 
         except Exception as e:
             warnings.warn(
@@ -60,21 +57,20 @@ class FlatPdfReader(BaseReader):
         finally:
             shutil.rmtree(str(pathlib.Path().resolve()) + f"/flat_pdf", ignore_errors=True)
 
-    def convert_pdf_in_images(self) -> None:
+    def convert_pdf_in_images(self, pdf_dir: Path, work_dir: str) -> int:
         """
-        The convert_pdf_in_images function takes a PDF file and converts it into images.
-            The function uses the PyMuPDF library to open the PDF file, iterate through each page of the document,
-            and render each page as an image. The rendered images are saved in a workdir.
+        The convert_pdf_in_images function converts a PDF file into images.
 
-        :param self: Represent the instance of the class
-        :return: None
+        :param pdf_dir: Path: Specify the path of the pdf file to be converted
+        :param work_dir: str: Specify the directory where the images will be saved
+        :return: The number of pages in the pdf file
         """
         import fitz
         zoom_x = 2.0  # horizontal zoom
         zoom_y = 2.0  # vertical zoom
         mat = fitz.Matrix(zoom_x, zoom_y)
-        pages = fitz.open(self.pdf_dir)
-        self.pdf_pages_count = pages.page_count
+        pages = fitz.open(pdf_dir)
         for page in pages:  # iterate through the pages
             image = page.get_pixmap(matrix=mat)  # render page to an image
-            image.save(f"{self.work_dir}/page-{page.number}.png")
+            image.save(f"{work_dir}/page-{page.number}.png")
+        return pages.page_count
