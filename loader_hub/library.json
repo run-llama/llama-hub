@@ -423,5 +423,9 @@
     "id": "jira",
     "author": "bearguy",
     "keywords": ["jira"]
+  },
+  "GoogleSheetsReader": {
+    "id": "google_sheets",
+    "author": "piroz"
   }
 }
