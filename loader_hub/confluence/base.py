@@ -24,7 +24,10 @@ class ConfluenceReader(BaseReader):
 
     """
 
-    def __init__(self, base_url: str, oauth2: Optional[dict[str]] = None) -> None:
+    def __init__(self, base_url: str = None, oauth2: Optional[dict[str]] = None) -> None:
+        if base_url is None:
+            raise ValueError("Must provide `base_url`")
+
         self.base_url = base_url
 
         try:
