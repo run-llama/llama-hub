@@ -1,2 +1,8 @@
 atlassian-python-api
 html2text
+pytesseract
+pdf2image
+Pillow
+docx2txt
+xlrd
+svglib
