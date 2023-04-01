@@ -1,6 +1,6 @@
 """Confluence reader."""
 import os
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -19,12 +19,12 @@ class ConfluenceReader(BaseReader):
         - https://developer.atlassian.com/cloud/confluence/oauth-2-3lo-apps/
 
     Args:
-        oauth2 (dict[str]): Atlassian OAuth 2.0, minimum fields are `client_id` and `token`, where `token` is a dict and must at least contain "access_token" and "token_type".
+        oauth2 (dict): Atlassian OAuth 2.0, minimum fields are `client_id` and `token`, where `token` is a dict and must at least contain "access_token" and "token_type".
         base_url (str): 'base_url' for confluence cloud instance, this is suffixed with '/wiki', eg 'https://yoursite.atlassian.com/wiki'
 
     """
 
-    def __init__(self, base_url: str = None, oauth2: Optional[dict[str]] = None) -> None:
+    def __init__(self, base_url: str = None, oauth2: Optional[Dict] = None) -> None:
         if base_url is None:
             raise ValueError("Must provide `base_url`")
 
