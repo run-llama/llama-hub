@@ -435,5 +435,13 @@
   "GoogleSheetsReader": {
     "id": "google_sheets",
     "author": "piroz"
+  },
+  "FeedlyRssReader": {
+    "id": "feedly_rss",
+    "author": "kychanbp",
+    "keywords": [
+      "feedly",
+      "rss"
+    ]
   }
 }
