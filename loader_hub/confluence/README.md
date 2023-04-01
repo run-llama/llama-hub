@@ -9,12 +9,12 @@ For more on authenticating using OAuth 2.0, checkout:
 - https://atlassian-python-api.readthedocs.io/index.html
 - https://developer.atlassian.com/cloud/confluence/oauth-2-3lo-apps/
 
-User then specify a set of `page_ids` and/or `space_key` to load in the corresponding pages into Document objects, if 
+User then specify a list of `page_ids` and/or `space_key` to load in the corresponding pages into Document objects, if 
 both are specified the union of both sets will be returned. User can also specify a boolean `include_attachments` to 
 include attachments, this is set to `False` by default, if set to `True` all attachments will be downloaded and 
-ConfluenceReader will extract the text from the attachments and add it to the Document object.
+ConfluenceReader will extract the text from the attachments and add it to the Document object. Currently supported attachment types are: PDF, PNG, JPEG/JPG, SVG, Word and Excel. 
 
-Currently supported attachment types are: PDF, PNG, JPEG/JPG, SVG, Word and Excel. 
+Hint: `space_key` and `page_id` can both be found in the URL of a page in Confluence - https://yoursite.atlassian.com/wiki/spaces/<space_key>/pages/<page_id>
 
 ## Usage
 
@@ -36,7 +36,7 @@ oauth2_dict = {
 
 base_url = "https://yoursite.atlassian.com/wiki"
 
-page_ids = ["<page_id>"]
+page_ids = ["<page_id_1>", "<page_id_2>", "<page_id_3"]
 space_key = "<space_key>"
 
 reader = ConfluenceReader(base_url=base_url, oauth2=oauth2_dict)
