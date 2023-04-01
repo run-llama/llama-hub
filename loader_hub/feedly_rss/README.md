@@ -14,5 +14,5 @@ from llama_index import download_loader
 feedlyRssReader = download_loader("FeedlyRssReader")
 
 loader = feedlyRssReader(bearer_token = "[YOUR_TOKEN]")
-documents = loader.load_data(category_name = "news")
+documents = loader.get_feedly_feeds(category_name = "news", max_count = 100)
 ```
