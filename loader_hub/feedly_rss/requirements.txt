@@ -1,1 +1,0 @@
-git+https://github.com/feedly/python-api-client.git#egg=feedly-client
