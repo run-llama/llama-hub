@@ -32,7 +32,7 @@ class FeedlyRssReader(BaseReader):
             auth = self.bearer_token
             auth_file.write_text(auth.strip()) 
 
-    def get_feedly_feeds(self, category_name, max_count = 100):
+    def load_data(self, category_name, max_count = 100):
         """Get the entries from a feedly category
         """
         self.setup_auth(overwrite=True)
