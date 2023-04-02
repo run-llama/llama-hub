@@ -12,17 +12,18 @@ class WikipediaReader(BaseReader):
 
     """
 
-    def load_data(self, pages: List[str], **load_kwargs: Any) -> List[Document]:
+    def load_data(self, pages: List[str], lang: str = "en", **load_kwargs: Any) -> List[Document]:
         """Load data from the input directory.
 
         Args:
             pages (List[str]): List of pages to read.
-
+            lang  (str): language of wikipedia texts (default English)
         """
         import wikipedia
 
         results = []
         for page in pages:
+            wikipedia.set_lang(lang)
             page_content = wikipedia.page(page, **load_kwargs).content
             results.append(Document(page_content))
         return results

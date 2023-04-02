@@ -30,31 +30,22 @@ Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
 from llama_index import GPTSimpleVectorIndex, download_loader
-from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
-from langchain.chains.conversation.memory import ConversationBufferMemory
+from langchain.chains.question_answering import load_qa_chain
 
+# load documents
 GoogleDocsReader = download_loader('GoogleDocsReader')
-
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
 documents = loader.load_data(document_ids=gdoc_ids)
-index = GPTSimpleVectorIndex(documents)
+langchain_documents = [d.to_langchain_format() for d in documents]
 
-tools = [
-    Tool(
-        name="Google Doc Index",
-        func=lambda q: index.query(q),
-        description=f"Useful when you want answer questions about the Google Documents.",
-    ),
-]
+# initialize sample QA chain
 llm = OpenAI(temperature=0)
-memory = ConversationBufferMemory(memory_key="chat_history")
-agent_chain = initialize_agent(
-    tools, llm, agent="zero-shot-react-description", memory=memory
-)
+qa_chain = load_qa_chain(llm)
+question="<query here>"
+answer = qa_chain.run(input_documents=langchain_documents, question=question)
 
-output = agent_chain.run(input="Where did the author go to school?")
 ```
 
 ## How to add a loader
