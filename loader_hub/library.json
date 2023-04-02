@@ -443,5 +443,11 @@
       "feedly",
       "rss"
     ]
-  }
+  },
+   "FlatPdfReader": {
+    "id": "file/flat_pdf",
+    "author": "emmanuel-oliveira",
+    "keywords": ["pdf", "flat", "flattened"]
+   }
+
 }
