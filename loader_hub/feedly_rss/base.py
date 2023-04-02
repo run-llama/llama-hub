@@ -1,5 +1,7 @@
 """Feedly Rss Reader"""
 
+from pathlib import Path
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -32,7 +34,6 @@ class FeedlyRssReader(BaseReader):
         """Get the entries from a feedly category
         """
 
-        from pathlib import Path
         from feedly.api_client.session import FeedlySession
         from feedly.api_client.stream import StreamOptions
 
