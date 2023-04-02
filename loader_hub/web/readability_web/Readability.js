@@ -1,4 +1,3 @@
-/*eslint-env es6:false*/
 /*
  * Copyright (c) 2010 Arc90 Inc
  *
@@ -54,6 +53,7 @@ function Readability(doc, options) {
     return el.innerHTML;
   };
   this._disableJSONLD = !!options.disableJSONLD;
+  this._allowedVideoRegex = options.allowedVideoRegex || this.REGEXPS.videos;
 
   // Start with all flags set
   this._flags = this.FLAG_STRIP_UNLIKELYS |
@@ -73,12 +73,7 @@ function Readability(doc, options) {
       return `<${node.localName} ${attrPairs}>`;
     };
     this.log = function () {
-      if (typeof dump !== "undefined") {
-        var msg = Array.prototype.map.call(arguments, function(x) {
-          return (x && x.nodeName) ? logNode(x) : x;
-        }).join(" ");
-        dump("Reader: (Readability) " + msg + "\n");
-      } else if (typeof console !== "undefined") {
+      if (typeof console !== "undefined") {
         let args = Array.from(arguments, arg => {
           if (arg && arg.nodeType == this.ELEMENT_NODE) {
             return logNode(arg);
@@ -87,6 +82,12 @@ function Readability(doc, options) {
         });
         args.unshift("Reader: (Readability)");
         console.log.apply(console, args);
+      } else if (typeof dump !== "undefined") {
+        /* global dump */
+        var msg = Array.prototype.map.call(arguments, function(x) {
+          return (x && x.nodeName) ? logNode(x) : x;
+        }).join(" ");
+        dump("Reader: (Readability) " + msg + "\n");
       }
     };
   } else {
@@ -1838,13 +1839,13 @@ Readability.prototype = {
       if (isEmbed) {
         // First, check the elements attributes to see if any of them contain youtube or vimeo
         for (var i = 0; i < element.attributes.length; i++) {
-          if (this.REGEXPS.videos.test(element.attributes[i].value)) {
+          if (this._allowedVideoRegex.test(element.attributes[i].value)) {
             return false;
           }
         }
 
         // For embed with <object> tag, check inner HTML as well.
-        if (element.tagName === "object" && this.REGEXPS.videos.test(element.innerHTML)) {
+        if (element.tagName === "object" && this._allowedVideoRegex.test(element.innerHTML)) {
           return false;
         }
       }
@@ -2113,13 +2114,13 @@ Readability.prototype = {
         for (var i = 0; i < embeds.length; i++) {
           // If this embed has attribute that matches video regex, don't delete it.
           for (var j = 0; j < embeds[i].attributes.length; j++) {
-            if (this.REGEXPS.videos.test(embeds[i].attributes[j].value)) {
+            if (this._allowedVideoRegex.test(embeds[i].attributes[j].value)) {
               return false;
             }
           }
 
           // For embed with <object> tag, check inner HTML as well.
-          if (embeds[i].tagName === "object" && this.REGEXPS.videos.test(embeds[i].innerHTML)) {
+          if (embeds[i].tagName === "object" && this._allowedVideoRegex.test(embeds[i].innerHTML)) {
             return false;
           }
 
@@ -2146,7 +2147,7 @@ Readability.prototype = {
               return haveToRemove;
             }
           }
-          li_count = node.getElementsByTagName("li").length;
+          let li_count = node.getElementsByTagName("li").length;
           // Only allow the list to remain if every li contains an image
           if (img == li_count) {
             return false;
@@ -2295,5 +2296,6 @@ Readability.prototype = {
 };
 
 if (typeof module === "object") {
+  /* global module */
   module.exports = Readability;
 }
