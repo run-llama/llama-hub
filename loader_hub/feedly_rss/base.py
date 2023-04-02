@@ -1,9 +1,5 @@
 """Feedly Rss Reader"""
 
-from pathlib import Path
-from feedly.api_client.session import FeedlySession
-from feedly.api_client.stream import StreamOptions
-
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -35,6 +31,11 @@ class FeedlyRssReader(BaseReader):
     def load_data(self, category_name, max_count = 100):
         """Get the entries from a feedly category
         """
+
+        from pathlib import Path
+        from feedly.api_client.session import FeedlySession
+        from feedly.api_client.stream import StreamOptions
+
         self.setup_auth(overwrite=True)
         sess = FeedlySession()
         category = sess.user.user_categories.get(category_name)
