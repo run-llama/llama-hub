@@ -436,6 +436,14 @@
     "id": "google_sheets",
     "author": "piroz"
   },
+  "FeedlyRssReader": {
+    "id": "feedly_rss",
+    "author": "kychanbp",
+    "keywords": [
+      "feedly",
+      "rss"
+    ]
+  },
    "FlatPdfReader": {
     "id": "file/flat_pdf",
     "author": "emmanuel-oliveira",
