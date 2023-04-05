@@ -19,7 +19,7 @@ class AudioTranscriber(BaseReader):
 
     def __init__(self, *args: Any, model_version: str = "base", 
                 model_type: str = "openai_whisper", diarization_max_speakers: str = None,
-                language: str = "English", language_behaviour: str = "automatic multiple languages",
+                language: str = None, language_behaviour: str = "automatic multiple languages",
                 target_translation_language: str = 'english', gladia_api_key: str = None, 
                 transcription_hint: str = None, **kwargs: Any) -> None:
         """Init params."""
@@ -28,14 +28,14 @@ class AudioTranscriber(BaseReader):
         self.parser_config = {}
         self.model_type = model_type
 
-        if self.model_type == "openai_gladia_whsiper":
+        if self.model_type == "gladia":
             self.parser_config['gladia_api_key'] = gladia_api_key
             self.parser_config['diarization_max_speakers'] = diarization_max_speakers
             self.parser_config['language'] = language
             self.parser_config['language_behaviour'] = language_behaviour
             self.parser_config['target_translation_language'] = target_translation_language
             self.parser_config['transcription_hint'] = transcription_hint
-        else:
+        elif self.model_type == "openai_whisper":
             self._model_version = model_version
 
             import whisper
@@ -43,13 +43,14 @@ class AudioTranscriber(BaseReader):
             model = whisper.load_model(self._model_version)
 
             self.parser_config = {"model": model}
+        else:
+            raise ValueError("Invalid model_type. Possible options are 'openai_whisper', 'gladia'")
 
     def load_data(
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        import whisper
-
+        
         if file.name.endswith("mp4"):
             from pydub import AudioSegment  # noqa: F401
 
@@ -66,11 +67,13 @@ class AudioTranscriber(BaseReader):
         transcript = ""
 
         if self.model_type == "openai_whisper":
+            import whisper
+
             model = cast(whisper.Whisper, self.parser_config["model"])
             result = model.transcribe(str(file))
 
             transcript = result["text"]
-        else:
+        elif self.model_type == "gladia":
             import requests
 
             headers = {
@@ -95,5 +98,7 @@ class AudioTranscriber(BaseReader):
             response = requests.post('https://api.gladia.io/audio/text/audio-transcription/', headers=headers, files=files)
             response_dict = response.json()
             transcript = response_dict['prediction']
+        else:
+            raise ValueError("Invalid model_type. Possible options are 'openai_whisper', 'gladia'")
 
         return [Document(transcript, extra_info=extra_info)]

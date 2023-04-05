@@ -2,12 +2,12 @@
 
 This loader uses OpenAI's Whisper model to transcribe the text of an audio file or the audio track of a video file. The file formats .mp3 and .mp4 are preferred. A single local file is passed in each time you call `load_data`.
 
-You can directly use OpenAI's Whisper by setting `model_type` to `openai_whisper` or indirectly via Gladia OpenAI's Whisper by setting `model_type` to `openai_gladia_whisper` where the response time is usually less.
+You can directly use OpenAI's Whisper by setting `model_type` to `openai_whisper` or indirectly via Gladia OpenAI's Whisper by setting `model_type` to `gladia` where the response time is usually less.
 ## Usage
 
 To use this loader, you need to pass in a `Path` to a local file.
 
-If you are using `openai_gladia_whisper`, please check following parameters on [Gladia](https://www.gladia.io/) before proceeding further.
+If you are using `gladia`, please check following parameters on [Gladia](https://www.gladia.io/) before proceeding further.
 
 1. gladia_api_key
 2. diarization_max_speakers
@@ -24,7 +24,12 @@ from llama_index import download_loader
 
 AudioTranscriber = download_loader("AudioTranscriber")
 
-loader = AudioTranscriber()
+# using openai whisper
+loader = AudioTranscriber(model_type = 'openai_whisper')
+documents = loader.load_data(file=Path('./podcast.mp3'))
+
+# using gladia
+loader = AudioTranscriber(model_type = 'gladia', gladia_api_key = 'YOUR API KEY')
 documents = loader.load_data(file=Path('./podcast.mp3'))
 ```
 
