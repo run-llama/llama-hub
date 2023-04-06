@@ -25,4 +25,39 @@ documents = reader.load_data(
 )
 ```
 
+## Usage in combination with langchain
+
+```python
+
+    from llama_index import GPTSimpleVectorIndex, download_loader
+    from langchain.chains.conversation.memory import ConversationBufferMemory
+    from langchain.agents import Tool, AgentExecutor, load_tools, initialize_agent
+
+    AzCognitiveSearchReader = download_loader("AzCognitiveSearchReader")
+
+    az_loader = AzCognitiveSearchReader(
+            COGNITIVE_SEARCH_SERVICE_NAME,
+            COGNITIVE_SEARCH_KEY,
+            INDEX_NAME)
+
+    documents = az_loader.load_data(query, field_name)
+
+    index = GPTSimpleVectorIndex.from_documents(documents, service_context=service_context)
+
+    tools = [
+        Tool(
+            name="Azure cognitive search index",
+            func=lambda q: index.query(q),
+            description=f"Useful when you want answer questions about the text on azure cognitive search.",
+        ),
+    ]
+    memory = ConversationBufferMemory(memory_key="chat_history")
+    agent_chain = initialize_agent(
+        tools, llm, agent="zero-shot-react-description", memory=memory
+    )
+
+    result = agent_chain.run(input="How can I contact with my health insurance?")
+```
+
+
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
