@@ -7,15 +7,12 @@ This loader extracts the text in a formatted manner from Json data in a Python d
 To use this loader, you need to pass in Json data in a Python dictionary.
 
 ```python
+import requests
 from llama_index import download_loader
-data = {
-    "test data": [
-        "Test 1",
-        "test 2",
-        "test 3"
-    ],
-    "more tests": "string here"
+headers = {
+    "Authorization": "your_api_token"
 }
+data = requests.get("your-api-url", headers=headers).json()
 JsonDataReader = download_loader("JsonDataReader")
 
 loader = JsonDataReader()
