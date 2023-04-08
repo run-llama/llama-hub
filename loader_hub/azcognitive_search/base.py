@@ -12,11 +12,7 @@ from llama_index.readers.schema.base import Document
 class AzCognitiveSearchReader(BaseReader):
     """General reader for any Azure Cognitive Search index reader."""
 
-    def __init__(
-            self,
-            service_name: str,
-            searck_key: str,
-            index: str) -> None:
+    def __init__(self, service_name: str, searck_key: str, index: str) -> None:
         """Initialize Azure cognitive search service using the search key.
 
         Args:
@@ -25,12 +21,12 @@ class AzCognitiveSearchReader(BaseReader):
         index(str): index name
 
         """
-        from azure.core.credentials import AzureKeyCredential
-        from azure.search.documents import SearchClient
         import logging
 
-        logger = logging.getLogger(
-            "azure.core.pipeline.policies.http_logging_policy")
+        from azure.core.credentials import AzureKeyCredential
+        from azure.search.documents import SearchClient
+
+        logger = logging.getLogger("azure.core.pipeline.policies.http_logging_policy")
         logger.setLevel(logging.WARNING)
 
         azure_credential = AzureKeyCredential(searck_key)
@@ -38,13 +34,12 @@ class AzCognitiveSearchReader(BaseReader):
         self.search_client = SearchClient(
             endpoint=f"https://{service_name}.search.windows.net",
             index_name=index,
-            credential=azure_credential)
+            credential=azure_credential,
+        )
 
     def load_data(
-            self,
-            query: str,
-            content_field: str,
-            filter: Optional[str] = None) -> List[Document]:
+        self, query: str, content_field: str, filter: Optional[str] = None
+    ) -> List[Document]:
         """Read data from azure cognitive search index.
 
         Args:
@@ -57,14 +52,12 @@ class AzCognitiveSearchReader(BaseReader):
 
         """
 
-        search_result = self.search_client.search(
-            query,
-            filter=filter)
+        search_result = self.search_client.search(query, filter=filter)
 
         return [
-            Document(text=result[content_field],
-                     extra_info={
-                'id': result['id'],
-                'score': result['@search.score']}
+            Document(
+                text=result[content_field],
+                extra_info={"id": result["id"], "score": result["@search.score"]},
             )
-            for result in search_result]
+            for result in search_result
+        ]
