@@ -10,7 +10,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-class AudioTranscriber(BaseReader):
+class GladiaAudioTranscriber(BaseReader):
     """Audio parser.
 
     Extract text from transcript of video/audio files using
