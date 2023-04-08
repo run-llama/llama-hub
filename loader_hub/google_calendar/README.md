@@ -33,3 +33,16 @@ documents = loader.load_data()
 index = GPTSimpleVectorIndex(documents)
 index.query('When am I meeting Gordon?')
 ```
+
+### LangChain
+
+```python
+
+from llama_index import download_loader
+from langchain.indexes import VectorstoreIndexCreator
+
+GoogleCalendarReader = download_loader('GoogleCalendarReader')
+
+loader = GoogleCalendarReader()
+index = VectorstoreIndexCreator().from_loaders([GoogleCalendarReader()])
+index.query('When am I meeting Shailee?')
