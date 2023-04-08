@@ -10,17 +10,17 @@ from llama_index.readers.schema.base import Document
 
 
 class AzCognitiveSearchReader(BaseReader):
-    """General reader for any Azure Cognitive Search index reader."""
+    """General reader for any Azure Cognitive Search index reader.
+
+    Args:
+        service_name (str): the name of azure cognitive search service.
+        search_key (str): provide azure search access key directly.
+        index (str): index name
+    
+    """
 
     def __init__(self, service_name: str, searck_key: str, index: str) -> None:
-        """Initialize Azure cognitive search service using the search key.
-
-        Args:
-        service_name(str): the name of azure cognitive search service.
-        search_key(str): provide azure search access key directly.
-        index(str): index name
-
-        """
+        """Initialize Azure cognitive search service using the search key."""
         import logging
 
         from azure.core.credentials import AzureKeyCredential
@@ -43,9 +43,10 @@ class AzCognitiveSearchReader(BaseReader):
         """Read data from azure cognitive search index.
 
         Args:
-        query(str): search term in Azure Search index
-        content_field(str): field name of the document content.
-        filter(str): Filter expression. For example : 'sourcepage eq 'employee_handbook-3.pdf' and sourcefile eq 'employee_handbook.pdf''
+            query (str): search term in Azure Search index
+            content_field (str): field name of the document content.
+            filter (str): Filter expression. For example : 'sourcepage eq
+                'employee_handbook-3.pdf' and sourcefile eq 'employee_handbook.pdf''
 
         Returns:
             List[Document]: A list of documents.
