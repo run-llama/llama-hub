@@ -3,6 +3,10 @@
     "id": "asana",
     "author": "daveey"
   },
+  "AzCognitiveSearchReader": {
+    "id": "azcognitive_search",
+    "author": "mrcabellom"
+  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
@@ -426,14 +430,16 @@
   "JiraReader": {
     "id": "jira",
     "author": "bearguy",
-    "keywords": ["jira"]
+    "keywords": [
+      "jira"
+    ]
   },
   "UnstructuredURLLoader": {
     "id": "web/unstructured_web",
     "author": "kravetsmic",
     "keywords": [
-       "unstructured.io",
-       "url"
+      "unstructured.io",
+      "url"
     ]
   },
   "GoogleSheetsReader": {
@@ -448,14 +454,17 @@
       "rss"
     ]
   },
-   "FlatPdfReader": {
+  "FlatPdfReader": {
     "id": "file/flat_pdf",
     "author": "emmanuel-oliveira",
-    "keywords": ["pdf", "flat", "flattened"]
-   },
-   "MilvusReader": {
+    "keywords": [
+      "pdf",
+      "flat",
+      "flattened"
+    ]
+  },
+  "MilvusReader": {
     "id": "milvus",
     "author": "filip-halt"
-   }
-
+  }
 }
