@@ -4,7 +4,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 class JiraReader(BaseReader):
-    """Jira reader. Reads data from Jira issues from passwed query.
+    """Jira reader. Reads data from Jira issues from passed query.
 
     Args:
         email (str): Jira email.
