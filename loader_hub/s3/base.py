@@ -42,6 +42,7 @@ class S3Reader(BaseReader):
             to text. See `SimpleDirectoryReader` for more details.
         aws_access_id (Optional[str]): provide AWS access key directly.
         aws_access_secret (Optional[str]): provide AWS access key directly.
+        s3_endpoint_url (Optional[str]): provide S3 endpoint URL directly.
         """
         super().__init__(*args, **kwargs)
 
