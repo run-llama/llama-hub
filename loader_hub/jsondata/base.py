@@ -25,7 +25,7 @@ def _depth_first_yield(json_data: Dict, path: List[str]) -> Generator[str, None,
         yield " ".join(path)
 
 
-class JsonDataReader(BaseReader):
+class JSONDataReader(BaseReader):
     """Json Data reader.
 
     Reads in Json Data.
