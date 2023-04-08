@@ -7,6 +7,8 @@ from typing import Any, List, Optional, Union
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+from langchain.docstore.document import Document as LangchainDocument
+
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 
 # Copyright 2018 Google LLC
@@ -30,6 +32,21 @@ class GoogleCalendarReader(BaseReader):
     Reads events from Google Calendar
 
     """
+    
+    def load(self,
+        number_of_results: Optional[int] = 100,
+        start_date: Optional[Union[str, datetime.date]] = None,
+    ) -> List[LangchainDocument]:
+        
+        """Load data from user's calendar and returns LangChain Documents.
+
+        Args:
+            number_of_results (Optional[int]): the number of events to return. Defaults to 100.
+            start_date (Optional[Union[str, datetime.date]]): the start date to return events from. Defaults to today.
+        """
+        
+        return [d.to_langchain_format() for d in self.load_data()]
+
 
     def load_data(
         self,
