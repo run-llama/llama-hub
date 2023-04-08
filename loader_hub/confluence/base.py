@@ -51,7 +51,7 @@ class ConfluenceReader(BaseReader):
             self.confluence = Confluence(url=base_url, username=user_name, password=api_token, cloud=True)
 
     def load_data(self, space_key: Optional[str] = None, page_ids: Optional[List[str]] = None,
-                  include_attachments=False) -> List[Document]:
+                  label: Optional[str] = None, include_attachments=False) -> List[Document]:
         if not space_key and not page_ids:
             raise ValueError("Must specify either `space_key` or `page_ids` or both.")
 
@@ -68,6 +68,12 @@ class ConfluenceReader(BaseReader):
 
         if space_key:
             pages = self.confluence.get_all_pages_from_space(space=space_key, expand='body.storage.value')
+            for page in pages:
+                doc = self.process_page(page, include_attachments, text_maker)
+                docs.append(doc)
+
+        if label:
+            pages = self.confluence.get_all_pages_by_label(label=label, expand='body.storage.value')
             for page in pages:
                 doc = self.process_page(page, include_attachments, text_maker)
                 docs.append(doc)
