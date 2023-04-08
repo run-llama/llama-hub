@@ -448,6 +448,10 @@
     "id": "file/flat_pdf",
     "author": "emmanuel-oliveira",
     "keywords": ["pdf", "flat", "flattened"]
+   },
+   "MilvusReader": {
+    "id": "milvus",
+    "author": "filip-halt"
    }
 
 }
