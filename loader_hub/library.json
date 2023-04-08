@@ -72,6 +72,10 @@
     "id": "file/audio",
     "author": "ravi03071991"
   },
+  "GladiaAudioTranscriber": {
+    "id": "file/audio_gladia",
+    "author": "ravi03071991"
+  },
   "SimpleCSVReader": {
     "id": "file/simple_csv",
     "author": "vguillet"
