@@ -56,6 +56,10 @@
     "id": "file/json",
     "author": "yisding"
   },
+  "JSONDataReader": {
+    "id": "jsondata",
+    "author": "Josh-XT"
+  },
   "MarkdownReader": {
     "id": "file/markdown",
     "author": "hursh-desai"

@@ -2,7 +2,7 @@
 
 import json
 import re
-from typing import Dict, Generator, List
+from typing import Dict, Generator, List, Union
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -31,7 +31,8 @@ class JsonDataReader(BaseReader):
     Reads in Json Data.
 
     Args:
-        data: Json data to read.
+        data(Union[str, Dict]): Json data to read. Can be either a JSON
+            string or dictionary.
 
     """
 
@@ -39,10 +40,12 @@ class JsonDataReader(BaseReader):
         """Initialize with arguments."""
         super().__init__()
 
-    def load_data(self, data) -> List[Document]:
-        if isinstance(data, str):
-            data = json.loads(data)
+    def load_data(self, input_data: Union[str, Dict]) -> List[Document]:
         """Load data from the input file."""
+        if isinstance(input_data, str):
+            data = json.loads(input_data)
+        else:
+            data = input_data
         json_output = json.dumps(data, indent=0)
         lines = json_output.split("\n")
         useful_lines = [
