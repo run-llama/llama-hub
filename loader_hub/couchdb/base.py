@@ -45,12 +45,12 @@ class SimpleCouchDBReader(BaseReader):
         documents = []
         db = self.client.get(db_name)
         if query_dict is None:
-            cursor = db.find()
+            results = db.find()
         else:
-            cursor = db.find(query_dict)
+            results = db.find(query_dict)
 
-        for item in cursor:
-            if "text" not in item:
-                raise ValueError("`text` field not found in CouchDB document.")
-            documents.append(Document(item["text"]))
+        for item in results.rows:
+            if "id" not in item:
+                raise ValueError("`id` field not found in CouchDB document.")
+            documents.append(Document(item))
         return documents
