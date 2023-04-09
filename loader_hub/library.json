@@ -139,6 +139,10 @@
     "id": "mongo",
     "author": "jerryjliu"
   },
+  "SimpleCouchDBReader": {
+    "id": "couchdb",
+    "author": "technosophy"
+  },
   "NotionPageReader": {
     "id": "notion",
     "author": "jerryjliu"
