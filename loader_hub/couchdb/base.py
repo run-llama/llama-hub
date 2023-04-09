@@ -49,8 +49,11 @@ class SimpleCouchDBReader(BaseReader):
         else:
             results = db.find(query_dict)
 
-        for item in results.rows:
-            if "id" not in item:
-                raise ValueError("`id` field not found in CouchDB document.")
+        #results = db.all_docs
+
+        for doc in results['docs']:
+            if "doc" not in item:
+                raise ValueError("`doc` field not found in CouchDB document.")
             documents.append(Document(item))
         return documents
+
