@@ -44,7 +44,7 @@ class SimpleCouchDBReader(BaseReader):
         documents = []
         db = self.client.get(db_name)
         if query is None:
-            #if not query is passed, return all docs in database
+            #if no query is specified, return all docs in database
             logging.debug('showing all docs')
             results = db.view('_all_docs',include_docs=True)
         else:
@@ -59,6 +59,7 @@ class SimpleCouchDBReader(BaseReader):
         #check if more than one result
         if type(results) is not dict and results.rows is not None:
             for row in results.rows:
+                #check that the id field exists
                 if "id" not in row:
                     raise ValueError("`id` field not found in CouchDB document.")
                 documents.append(Document(json.dumps(row.value)))
@@ -66,6 +67,7 @@ class SimpleCouchDBReader(BaseReader):
             #only one result
             if results.get('docs') is not None:
                 for item in results.get('docs'):
+                    #check that the _id field exists
                     if "_id" not in item:
                         raise ValueError("`_id` field not found in CouchDB document.")
                     documents.append(Document(json.dumps(item)))
