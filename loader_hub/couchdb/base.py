@@ -1,10 +1,10 @@
 """CouchDB client."""
 
 from typing import Dict, List, Optional
-
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
+import logging
+import json
 
 class SimpleCouchDBReader(BaseReader):
     """Simple CouchDB reader.
@@ -34,8 +34,7 @@ class SimpleCouchDBReader(BaseReader):
 
         Args:
             db_name (str): name of the database.
-            collection_name (str): name of the collection.
-            query_dict (Optional[Dict]): query to filter documents.
+            query (Optional[str]): query to filter documents.
                 Defaults to None
 
         Returns:
@@ -44,16 +43,31 @@ class SimpleCouchDBReader(BaseReader):
         """
         documents = []
         db = self.client.get(db_name)
-        if query_dict is None:
-            results = db.find()
+        if query is None:
+            logging.debug('showing all docs')
+            results = db.all_docs()
         else:
-            results = db.find(query_dict)
+            logging.debug('executing query')
+            results = db.find(query)
 
-        #results = db.all_docs
+        if type(results) is not dict:
+            logging.debug(results.rows)
+        else:
+            logging.debug(results)
 
-        for doc in results['docs']:
-            if "doc" not in item:
-                raise ValueError("`doc` field not found in CouchDB document.")
-            documents.append(Document(item))
+        #check if more than one result
+        if type(results) is not dict and results.rows is not None:
+            for row in results.rows:
+                if "_id" not in row:
+                    raise ValueError("`_id` field not found in CouchDB document.")
+                documents.append(Document(json.dumps(row.value)))
+        else:
+            #only one result
+            if results.get('docs') is not None:
+                for item in results.get('docs'):
+                    if "_id" not in item:
+                        raise ValueError("`_id` field not found in CouchDB document.")
+                    documents.append(Document(json.dumps(item)))
+
         return documents
 
