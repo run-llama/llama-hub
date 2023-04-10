@@ -1,7 +1,7 @@
 # CouchDB Loader
 
 This loader loads documents from CouchDB. The loader currently supports CouchDB 3.x
-using the CouchDB3 pyhon wrapper from https://github.com/n-vlahovic/couchdb3
+using the CouchDB3 python wrapper from https://github.com/n-vlahovic/couchdb3
 The user specifies a CouchDB instance to initialize the reader. They then specify
 the database name and query params to fetch the relevant docs.
 
