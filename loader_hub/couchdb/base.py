@@ -19,7 +19,7 @@ class SimpleCouchDBReader(BaseReader):
 
     def __init__(self, user: str, pwd: str, host: str, port: int, couchdb_url: Optional[Dict] = None, max_docs: int = 1000) -> None:
         """Initialize with parameters."""
-        import couchdb3;
+        import couchdb3
 
         if couchdb_url is not None:
             self.client: CouchDBClient = couchdb3.Server(couchdb_url)
