@@ -85,6 +85,12 @@ class ConfluenceReader(BaseReader):
                 doc = self.process_page(page, include_attachments, text_maker)
                 docs.append(doc)
 
+        if label:
+            pages = self.confluence.get_all_pages_by_label(label=label, expand='body.storage.value')
+            for page in pages:
+                doc = self.process_page(page, include_attachments, text_maker)
+                docs.append(doc)
+
         if page_ids:
             for page_id in page_ids:
                 page = self.confluence.get_page_by_id(page_id=page_id, expand='body.storage.value')
