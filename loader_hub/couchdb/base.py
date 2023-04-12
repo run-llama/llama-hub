@@ -62,7 +62,7 @@ class SimpleCouchDBReader(BaseReader):
                 #check that the id field exists
                 if "id" not in row:
                     raise ValueError("`id` field not found in CouchDB document.")
-                documents.append(Document(json.dumps(row.value)))
+                documents.append(Document(json.dumps(row.doc)))
         else:
             #only one result
             if results.get('docs') is not None:
