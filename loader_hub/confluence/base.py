@@ -51,9 +51,10 @@ class ConfluenceReader(BaseReader):
             self.confluence = Confluence(url=base_url, username=user_name, password=api_token, cloud=True)
 
     def load_data(self, space_key: Optional[str] = None, page_ids: Optional[List[str]] = None,
-                  label: Optional[str] = None, include_attachments=False) -> List[Document]:
-        if not space_key and not page_ids:
-            raise ValueError("Must specify either `space_key` or `page_ids` or both.")
+                  label: Optional[str] = None, cql: Optional[str] = None, include_attachments=False,
+                  limit = 50) -> List[Document]:
+        if not space_key and not page_ids and not label and not cql:
+            raise ValueError("Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters.")
 
         try:
             import html2text  # type: ignore
@@ -67,7 +68,19 @@ class ConfluenceReader(BaseReader):
         text_maker.ignore_images = True
 
         if space_key:
-            pages = self.confluence.get_all_pages_from_space(space=space_key, expand='body.storage.value')
+            pages = self.confluence.get_all_pages_from_space(space=space_key, limit=limit, expand='body.storage.value')
+            for page in pages:
+                doc = self.process_page(page, include_attachments, text_maker)
+                docs.append(doc)
+
+        if label:
+            pages = self.confluence.get_all_pages_by_label(label=label, limit=limit, expand='body.storage.value')
+            for page in pages:
+                doc = self.process_page(page, include_attachments, text_maker)
+                docs.append(doc)
+
+        if cql:
+            pages = self.confluence.cql(cql=cql, limit=limit, expand='body.storage.value')
             for page in pages:
                 doc = self.process_page(page, include_attachments, text_maker)
                 docs.append(doc)
