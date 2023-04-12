@@ -474,5 +474,14 @@
   "MilvusReader": {
     "id": "milvus",
     "author": "filip-halt"
+  },
+  "StackoverflowReader": {
+    "id": "stackoverflow",
+    "author": "allen-munsch",
+    "keywords": [
+      "posts",
+      "questions",
+      "answers"
+    ]
   }
 }
