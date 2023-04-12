@@ -68,7 +68,7 @@ class S3Reader(BaseReader):
                 aws_secret_access_key=self.aws_access_secret,
             )
             s3 = session.resource("s3")
-            s3_client = session.client("s3", endpoint_url=self.s3_url)
+            s3_client = session.client("s3", endpoint_url=self.s3_endpoint_url )
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.key:
