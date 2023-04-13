@@ -1,13 +1,42 @@
+import json
+import logging
 import os
-from typing import List, Dict
+import threading
+import time
+from dataclasses import dataclass
+from datetime import datetime
+from functools import wraps
+from typing import List, Optional
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-import logging
-
 logger = logging.getLogger(__name__)
 
+
+@dataclass
+class StackOverflowPost:
+    link: str
+    score: int
+    last_activity_date: int
+    creation_date: int
+    post_id: Optional[int] = None
+    post_type: Optional[str] = None
+    body_markdown: Optional[str] = None
+    owner_account_id: Optional[int] = None
+    owner_reputation: Optional[int] = None
+    owner_user_id: Optional[int] = None
+    owner_user_type: Optional[str] = None
+    owner_profile_image: Optional[str] = None
+    owner_display_name: Optional[str] = None
+    owner_link: Optional[str] = None
+    title:  Optional[str] = None
+    last_edit_date:  Optional[str] = None
+    tags: Optional[List[str]] = None
+    view_count: Optional[int] = None
+    article_id: Optional[int] = None
+    article_type: Optional[str] = None
 
 def rate_limit(*, allowed_per_second: int):
     max_period = 1.0 / allowed_per_second
@@ -49,20 +78,38 @@ def rate_limited_get(url, headers):
 
 class StackoverflowReader(BaseReader):
 
-    def __init__(self, api_key: str = None, team_name: str = None) -> None:
+    def __init__(self, api_key: str = None, team_name: str = None, cache_dir: str = None) -> None:
         self._api_key = api_key or os.environ.get('STACKOVERFLOW_PAT')
         self._team_name = team_name or os.environ.get('STACKOVERFLOW_TEAM_NAME')
+        self._last_index_time = None # TODO
+        self._cache_dir = cache_dir
+        if self._cache_dir:
+            os.makedirs(self._cache_dir, exist_ok=True)
 
-    def load_data(self, page: int = 1, doc_type: str = 'questions', limit: int = 50) -> List[Document]:
+    def load_data(self, page: int = 1, doc_type: str = 'posts', limit: int = 50) -> List[Document]:
         data = []
         has_more = True
 
         while has_more:
             url = self.build_url(page, doc_type)
-	    headers = {'X-API-Access-Token': self._api_key}
-            response = rate_limited_get(url, headers)
-            response.raise_for_status()
-            response = response.json()
+            headers = {'X-API-Access-Token': self._api_key}
+            fp = os.path.join(self._cache_dir, f'{doc_type}_{page}.json')
+            response = {}
+            if self._cache_dir and os.path.exists(fp) and os.path.getsize(fp) > 0:
+                try:
+                    with open(fp, 'r') as f:
+                        response = f.read()
+                        response = json.loads(response)
+                except Exception as e:
+                    logger.error(e)
+            if not response:
+                response = rate_limited_get(url, headers)
+                response.raise_for_status()
+                if self._cache_dir:
+                    with open(os.path.join(self._cache_dir, f'{doc_type}_{page}.json'), 'w') as f:
+                        f.write(response.content.decode('utf-8'))
+                    logger.info(f'Wrote {fp} to cache')
+                response = response.json()
             has_more = response['has_more']
             items = response['items']
             logger.info(f'Fetched {len(items)} {doc_type} from Stack Overflow')
@@ -74,16 +121,16 @@ class StackoverflowReader(BaseReader):
                 if 'title' not in item_dict:
                     item_dict['title'] = item_dict['link']
                 post = StackOverflowPost(**item_dict, **owner_fields)
-                last_modified = datetime.fromtimestamp(post.last_edit_date or post.last_activity_date)
-                if last_modified < self._last_index_time:
-                    return data
+                # TODO: filter out old posts
+                # last_modified = datetime.fromtimestamp(post.last_edit_date or post.last_activity_date)
+                # if last_modified < self._last_index_time:
+                #     return data
 
                 post_document = Document(text=post.body_markdown, doc_id=post.post_id,
                                          extra_info={"title": post.title, "author": post.owner_display_name,
-                                                     "timestamp": datetime.fromtimestamp(post.creation_date),
-                                                     "data_source_id": self._data_source_id, "location": post.link,
+                                                     "timestamp": datetime.fromtimestamp(post.creation_date), "location": post.link,
                                                      "url": post.link, "author_image_url": post.owner_profile_image,
-                                                     "type": DocumentType.MESSAGE})
+                                                     "type": post.post_type})
                 data.append(post_document)
 
             if has_more:
@@ -102,4 +149,5 @@ class StackoverflowReader(BaseReader):
 
 
 if __name__ == "__main__":
-    reader = StackoverflowReader(os.environ.get('STACKOVERFLOW_PAT'), os.environ.get('STACKOVERFLOW_TEAM_NAME'))
+    reader = StackoverflowReader(os.environ.get('STACKOVERFLOW_PAT'), os.environ.get('STACKOVERFLOW_TEAM_NAME'), cache_dir='./stackoverflow_cache')
+    # reader.load_data()
