@@ -3,10 +3,6 @@
     "id": "asana",
     "author": "daveey"
   },
-  "AzCognitiveSearchReader": {
-    "id": "azcognitive_search",
-    "author": "mrcabellom"
-  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
@@ -60,20 +56,12 @@
     "id": "file/json",
     "author": "yisding"
   },
-  "JSONDataReader": {
-    "id": "jsondata",
-    "author": "Josh-XT"
-  },
   "MarkdownReader": {
     "id": "file/markdown",
     "author": "hursh-desai"
   },
   "AudioTranscriber": {
     "id": "file/audio",
-    "author": "ravi03071991"
-  },
-  "GladiaAudioTranscriber": {
-    "id": "file/audio_gladia",
     "author": "ravi03071991"
   },
   "SimpleCSVReader": {
@@ -388,91 +376,8 @@
     "id": "airtable",
     "author": "smyja"
   },
-  "HatenaBlogReader": {
-    "id": "hatena_blog",
-    "author": "Shoya SHIRAKI",
-    "keywords": [
-      "hatena",
-      "blog"
-    ]
-  },
-  "OpendalReader": {
-    "id": "opendal_reader",
-    "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage"
-    ]
-  },
-  "OpendalS3Reader": {
-    "id": "opendal_reader/s3",
-    "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage",
-      "s3"
-    ]
-  },
-  "OpendalAzblobReader": {
-    "id": "opendal_reader/azblob",
-    "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage",
-      "azblob"
-    ]
-  },
-  "OpendalGcsReader": {
-    "id": "opendal_reader/gcs",
-    "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage",
-      "gcs"
-    ]
-  },
-  "ConfluenceReader": {
-    "id": "confluence",
-    "author": "zywilliamli"
-  },
-  "ChatGPTRetrievalPluginReader": {
-    "id": "chatgpt_plugin",
-    "author": "jerryjliu"
-  },
-  "JiraReader": {
-    "id": "jira",
-    "author": "bearguy",
-    "keywords": [
-      "jira"
-    ]
-  },
-  "UnstructuredURLLoader": {
-    "id": "web/unstructured_web",
-    "author": "kravetsmic",
-    "keywords": [
-      "unstructured.io",
-      "url"
-    ]
-  },
-  "GoogleSheetsReader": {
-    "id": "google_sheets",
-    "author": "piroz"
-  },
-  "FeedlyRssReader": {
-    "id": "feedly_rss",
-    "author": "kychanbp",
-    "keywords": [
-      "feedly",
-      "rss"
-    ]
-  },
-  "FlatPdfReader": {
-    "id": "file/flat_pdf",
-    "author": "emmanuel-oliveira",
-    "keywords": [
-      "pdf",
-      "flat",
-      "flattened"
-    ]
-  },
-  "MilvusReader": {
-    "id": "milvus",
-    "author": "filip-halt"
+  "ZulipReader": {
+    "id": "zulip",
+    "author": "plurigrid"
   }
 }
