@@ -3,10 +3,6 @@
     "id": "asana",
     "author": "daveey"
   },
-  "AzCognitiveSearchReader": {
-    "id": "azcognitive_search",
-    "author": "mrcabellom"
-  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
@@ -60,20 +56,12 @@
     "id": "file/json",
     "author": "yisding"
   },
-  "JSONDataReader": {
-    "id": "jsondata",
-    "author": "Josh-XT"
-  },
   "MarkdownReader": {
     "id": "file/markdown",
     "author": "hursh-desai"
   },
   "AudioTranscriber": {
     "id": "file/audio",
-    "author": "ravi03071991"
-  },
-  "GladiaAudioTranscriber": {
-    "id": "file/audio_gladia",
     "author": "ravi03071991"
   },
   "SimpleCSVReader": {
@@ -483,5 +471,9 @@
       "questions",
       "answers"
     ]
+  },
+  "ZulipReader": {
+    "id": "zulip",
+    "author": "plurigrid"
   }
 }
