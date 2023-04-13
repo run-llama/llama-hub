@@ -376,6 +376,102 @@
     "id": "airtable",
     "author": "smyja"
   },
+  "HatenaBlogReader": {
+    "id": "hatena_blog",
+    "author": "Shoya SHIRAKI",
+    "keywords": [
+      "hatena",
+      "blog"
+    ]
+  },
+  "OpendalReader": {
+    "id": "opendal_reader",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage"
+    ]
+  },
+  "OpendalS3Reader": {
+    "id": "opendal_reader/s3",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage",
+      "s3"
+    ]
+  },
+  "OpendalAzblobReader": {
+    "id": "opendal_reader/azblob",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage",
+      "azblob"
+    ]
+  },
+  "OpendalGcsReader": {
+    "id": "opendal_reader/gcs",
+    "author": "OpenDAL Contributors",
+    "keywords": [
+      "storage",
+      "gcs"
+    ]
+  },
+  "ConfluenceReader": {
+    "id": "confluence",
+    "author": "zywilliamli"
+  },
+  "ChatGPTRetrievalPluginReader": {
+    "id": "chatgpt_plugin",
+    "author": "jerryjliu"
+  },
+  "JiraReader": {
+    "id": "jira",
+    "author": "bearguy",
+    "keywords": [
+      "jira"
+    ]
+  },
+  "UnstructuredURLLoader": {
+    "id": "web/unstructured_web",
+    "author": "kravetsmic",
+    "keywords": [
+      "unstructured.io",
+      "url"
+    ]
+  },
+  "GoogleSheetsReader": {
+    "id": "google_sheets",
+    "author": "piroz"
+  },
+  "FeedlyRssReader": {
+    "id": "feedly_rss",
+    "author": "kychanbp",
+    "keywords": [
+      "feedly",
+      "rss"
+    ]
+  },
+  "FlatPdfReader": {
+    "id": "file/flat_pdf",
+    "author": "emmanuel-oliveira",
+    "keywords": [
+      "pdf",
+      "flat",
+      "flattened"
+    ]
+  },
+  "MilvusReader": {
+    "id": "milvus",
+    "author": "filip-halt"
+  },
+  "StackoverflowReader": {
+    "id": "stackoverflow",
+    "author": "allen-munsch",
+    "keywords": [
+      "posts",
+      "questions",
+      "answers"
+    ]
+  },
   "ZulipReader": {
     "id": "zulip",
     "author": "plurigrid"
