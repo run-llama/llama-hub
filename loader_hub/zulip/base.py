@@ -2,7 +2,6 @@ import logging
 from typing import List, Optional
 from datetime import datetime
 import os
-import zulip
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -18,6 +17,8 @@ class ZulipReader(BaseReader):
             earliest_date: Optional[datetime] = None,
             latest_date: Optional[datetime] = None,
         ) -> None:
+            import zulip
+
             """Initialize with parameters."""
             # Read the Zulip token from the environment variable
             zulip_token = os.environ.get("ZULIP_TOKEN")
