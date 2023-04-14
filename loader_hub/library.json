@@ -448,6 +448,21 @@
     "id": "file/flat_pdf",
     "author": "emmanuel-oliveira",
     "keywords": ["pdf", "flat", "flattened"]
-   }
-
+   },
+  "ApifyDataset": {
+    "id": "apify/dataset",
+    "author": "drobnikj",
+    "keywords": [
+      "apify"
+    ]
+  },
+  "ApifyCallActor": {
+    "id": "apify/call_actor",
+    "author": "drobnikj",
+    "keywords": [
+      "apify",
+      "scraper",
+      "crawler"
+    ]
+  }
 }
