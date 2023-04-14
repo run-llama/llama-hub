@@ -1,6 +1,7 @@
 """Feedly Rss Reader"""
 
 from pathlib import Path
+import json
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -54,5 +55,7 @@ class FeedlyRssReader(BaseReader):
                 'commonTopics': article["commonTopics"]
             }
 
-            documents.append(Document(entry))
+            text = json.dumps(entry)
+
+            documents.append(Document(text))
         return documents
