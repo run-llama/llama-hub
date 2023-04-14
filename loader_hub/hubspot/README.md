@@ -13,7 +13,7 @@ from llama_index import download_loader
 import os
 HubspotReader = download_loader('HubspotReader')
 
-reader = HubspotReader("<HUBSPOT_ACCESS_TOKEN">)
+reader = HubspotReader("<HUBSPOT_ACCESS_TOKEN>")
 documents = reader.load_data()
 
 ```
