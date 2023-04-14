@@ -52,14 +52,14 @@ class JSONReader(BaseReader):
 
     def load_data(
         self, 
-        input_file: Path, 
+        file: Path, 
         extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Load data from the input file."""
-        # TODO: change Path typing for input_file in all load_data calls
-        if not isinstance(input_file, Path):
-            input_file = Path(input_file)
-        with open(input_file, "r") as f:
+        # TODO: change Path typing for file in all load_data calls
+        if not isinstance(file, Path):
+            file = Path(file)
+        with open(file, "r") as f:
             data = json.load(f)
             if self.levels_back is None:
                 # If levels_back isn't set, we just format and make each
