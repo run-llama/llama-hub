@@ -55,7 +55,7 @@ class FeedlyRssReader(BaseReader):
                 'commonTopics': article["commonTopics"]
             }
 
-            text = json.dumps(entry)
+            text = json.dumps(entry, ensure_ascii=False)
 
             documents.append(Document(text))
         return documents
