@@ -9,7 +9,9 @@ Created on Sun Apr 16 12:03:19 2023
 
 
 import datetime
-import win32com.client
+import importlib
+import platform
+
 
 from typing import List, Optional, Union
 
@@ -56,7 +58,8 @@ class OutlookLocalCalendarReader(BaseReader):
         Returns a list of documents sutitable for indexing by llam_index. Always returns Start, End, Subject, Location, and Organizer
         attributes and optionally returns additional attributes specified in the more_attributes parameter.
         """
-
+        if platform.system().lower() != "windows":
+            return([])
         attributes=["Start","End","Subject","Location","Organizer"] # base attrubutes to return
         if not more_attributes is None: #if the user has specified more attributes
             attributes+=more_attributes
@@ -64,16 +67,11 @@ class OutlookLocalCalendarReader(BaseReader):
             start_date = datetime.date.today()
         elif isinstance(start_date, str):
             start_date = datetime.date.fromisoformat(start_date)
-        
-        
-            
-
-        #start_datetime = datetime.datetime.combine(start_date, datetime.time.min)
-        #start_datetime_utc = start_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
 
         # Initialize the Outlook application
-        outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
+        winstuff=importlib.import_module("win32com.client")
+        outlook = winstuff.Dispatch("Outlook.Application").GetNamespace("MAPI")
 
         # Get the Calendar folder
         calendar_folder = outlook.GetDefaultFolder(9)
