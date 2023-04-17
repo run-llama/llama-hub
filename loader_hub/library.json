@@ -481,19 +481,23 @@
     "id": "zulip",
     "author": "plurigrid"
   },
-  "ApifyDataset": {
-    "id": "apify/dataset",
-    "author": "drobnikj",
-    "keywords": [
-      "apify"
-    ]
-  },
-  "ApifyCallActor": {
-    "id": "apify/call_actor",
+  "ApifyActor": {
+    "id": "apify/actor",
     "author": "drobnikj",
     "keywords": [
       "apify",
       "scraper",
+      "scraping",
+      "crawler"
+    ]
+  },
+  "ApifyDataset": {
+    "id": "apify/dataset",
+    "author": "drobnikj",
+    "keywords": [
+      "apify",
+      "scraper",
+      "scraping",
       "crawler"
     ]
   }

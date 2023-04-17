@@ -6,7 +6,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-class ApifyCallActor(BaseReader):
+class ApifyActor(BaseReader):
     """Apify call Actor reader.
     It calls an Actor on Apify and reads data when it finihes.
 
