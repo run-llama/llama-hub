@@ -6,7 +6,8 @@ from llama_index.readers.schema.base import Document
 
 
 class ApifyDataset(BaseReader):
-    """Apify Dataset reader. Reads data from an Apify dataset.
+    """Apify Dataset reader.
+    Reads a dataset on the Apify platform.
 
     Args:
         apify_api_token (str): Apify API token.

@@ -14,9 +14,7 @@ or blogs, and extract text content from the web pages.
 The extracted text then can be fed to a vector index in order to answer questions from it.
 
 To use this loader, you need to have a (free) Apify account 
-and provide your [Apify API token](https://console.apify.com/account/integrations) as the `APIFY_API_TOKEN`
-environment variable. Note that the loader requires
-the [apify-client](https://pypi.org/project/apify-client/) PyPI package.
+and set your [Apify API token](https://console.apify.com/account/integrations) in the code.
 
 ```python
 from llama_index import download_loader
@@ -28,7 +26,7 @@ def tranform_dataset_item(item):
     return Document(
         item.get('text'),
         extra_info={
-            "url": item.get('url'),
+            "url": item.get("url"),
         },
     )
 
