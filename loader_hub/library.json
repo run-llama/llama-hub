@@ -488,5 +488,25 @@
       "calendar",
       "outlook"
     ]
- }
+ },
+  "ApifyActor": {
+    "id": "apify/actor",
+    "author": "drobnikj",
+    "keywords": [
+      "apify",
+      "scraper",
+      "scraping",
+      "crawler"
+    ]
+  },
+  "ApifyDataset": {
+    "id": "apify/dataset",
+    "author": "drobnikj",
+    "keywords": [
+      "apify",
+      "scraper",
+      "scraping",
+      "crawler"
+    ]
+  }
 }
