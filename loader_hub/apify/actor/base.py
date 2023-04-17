@@ -8,7 +8,7 @@ from llama_index.readers.schema.base import Document
 
 class ApifyActor(BaseReader):
     """Apify Actor reader.
-    It calls an Actor on Apify and reads data when it finihes.
+    It calls an Actor on Apify and reads its output when it finihes.
 
     Args:
         apify_api_token (str): Apify API token.
