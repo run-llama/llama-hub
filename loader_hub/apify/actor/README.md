@@ -10,8 +10,9 @@ This loader runs a specific Actor and loads its results.
 
 In this example, we’ll use the [Website Content Crawler](https://apify.com/apify/website-content-crawler) Actor,
 which can deeply crawl websites such as documentation, knowledge bases, help centers,
-or blogs, and extract text content from the web pages. 
-The extracted text then can be fed to a vector index in order to answer questions from it.
+or blogs, and extract text content from the web pages.
+The extracted text then can be fed to a vector index or language model like GPT
+in order to answer questions from it.
 
 To use this loader, you need to have a (free) Apify account 
 and set your [Apify API token](https://console.apify.com/account/integrations) in the code.
