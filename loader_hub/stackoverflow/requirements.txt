@@ -1,0 +1,2 @@
+requests
+llama_index

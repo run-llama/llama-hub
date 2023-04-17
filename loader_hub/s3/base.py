@@ -24,6 +24,8 @@ class S3Reader(BaseReader):
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         aws_access_id: Optional[str] = None,
         aws_access_secret: Optional[str] = None,
+        aws_session_token: Optional[str] = None,
+        s3_endpoint_url: Optional[str] = "https://s3.amazonaws.com",
         **kwargs: Any,
     ) -> None:
         """Initialize S3 bucket and key, along with credentials if needed.
@@ -41,6 +43,7 @@ class S3Reader(BaseReader):
             to text. See `SimpleDirectoryReader` for more details.
         aws_access_id (Optional[str]): provide AWS access key directly.
         aws_access_secret (Optional[str]): provide AWS access key directly.
+        s3_endpoint_url (Optional[str]): provide S3 endpoint URL directly.
         """
         super().__init__(*args, **kwargs)
 
@@ -52,6 +55,8 @@ class S3Reader(BaseReader):
 
         self.aws_access_id = aws_access_id
         self.aws_access_secret = aws_access_secret
+        self.aws_session_token = aws_session_token
+        self.s3_endpoint_url = s3_endpoint_url
 
     def load_data(self) -> List[Document]:
         """Load file(s) from S3."""
@@ -63,9 +68,10 @@ class S3Reader(BaseReader):
             session = boto3.Session(
                 aws_access_key_id=self.aws_access_id,
                 aws_secret_access_key=self.aws_access_secret,
+                aws_session_token=self.aws_session_token, 
             )
             s3 = session.resource("s3")
-            s3_client = session.client("s3")
+            s3_client = session.client("s3", endpoint_url=self.s3_endpoint_url )
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.key:

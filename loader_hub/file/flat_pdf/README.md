@@ -16,7 +16,7 @@ from pathlib import Path
 from llama_index import download_loader
 
 
-imageReader = download_loader("ImageReader")
+ImageReader = download_loader("ImageReader")
 imageLoader = ImageReader(text_type="plain_text")
 FlatPdfReader = download_loader("FlatPdfReader")
 pdfLoader = FlatPdfReader(image_loader=imageLoader)

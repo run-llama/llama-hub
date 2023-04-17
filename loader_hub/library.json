@@ -48,6 +48,11 @@
       "receipt"
     ]
   },
+  "HubspotReader": {
+    "id": "hubspot",
+    "author": "ykhli",
+    "keywords": ["hubspot"]
+  },
   "EpubReader": {
     "id": "file/epub",
     "author": "Haowjy"
@@ -126,6 +131,10 @@
   "SimpleMongoReader": {
     "id": "mongo",
     "author": "jerryjliu"
+  },
+  "SimpleCouchDBReader": {
+    "id": "couchdb",
+    "author": "technosophy"
   },
   "NotionPageReader": {
     "id": "notion",
@@ -422,14 +431,16 @@
   "JiraReader": {
     "id": "jira",
     "author": "bearguy",
-    "keywords": ["jira"]
+    "keywords": [
+      "jira"
+    ]
   },
   "UnstructuredURLLoader": {
     "id": "web/unstructured_web",
     "author": "kravetsmic",
     "keywords": [
-       "unstructured.io",
-       "url"
+      "unstructured.io",
+      "url"
     ]
   },
   "GoogleSheetsReader": {
@@ -444,11 +455,32 @@
       "rss"
     ]
   },
-   "FlatPdfReader": {
+  "FlatPdfReader": {
     "id": "file/flat_pdf",
     "author": "emmanuel-oliveira",
-    "keywords": ["pdf", "flat", "flattened"]
-   },
+    "keywords": [
+      "pdf",
+      "flat",
+      "flattened"
+    ]
+  },
+  "MilvusReader": {
+    "id": "milvus",
+    "author": "filip-halt"
+  },
+  "StackoverflowReader": {
+    "id": "stackoverflow",
+    "author": "allen-munsch",
+    "keywords": [
+      "posts",
+      "questions",
+      "answers"
+    ]
+  },
+  "ZulipReader": {
+    "id": "zulip",
+    "author": "plurigrid"
+  },
   "ApifyDataset": {
     "id": "apify/dataset",
     "author": "drobnikj",
