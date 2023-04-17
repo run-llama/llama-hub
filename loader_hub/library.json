@@ -482,10 +482,10 @@
     "author": "plurigrid"
   },
   "OutlookLocalCalendarReader": {
-    "id":"outlook_localcalendar".
-    "author":"tevslin".
+    "id":"outlook_localcalendar",
+    "author":"tevslin",
     "keywords":[
-      "calendar:.
+      "calendar:,
       "outlook"
     ]
  }
