@@ -1,4 +1,4 @@
-"""Apify call Actor reader"""
+"""Apify Actor reader"""
 from typing import Callable, Dict, List, Optional
 
 from llama_index import download_loader
