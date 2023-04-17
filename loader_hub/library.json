@@ -481,6 +481,14 @@
     "id": "zulip",
     "author": "plurigrid"
   },
+  "OutlookLocalCalendarReader": {
+    "id":"outlook_localcalendar",
+    "author":"tevslin",
+    "keywords":[
+      "calendar",
+      "outlook"
+    ]
+ },
   "ApifyActor": {
     "id": "apify/actor",
     "author": "drobnikj",
