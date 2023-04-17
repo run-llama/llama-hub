@@ -19,20 +19,19 @@ and set your [Apify API token](https://console.apify.com/account/integrations) i
 ```python
 from llama_index import download_loader
 from llama_index.readers.schema.base import Document
-import os
 
 # Converts a single record from the Actor's resulting dataset to the LlamaIndex format
 def tranform_dataset_item(item):
     return Document(
-        item.get('text'),
+        item.get("text"),
         extra_info={
             "url": item.get("url"),
         },
     )
 
-ApifyActor = download_loader('ApifyActor')
+ApifyActor = download_loader("ApifyActor")
 
-reader = ApifyActor('MY_APIFY_API_TOKEN')
+reader = ApifyActor("<My Apify API token>")
 documents = reader.load_data(
     actor_id="apify/website-content-crawler",
     run_input={"startUrls": [{"url": "https://gpt-index.readthedocs.io/en/latest"}]}
