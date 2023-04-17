@@ -480,5 +480,25 @@
   "ZulipReader": {
     "id": "zulip",
     "author": "plurigrid"
+  },
+  "ApifyActor": {
+    "id": "apify/actor",
+    "author": "drobnikj",
+    "keywords": [
+      "apify",
+      "scraper",
+      "scraping",
+      "crawler"
+    ]
+  },
+  "ApifyDataset": {
+    "id": "apify/dataset",
+    "author": "drobnikj",
+    "keywords": [
+      "apify",
+      "scraper",
+      "scraping",
+      "crawler"
+    ]
   }
 }
