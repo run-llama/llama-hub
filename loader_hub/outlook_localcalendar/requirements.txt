@@ -1,1 +1,1 @@
-win32com
+pywin32
