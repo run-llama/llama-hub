@@ -6,7 +6,6 @@ load in the corresponding Document objects representing Trello cards.
 Here's an example usage of the TrelloReader.
 
 ```python
-Copy code
 from llama_index import download_loader
 import os
 
