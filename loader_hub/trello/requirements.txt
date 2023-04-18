@@ -1,1 +1,1 @@
-trello
+py-trello

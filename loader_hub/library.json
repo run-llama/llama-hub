@@ -508,5 +508,12 @@
       "scraping",
       "crawler"
     ]
+  },
+  "Trello": {
+    "id": "trello",
+    "author": "bluzir",
+    "keywords": [
+      "trello"
+    ]
   }
 }
