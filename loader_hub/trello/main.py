@@ -3,7 +3,6 @@ from typing import List
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from trello import TrelloClient
 
 
 class TrelloReader(BaseReader):
@@ -18,7 +17,6 @@ class TrelloReader(BaseReader):
         """Initialize Trello reader."""
         self.api_key = api_key
         self.api_token = api_token
-        self.client = TrelloClient(api_key=api_key, token=api_token)
 
     def load_data(self, board_id: str) -> List[Document]:
         """Load data from a Trello board.
@@ -28,7 +26,10 @@ class TrelloReader(BaseReader):
         Returns:
             List[Document]: List of documents representing Trello cards.
         """
-        board = self.client.get_board(board_id)
+        from trello import TrelloClient
+
+        client = TrelloClient(api_key=self.api_key, token=self.api_token)
+        board = client.get_board(board_id)
         cards = board.get_cards()
 
         documents = []
