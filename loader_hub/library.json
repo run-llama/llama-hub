@@ -508,5 +508,12 @@
       "scraping",
       "crawler"
     ]
+  },
+  "DeepLakeReader": {
+    "id": "deeplake",
+    "author": "adolkhan",
+    "keywords": [
+      "deeplake"
+    ]
   }
 }
