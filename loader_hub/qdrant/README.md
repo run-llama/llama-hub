@@ -1,29 +1,31 @@
-# DeepLake Reader
+# Qdrant Loader
 
-The DeepLake loader returns a set of texts corresponding to embeddings retrieved from a DeepLake vector store.
-The user initializes the loader with an auth token. They then pass in a query vector.
+The Qdrant Loader returns a set of texts corresponding to embeddings retrieved from a Qdrant Index.
+The user initializes the loader with a Qdrant index. They then pass in a query vector.
 
 ## Usage
 
-Here's an example usage of the DeepLake reader.
+Here's an example usage of the QdrantReader.
 
 ```python
 from llama_index import download_loader
 import os
 
-DeepLakeReader = download_loader("DeepLakeReader")
+QdrantReader = download_loader("QdrantReader")
 
-reader = DeepLakeReader(token="<token>")
+reader = QdrantReader(host="localhost")
 # the query_vector is an embedding representation of your query_vector
 # Example query vector:
 #   query_vector=[0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
 
 query_vector=[n1, n2, n3, ...]
 
-# NOTE: Required args are query_vector, dataset_path.
+# NOTE: Required args are collection_name, query_vector.
+# See the Python client: https://github.com/qdrant/qdrant_client
+# for more details.
 documents = reader.load_data(
+    collection_name="demo",
     query_vector=query_vector,
-    dataset_path="<dataset_path>",
     limit=5
 )
 
