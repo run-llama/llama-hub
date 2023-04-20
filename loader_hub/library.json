@@ -515,5 +515,12 @@
     "keywords": [
       "trello"
     ]
+  },
+  "DeepLakeReader": {
+    "id": "deeplake",
+    "author": "adolkhan",
+    "keywords": [
+      "deeplake"
+    ]
   }
 }
