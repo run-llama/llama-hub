@@ -509,6 +509,13 @@
       "crawler"
     ]
   },
+  "TrelloReader": {
+    "id": "trello",
+    "author": "bluzir",
+    "keywords": [
+      "trello"
+    ]
+  },
   "DeepLakeReader": {
     "id": "deeplake",
     "author": "adolkhan",
