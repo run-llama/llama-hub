@@ -6,6 +6,8 @@ pytest-dotenv==0.5.2
 https://github.com/jerryjliu/gpt_index/archive/master.zip
 
 llama-index
+atlassian-python-api
+html2text
 
 # For linting
 # linting stubs
