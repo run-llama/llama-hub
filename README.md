@@ -75,6 +75,16 @@ Finally, add your loader to the `loader_hub/library.json` file so that it may be
 Create a PR against the main branch. We typically review the PR within a day. To help expedite the process, it may be helpful to provide screenshots (either in the PR or in
 the README directly) showing your data loader in action!
 
+## Running tests
+
+```shell
+python3.9 -m venv .venv
+source .venv/bin/activate 
+pip3 install -r test_requirements.txt
+
+python3 -m pytest tests 
+```
+
 ## FAQ
 
 ### How do I test my loader before it's merged?
