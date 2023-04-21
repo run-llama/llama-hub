@@ -71,17 +71,19 @@ class ConfluenceReader(BaseReader):
             # Don't just query all the pages since the number of pages can be very large
             # instead we can page through them
             start = 0
-            # page_limit should be min of 100 and limit
-            page_limit = min(100, limit)
             pages = []
             while True:
-                if len(pages) >= limit:
-                    break
-                pages_iter = self.confluence.get_all_pages_from_space(space_key, start=start, limit=page_limit)
+                pages_iter = self.confluence.get_all_pages_from_space(space_key, start=start, limit=limit)
+
                 if len(pages_iter) == 0:
                     break
-                start += page_limit
+
+                start += len(pages_iter)
                 pages.extend(pages_iter)
+
+                # no more to fetch
+                if len(pages_iter) < limit:
+                    break
 
             for page in pages:
                 doc = self.process_page(page, include_attachments, text_maker)
