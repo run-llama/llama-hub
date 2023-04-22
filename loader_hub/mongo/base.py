@@ -12,19 +12,35 @@ class SimpleMongoReader(BaseReader):
     Concatenates each Mongo doc into Document used by LlamaIndex.
 
     Args:
-        mongo_db_url (str): Mongo Full URL.
+        host (str): Mongo host.
+        port (int): Mongo port.
         max_docs (int): Maximum number of documents to load.
 
     """
 
-    def __init__(self, host: str, port: int, mongo_db_url: Optional[Dict] = None, max_docs: int = 1000) -> None:
+    def __init__(
+        self,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        uri: Optional[str] = None,
+        max_docs: int = 1000,
+    ) -> None:
         """Initialize with parameters."""
-        from pymongo import MongoClient  # noqa: F401
-
-        if mongo_db_url is not None:
-            self.client: MongoClient = MongoClient(mongo_db_url)
+        try:
+            import pymongo  # noqa: F401
+            from pymongo import MongoClient  # noqa: F401
+        except ImportError:
+            raise ImportError(
+                "`pymongo` package not found, please run `pip install pymongo`"
+            )
+        if uri:
+            if uri is None:
+                raise ValueError("Either `host` and `port` or `uri` must be provided.")
+            self.client: MongoClient = MongoClient(uri)
         else:
-            self.client: MongoClient = MongoClient(host, port)
+            if host is None or port is None:
+                raise ValueError("Either `host` and `port` or `uri` must be provided.")
+            self.client = MongoClient(host, port)
         self.max_docs = max_docs
 
     def load_data(
