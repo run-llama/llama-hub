@@ -27,38 +27,49 @@ class JiraReader(BaseReader):
         issues = []
 
         for issue in relevant_issues:
-            assignee = ''
-            reporter = ''
-            epic = ''
+            # Iterates through only issues and not epics
+            if 'parent' in (issue.raw['fields']):
+                assignee = ''
+                reporter = ''
+                epic_key = ''
+                epic_summary = ''
+                epic_descripton = ''
 
-            if issue.fields.assignee:
-              assignee = issue.fields.assignee.displayName
+                if issue.fields.assignee:
+                    assignee = issue.fields.assignee.displayName
 
-            if issue.fields.reporter:
-              reporter = issue.fields.reporter.displayName
+                if issue.fields.reporter:
+                    reporter = issue.fields.reporter.displayName
 
-            if issue.raw['fields']['customfield_10009']['showField']:
-              epic = issue.raw['fields']['customfield_10009']['data']['summary']
+                if issue.raw['fields']['parent']['key']:
+                    epic_key = issue.raw['fields']['parent']['key']
+                
+                if issue.raw['fields']['parent']['fields']['summary']:
+                    epic_summary = issue.raw['fields']['parent']['fields']['summary']
+                
+                if issue.raw['fields']['parent']['fields']['status']['description']:
+                    epic_descripton = issue.raw['fields']['parent']['fields']['status']['description']
 
-            issues.append(
-                Document(
-                    issue.fields.summary + " " + issue.fields.description,
-                    extra_info={
-                      'id': issue.id,
-                      'title': issue.fields.summary,
-                      'url': issue.permalink(),
-                      'created_at': issue.fields.created,
-                      'updated_at': issue.fields.updated,
-                      'labels': issue.fields.labels,
-                      'status': issue.fields.status.name,
-                      'assignee': assignee,
-                      'reporter': reporter,
-                      'project': issue.fields.project.name,
-                      'issue_type': issue.fields.issuetype.name,
-                      'priority': issue.fields.priority.name,
-                      'epic': epic
-                    }
+                issues.append(
+                    Document(
+                        f"{issue.fields.summary} \n {issue.fields.description}",
+                        extra_info = {
+                            'id': issue.id,
+                            'title': issue.fields.summary,
+                            'url': issue.permalink(),
+                            'created_at': issue.fields.created,
+                            'updated_at': issue.fields.updated,
+                            'labels': issue.fields.labels,
+                            'status': issue.fields.status.name,
+                            'assignee': assignee,
+                            'reporter': reporter,
+                            'project': issue.fields.project.name,
+                            'issue_type': issue.fields.issuetype.name,
+                            'priority': issue.fields.priority.name,
+                            'epic_key': epic_key,
+                            'epic_summary': epic_summary,
+                            'epic_description': epic_descripton}
+                    )
                 )
-            )
 
         return issues
