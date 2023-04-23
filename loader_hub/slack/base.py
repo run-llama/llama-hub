@@ -116,10 +116,18 @@ class SlackReader(BaseReader):
                 # conversations.history returns the first 100 messages by default
                 # These results are paginated,
                 # see: https://api.slack.com/methods/conversations.history$pagination
-                result = self.client.conversations_history(
-                    channel=channel_id,
-                    cursor=next_cursor,
-                )
+                if self.earliest_date_timestamp is None:
+                    result = self.client.conversations_history(
+                        channel=channel_id,
+                        cursor=next_cursor,
+                    )
+                else:
+                    result = self.client.conversations_history(
+                        channel=channel_id,
+                        cursor=next_cursor,
+                        oldest=str(self.earliest_date_timestamp),
+                        latest=str(self.latest_date_timestamp),
+                    )                    
                 conversation_history = result["messages"]
                 # Print results
                 logger.info(
