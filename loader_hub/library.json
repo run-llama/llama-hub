@@ -522,5 +522,28 @@
     "keywords": [
       "deeplake"
     ]
+  },
+  "ImageCaptionReader": {
+    "id": "file/image_blip",
+    "author": "FarisHijazi",
+    "keywords": [
+      "image"
+    ]
+  },
+  "ImageVisionLLMReader": {
+    "id": "file/image_blip2",
+    "author": "FarisHijazi",
+    "keywords": [
+      "image"
+    ]
+  },
+  "IPYNBReader": {
+    "id": "file/ipynb",
+    "author": "FarisHijazi",
+    "keywords": [
+      "jupyter",
+      "notebook",
+      "ipynb"
+    ]
   }
 }
