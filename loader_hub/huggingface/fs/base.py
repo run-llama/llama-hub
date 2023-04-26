@@ -3,14 +3,14 @@
 A parser for HF files.
 
 """
+import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
 from tempfile import TemporaryDirectory
+from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import json
-import pandas as pd
 
 
 class HuggingFaceFSReader(BaseReader):
@@ -19,7 +19,7 @@ class HuggingFaceFSReader(BaseReader):
     Uses the new Filesystem API from the Hugging Face Hub client library.
 
     Args:
-        
+
 
     """
 
@@ -36,10 +36,12 @@ class HuggingFaceFSReader(BaseReader):
         path = Path(path)
         if ".gz" in path.suffixes:
             import gzip
+
             with TemporaryDirectory() as tmp:
+                tmp = Path(tmp)
                 with open(tmp / "tmp.jsonl.gz", "wb") as fp:
                     fp.write(test_data)
-            
+
                 f = gzip.open(tmp / "tmp.jsonl.gz", "rb")
                 raw = f.read()
                 data = raw.decode()
@@ -67,5 +69,3 @@ class HuggingFaceFSReader(BaseReader):
         for d in json_dicts:
             docs.append(Document(str(d)))
         return docs
-        
-                

@@ -545,5 +545,16 @@
       "notebook",
       "ipynb"
     ]
+  },
+  "HuggingFaceFSReader": {
+    "id": "huggingface/fs",
+    "author": "jerryjliu",
+    "keywords": [
+      "hugging",
+      "face",
+      "huggingface",
+      "filesystem",
+      "fs"
+    ]
   }
 }
