@@ -556,5 +556,13 @@
       "filesystem",
       "fs"
     ]
+  },
+  "DeepDoctectionReader": {
+    "id": "file/deepdoctection",
+    "author": "jerryjliu",
+    "keywords": [
+      "doctection",
+      "doc"
+    ]
   }
 }
