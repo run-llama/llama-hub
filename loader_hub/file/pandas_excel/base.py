@@ -35,7 +35,7 @@ class PandasExcelReader(BaseReader):
         self._pandas_config = pandas_config
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+        self, file: Path, sheet_name: str | int | None = None, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file and extract values from a specific column.
 
@@ -48,8 +48,8 @@ class PandasExcelReader(BaseReader):
         import itertools
 
         import pandas as pd
-
-        df = pd.read_excel(file, sheet_name=None, **self._pandas_config)
+        
+        df = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
 
         keys = df.keys()
 
