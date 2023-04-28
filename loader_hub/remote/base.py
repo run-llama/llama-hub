@@ -49,11 +49,12 @@ class RemoteReader(BaseReader):
         """Parse whatever is at the URL."""
         import tempfile
         from urllib.parse import urlparse
-        from urllib.request import urlopen
+        from urllib.request import urlopen, Request
 
         extra_info = {"Source": url}
 
-        result = urlopen(url)
+        req = Request(url, headers={'User-Agent' : "Magic Browser"})
+        result = urlopen(req)
         url_type = result.info().get_content_type()
         documents = []
         if url_type == "text/html" or url_type == "text/plain":
