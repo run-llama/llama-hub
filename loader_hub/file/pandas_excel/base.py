@@ -4,7 +4,7 @@ Pandas parser for .xlsx files.
 
 """
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -35,7 +35,7 @@ class PandasExcelReader(BaseReader):
         self._pandas_config = pandas_config
 
     def load_data(
-        self, file: Path, sheet_name: str | int | None = None, extra_info: Optional[Dict] = None
+        self, file: Path, sheet_name: Optional[Union[str, int]] = None, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file and extract values from a specific column.
 
