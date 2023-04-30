@@ -4,7 +4,7 @@ Pandas parser for .xlsx files.
 
 """
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -35,7 +35,7 @@ class PandasExcelReader(BaseReader):
         self._pandas_config = pandas_config
 
     def load_data(
-        self, file: Path, column_name: str, extra_info: Optional[Dict] = None
+        self, file: Path, sheet_name: Optional[Union[str, int]] = None, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file and extract values from a specific column.
 
@@ -45,11 +45,21 @@ class PandasExcelReader(BaseReader):
         Returns:
             List[Document]: A list of`Document objects containing the values from the specified column in the Excel file.
         """
+        import itertools
+
         import pandas as pd
+        
+        df = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
 
-        df = pd.read_excel(file, **self._pandas_config)
+        keys = df.keys()
 
-        text_list = df[column_name].astype(str).tolist()
+        df_sheets = []
+
+        for key in keys:
+            sheet = df[key].values.astype(str).tolist()
+            df_sheets.append(sheet)
+
+        text_list = list(itertools.chain.from_iterable(df_sheets))  # flatten list of lists
 
         if self._concat_rows:
             return [Document((self._row_joiner).join(text_list), extra_info=extra_info)]
