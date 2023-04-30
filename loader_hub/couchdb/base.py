@@ -72,3 +72,4 @@ class SimpleCouchDBReader(BaseReader):
                         raise ValueError("`_id` field not found in CouchDB document.")
                     documents.append(Document(json.dumps(item)))
 
+        return documents
