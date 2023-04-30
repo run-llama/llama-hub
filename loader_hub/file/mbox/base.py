@@ -58,6 +58,9 @@ class MboxReader(BaseReader):
         for _, _msg in enumerate(mbox):
             msg: mailbox.mboxMessage = _msg
             # Parse multipart messages
+
+            content = None
+
             if msg.is_multipart():
                 for part in msg.walk():
                     ctype = part.get_content_type()
@@ -68,6 +71,10 @@ class MboxReader(BaseReader):
             # Get plain message payload for non-multipart messages
             else:
                 content = msg.get_payload(decode=True)
+
+            if not content:
+                print("WARNING loader_hub.file.mbox found messages with content that stayed None. Skipping entry...")
+                continue
 
             # Parse message HTML content and remove unneeded whitespace
             soup = BeautifulSoup(content)
