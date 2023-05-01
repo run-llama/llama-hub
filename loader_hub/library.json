@@ -568,5 +568,13 @@
       "doctection",
       "doc"
     ]
+  },
+  "PandasAIReader": {
+    "id": "pandas_ai",
+    "author": "jerryjliu",
+    "keywords": [
+      "pandas",
+      "ai"
+    ]
   }
 }
