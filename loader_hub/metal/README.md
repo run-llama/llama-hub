@@ -1,4 +1,6 @@
 # Metal Loader
+[Metal](https://getmetal.io)
+
 
 The Metal Loader returns a set of texts corresponding to embeddings retrieved from a Metal Index.
 
