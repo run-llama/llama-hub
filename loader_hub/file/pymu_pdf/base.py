@@ -9,40 +9,42 @@ from llama_index.readers.schema.base import Document
 class PyMuPDFReader(BaseReader):
     """Read PDF files using PyMuPDF library."""
 
-    def __init__(self, file_path: Union[Path, str], metadata: bool = True) -> None:
-        """Initializes PyMuPDFReader.
-
-        Args:
-            file_path (Union[Path, str]): file path of PDF file (accepts string or Path)
-            metadata (bool, optional): if metadata to be included or not. Defaults to True.
-        """
-        super().__init__(file_path)
-        self._metadata = metadata
-
-    def load(self, extra_info: Optional[Dict] = None) -> List[Document]:
+    def load(
+        self,
+        file_path: Union[Path, str],
+        metadata: bool = True,
+        extra_info: Optional[Dict] = None,
+    ) -> List[Document]:
         """Loads list of documents from PDF file and also accepts extra information in dict format.
 
         Args:
+            file_path (Union[Path, str]): file path of PDF file (accepts string or Path).
+            metadata (bool, optional): if metadata to be included or not. Defaults to True.
             extra_info (Optional[Dict], optional): extra information related to each document in dict format. Defaults to None.
 
         Raises:
             TypeError: if extra_info is not a dictionary.
+            TypeError: if file_path is not a string or Path.
 
         Returns:
             List[Document]: list of documents.
         """
         import fitz
-        
+
+        # check if file_path is a string or Path
+        if not isinstance(file_path, str) and not isinstance(file_path, Path):
+            raise TypeError("file_path must be a string or Path.")
+
         # open PDF file
-        doc = fitz.open(self.file_path)
+        doc = fitz.open(file_path)
 
         # if extra_info is not None, check if it is a dictionary
         if extra_info:
             if not isinstance(extra_info, dict):
-                raise TypeError("Extra_info must be a dictionary.")
+                raise TypeError("extra_info must be a dictionary.")
 
         # if metadata is True, add metadata to each document
-        if self._metadata:
+        if metadata:
             metadata_dict = {}
             metadata_dict["total_pages"] = len(doc)
             metadata_dict["file_path"] = self.file_path
@@ -56,7 +58,7 @@ class PyMuPDFReader(BaseReader):
             # return list of documents
             return [
                 Document(
-                    page_content=page.get_text().encode("utf-8"),
+                    page.get_text().encode("utf-8"),
                     extra_info=dict(
                         extra_info,
                         **{
@@ -69,8 +71,6 @@ class PyMuPDFReader(BaseReader):
 
         else:
             return [
-                Document(
-                    page_content=page.get_text().encode("utf-8"), extra_info=extra_info
-                )
+                Document(page.get_text().encode("utf-8"), extra_info=extra_info)
                 for page in doc
             ]
