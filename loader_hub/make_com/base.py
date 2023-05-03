@@ -10,7 +10,7 @@ import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_index.response.schema import Response
-from llama_index.data_structs.node_v2 import Node, NodeWithScore
+from llama_index.data_structs.node import Node, NodeWithScore
 
 
 class MakeWrapper(BaseReader):
