@@ -17,6 +17,8 @@ import os
 
 MetalReader = download_loader('MetalReader')
 
+query_embedding = [n1, n2, n3, ...] # embedding of the search query
+
 reader = MetalReader(
     api_key=api_key,
     client_id=client_id,
@@ -25,7 +27,7 @@ reader = MetalReader(
 
 documents = reader.load_data(
     top_k=3,
-    query_str="text query",
+    query_embedding=query_embedding,
 )
 ```
 
