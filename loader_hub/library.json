@@ -51,7 +51,9 @@
   "HubspotReader": {
     "id": "hubspot",
     "author": "ykhli",
-    "keywords": ["hubspot"]
+    "keywords": [
+      "hubspot"
+    ]
   },
   "EpubReader": {
     "id": "file/epub",
@@ -486,13 +488,13 @@
     "author": "plurigrid"
   },
   "OutlookLocalCalendarReader": {
-    "id":"outlook_localcalendar",
-    "author":"tevslin",
-    "keywords":[
+    "id": "outlook_localcalendar",
+    "author": "tevslin",
+    "keywords": [
       "calendar",
       "outlook"
     ]
- },
+  },
   "ApifyActor": {
     "id": "apify/actor",
     "author": "drobnikj",
@@ -575,6 +577,15 @@
     "keywords": [
       "pandas",
       "ai"
+    ]
+  },
+  "MetalReader": {
+    "id": "metal",
+    "author": "getmetal",
+    "keywords": [
+      "metal",
+      "retriever",
+      "storage"
     ]
   },
   "PyMuPDFReader": {
