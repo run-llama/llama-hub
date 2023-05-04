@@ -13,7 +13,7 @@ from llama_index import download_loader
 RssReader = download_loader("RssReader")
 
 reader = RssReader()
-documents = loader.load_data([
+documents = reader.load_data([
     "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
     "https://roelofjanelsinga.com/atom.xml"
 ])
