@@ -587,5 +587,13 @@
       "retriever",
       "storage"
     ]
+  },
+  "PyMuPDFReader": {
+    "id": "file/pymu_pdf",
+    "author": "iamarunbrahma",
+    "keywords": [
+      "pymupdf",
+      "pdf"
+    ]
   }
 }
