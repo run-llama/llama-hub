@@ -1,5 +1,6 @@
 """Metal Reader"""
 from typing import Any, Dict, List, Optional
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -31,9 +32,8 @@ class MetalReader(BaseReader):
 
     def load_data(
         self,
-        id_to_text_map: Optional[Dict[str, str]],
-        query_str: str,
-        top_k: int,
+        limit: int,
+        query_embedding: Optional[List[float]] = None,
         filters: Optional[Dict[str, Any]] = None,
         separate_documents: bool = True,
         **query_kwargs: Any
@@ -41,9 +41,8 @@ class MetalReader(BaseReader):
         """Load data from Metal.
 
         Args:
-            id_to_text_map (Dict[str, str]): A map from ID's to text.
-            query_str (str): Query string for text search.
-            top_k (int): Number of results to return.
+            query_embedding (Optional[List[float]]): Query embedding for search.
+            limit (int): Number of results to return.
             filters (Optional[Dict[str, Any]]): Filters to apply to the search.
             separate_documents (Optional[bool]): Whether to return separate
                 documents per retrieved entry. Defaults to True.
@@ -54,17 +53,14 @@ class MetalReader(BaseReader):
         """
 
         payload = {
-            "text": query_str,
+            "embedding": query_embedding,
             "filters": filters,
         }
-        response = self.metal_client.search(payload, limit=top_k, **query_kwargs)
+        response = self.metal_client.search(payload, limit=limit, **query_kwargs)
 
         documents = []
         for item in response["data"]:
-            text = item["text"]
-            if id_to_text_map is not None and item["id"] in id_to_text_map:
-                text = id_to_text_map[item["id"]]
-
+            text = item["text"] or (item["metadata"] and item["metadata"]["text"])
             documents.append(Document(text=text))
 
         if not separate_documents:
