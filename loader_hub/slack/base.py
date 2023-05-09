@@ -133,10 +133,13 @@ class SlackReader(BaseReader):
                 logger.info(
                     "{} messages found in {}".format(len(conversation_history), id)
                 )
-                result_messages.extend(
-                    self._read_message(channel_id, message["ts"])
-                    for message in conversation_history
-                )
+                # 'reply_count' is present if there are replies in the 
+                # conversation thread otherwise not.
+                # using it to reduce number of slack api calls.
+                result_messages.extend(self._read_message(channel_id, message["ts"]) 
+                            if 'reply_count' in message 
+                            else message['text'] 
+                            for message in conversation_history)
                 if not result["has_more"]:
                     break
                 next_cursor = result["response_metadata"]["next_cursor"]

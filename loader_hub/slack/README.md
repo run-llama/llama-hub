@@ -11,7 +11,7 @@ from llama_index import download_loader
 
 SlackReader = download_loader("SlackReader")
 
-loader = SlackReader()
+loader = SlackReader('<Slack API Token>')
 documents = loader.load_data(channel_ids=['[slack_channel_id1]', '[slack_channel_id2]'])
 ```
 
