@@ -8,12 +8,12 @@ To use this loader, you need to pass file path of the local file as string or `P
 
 ```python
 from pathlib import Path
-from gpt_index import download_loader
+from llama_index import download_loader
 
 PyMuPDFReader = download_loader("PyMuPDFReader")
 
 loader = PyMuPDFReader()
-documents = loader.load(file=Path('./article.pdf'), metadata=True)
+documents = loader.load(file_path=Path('./article.pdf'), metadata=True)
 ```
 
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
