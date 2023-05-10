@@ -45,24 +45,19 @@ class PyMuPDFReader(BaseReader):
 
         # if metadata is True, add metadata to each document
         if metadata:
-            metadata_dict = {}
-            metadata_dict["total_pages"] = len(doc)
-            metadata_dict["file_path"] = self.file_path
-
-            # add extra_info to metadata_dict
             if not extra_info:
-                extra_info = metadata_dict
-            else:
-                extra_info = dict(extra_info, **metadata_dict)
+                extra_info = {}
+            extra_info["total_pages"] = len(doc)
+            extra_info["file_path"] = file_path
 
             # return list of documents
             return [
                 Document(
-                    page.get_text().encode("utf-8"),
+                    text=page.get_text().encode("utf-8"),
                     extra_info=dict(
                         extra_info,
                         **{
-                            metadata_dict["source"]: f"{page.number+1}",
+                            "source": f"{page.number+1}",
                         },
                     ),
                 )
@@ -71,6 +66,6 @@ class PyMuPDFReader(BaseReader):
 
         else:
             return [
-                Document(page.get_text().encode("utf-8"), extra_info=extra_info)
+                Document(text=page.get_text().encode("utf-8"), extra_info=extra_info)
                 for page in doc
             ]
