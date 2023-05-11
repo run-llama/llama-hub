@@ -79,6 +79,7 @@ class MangoppsGuidesReader(BaseReader):
         """Fetch the urls from given domain"""
 
         newurls = []
+        self.visited = (list(set(self.visited)))
         self.visited.append(url)
 
         print(f"Checking URL: {url}")
@@ -99,6 +100,7 @@ class MangoppsGuidesReader(BaseReader):
                 and f"https://{urlparse(newurl).netloc}" == self.domain_url
             ):
                 newurls = newurls + self.fetch_url(newurl)
+        newurls = (list(set(newurls)))
         return newurls
 
 
