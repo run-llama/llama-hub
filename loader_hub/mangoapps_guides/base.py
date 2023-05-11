@@ -15,12 +15,14 @@ class MangoppsGuidesReader(BaseReader):
     """MangoppsGuides reader. Reads data from a MangoppsGuides workspace.
 
     Args:
-        MangoppsGuides_domain_url (str): MangoppsGuides domain url
+        domain_url (str): MangoppsGuides domain url
+        limir (int): depth to crawl
     """
 
-    def __init__(self, domain_url: str) -> None:
+    def __init__(self, domain_url: str, limit: int) -> None:
         """Initialize MangoppsGuides reader."""
         self.domain_url = domain_url
+        self.limit = limit
         self.start_url = f"{self.domain_url}/home/"
 
     def load_data(self) -> List[Document]:
@@ -49,7 +51,6 @@ class MangoppsGuidesReader(BaseReader):
                 self.failed_urls.append(url)
                 print(f"Url scraping failed: {url}")
 
-    
         for k, v in self.guides_pages.items():
             extra_info = {
                 "url": k,
@@ -63,13 +64,12 @@ class MangoppsGuidesReader(BaseReader):
 
         return results
 
-    
     def crawl_urls(self) -> List[str]:
         """Crawls all the urls from given domain"""
 
         self.visited = []
         fetched_urls = self.fetch_url(self.start_url)
-        
+
         print(f"All urls {fetched_urls}")
         print(f"All visited urls {self.visited}")
 
@@ -77,30 +77,30 @@ class MangoppsGuidesReader(BaseReader):
 
     def fetch_url(self, url):
         """Fetch the urls from given domain"""
-        
+
+        newurls = []
         self.visited.append(url)
 
         print(f"Checking URL: {url}")
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
 
-        newurls = []
-
-        for link in soup.find_all("a"):
+        for link in soup.find_all("a")[:self.limit]:
             href: str = link.get("href")
             if href and urlparse(href).netloc == self.domain_url:
                 newurls.append(href)
             elif href and href.startswith("/"):
                 newurls.append(f"{self.domain_url}{href}")
 
-        for newurl in newurls:
+        for newurl in newurls[:self.limit]:
             if (
                 newurl not in self.visited
-                and not newurl.startswith("#") 
+                and not newurl.startswith("#")
                 and f"https://{urlparse(newurl).netloc}" == self.domain_url
             ):
                 newurls = newurls + self.fetch_url(newurl)
         return newurls
+
 
 class GuidesScraper:
     def __init__(self, url) -> None:
@@ -150,7 +150,8 @@ class GuidesScraper:
 
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
-        page_content: List[BeautifulSoup] = soup.find_all("main", {"class": page_class})
+        page_content: List[BeautifulSoup] = soup.find_all(
+            "main", {"class": page_class})
 
         soup_page: BeautifulSoup = page_content[0]
 
@@ -170,9 +171,11 @@ class GuidesScraper:
             block.decompose()
 
         return text
-    
+
+
 if __name__ == "__main__":
-    reader = MangoppsGuidesReader(domain_url="https://guides.mangoapps.com")
+    reader = MangoppsGuidesReader(
+        domain_url="https://guides.mangoapps.com", limit=5)
     print("Initialized MangoppsGuidesReader")
     output = reader.load_data()
     print(output)

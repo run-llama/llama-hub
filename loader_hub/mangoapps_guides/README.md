@@ -11,7 +11,7 @@ from llama_index import download_loader
 
 MangoppsGuidesReader = download_loader("MangoppsGuidesReader")
 
-loader = MangoppsGuidesReader(domain_url="https://guides.mangoapps.com/")
+loader = MangoppsGuidesReader(domain_url="https://guides.mangoapps.com/", limit=5)
 documents = loader.load_data()
 ```
 
