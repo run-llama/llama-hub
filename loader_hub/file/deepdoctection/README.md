@@ -9,7 +9,7 @@ To use this loader, you need to pass in a `Path` to a local file.
 
 ```python
 from pathlib import Path
-from gpt_index import download_loader
+from llama_index import download_loader
 
 DeepDoctectionReader = download_loader("DeepDoctectionReader")
 
