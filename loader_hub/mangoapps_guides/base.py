@@ -1,13 +1,10 @@
 """MangoppsGuides reader."""
 import re
 from typing import List
+from urllib.parse import urlparse
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
-from bs4 import BeautifulSoup
-import requests
-from urllib.parse import urlparse
 
 
 class MangoppsGuidesReader(BaseReader):
@@ -26,6 +23,8 @@ class MangoppsGuidesReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
+        import requests
+        from bs4 import BeautifulSoup
 
         self.domain_url = domain_url
         self.limit = limit
@@ -111,6 +110,9 @@ class MangoppsGuidesReader(BaseReader):
 
     def fetch_url(self, url):
         """Fetch the urls from given domain"""
+
+        import requests
+        from bs4 import BeautifulSoup
 
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
