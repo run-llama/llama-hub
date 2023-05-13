@@ -8,7 +8,6 @@ Here's an example usage of the MondayReader.
 
 ```python
 from llama_index import download_loader
-import os
 
 MondayReader = download_loader('MondayReader')
 

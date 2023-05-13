@@ -3,7 +3,8 @@ from typing import List
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
+import json
+import requests
 
 class MondayReader(BaseReader):
     """monday.com reader. Reads data by a GraphQL query.
@@ -32,8 +33,6 @@ class MondayReader(BaseReader):
     def perform_request(query: str):
         """Fetch GraphQL data"""
 
-        import requests
-        import json
 
         headers = {"Authorization" : self.api_key}
         data = {'query' : query}
