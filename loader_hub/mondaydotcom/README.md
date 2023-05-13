@@ -12,7 +12,7 @@ import os
 
 MondayReader = download_loader('MondayReader')
 
-reader = MondayReader("<monday_api_token">)
+reader = MondayReader("<monday_api_token>")
 documents = reader.load_data(query="<GraphQL_QUERY>")
 
 ```
