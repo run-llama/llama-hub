@@ -27,17 +27,12 @@ class MondayReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
-        data = self.perform_request(query)
-        return [Document(f"{data}", extra_info={})]
-
-    def perform_request(query: str):
-        """Fetch GraphQL data"""
-
 
         headers = {"Authorization" : self.api_key}
         data = {'query' : query}
 
         response = requests.post(url=self.api_url, json=data, headers=headers)
-        json_response = r.json()
-        
-        return json_response
+        json_response = response.json()
+
+        response_data = json_response['data']
+        return [Document(f"{response_data}", extra_info={})]
