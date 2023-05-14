@@ -115,17 +115,14 @@ class BoardDocsReader(BaseReader):
 
     def load_data(
         self,
-        site: str,
-        committee: str,
         **load_kwargs: Any
     ) -> List[Document]:
-        """Load BoardDoc site data.
+        """Load all meetings of the committee.
 
         Args:
-            site (str): The BoardDocs site you'd like to index.
-            committee (str): The CommitteeID on the site you want to index.
-
+            None
         """
+        # TODO: allow for loading just an individual meeting?
 
         results = []
         for meeting in self.get_meeting_list():
