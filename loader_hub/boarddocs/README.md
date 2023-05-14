@@ -12,7 +12,7 @@ To use this loader, you'll need to specify which BoardDocs site you want to load
 from llama_index import download_loader
 
 BoardDocsReader = download_loader("BoardDocsReader")
-loader = BoardDocsReader()
+loader = BoardDocsReader(site="ca/redwood", committee_id="A4EP6J588C05")
 # For a site URL https://go.boarddocs.com/ca/redwood/Board.nsf/Public
 # your boarddocssite should be set to 'ca/redwood'
 documents = loader.load_data(boarddocssite=['ca/redwood'])
