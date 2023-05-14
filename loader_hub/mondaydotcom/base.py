@@ -5,6 +5,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 import json
 import requests
+from graphql.parser import GraphQLParser
 
 class MondayReader(BaseReader):
     """monday.com reader. Reads data by a GraphQL query.
@@ -35,4 +36,9 @@ class MondayReader(BaseReader):
         json_response = response.json()
 
         response_data = json_response['data']
-        return [Document(f"{response_data}", extra_info={})]
+
+        parser = GraphQLParser()
+        parsed_quert = parser.parse(query)
+        query_object_name = parsed_quert.definitions[0].selections[0].name
+
+        return [Document(f"{response_data[query_object_name]}", extra_info={})]
