@@ -592,8 +592,8 @@
     "id": "boarddocs",
     "author": "dweekly",
     "keywords": [
-      "boarddocs",
-      "board"
+      "board",
+      "boarddocs"
     ]
   },
   "PyMuPDFReader": {
