@@ -81,7 +81,7 @@ class BoardDocsReader(BaseReader):
         # POST the request!
         response = requests.post(agenda_url, headers=self.headers, data=data)
 
-        print("Status returned by detailed agenda fetch request:",response.status_code)
+        # print("Status returned by detailed agenda fetch request:",response.status_code)
 
         import html2text
         from bs4 import BeautifulSoup
@@ -92,11 +92,11 @@ class BoardDocsReader(BaseReader):
         agenda_title = soup.find("div", {"class":"print-meeting-name"}).string
         agenda_files = [fd.a.get('href') for fd in soup.find_all("div", {"class":"public-file"})]
         agenda_data = html2text.html2text(response.text)
-        print("Agenda Title:", agenda_title)
-        print("Agenda Date:", agenda_date)
-        print("Number of Files:",len(agenda_files))
-        print("Agenda Files:", agenda_files)
-        print("Agenda Data:", agenda_data)
+        print(" Agenda Title:", agenda_title)
+        print(" Agenda Date:", agenda_date)
+        # print("Number of Files:",len(agenda_files))
+        # print("Agenda Files:", agenda_files)
+        # print("Agenda Data:", agenda_data)
 
         # TODO: index the linked PDFs in agenda_files!
 
@@ -115,16 +115,18 @@ class BoardDocsReader(BaseReader):
 
     def load_data(
         self,
+        meeting_ids: Optional[List[str]] = None,
         **load_kwargs: Any
     ) -> List[Document]:
         """Load all meetings of the committee.
 
         Args:
-            None
+            meeting_ids (List[str]): A list of meeting IDs to load. If None, load all meetings.
         """
-        # TODO: allow for loading just an individual meeting?
 
-        results = []
-        for meeting in self.get_meeting_list():
-            results.append(self.process_meeting(meeting.get('meetingID')))
-        return results
+        # if a list of meetings wasn't provided, enumerate them all
+        if not meeting_ids:
+            meeting_ids = [meeting.get('meetingID') for meeting in self.get_meeting_list()]
+
+        # process all relevant meetings
+        return [self.process_meeting(meeting_id) for meeting_id in meeting_ids]
