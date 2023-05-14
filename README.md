@@ -89,14 +89,14 @@ python3 -m pytest tests
 
 ### How do I test my loader before it's merged?
 
-There is an argument called `loader_hub_url` in [`download_loader`](https://github.com/jerryjliu/gpt_index/blob/main/gpt_index/readers/download.py) that defaults to the main branch of this repo. You can set it to your branch or fork to test your new loader.
+There is an argument called `loader_hub_url` in [`download_loader`](https://github.com/jerryjliu/llama_index/blob/main/llama_index/readers/download.py) that defaults to the main branch of this repo. You can set it to your branch or fork to test your new loader.
 
 ### Should I create a PR against LlamaHub or the LlamaIndex repo directly?
 
 If you have a data loader PR, by default let's try to create it against LlamaHub! We will make exceptions in certain cases
 (for instance, if we think the data loader should be core to the LlamaIndex repo).
 
-For all other PR's relevant to LlamaIndex, let's create it directly against the [LlamaIndex repo](https://github.com/jerryjliu/gpt_index).
+For all other PR's relevant to LlamaIndex, let's create it directly against the [LlamaIndex repo](https://github.com/jerryjliu/llama_index).
 
 ### Other questions?
 
