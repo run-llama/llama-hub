@@ -1,0 +1,5 @@
+bs4
+html2text
+requests
+json
+xml.etree
