@@ -128,5 +128,8 @@ class BoardDocsReader(BaseReader):
         if not meeting_ids:
             meeting_ids = [meeting.get('meetingID') for meeting in self.get_meeting_list()]
 
-        # process all relevant meetings
-        return [self.process_meeting(meeting_id) for meeting_id in meeting_ids]
+        # process all relevant meetings & return the documents
+        docs = []
+        for meeting_id in meeting_ids:
+            docs.extend(self.process_meeting(meeting_id))
+        return docs
