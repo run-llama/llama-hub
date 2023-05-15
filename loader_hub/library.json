@@ -603,5 +603,12 @@
       "pymupdf",
       "pdf"
     ]
+  },
+  "MangoppsGuidesReader": {
+    "id": "mangoapps_guides",
+    "author": "mangoapps",
+    "keywords": [
+      "mangoapps"
+    ]
   }
 }

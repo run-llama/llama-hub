@@ -73,7 +73,7 @@ class ConfluenceReader(BaseReader):
             start = 0
             pages = []
             while True:
-                pages_iter = self.confluence.get_all_pages_from_space(space_key, start=start, limit=limit)
+                pages_iter = self.confluence.get_all_pages_from_space(space_key, start=start, limit=limit, expand='body.storage.value')
 
                 if len(pages_iter) == 0:
                     break
