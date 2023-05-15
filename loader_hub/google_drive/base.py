@@ -106,12 +106,13 @@ class GoogleDriveReader(BaseReader):
         return creds, drive
 
     def _get_fileids_meta(
-        self, folder_id: str = None, file_id: str = None
+        self, folder_id: str = None, file_id: str = None, mime_types: list = None
     ) -> List[str]:
         """Get file ids present in folder/ file id
         Args:
             folder_id: folder id of the folder in google drive.
             file_id: file id of the file in google drive
+            mime_types: the mimeTypes you want to allow e.g.: "application/vnd.google-apps.document"
         Returns:
             metadata: List of metadata of filde ids.
         """
@@ -122,6 +123,13 @@ class GoogleDriveReader(BaseReader):
             if folder_id:
                 fileids_meta = []
                 query = "'" + folder_id + "' in parents"
+
+                #Add mimeType filter to query
+                if mime_types:
+                    mime_types.append("application/vnd.google-apps.folder") #keep the recursiveness
+                    mime_query = " or ".join([f"mimeType='{mime_type}'" for mime_type in mime_types])
+                    query += f" and ({mime_query})"
+
                 results = service.files().list(q=query, fields="*").execute()
                 items = results.get("files", [])
                 for item in items:
@@ -151,7 +159,6 @@ class GoogleDriveReader(BaseReader):
                     file["createdTime"],
                     file["modifiedTime"],
                 )
-
             return fileids_meta
 
         except Exception as e:
@@ -240,33 +247,35 @@ class GoogleDriveReader(BaseReader):
         except Exception as e:
             logger.error("An error occurred while loading with fileid: {}".format(e))
 
-    def _load_from_folder(self, folder_id: str) -> List[Document]:
+    def _load_from_folder(self, folder_id: str, mime_types: list) -> List[Document]:
         """Load data from folder_id
         Args:
             folder_id: folder id of the folder in google drive.
+            mime_types: the mimeTypes you want to allow e.g.: "application/vnd.google-apps.document"
         Returns:
             Document: List of Documents of text.
         """
         try:
-            fileids_meta = self._get_fileids_meta(folder_id=folder_id)
+            fileids_meta = self._get_fileids_meta(folder_id=folder_id,mime_types=mime_types)
             documents = self._load_data_fileids_meta(fileids_meta)
             return documents
         except Exception as e:
             logger.error("An error occurred while loading from folder: {}".format(e))
 
     def load_data(
-        self, folder_id: str = None, file_ids: List[str] = None
+        self, folder_id: str = None, file_ids: List[str] = None, mime_types: List[str] = None
     ) -> List[Document]:
         """Load data from the folder id and file ids.
         Args:
             folder_id: folder id of the folder in google drive.
             file_ids: file ids of the files in google drive.
+            mime_types: the mimeTypes you want to allow e.g.: "application/vnd.google-apps.document"
         Returns:
             List[Document]: A list of documents.
         """
         self._creds, self._drive = self._get_credentials()
 
         if folder_id:
-            return self._load_from_folder(folder_id)
+            return self._load_from_folder(folder_id, mime_types)
         else:
-            return self._load_from_file_ids(file_ids)
+            return self._load_from_file_ids(file_ids, mime_types)
