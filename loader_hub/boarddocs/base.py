@@ -74,14 +74,11 @@ class BoardDocsReader(BaseReader):
 
         agenda_url = self.base_url + "/PRINT-AgendaDetailed"
 
-        print("Parsing meeting " + meeting_id)
         # set the meetingID & committee
         data = "id=" + meeting_id + "&" + "current_committee_id=" + self.committee_id
 
         # POST the request!
         response = requests.post(agenda_url, headers=self.headers, data=data)
-
-        # print("Status returned by detailed agenda fetch request:",response.status_code)
 
         import html2text
         from bs4 import BeautifulSoup
@@ -92,11 +89,6 @@ class BoardDocsReader(BaseReader):
         agenda_title = soup.find("div", {"class":"print-meeting-name"}).string
         agenda_files = [fd.a.get('href') for fd in soup.find_all("div", {"class":"public-file"})]
         agenda_data = html2text.html2text(response.text)
-        print(" Agenda Title:", agenda_title)
-        print(" Agenda Date:", agenda_date)
-        # print("Number of Files:",len(agenda_files))
-        # print("Agenda Files:", agenda_files)
-        # print("Agenda Data:", agenda_data)
 
         # TODO: index the linked PDFs in agenda_files!
 
