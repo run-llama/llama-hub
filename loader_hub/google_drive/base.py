@@ -106,7 +106,7 @@ class GoogleDriveReader(BaseReader):
         return creds, drive
 
     def _get_fileids_meta(
-        self, folder_id: Optional(str) = None, file_id: Optional(str) = None, mime_types: Optional(list) = None
+        self, folder_id: Optional[str] = None, file_id: Optional[str] = None, mime_types: Optional[list] = None
     ) -> List[str]:
         """Get file ids present in folder/ file id
         Args:
