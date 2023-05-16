@@ -121,6 +121,15 @@
       "apollo"
     ]
   },
+  "GraphReader": {
+    "id": "graph",
+    "author": "jexp",
+    "keywords": [
+      "graph",
+      "neo4j",
+      "cypher"
+    ]
+  },
   "DiscordReader": {
     "id": "discord",
     "author": "jerryjliu"
