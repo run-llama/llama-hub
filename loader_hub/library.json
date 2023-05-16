@@ -126,6 +126,15 @@
       "aws rds"
     ]
   },
+  "GraphQLReader": {
+    "id": "graphql",
+    "author": "jexp",
+    "keywords": [
+      "graphql",
+      "gql",
+      "apollo"
+    ]
+  },
   "DiscordReader": {
     "id": "discord",
     "author": "jerryjliu"
