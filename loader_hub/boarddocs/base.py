@@ -4,8 +4,6 @@ from typing import Any, List, Optional
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-import html2text
-from bs4 import BeautifulSoup
 import json
 import requests
 
@@ -60,7 +58,7 @@ class BoardDocsReader(BaseReader):
         meetingsData = json.loads(response.text)
 
         meetings = [{"meetingID": meeting.get('unique', None),
-                    "date": meeting.get('numberdate', None), 
+                    "date": meeting.get('numberdate', None),
                     "unid": meeting.get('unid', None)} for meeting in meetingsData]
         return meetings
 
