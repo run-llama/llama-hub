@@ -132,7 +132,12 @@ class GoogleDriveReader(BaseReader):
                     mime_query = " or ".join([f"mimeType='{mime_type}'" for mime_type in mime_types])
                     query += f" and ({mime_query})"
 
-                results = service.files().list(q=query, fields="*").execute()
+                results = service.files().list(
+                    q=query, 
+                    includeItemsFromAllDrives=True,
+                    supportsAllDrives=True, 
+                    fields="*"
+                ).execute()
                 items = results.get("files", [])
                 for item in items:
                     if item["mimeType"] == folder_mime_type:
@@ -140,27 +145,48 @@ class GoogleDriveReader(BaseReader):
                             self._get_fileids_meta(folder_id=item["id"], mime_types=mime_types)
                         )
                     else:
-                        fileids_meta.append(
-                            (
-                                item["id"],
-                                item["owners"][0]["displayName"],
-                                item["name"],
-                                item["createdTime"],
-                                item["modifiedTime"],
+                        # Check if file doesn't belong to a Shared Drive. "owners" doesn't exist in a Shared Drive
+                        if 'driveId' not in item:
+                            fileids_meta.append(
+                                (
+                                    item["id"],
+                                    item["owners"][0]["displayName"],
+                                    item["name"],
+                                    item["createdTime"],
+                                    item["modifiedTime"],
+                                )
                             )
-                        )
+                        else:
+                            fileids_meta.append(
+                                (
+                                    item["id"],
+                                    item["name"],
+                                    item["createdTime"],
+                                    item["modifiedTime"],
+                                )
+                            )
+
             else:
                 # Get the file details
-                file = service.files().get(fileId=file_id, fields="*").execute()
+                file = service.files().get(fileId=file_id, supportsAllDrives=True, fields="*").execute()
 
                 # Get metadata of the file
-                fileids_meta = (
-                    file["id"],
-                    file["owners"][0]["displayName"],
-                    file["name"],
-                    file["createdTime"],
-                    file["modifiedTime"],
-                )
+                # Check if file doesn't belong to a Shared Drive. "owners" doesn't exist in a Shared Drive
+                if 'driveId' not in file:
+                    fileids_meta = (
+                        file["id"],
+                        file["owners"][0]["displayName"],
+                        file["name"],
+                        file["createdTime"],
+                        file["modifiedTime"],
+                    )
+                else:
+                    fileids_meta = (
+                        file["id"],
+                        file["name"],
+                        file["createdTime"],
+                        file["modifiedTime"],
+                    )
             return fileids_meta
 
         except Exception as e:
@@ -176,19 +202,42 @@ class GoogleDriveReader(BaseReader):
         Returns:
             The downloaded filename, which which may have a new extension
         """
+
+        from io import BytesIO
+        from googleapiclient.http import MediaIoBaseDownload
+        from googleapiclient.discovery import build
+
         try:
-            file = self._drive.CreateFile({"id": fileid})
-            if file["mimeType"] in self._mimetypes:
-                download_mimetype = self._mimetypes[file["mimeType"]]["mimetype"]
-                download_extension = self._mimetypes[file["mimeType"]]["extension"]
-                new_filename = filename + download_extension
-                # download file with filename and mimetype
-                file.GetContentFile(new_filename, mimetype=download_mimetype)
-                return new_filename
+            # Get file details
+            service = build("drive", "v3", credentials=self._creds)
+            file = service.files().get(fileId=fileid, supportsAllDrives=True).execute()
+
+            if file['mimeType'] in self._mimetypes:
+                download_mimetype = self._mimetypes[file['mimeType']]['mimetype']
+                download_extension = self._mimetypes[file['mimeType']]['extension']
+                new_file_name = filename + download_extension
+
+                # Download and convert file
+                request = service.files().export_media(fileId=fileid, mimeType=download_mimetype)
             else:
-                # download file with filename
-                file.GetContentFile(filename)
-                return filename
+                new_file_name = filename
+
+                # Download file without conversion
+                request = service.files().get_media(fileId=fileid)
+
+            # Download file data
+            file_data = BytesIO()
+            downloader = MediaIoBaseDownload(file_data, request)
+            done = False
+
+            while not done:
+                status, done = downloader.next_chunk()
+
+            # Save the downloaded file
+            with open(new_file_name, 'wb') as f:
+                f.write(file_data.getvalue())
+
+            return new_file_name
         except Exception as e:
             logger.error("An error occurred while downloading file: {}".format(e))
 
@@ -214,13 +263,23 @@ class GoogleDriveReader(BaseReader):
                     filepath = os.path.join(temp_dir, filename)
                     fileid = fileid_meta[0]
                     final_filepath = self._download_file(fileid, filepath)
-                    metadata[final_filepath] = {
-                        "file id": fileid_meta[0],
-                        "author": fileid_meta[1],
-                        "file name": fileid_meta[2],
-                        "created at": fileid_meta[3],
-                        "modified at": fileid_meta[4],
-                    }
+                    # File is not in a Shared Drive
+                    if len(fileid_meta) == 5:
+                        metadata[final_filepath] = {
+                            "file id": fileid_meta[0],
+                            "author": fileid_meta[1],
+                            "file name": fileid_meta[2],
+                            "created at": fileid_meta[3],
+                            "modified at": fileid_meta[4],
+                        }
+                    # File is in a Shared Drive
+                    else:
+                        metadata[final_filepath] = {
+                            "file id": fileid_meta[0],
+                            "file name": fileid_meta[1],
+                            "created at": fileid_meta[2],
+                            "modified at": fileid_meta[3],
+                        }
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
                 loader = SimpleDirectoryReader(temp_dir, file_metadata=get_metadata)
                 documents = loader.load_data()
