@@ -3,18 +3,20 @@ from typing import List
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-def safe_value(value):
-    if isinstance(value, (str, int, float)):
-        return value
-    elif isinstance(value, list):
-        # Convert lists to strings
-        return ', '.join(map(str, value))
-    elif value is None:
-        # Replace None with a default string
-        return ''
-    else:
-        # Convert other types to strings
-        return str(value)
+def safe_value_dict(dict_obj):
+    for key, value in dict_obj.items():
+        if isinstance(value, (str, int, float)):
+            dict_obj[key] = value
+        elif isinstance(value, list):
+            # Convert lists to strings
+            dict_obj[key] = ', '.join(map(str, value))
+        elif value is None:
+            # Replace None with a default string
+            dict_obj[key] = ''
+        else:
+            # Convert other types to strings
+            dict_obj[key] = str(value)
+    return dict_obj
 
 class JiraReader(BaseReader):
     """Jira reader. Reads data from Jira issues from passed query.
@@ -66,22 +68,22 @@ class JiraReader(BaseReader):
                 issues.append(
                     Document(
                         f"{issue.fields.summary} \n {issue.fields.description}",
-                        extra_info = {
-                            'id': safe_value(issue.id),
-                            'title': safe_value(issue.fields.summary),
-                            'url': safe_value(issue.permalink()),
-                            'created_at': safe_value(issue.fields.created),
-                            'updated_at': safe_value(issue.fields.updated),
-                            'labels': safe_value(issue.fields.labels),
-                            'status': safe_value(issue.fields.status.name),
-                            'assignee': safe_value(assignee),
-                            'reporter': safe_value(reporter),
-                            'project': safe_value(issue.fields.project.name),
-                            'issue_type': safe_value(issue.fields.issuetype.name),
-                            'priority': safe_value(issue.fields.priority.name),
-                            'epic_key': safe_value(epic_key),
-                            'epic_summary': safe_value(epic_summary),
-                            'epic_description': safe_value(epic_descripton)}
+                        extra_info = safe_value_dict({
+                            'id': issue.id,
+                            'title': issue.fields.summary,
+                            'url': issue.permalink(),
+                            'created_at': issue.fields.created,
+                            'updated_at': issue.fields.updated,
+                            'labels': issue.fields.labels,
+                            'status': issue.fields.status.name,
+                            'assignee': assignee,
+                            'reporter': reporter,
+                            'project': issue.fields.project.name,
+                            'issue_type': issue.fields.issuetype.name,
+                            'priority': issue.fields.priority.name,
+                            'epic_key': epic_key,
+                            'epic_summary': epic_summary,
+                            'epic_description': epic_descripton})
                     )
                 )
 
