@@ -36,8 +36,8 @@ class OpendalS3Reader(BaseReader):
         region: Optional[str]: the region of the S3 service.
         access_key_id (Optional[str]): provide AWS access key directly.
         secret_access_key (Optional[str]): provide AWS access key directly.
-        file_extractor (Optional[Dict[str, BaseParser]]): A mapping of file
-            extension to a BaseParser class that specifies how to convert that file
+        file_extractor (Optional[Dict[str, BaseReader]]): A mapping of file
+            extension to a BaseReader class that specifies how to convert that file
             to text. See `SimpleDirectoryReader` for more details.
         """
         super().__init__()
