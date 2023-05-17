@@ -3,6 +3,18 @@ from typing import List
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+def safe_value(value):
+    if isinstance(value, (str, int, float)):
+        return value
+    elif isinstance(value, list):
+        # Convert lists to strings
+        return ', '.join(map(str, value))
+    elif value is None:
+        # Replace None with a default string
+        return ''
+    else:
+        # Convert other types to strings
+        return str(value)
 class JiraReader(BaseReader):
     """Jira reader. Reads data from Jira issues from passed query.
 
@@ -43,10 +55,10 @@ class JiraReader(BaseReader):
 
                 if issue.raw['fields']['parent']['key']:
                     epic_key = issue.raw['fields']['parent']['key']
-                
+
                 if issue.raw['fields']['parent']['fields']['summary']:
                     epic_summary = issue.raw['fields']['parent']['fields']['summary']
-                
+
                 if issue.raw['fields']['parent']['fields']['status']['description']:
                     epic_descripton = issue.raw['fields']['parent']['fields']['status']['description']
 
@@ -54,21 +66,21 @@ class JiraReader(BaseReader):
                     Document(
                         f"{issue.fields.summary} \n {issue.fields.description}",
                         extra_info = {
-                            'id': issue.id,
-                            'title': issue.fields.summary,
-                            'url': issue.permalink(),
-                            'created_at': issue.fields.created,
-                            'updated_at': issue.fields.updated,
-                            'labels': issue.fields.labels,
-                            'status': issue.fields.status.name,
-                            'assignee': assignee,
-                            'reporter': reporter,
-                            'project': issue.fields.project.name,
-                            'issue_type': issue.fields.issuetype.name,
-                            'priority': issue.fields.priority.name,
-                            'epic_key': epic_key,
-                            'epic_summary': epic_summary,
-                            'epic_description': epic_descripton}
+                            'id': safe_value(issue.id),
+                            'title': safe_value(issue.fields.summary),
+                            'url': safe_value(issue.permalink()),
+                            'created_at': safe_value(issue.fields.created),
+                            'updated_at': safe_value(issue.fields.updated),
+                            'labels': safe_value(issue.fields.labels),
+                            'status': safe_value(issue.fields.status.name),
+                            'assignee': safe_value(assignee),
+                            'reporter': safe_value(reporter),
+                            'project': safe_value(issue.fields.project.name),
+                            'issue_type': safe_value(issue.fields.issuetype.name),
+                            'priority': safe_value(issue.fields.priority.name),
+                            'epic_key': safe_value(epic_key),
+                            'epic_summary': safe_value(epic_summary),
+                            'epic_description': safe_value(epic_descripton)}
                     )
                 )
 
