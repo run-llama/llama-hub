@@ -30,8 +30,8 @@ class OpendalReader(BaseReader):
         scheme (str): the scheme of the service
         path (str): the path of the data. If none is provided,
             this loader will iterate through the entire bucket. If path is endswith `/`, this loader will iterate through the entire dir. Otherwise, this loeader will load the file.
-        file_extractor (Optional[Dict[str, BaseParser]]): A mapping of file
-            extension to a BaseParser class that specifies how to convert that file
+        file_extractor (Optional[Dict[str, BaseReader]]): A mapping of file
+            extension to a BaseReader class that specifies how to convert that file
             to text. See `SimpleDirectoryReader` for more details.
         """
         import opendal
