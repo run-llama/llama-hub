@@ -14,6 +14,10 @@ You can extract a file_id directly from its sharable drive URL.
 
 For example, the file_id of `https://drive.google.com/file/d/1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y/view?usp=sharing` is `1LEqD_zQiOizKrBKZYKJtER_h6i49wE-y`.
 
+### mime_types
+
+You can also filter the files by the mimeType e.g.: `mime_types=["application/vnd.google-apps.document"]`
+
 ## Usage
 
 We need `credentials.json` and `client_secrets.json` files to use this reader.
