@@ -15,6 +15,7 @@ def safe_value(value):
     else:
         # Convert other types to strings
         return str(value)
+
 class JiraReader(BaseReader):
     """Jira reader. Reads data from Jira issues from passed query.
 
