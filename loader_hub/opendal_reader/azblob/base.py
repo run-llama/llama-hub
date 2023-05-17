@@ -34,8 +34,8 @@ class OpendalAzblobReader(BaseReader):
         endpoint Optional[str]: the endpoint of the azblob service.
         account_name (Optional[str]): provide azblob access key directly.
         account_key (Optional[str]): provide azblob access key directly.
-        file_extractor (Optional[Dict[str, BaseParser]]): A mapping of file
-            extension to a BaseParser class that specifies how to convert that file
+        file_extractor (Optional[Dict[str, BaseReader]]): A mapping of file
+            extension to a BaseReader class that specifies how to convert that file
             to text. See `SimpleDirectoryReader` for more details.
 
         """

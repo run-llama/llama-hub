@@ -24,12 +24,12 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ### LlamaIndex
 
 ```python
-from llama_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTVectorStoreIndex, download_loader
 
 GoogleCalendarReader = download_loader('GoogleCalendarReader')
 
 loader = GoogleCalendarReader()
 documents = loader.load_data()
-index = GPTSimpleVectorIndex(documents)
+index = GPTVectorStoreIndex.from_documents(documents)
 index.query('When am I meeting Gordon?')
 ```
