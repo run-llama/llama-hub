@@ -54,7 +54,7 @@ export GITHUB_TOKEN='...'
 import pickle
 import os
 
-from llama_index import download_loader, GPTSimpleVectorIndex
+from llama_index import download_loader, GPTVectorStoreIndex
 download_loader("GithubRepositoryReader")
 
 from llama_index.readers.llamahub_modules.github_repo import GithubClient, GithubRepositoryReader
@@ -81,7 +81,7 @@ if docs is None:
     with open("docs.pkl", "wb") as f:
         pickle.dump(docs, f)
 
-index = GPTSimpleVectorIndex.from_documents(docs)
+index = GPTVectorStoreIndex.from_documents(docs)
 
 index.query("Explain each LlamaIndex class?")
 ```

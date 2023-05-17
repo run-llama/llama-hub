@@ -13,14 +13,14 @@ These general-purpose loaders are designed to be used as a way to load data into
 ### LlamaIndex
 
 ```python
-from llama_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTVectorStoreIndex, download_loader
 
 GoogleDocsReader = download_loader('GoogleDocsReader')
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
 documents = loader.load_data(document_ids=gdoc_ids)
-index = GPTSimpleVectorIndex(documents)
+index = GPTVectorStoreIndex.from_documents(documents)
 index.query('Where did the author go to school?')
 ```
 
@@ -29,7 +29,7 @@ index.query('Where did the author go to school?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from llama_index import GPTSimpleVectorIndex, download_loader
+from llama_index import GPTVectorStoreIndex, download_loader
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
