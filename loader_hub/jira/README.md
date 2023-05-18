@@ -1,7 +1,7 @@
 # JIRA Loader
 
 The Jira loader returns a set of issues based on the query provided to the dataloader.
-We can follow to methods to initialize the loader-
+We can follow two methods to initialize the loader-
 1- basic_auth -> this takes a dict with the following keys
 `basic_auth:{
 "email": "email",
