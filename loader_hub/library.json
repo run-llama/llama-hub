@@ -610,5 +610,16 @@
     "keywords": [
       "mangoapps"
     ]
+  },
+  "DocugamiReader": {
+    "id": "docugami",
+    "author": "tjaffri",
+    "keywords": [
+      "docugami",
+      "docx",
+      "doc",
+      "pdf",
+      "xml"
+    ]
   }
 }
