@@ -588,6 +588,14 @@
       "storage"
     ]
   },
+  "BoardDocsReader": {
+    "id": "boarddocs",
+    "author": "dweekly",
+    "keywords": [
+      "board",
+      "boarddocs"
+    ]
+  },
   "PyMuPDFReader": {
     "id": "file/pymu_pdf",
     "author": "iamarunbrahma",
