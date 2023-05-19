@@ -6,7 +6,7 @@ This loader takes in IDs of files processed by [Docugami](https://docugami.com) 
 
 1. Create a Docugami workspace: [http://www.docugami.com](http://www.docugami.com) (free trials available)
 2. Add your documents (PDF, DOCX or DOC) and allow Docugami to ingest and cluster them into sets of similar documents, e.g. NDAs, Lease Agreements, and Service Agreements. There is no fixed set of document types supported by the system, the clusters created depend on your particular documents, and you can [change the docset assignments](https://help.docugami.com/home/working-with-the-doc-sets-view) later.
-3. Create an access token via the Developer Playground for your workspace. Detailed instructions: https://help.docugami.com/home/docugami-api
+3. Create an access token via the Developer Playground for your workspace. Detailed instructions: [https://help.docugami.com/home/docugami-api](https://help.docugami.com/home/docugami-api)
 4. Explore the Docugami API at [https://api-docs.docugami.com](https://api-docs.docugami.com) to get a list of your processed docset IDs, or just the document IDs for a particular docset. 
 
 ## Usage
