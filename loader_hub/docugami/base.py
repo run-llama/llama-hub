@@ -4,7 +4,6 @@ import io
 import os
 import re
 
-from lxml import etree
 import requests
 from typing import Any, Dict, List, Mapping, Optional
 
@@ -39,6 +38,13 @@ class DocugamiReader(BaseReader):
         self, document: Mapping, content: bytes, doc_metadata: Optional[Mapping] = None
     ) -> List[Document]:
         """Parse a single DGML document into a list of Documents."""
+        try:
+            from lxml import etree
+        except ImportError:
+            raise ValueError(
+                "Could not import lxml python package. "
+                "Please install it with `pip install lxml`."
+            )
 
         # helpers
         def _xpath_qname_for_chunk(chunk: Any) -> str:
@@ -231,6 +237,13 @@ class DocugamiReader(BaseReader):
                 )
 
                 if response.ok:
+                    try:
+                        from lxml import etree
+                    except ImportError:
+                        raise ValueError(
+                            "Could not import lxml python package. "
+                            "Please install it with `pip install lxml`."
+                        )
                     artifact_tree = etree.parse(io.BytesIO(response.content))
                     artifact_root = artifact_tree.getroot()
                     ns = artifact_root.nsmap
