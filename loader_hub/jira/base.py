@@ -4,13 +4,13 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-class basic_auth(TypedDict):
+class BasicAuth(TypedDict):
     email: str
     api_token: str
     server_url: str
 
 
-class oauth(TypedDict):
+class Oauth2(TypedDict):
     cloud_id: str
     api_token: str
 
@@ -31,20 +31,30 @@ class JiraReader(BaseReader):
     """
 
     def __init__(
-        self, basic_auth: Optional[basic_auth] = None, oauth2: Optional[oauth] = None
+        self,
+        email: Optional[str] = None,
+        api_token: Optional[str] = None,
+        server_url: Optional[str] = None,
+        BasicAuth: Optional[BasicAuth] = None,
+        Oauth2: Optional[Oauth2] = None,
     ) -> None:
         from jira import JIRA
 
-        if oauth2:
+        if email and api_token and server_url:
+            BasicAuth["email"] = email
+            BasicAuth["api_token"] = api_token
+            BasicAuth["server_url"] = server_url
+
+        if Oauth2:
             options = {
-                "server": f"https://api.atlassian.com/ex/jira/{oauth2['cloud_id']}",
-                "headers": {"Authorization": f"Bearer {oauth2['api_token']}"},
+                "server": f"https://api.atlassian.com/ex/jira/{Oauth2['cloud_id']}",
+                "headers": {"Authorization": f"Bearer {Oauth2['api_token']}"},
             }
             self.jira = JIRA(options=options)
         else:
             self.jira = JIRA(
-                basic_auth=(basic_auth["email"], basic_auth["api_token"]),
-                server=f"https://{basic_auth['server_url']}",
+                basic_auth=(BasicAuth["email"], BasicAuth["api_token"]),
+                server=f"https://{BasicAuth['server_url']}",
             )
 
     def load_data(self, query: str) -> List[Document]:
