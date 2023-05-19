@@ -1,17 +1,17 @@
 # Docugami Loader
 
-This loader takes in IDs of files processed by [Docugami](https://docugami.com) and returns nodes in a Document XML Knowledge Graph for each document. This is a rich representation that includes the semantic and structural characteristics of various chunks in the document as an XML tree. Entire sets of documents are processed, resulting in forests of XML semantic trees.
+This loader takes in IDs of PDF, DOCX or DOC files processed by [Docugami](https://docugami.com) and returns nodes in a Document XML Knowledge Graph for each document. This is a rich representation that includes the semantic and structural characteristics of various chunks in the document as an XML tree. Entire sets of documents are processed, resulting in forests of XML semantic trees.
 
 ## Pre-requisites
 
-1. Create a Docugami workspace: <a href="http://www.docugami.com">http://www.docugami.com</a> (free trials available)
+1. Create a Docugami workspace: [http://www.docugami.com](http://www.docugami.com) (free trials available)
 2. Add your documents (PDF, DOCX or DOC) and allow Docugami to ingest and cluster them into sets of similar documents, e.g. NDAs, Lease Agreements, and Service Agreements. There is no fixed set of document types supported by the system, the clusters created depend on your particular documents, and you can [change the docset assignments](https://help.docugami.com/home/working-with-the-doc-sets-view) later.
-3. Create an access token via the Developer Playground for your workspace. Detailed instructions: https://help.docugami.com/home/docugami-api
-4. Explore the Docugami API at <a href="https://api-docs.docugami.com">https://api-docs.docugami.com</a> to get a list of your processed docset IDs, or just the document IDs for a particular docset. 
+3. Create an access token via the Developer Playground for your workspace. Detailed instructions: [https://help.docugami.com/home/docugami-api](https://help.docugami.com/home/docugami-api)
+4. Explore the Docugami API at [https://api-docs.docugami.com](https://api-docs.docugami.com) to get a list of your processed docset IDs, or just the document IDs for a particular docset. 
 
 ## Usage
 
-To use this loader, you simply need to pass in an array of Google Doc IDs.
+To use this loader, you simply need to pass in a Docugami Doc Set ID, and optionally an array of Document IDs (by default, all documents in the Doc Set are loaded).
 
 ```python
 from llama_index import download_loader
