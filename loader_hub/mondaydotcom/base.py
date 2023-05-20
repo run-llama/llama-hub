@@ -5,7 +5,6 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 import json
 import requests
-from graphql.parser import GraphQLParser
 
 class MondayReader(BaseReader):
     """monday.com reader. Reads data by a GraphQL query.
@@ -20,25 +19,53 @@ class MondayReader(BaseReader):
         self.api_key = api_key
         self.api_url = "https://api.monday.com/v2"
 
-    def load_data(self, query: str) -> List[Document]:
-        """Load data by a graphQL query
+    def parse_item_values(self, cv):
+        data = {}
+        data["id"]= cv["id"]
+        data["name"]= cv["title"]
+        data["value"]= cv["text"]
+
+        return data
+
+    def parse_data(self, item):
+        data = {}
+        data["id"] = item["id"]
+        data["name"] = item["name"]
+        data["values"] = list(map(self.parse_item_values, list(item["column_values"])))
+
+        return data
+
+    def load_data(self, board_id: int) -> List[Document]:
+        """Load board data by board_id
 
         Args:
-            query (str): GraphQL query.
+            board_id (int): monday.com board id.
         Returns:
-            List[Document]: List of documents.
+            List[Document]: List of items as documents.
+            [{id, name, values: [{id, name, value}]}]
         """
 
         headers = {"Authorization" : self.api_key}
+        query = """
+            query{
+                boards(ids: [%d]){
+                    items(limit: 3){
+                        id,
+                        name,
+                        column_values{
+                            id,
+                            title,
+                            text
+                        }
+                    }
+                }
+            } """ % (board_id)
         data = {'query' : query}
 
         response = requests.post(url=self.api_url, json=data, headers=headers)
         json_response = response.json()
 
-        response_data = json_response['data']
+        items_array = list(json_response['data']['boards'][0]["items"])
+        result = map(self.parse_data, list(items_array))
 
-        parser = GraphQLParser()
-        parsed_quert = parser.parse(query)
-        query_object_name = parsed_quert.definitions[0].selections[0].name
-
-        return [Document(f"{response_data[query_object_name]}", extra_info={})]
+        return [Document(list(result), extra_info={})]
