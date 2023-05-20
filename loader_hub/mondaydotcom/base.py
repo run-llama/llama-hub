@@ -40,7 +40,7 @@ class MondayReader(BaseReader):
             query{
                 boards(ids: [%d]){
                     name,
-                    items(limit:4){
+                    items{
                         id,
                         name,
                         column_values{
