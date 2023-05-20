@@ -36,4 +36,4 @@ class PDFReader(BaseReader):
                 
         text = "\n".join(text_list)
 
-        return [Document(text, extra_info=extra_info)]
+        return [Document(text, extra_info=metadata)]
