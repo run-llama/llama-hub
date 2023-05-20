@@ -425,6 +425,14 @@
     "author": "getmetal",
     "keywords": ["metal", "retriever", "storage"]
   },
+  "BoardDocsReader": {
+    "id": "boarddocs",
+    "author": "dweekly",
+    "keywords": [
+      "board",
+      "boarddocs"
+    ]
+  },
   "PyMuPDFReader": {
     "id": "file/pymu_pdf",
     "author": "iamarunbrahma",
@@ -434,5 +442,23 @@
     "id": "mondaydotcom",
     "author": "nadavgr",
     "keywords": ["monday", "mondaydotcom"]
+  },
+  "MangoppsGuidesReader": {
+    "id": "mangoapps_guides",
+    "author": "mangoapps",
+    "keywords": [
+      "mangoapps"
+    ]
+  },
+  "DocugamiReader": {
+    "id": "docugami",
+    "author": "tjaffri",
+    "keywords": [
+      "docugami",
+      "docx",
+      "doc",
+      "pdf",
+      "xml"
+    ]
   }
 }
