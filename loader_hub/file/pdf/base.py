@@ -19,7 +19,7 @@ class PDFReader(BaseReader):
         text_list = []
         with open(file, "rb") as fp:
             # Create a PDF object
-            pdf = PyPDF2.PdfReader(fp)
+            pdf = PyPDF2.PdfFileReader(fp)
 
             # Get the number of pages in the PDF document
             num_pages = len(pdf.pages)
