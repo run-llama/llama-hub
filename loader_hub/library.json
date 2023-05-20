@@ -3,6 +3,16 @@
     "id": "asana",
     "author": "daveey"
   },
+  "AzStorageBlobReader": {
+    "id": "azstorage_blob",
+    "author": "rivms",
+    "keywords": [
+      "azure storage",
+      "blob",
+      "container",
+      "azure"
+    ]
+  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
