@@ -1,5 +1,5 @@
 """monday.com reader."""
-from typing import List
+from typing import Dict, List
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
