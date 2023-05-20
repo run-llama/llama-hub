@@ -7,7 +7,7 @@ import json
 import requests
 
 class MondayReader(BaseReader):
-    """monday.com reader. Reads data by a GraphQL query.
+    """monday.com reader. Reads board's data by a GraphQL query.
 
     Args:
         api_key (str): monday.com API key.
@@ -19,22 +19,22 @@ class MondayReader(BaseReader):
         self.api_key = api_key
         self.api_url = "https://api.monday.com/v2"
 
-    def parse_item_values(self, cv):
+    def _parse_item_values(self, cv) -> Dict[str, str]:
         data = {}
         data["title"]= cv["title"]
         data["value"]= cv["text"]
 
         return data
 
-    def parse_data(self, item):
+    def _parse_data(self, item) -> Dict[str, str]:
         data = {}
         data["id"] = item["id"]
         data["name"] = item["name"]
-        data["values"] = list(map(self.parse_item_values, list(item["column_values"])))
+        data["values"] = list(map(self._parse_item_values, list(item["column_values"])))
 
         return data
 
-    def perform_request(self,board_id):
+    def _perform_request(self,board_id) -> Dict[str, str]:
         headers = {"Authorization" : self.api_key}
         query = """
             query{
@@ -65,12 +65,12 @@ class MondayReader(BaseReader):
             [{id, name, values: [{title, value}]}]
         """
 
-        json_response = self.perform_request(board_id)
+        json_response = self._perform_request(board_id)
         board_data = json_response['data']['boards'][0]
 
         board_name = board_data["name"]
         items_array = list(board_data["items"])
-        parsed_items = list(map(self.parse_data, list(items_array)))
+        parsed_items = list(map(self._parse_data, list(items_array)))
         result = []
         for item in parsed_items:
             text = f"name: {item['name']}"
