@@ -25,15 +25,16 @@ class PDFReader(BaseReader):
             num_pages = len(pdf.pages)
 
             # Iterate over every page
+            docs = []
             for page in range(num_pages):
                 # Extract the text from the page
                 page_text = pdf.pages[page].extract_text()
                 text_list.append(page_text)
                 page_label = pdf.page_labels[page]
                 metadata = {"page_label": page_label, "file_name":file.name}
+                
                 if extra_info is not None:
                     metadata.update(extra_info)
-                
-        text = "\n".join(text_list)
-
-        return [Document(text, extra_info=metadata)]
+                    
+                docs.append(Document(page_text, extra_info=metadata))
+        return docs
