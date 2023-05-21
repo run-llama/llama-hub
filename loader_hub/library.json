@@ -460,5 +460,10 @@
       "pdf",
       "xml"
     ]
+  },
+  "WeatherReader": {
+    "id": "weather",
+    "author": "iamadhee",
+    "keywords": ["weather","openweather"]
   }
 }
