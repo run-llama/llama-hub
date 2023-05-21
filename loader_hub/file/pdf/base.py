@@ -16,7 +16,6 @@ class PDFReader(BaseReader):
         """Parse file."""
         import pypdf
 
-        text_list = []
         with open(file, "rb") as fp:
             # Create a PDF object
             pdf = pypdf.PdfReader(fp)
@@ -29,7 +28,6 @@ class PDFReader(BaseReader):
             for page in range(num_pages):
                 # Extract the text from the page
                 page_text = pdf.pages[page].extract_text()
-                text_list.append(page_text)
                 page_label = pdf.page_labels[page]
                 metadata = {"page_label": page_label, "file_name":file.name}
                 
@@ -37,4 +35,4 @@ class PDFReader(BaseReader):
                     metadata.update(extra_info)
                     
                 docs.append(Document(page_text, extra_info=metadata))
-        return docs
+            return docs
