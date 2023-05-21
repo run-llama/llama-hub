@@ -10,8 +10,7 @@ import math
 from pathlib import Path
 from typing import Any, List, Optional, Union, Dict
 
-from azure.core.credentials import AzureNamedKeyCredential, AzureSasCredential, TokenCredential
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
@@ -20,11 +19,25 @@ from llama_index.readers.schema.base import Document
 logger = logging.getLogger(__name__)
 
 class AzStorageBlobReader(BaseReader):
-    """General reader for any Azure Storage Blob file or directory.
+    """General reader for any Azure Storage Blob file or directory. 
 
     Args:
-        service_name
-    
+        container_name (str): name of the container for the blob.
+        blob (Optional[str]): name of the file to download. If none specified          
+            this loader will iterate through list of blobs in the container.
+        name_starts_with (Optional[str]): filter the list of blobs to download 
+            to only those whose names begin with the specified string.
+        include: (Union[str, List[str], None]): Specifies one or more additional 
+            datasets to include in the response. Options include: 'snapshots', 
+            'metadata', 'uncommittedblobs', 'copy', 'deleted', 
+            'deletedwithversions', 'tags', 'versions', 'immutabilitypolicy', 
+            'legalhold'.
+        file_extractor (Optional[Dict[str, Union[str, BaseReader]]]): A mapping of file
+            extension to a BaseReader class that specifies how to convert that file
+            to text. See `SimpleDirectoryReader` for more details.
+        account_url (str): URI to the storage account, may include SAS token.
+        credential (Union[str, Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential, None] = None):
+            The credentials with which to authenticate. This is optional if the account URL already has a SAS token.
     """
 
     def __init__(
@@ -32,11 +45,11 @@ class AzStorageBlobReader(BaseReader):
         *args: Any,
         container_name: str,
         blob: Optional[str] = None,
-        name_starts_with: Union[str, None] = None,
-        include: Union[str, List[str], None] = None, 
+        name_starts_with: Optional[str] = None,
+        include: Optional[Any] = None, 
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         account_url: str,
-        credential: Union[str, Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential, None] = None,
+        credential: Optional[Any] = None,
         **kwargs: Any
     ) -> None:
         """Initializes Azure Storage Account
@@ -55,6 +68,10 @@ class AzStorageBlobReader(BaseReader):
 
     def load_data(self) -> List[Document]:
         """Load file(s) from Azure Storage Blob"""
+        #from azure.core.credentials import AzureNamedKeyCredential, AzureSasCredential, TokenCredential
+        #from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+        from azure.storage.blob import ContainerClient
+
 
         container_client = ContainerClient(self.account_url, self.container_name, credential=self.credential)
         total_download_start_time = time.time()

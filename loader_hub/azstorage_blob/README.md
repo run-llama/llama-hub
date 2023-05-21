@@ -6,9 +6,8 @@ All files are temporarily downloaded locally and subsequently parsed with `Simpl
 
 ## Usage
 
-To use this loader, you need to pass in the name of your Azure Storage Container. After that, if you want to just parse a single file, pass in its blob name. Note that if the file is nested in a subdirectory, the blob name should contain that, so like `subdirectory/input.txt`.
+To use this loader, you need to pass in the name of your Azure Storage Container. After that, if you want to just parse a single file, pass in its blob name. Note that if the file is nested in a subdirectory, the blob name should contain the path such as `subdirectory/input.txt`. This loader is a thin wrapper over the [Azure Blob Storage Client for Python](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli), see [ContainerClient](https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.containerclient?view=azure-python) for detailed parameter usage options. 
 
-Otherwise, you may specify a prefix filter or additional attributes if you only want to parse certain files in the Container, or a subdirectory. 
 
 ### Using a Storage Accout SAS URL
 ```python
