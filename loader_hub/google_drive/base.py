@@ -147,27 +147,17 @@ class GoogleDriveReader(BaseReader):
                     else:
                         # Check if file doesn't belong to a Shared Drive. "owners" doesn't exist in a Shared Drive
                         is_shared_drive = 'driveId' in item
-                        if is_shared_drive:
-                            fileids_meta.append(
-                                (
-                                    is_shared_drive,
-                                    item["id"],
-                                    item["name"],
-                                    item["createdTime"],
-                                    item["modifiedTime"],
-                                )
+                        author = item["owners"][0]["displayName"] if not is_shared_drive else "Shared Drive"
+
+                        fileids_meta.append(
+                            (
+                                item["id"],
+                                author,
+                                item["name"],
+                                item["createdTime"],
+                                item["modifiedTime"],
                             )
-                        else:
-                            fileids_meta.append(
-                                (
-                                    is_shared_drive,
-                                    item["id"],
-                                    item["owners"][0]["displayName"],
-                                    item["name"],
-                                    item["createdTime"],
-                                    item["modifiedTime"],
-                                )
-                            )
+                        )
 
             else:
                 # Get the file details
@@ -176,23 +166,17 @@ class GoogleDriveReader(BaseReader):
                 # Get metadata of the file
                 # Check if file doesn't belong to a Shared Drive. "owners" doesn't exist in a Shared Drive
                 is_shared_drive = 'driveId' in file
-                if is_shared_drive:
-                    fileids_meta = (
-                        is_shared_drive,
-                        file["id"],
-                        file["name"],
-                        file["createdTime"],
-                        file["modifiedTime"],
+                author = item["owners"][0]["displayName"] if not is_shared_drive else "Shared Drive"
+
+                fileids_meta.append(
+                    (
+                        item["id"],
+                        author,
+                        item["name"],
+                        item["createdTime"],
+                        item["modifiedTime"],
                     )
-                else:
-                    fileids_meta = (
-                        is_shared_drive,
-                        file["id"],
-                        file["owners"][0]["displayName"],
-                        file["name"],
-                        file["createdTime"],
-                        file["modifiedTime"],
-                    )
+                )
             return fileids_meta
 
         except Exception as e:
@@ -267,25 +251,16 @@ class GoogleDriveReader(BaseReader):
                 for fileid_meta in fileids_meta:
                     filename = next(tempfile._get_candidate_names())
                     filepath = os.path.join(temp_dir, filename)
-                    fileid = fileid_meta[1]
+                    fileid = fileid_meta[0]
                     final_filepath = self._download_file(fileid, filepath)
-                    # File is in a Shared Drive
-                    if fileid_meta[0]:
-                        metadata[final_filepath] = {
-                            "file id": fileid_meta[1],
-                            "file name": fileid_meta[2],
-                            "created at": fileid_meta[3],
-                            "modified at": fileid_meta[4],
-                        }
-                    # File is in a Shared Drive
-                    else:
-                        metadata[final_filepath] = {
-                            "file id": fileid_meta[1],
-                            "author": fileid_meta[2],
-                            "file name": fileid_meta[3],
-                            "created at": fileid_meta[4],
-                            "modified at": fileid_meta[5],
-                        }
+
+                    metadata[final_filepath] = {
+                        "file id": fileid_meta[0],
+                        "author": fileid_meta[1],
+                        "file name": fileid_meta[2],
+                        "created at": fileid_meta[3],
+                        "modified at": fileid_meta[4],
+                    }
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
                 loader = SimpleDirectoryReader(temp_dir, file_metadata=get_metadata)
                 documents = loader.load_data()
@@ -346,4 +321,3 @@ class GoogleDriveReader(BaseReader):
             return self._load_from_folder(folder_id, mime_types)
         else:
             return self._load_from_file_ids(file_ids, mime_types)
-        
