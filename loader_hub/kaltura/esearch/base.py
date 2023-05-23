@@ -10,83 +10,110 @@ logger = logging.getLogger(__name__)
 
 class KalturaESearchReader(BaseReader):
     """Kaltura eSearch API Reader."""
+
     def __init__(
         self,
-        partnerId: str = "INSERT_YOUR_PARTNER_ID",
-        apiSecret: str = "INSERT_YOUR_ADMIN_SECRET",
-        userId: str = "INSERT_YOUR_USER_ID",
-        ksType: int = 2,  # Default to KalturaSessionType.ADMIN, ksType set in _load_kaltura
-        ksExpiry: int = 86400,
-        ksPrivileges: str = "disableentitlement",
-        kalturaApiEndpoint: str = "https://cdnapi-ev.kaltura.com/",
-        requestTimeout: int = 500,
-        shouldLogApiCalls: bool = False
+        partner_id: int = 0,  
+        api_secret: str = "INSERT_YOUR_ADMIN_SECRET", 
+        user_id: str = "INSERT_YOUR_USER_ID", 
+        ks_type: int = 2,
+        ks_expiry: int = 86400, 
+        ks_privileges: str = "disableentitlement", 
+        kaltura_api_endpoint: str = "https://cdnapi-ev.kaltura.com/",
+        request_timeout: int = 500, 
+        should_log_api_calls: bool = False 
     ) -> None:
-        """Initialize with parameters."""
-        self.partnerId = partnerId
-        self.apiSecret = apiSecret
-        self.userId = userId
-        self.ksType = ksType
-        self.ksExpiry = ksExpiry
-        self.ksPrivileges = ksPrivileges
-        self.kalturaApiEndpoint = kalturaApiEndpoint
-        self.requestTimeout = requestTimeout
-        self.shouldLogApiCalls = shouldLogApiCalls
+        """
+        Initialize a new instance of KalturaESearchReader.
+
+        Args:
+            partner_id (int): The Kaltura Account ID. Default is 0.
+            api_secret (str): The Kaltura API Admin Secret. Default is "INSERT_YOUR_ADMIN_SECRET".
+            user_id (str): User ID for executing and logging all API actions under. Default is "INSERT_YOUR_USER_ID".
+            ks_type (int): Type of Kaltura Session. Default is 2.
+            ks_expiry (int): Validity of the Kaltura session in seconds. Default is 86400.
+            ks_privileges (str): Kaltura session privileges. Default is "disableentitlement".
+            kaltura_api_endpoint (str): The Kaltura API endpoint. Default is "https://cdnapi-ev.kaltura.com/".
+            request_timeout (int): API request timeout in seconds. Default is 500.
+            should_log_api_calls (bool): Boolean value determining whether to log Kaltura requests. Default is False.
+        """
+        self.partner_id = partner_id
+        self.api_secret = api_secret
+        self.user_id = user_id
+        self.ks_type = ks_type
+        self.ks_expiry = ks_expiry
+        self.ks_privileges = ks_privileges
+        self.kaltura_api_endpoint = kaltura_api_endpoint
+        self.request_timeout = request_timeout
+        self.should_log_api_calls = should_log_api_calls
         # Kaltura libraries will be loaded when they are needed
         self._kaltura_loaded = False
 
     def _load_kaltura(self):
-        """Load Kaltura libraries."""
+        """Load Kaltura libraries and initialize the Kaltura client."""
         from KalturaClient import KalturaClient
         from KalturaClient.Base import IKalturaLogger, KalturaConfiguration
         from KalturaClient.Plugins.Core import KalturaSessionType
-        
+
         class KalturaLogger(IKalturaLogger):
             def log(self, msg):
                 logging.info(msg)
 
-        self.config = KalturaConfiguration(self.partnerId)
-        self.config.requestTimeout = self.requestTimeout
-        self.config.serviceUrl = self.kalturaApiEndpoint
-        if self.shouldLogApiCalls:
+        self.config = KalturaConfiguration()
+        self.config.requestTimeout = self.request_timeout
+        self.config.serviceUrl = self.kaltura_api_endpoint
+        if self.should_log_api_calls:
             self.config.setLogger(KalturaLogger())
         self.client = KalturaClient(self.config)
-        if self.ksType is None:
-            self.ksType = KalturaSessionType.ADMIN
+        if self.ks_type is None:
+            self.ks_type = KalturaSessionType.ADMIN
         self.ks = self.client.generateSessionV2(
-            self.apiSecret,
-            self.userId,
-            self.ksType,
-            self.partnerId,
-            self.ksExpiry,
-            self.ksPrivileges
+            self.api_secret,
+            self.user_id,
+            self.ks_type,
+            self.partner_id,
+            self.ks_expiry,
+            self.ks_privileges
         )
         self.client.setKs(self.ks)
         self._kaltura_loaded = True
     
-    def _load_from_search_params(self, search_params, 
-                                 withCaptions: bool = True, 
-                                 maxEntries: int = 10) -> List[Dict[str, Any]]:
+    def _load_from_search_params(
+        self, 
+        search_params, 
+        with_captions: bool = True, 
+        max_entries: int = 10
+    ) -> List[Dict[str, Any]]:
+        """Load search parameters and returns a list of entries.
+
+        Args:
+            search_params: Search parameters for Kaltura eSearch.
+            with_captions (bool): If True, the entries will include captions.
+            max_entries (int): Maximum number of entries to return.
+
+        Returns:
+            list: A list of entries as dictionaries, 
+            if captions required entry_info will include all metadata and text will include transcript, 
+            otherwise info is just entry_id and text is all metadata.
+        """
         from KalturaClient.Plugins.Core import KalturaPager
+
         try:
             entries = []
             pager = KalturaPager()
             pager.pageIndex = 1
-            pager.pageSize = maxEntries
+            pager.pageSize = max_entries
             response = self.client.elasticSearch.eSearch.searchEntry(search_params, pager)
-            for searchResult in response.objects:
-                entry = searchResult.object
-                itemsData = searchResult.itemsData
+
+            for search_result in response.objects:
+                entry = search_result.object
+                items_data = search_result.itemsData
+
                 entry_info = {
-                    'entry_id': str(entry.id),
-                    'entry_reference_id': str(entry.referenceId),
-                    'entry_media_type': entry.mediaType.value
-                }
-                entry_dict = {
                     'entry_id': str(entry.id),
                     'entry_name': str(entry.name),
                     'entry_description': str(entry.description),
-                    'entry_media_type': entry.mediaType.value,
+                    'entry_media_type': int(entry.mediaType.value),
                     'entry_media_date': int(entry.createdAt),
                     'entry_ms_duration': int(entry.msDuration),
                     'entry_last_played_at': int(entry.lastPlayedAt),
@@ -94,27 +121,48 @@ class KalturaESearchReader(BaseReader):
                     'entry_tags': str(entry.tags),
                     'entry_reference_id': str(entry.referenceId)
                 }
-                if withCaptions == True:
-                    entry_dict['entry_captions'] = self._get_captions(itemsData)
-                entry_dict_json_string = json.dumps(entry_dict)
-                # Create a LlamaIndex Document object
-                entry_doc = Document(text=entry_dict_json_string, extra_info=entry_info)
+
+                if with_captions:
+                    caption_search_result = items_data[0].items[0]
+                    if hasattr(caption_search_result, 'captionAssetId'):
+                        # TODO: change this to fetch captions per language, or as for a specific language code
+                        caption_asset_id = caption_search_result.captionAssetId
+                        entry_dict = {'video_transcript': self._get_json_transcript(caption_asset_id)}
+                    else:
+                        entry_dict = entry_info.copy()
+                        entry_info = {'entry_id': str(entry.id)}
+                else:
+                    entry_dict = entry_info.copy()
+                    entry_info = {'entry_id': str(entry.id)}
+
+                entry_doc = Document(text=json.dumps(entry_dict), extra_info=entry_info)
                 entries.append(entry_doc)
+
             return entries
+
         except Exception as e:
-            logger.error('An error occurred while loading with search params: {}'.format(e))
+            logger.error(f'An error occurred while loading with search params: {e}')
             return []
 
-    def _get_captions(self, itemsData):
+
+    def _get_json_transcript(self, caption_asset_id):
+        """Fetch json transcript/captions from a given caption_asset_id
+        
+        Args:
+            caption_asset_id: The ID of the caption asset that includes the captions to fetch json transcript for
+
+        Returns:
+            A JSON transcript of the captions, or an empty dictionary if none found or an error occurred.
+        """
+        # TODO: change this to fetch captions per language, or as for a specific language code
         try:
-            for captionSearchResult in itemsData[0].items:
-                capId = captionSearchResult.captionAssetId
-                capJsonUrl = self.client.caption.captionAsset.serveAsJson(capId)
-                capJson = requests.get(capJsonUrl).json()
-                return capJson
+            cap_json_url = self.client.caption.captionAsset.serveAsJson(caption_asset_id)
+            cap_json = requests.get(cap_json_url).json()
+            return cap_json
         except Exception as e:
-            logger.error('An error occurred while getting captions: {}'.format(e))
+            logger.error(f'An error occurred while getting captions: {e}')
             return {}
+
   
     def load_data(self, 
               search_params: Any = None,
@@ -141,6 +189,8 @@ class KalturaESearchReader(BaseReader):
             entry_id:str, entry_name:str, entry_description:str, entry_captions:JSON, 
             entry_media_type:int, entry_media_date:int, entry_ms_duration:int, entry_last_played_at:int, 
             entry_application:str, entry_tags:str, entry_reference_id:str. 
+            If with_captions is False, it sets entry_info to only include the entry_id and entry_dict to include all other entry information.
+            If with_captions is True, it sets entry_info to include all entry information and entry_dict to only include the entry transcript fetched via self._get_captions(items_data).
         """
         from KalturaClient.Plugins.ElasticSearch import (
             KalturaESearchCaptionItem, KalturaESearchCaptionFieldName, KalturaESearchUnifiedItem, 
