@@ -1,4 +1,4 @@
-# Airtable Loader
+# Snscrape twitter Loader
 
 This loader loads documents from Twitter using the Snscrape Python package. 
 
