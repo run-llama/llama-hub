@@ -112,6 +112,15 @@
     "author": "kevinqz",
     "keywords": ["sql", "postgres", "snowflake", "aws rds"]
   },
+  "GraphQLReader": {
+    "id": "graphql",
+    "author": "jexp",
+    "keywords": [
+      "graphql",
+      "gql",
+      "apollo"
+    ]
+  },
   "DiscordReader": {
     "id": "discord",
     "author": "jerryjliu"
