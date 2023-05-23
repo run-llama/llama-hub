@@ -59,24 +59,27 @@ class KalturaESearchReader(BaseReader):
             def log(self, msg):
                 logging.info(msg)
 
-        self.config = KalturaConfiguration()
-        self.config.requestTimeout = self.request_timeout
-        self.config.serviceUrl = self.kaltura_api_endpoint
-        if self.should_log_api_calls:
-            self.config.setLogger(KalturaLogger())
-        self.client = KalturaClient(self.config)
-        if self.ks_type is None:
-            self.ks_type = KalturaSessionType.ADMIN
-        self.ks = self.client.generateSessionV2(
-            self.api_secret,
-            self.user_id,
-            self.ks_type,
-            self.partner_id,
-            self.ks_expiry,
-            self.ks_privileges
-        )
-        self.client.setKs(self.ks)
-        self._kaltura_loaded = True
+        try:
+            self.config = KalturaConfiguration()
+            self.config.requestTimeout = self.request_timeout
+            self.config.serviceUrl = self.kaltura_api_endpoint
+            if self.should_log_api_calls:
+                self.config.setLogger(KalturaLogger())
+            self.client = KalturaClient(self.config)
+            if self.ks_type is None:
+                self.ks_type = KalturaSessionType.ADMIN
+            self.ks = self.client.generateSessionV2(
+                self.api_secret,
+                self.user_id,
+                self.ks_type,
+                self.partner_id,
+                self.ks_expiry,
+                self.ks_privileges
+            )
+            self.client.setKs(self.ks)
+            self._kaltura_loaded = True
+        except Exception as e:
+            logger.error(f'Kaltura Auth failed, check your credentials')
     
     def _load_from_search_params(
         self, 
@@ -141,6 +144,8 @@ class KalturaESearchReader(BaseReader):
             return entries
 
         except Exception as e:
+            if e.code == "INVALID_KS":
+                raise ValueError('Kaltura Auth failed, check your credentials')
             logger.error(f'An error occurred while loading with search params: {e}')
             return []
 
