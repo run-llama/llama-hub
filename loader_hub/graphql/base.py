@@ -14,14 +14,14 @@ class GraphQLReader(BaseReader):
 
     Args:
         uri (str): GraphQL uri.
-        headers (Dict): Optional http headers.
+        headers (Optional[Dict]): Optional http headers.
 
     """
 
     def __init__(
         self,
         uri: Optional[str] = None,
-        headers: Dict = {},
+        headers: Optional[Dict] = None,
     ) -> None:
         """Initialize with parameters."""
         try:
@@ -35,17 +35,19 @@ class GraphQLReader(BaseReader):
         if uri:
             if uri is None:
                 raise ValueError("`uri` must be provided.")
+            if headers is None:
+                headers = {}
             transport = RequestsHTTPTransport(url=uri, headers=headers)
             self.client = Client(transport=transport, fetch_schema_from_transport=True)
             
     def load_data(
-        self, query: str, variables: Dict = {}
+        self, query: str, variables: Optional[Dict] = None
     ) -> List[Document]:
         """Run query with optional variables and turn results into documents
 
         Args:
             query (str): GraphQL query string.
-            variables (Dict): optional query parameters.
+            variables (Optional[Dict]): optional query parameters.
 
         Returns:
             List[Document]: A list of documents.
@@ -58,6 +60,8 @@ class GraphQLReader(BaseReader):
             raise ImportError(
                 "`gql` package not found, please run `pip install gql`"
             )
+        if variables is None:
+            variables = {}
 
         documents = []
         
