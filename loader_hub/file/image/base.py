@@ -6,11 +6,10 @@ A parser for image files.
 
 import re
 from pathlib import Path
-from typing import Dict, Optional, cast
+from typing import Dict, Optional, cast, List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
-from llama_index.readers.file.base_parser import ImageParserOutput
+from llama_index.readers.schema.base import Document, ImageDocument
 
 
 class ImageReader(BaseReader):
@@ -37,6 +36,7 @@ class ImageReader(BaseReader):
                 model = pytesseract
             else:
                 from transformers import DonutProcessor, VisionEncoderDecoderModel
+
                 processor = DonutProcessor.from_pretrained(
                     "naver-clova-ix/donut-base-finetuned-cord-v2"
                 )
@@ -48,10 +48,9 @@ class ImageReader(BaseReader):
         self._keep_image = keep_image
         self._parse_text = parse_text
 
-
     def load_data(
         self, file: Path, extra_info: Optional[Dict] = None
-    ) -> ImageParserOutput:
+    ) -> List[Document]:
         """Parse file."""
         from PIL import Image
 
@@ -108,10 +107,13 @@ class ImageReader(BaseReader):
                 text_str = re.sub(r"<.*?>", "", sequence, count=1).strip()
             else:
                 import pytesseract
+
                 model = cast(pytesseract, self._parser_config["model"])
                 text_str = model.image_to_string(image)
 
-        return ImageParserOutput(
-            text=text_str,
-            image=image_str,
-        )
+        return [
+            ImageDocument(
+                text=text_str,
+                image=image_str,
+            )
+        ]

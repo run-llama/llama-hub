@@ -3,6 +3,21 @@ from typing import List
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+def safe_value_dict(dict_obj):
+    for key, value in dict_obj.items():
+        if isinstance(value, (str, int, float)):
+            dict_obj[key] = value
+        elif isinstance(value, list):
+            # Convert lists to strings
+            dict_obj[key] = ', '.join(map(str, value))
+        elif value is None:
+            # Replace None with a default string
+            dict_obj[key] = ''
+        else:
+            # Convert other types to strings
+            dict_obj[key] = str(value)
+    return dict_obj
+
 class JiraReader(BaseReader):
     """Jira reader. Reads data from Jira issues from passed query.
 
@@ -43,17 +58,17 @@ class JiraReader(BaseReader):
 
                 if issue.raw['fields']['parent']['key']:
                     epic_key = issue.raw['fields']['parent']['key']
-                
+
                 if issue.raw['fields']['parent']['fields']['summary']:
                     epic_summary = issue.raw['fields']['parent']['fields']['summary']
-                
+
                 if issue.raw['fields']['parent']['fields']['status']['description']:
                     epic_descripton = issue.raw['fields']['parent']['fields']['status']['description']
 
                 issues.append(
                     Document(
                         f"{issue.fields.summary} \n {issue.fields.description}",
-                        extra_info = {
+                        extra_info = safe_value_dict({
                             'id': issue.id,
                             'title': issue.fields.summary,
                             'url': issue.permalink(),
@@ -68,7 +83,7 @@ class JiraReader(BaseReader):
                             'priority': issue.fields.priority.name,
                             'epic_key': epic_key,
                             'epic_summary': epic_summary,
-                            'epic_description': epic_descripton}
+                            'epic_description': epic_descripton})
                     )
                 )
 

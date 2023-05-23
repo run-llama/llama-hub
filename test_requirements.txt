@@ -2,10 +2,12 @@
 # For testing
 pytest==7.2.1
 pytest-dotenv==0.5.2
-# TODO: remove gpt_index after migration
-https://github.com/jerryjliu/gpt_index/archive/master.zip
 
-llama-index>=0.6.0.alpha5
+# pin types
+typing-inspect==0.8.0
+typing_extensions==4.5.0
+
+llama-index>=0.6.9
 atlassian-python-api
 html2text
 
