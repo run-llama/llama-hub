@@ -479,5 +479,20 @@
     "id": "weather",
     "author": "iamadhee",
     "keywords": ["weather","openweather"]
+  },
+  "KalturaESearchReader": {
+    "id": "kaltura/esearch",
+    "author": "kaltura",
+    "keywords": [
+      "kaltura",
+      "video",
+      "media",
+      "image",
+      "audio",
+      "search",
+      "library",
+      "portal",
+      "events"
+    ]
   }
 }
