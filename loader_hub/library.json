@@ -112,6 +112,15 @@
     "author": "kevinqz",
     "keywords": ["sql", "postgres", "snowflake", "aws rds"]
   },
+  "GraphQLReader": {
+    "id": "graphql",
+    "author": "jexp",
+    "keywords": [
+      "graphql",
+      "gql",
+      "apollo"
+    ]
+  },
   "DiscordReader": {
     "id": "discord",
     "author": "jerryjliu"
@@ -479,5 +488,20 @@
     "id": "weather",
     "author": "iamadhee",
     "keywords": ["weather","openweather"]
+  },
+  "KalturaESearchReader": {
+    "id": "kaltura/esearch",
+    "author": "kaltura",
+    "keywords": [
+      "kaltura",
+      "video",
+      "media",
+      "image",
+      "audio",
+      "search",
+      "library",
+      "portal",
+      "events"
+    ]
   }
 }
