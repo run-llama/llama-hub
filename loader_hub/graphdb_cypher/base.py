@@ -1,4 +1,4 @@
-"""Neo4j Graph Reader."""
+"""Graph Database Cypher Reader."""
 
 from typing import Dict, List, Optional
 
@@ -8,12 +8,12 @@ from llama_index.readers.schema.base import Document
 import yaml
 
 class GraphDBCypherReader(BaseReader):
-    """Neo4j Graph reader.
+    """Graph database Cypher reader.
 
-    Combines all Neo4j Cypher query results into the Document type used by LlamaIndex.
+    Combines all Cypher query results into the Document type used by LlamaIndex.
 
     Args:
-        uri (str): Neo4j Graph Database URI
+        uri (str): Graph Database URI
         username (str): Username
         password (str): Password 
 
