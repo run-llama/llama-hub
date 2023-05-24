@@ -1,4 +1,4 @@
-"""Graph Reader."""
+"""Neo4j Graph Reader."""
 
 from typing import Dict, List, Optional
 
@@ -7,13 +7,13 @@ from llama_index.readers.schema.base import Document
 
 import yaml
 
-class GraphReader(BaseReader):
-    """Graph reader.
+class GraphDBCypherReader(BaseReader):
+    """Neo4j Graph reader.
 
-    Combines all Graph query results into the Document used by LlamaIndex.
+    Combines all Neo4j Cypher query results into the Document type used by LlamaIndex.
 
     Args:
-        uri (str): Graph Database URI
+        uri (str): Neo4j Graph Database URI
         username (str): Username
         password (str): Password 
 
@@ -41,18 +41,20 @@ class GraphReader(BaseReader):
             self.database = database
             
     def load_data(
-        self, query: str, parameters: Dict = {}
+        self, query: str, parameters: Optional[Dict] = None
     ) -> List[Document]:
         """Run the Cypher with optional parameters and turn results into documents
 
         Args:
             query (str): Graph Cypher query string.
-            parameters (Dict): optional query parameters.
+            parameters (Optional[Dict]): optional query parameters.
 
         Returns:
             List[Document]: A list of documents.
 
         """
+        if parameters is None:
+            parameters = {}
 
         records, summary, keys = self.client.execute_query(query, parameters, database_ = self.database)
 
