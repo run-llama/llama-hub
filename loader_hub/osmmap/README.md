@@ -31,7 +31,7 @@ She requires all the nodes, routes, and relationships within a five-kilometer ra
 ```python
 from llama_index import download_loader
 
-MapReader = download_loader("osmmap")
+MapReader = download_loader("OpenMap")
 
 loader = MapReader()
 documents = loader.load_data(localarea='Guduvanchery',search_tag=[''],tag_only=True,local_area_buffer=5000,tag_values=[''])
@@ -45,7 +45,7 @@ documents = loader.load_data(localarea='Guduvanchery',search_tag=[''],tag_only=T
 ```python
 from llama_index import download_loader
 
-MapReader = download_loader("osmmap")
+MapReader = download_loader("OpenMap")
 
 loader = MapReader()
 documents = loader.load_data(localarea='Guduvanchery',search_tag=['amenity'],tag_only=True,local_area_buffer=5000,tag_values=['hospital','clinic']) 
