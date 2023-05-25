@@ -480,4 +480,9 @@
     "author": "iamadhee",
     "keywords": ["weather","openweather"]
   }
+    "OpenMap": {
+    "id": "osmmap",
+    "author": "carrotpy",
+    "keywords": ["open maps","maps","open street maps","overpass api"]
+  }
 }
