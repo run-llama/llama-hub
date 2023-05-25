@@ -479,7 +479,7 @@
     "id": "weather",
     "author": "iamadhee",
     "keywords": ["weather","openweather"]
-  }
+  },
     "OpenMap": {
     "id": "osmmap",
     "author": "carrotpy",
