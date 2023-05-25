@@ -73,7 +73,7 @@ class JoplinReader(BaseReader):
                         "created_time": self._convert_date(note["created_time"]),
                         "updated_time": self._convert_date(note["updated_time"]),
                     }
-                    yield Document(text=note["body"], doc_id=note["id"], extra_info=metadata)
+                    yield Document(text=note["body"], extra_info=metadata)
 
                 has_more = json_data["has_more"]
                 page += 1
