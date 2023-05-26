@@ -98,8 +98,3 @@ class JoplinReader(BaseReader):
 
     def load_data(self) -> List[Document]:
         return list(self.lazy_load())
-
-    def load_langchain_documents(self, **load_kwargs: Any) -> List[LCDocument]:
-        """Load data in LangChain document format."""
-        docs = self.load_data(**load_kwargs)
-        return [d.to_langchain_format() for d in docs]
