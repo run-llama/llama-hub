@@ -121,8 +121,8 @@
       "apollo"
     ]
   },
-  "GraphReader": {
-    "id": "graph",
+  "GraphDBCypherReader": {
+    "id": "graphdb_cypher",
     "author": "jexp",
     "keywords": [
       "graph",
