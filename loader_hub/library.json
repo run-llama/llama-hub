@@ -492,7 +492,7 @@
     "OpenMap": {
     "id": "osmmap",
     "author": "carrotpy",
-    "keywords": ["open maps","maps","open street maps","overpass api"]
+    "keywords": ["open maps","maps","open street maps","overpass api","geo"]
     },
   "KalturaESearchReader": {
     "id": "kaltura/esearch",
