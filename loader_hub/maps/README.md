@@ -22,7 +22,7 @@ The api will provide you with all the **nodes, relations, and ways** for the par
 The use case is here.
 
 Let's meet **Jayasree**, who is extracting map features from her neighbourhood using the OSM map loader. 
-She requires all the nodes, routes, and relationships within a five-kilometer radius of her locale (Guduvanchery).
+She requires all the nodes, routes, and relations within a five-kilometer radius of her locale (Guduvanchery).
   
 * She must use the following arguments in order to accomplish the aforementioned. Localarea = "Guduvanchery" (the location she wants to seek), local_area_buffer = 5000 (5 km).
 
@@ -34,7 +34,7 @@ from llama_index import download_loader
 MapReader = download_loader("OpenMap")
 
 loader = MapReader()
-documents = loader.load_data(localarea='Guduvanchery',search_tag=[''],tag_only=True,local_area_buffer=5000,tag_values=[''])
+documents = loader.load_data(localarea='Guduvanchery',search_tag='',tag_only=True,local_area_buffer=5000,tag_values=[''])
 
 ```
 
@@ -48,7 +48,7 @@ from llama_index import download_loader
 MapReader = download_loader("OpenMap")
 
 loader = MapReader()
-documents = loader.load_data(localarea='Guduvanchery',search_tag=['amenity'],tag_only=True,local_area_buffer=5000,tag_values=['hospital','clinic']) 
+documents = loader.load_data(localarea='Guduvanchery',search_tag='amenity',tag_only=True,local_area_buffer=5000,tag_values=['hospital','clinic']) 
 
 ```
 
