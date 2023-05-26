@@ -490,7 +490,7 @@
     "keywords": ["weather","openweather"]
   },
     "OpenMap": {
-    "id": "osmmap",
+    "id": "maps",
     "author": "carrotpy",
     "keywords": ["open maps","maps","open street maps","overpass api","geo"]
     },
