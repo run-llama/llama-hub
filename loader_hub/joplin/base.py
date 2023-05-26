@@ -25,7 +25,8 @@ class JoplinReader(BaseReader):
     Web Clipper enabled (look for "Web Clipper" in the app settings).
 
     To get the access token, you need to go to the Web Clipper options and
-    under "Advanced Options" you will find the access token.
+    under "Advanced Options" you will find the access token. You may provide
+    it as an argument or set the JOPLIN_ACCESS_TOKEN environment variable.
 
     You can find more information about the Web Clipper service here:
     https://joplinapp.org/clipper/
@@ -36,6 +37,15 @@ class JoplinReader(BaseReader):
         port: int = 41184,
         host: str = "localhost",
     ) -> None:
+        """
+        Initialize a new instance of JoplinReader.
+
+        Args:
+            access_token (Optional[str]): The access token for Joplin's Web Clipper service.
+                If not provided, the JOPLIN_ACCESS_TOKEN environment variable is used. Default is None.
+            port (int): The port on which Joplin's Web Clipper service is running. Default is 41184.
+            host (str): The host on which Joplin's Web Clipper service is running. Default is "localhost".
+        """
         access_token = access_token or self._get_token_from_env()
         base_url = f"http://{host}:{port}"
         self._get_note_url = (
