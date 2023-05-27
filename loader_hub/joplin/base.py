@@ -10,7 +10,6 @@ import os
 from typing import Any, Iterator, List, Optional
 import urllib
 
-from langchain.docstore.document import Document as LCDocument
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
