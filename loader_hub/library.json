@@ -512,5 +512,10 @@
       "portal",
       "events"
     ]
+  },
+  "FirestoreReader": {
+    "id": "firestore",
+    "author": "rayzhudev",
+    "keywords": ["firestore", "datastore"]
   }
 }
