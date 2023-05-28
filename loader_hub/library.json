@@ -150,6 +150,10 @@
     "id": "notion",
     "author": "jerryjliu"
   },
+  "JoplinReader": {
+    "id": "joplin",
+    "author": "alondmnt"
+  },
   "ObsidianReader": {
     "id": "obsidian",
     "author": "hursh-desai"
