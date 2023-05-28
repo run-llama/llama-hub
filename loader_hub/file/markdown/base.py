@@ -83,11 +83,13 @@ class MarkdownReader(BaseReader):
         return content
 
     def parse_tups(
-        self, filepath: Path, errors: str = "ignore"
+        self, filepath: Path, content: Optional[str] = None, errors: str = "ignore"
     ) -> List[Tuple[Optional[str], str]]:
-        """Parse file into tuples."""
-        with open(filepath, "r") as f:
-            content = f.read()
+        """Parse file into tuples.
+        If content is provided, use that instead of reading from file."""
+        if content is None:
+            with open(filepath, "r") as f:
+                content = f.read()
         if self._remove_hyperlinks:
             content = self.remove_hyperlinks(content)
         if self._remove_images:
@@ -96,9 +98,13 @@ class MarkdownReader(BaseReader):
         return markdown_tups
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+        self,
+        file: Path,
+        extra_info: Optional[Dict] = None,
+        content: Optional[str] = None,
     ) -> List[Document]:
-        """Parse file into string."""
-        tups = self.parse_tups(file)
+        """Parse file into string.
+        If content is provided, use that instead of reading from file."""
+        tups = self.parse_tups(file, content=content)
         # TODO: don't include headers right now
         return [Document(value, extra_info=extra_info) for _, value in tups]
