@@ -2,11 +2,10 @@
 
 The Osmmap Loader will fetch map data from the [Overpass](https://wiki.openstreetmap.org/wiki/Main_Page) api for a certain place or area. Version **Overpass API 0.7.60** is used by this loader.
 
-The api will provide you with all the **nodes, relations, and ways** for the particular region when you request data for a region or location. The Loader will automatically fetch you. 
-
+The api will provide you with all the **nodes, relations, and ways** for the particular region when you request data for a region or location.
 ## **Functions of the loader**
 
-* To start, it first filters out those nodes that are already tagged, leaving just those nodes that are within 2 kilometres of the target location. The following keys are removed during filtering:["nodes," "geometry," "members"] from each node The response we received is based on the tags and values we provided, so be sure to do that. The actions are covered below.
+* To start, it first filters out those nodes that are already tagged, leaving just those nodes that are within 2 kilometres of the target location. The following keys are removed during filtering:["nodes," "geometry," "members"] from each node. The response we received is based on the tags and values we provided, so be sure to do that. The actions are covered below.
 
 ## **Steps to find the suitable tag and values**
 
