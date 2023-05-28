@@ -10,6 +10,7 @@ import os
 from typing import Any, Iterator, List, Optional
 import urllib
 
+from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -30,9 +31,11 @@ class JoplinReader(BaseReader):
     You can find more information about the Web Clipper service here:
     https://joplinapp.org/clipper/
     """
+
     def __init__(
         self,
         access_token: Optional[str] = None,
+        parse_markdown: bool = True,
         port: int = 41184,
         host: str = "localhost",
     ) -> None:
@@ -42,9 +45,15 @@ class JoplinReader(BaseReader):
         Args:
             access_token (Optional[str]): The access token for Joplin's Web Clipper service.
                 If not provided, the JOPLIN_ACCESS_TOKEN environment variable is used. Default is None.
+            parse_markdown (bool): Whether to parse the markdown content of the notes using MarkdownReader. Default is True.
             port (int): The port on which Joplin's Web Clipper service is running. Default is 41184.
             host (str): The host on which Joplin's Web Clipper service is running. Default is "localhost".
         """
+        self.parse_markdown = parse_markdown
+        if parse_markdown:
+            mr = download_loader("MarkdownReader")
+            self.parser = mr()
+
         access_token = access_token or self._get_token_from_env()
         base_url = f"http://{host}:{port}"
         self._get_note_url = (
@@ -82,7 +91,12 @@ class JoplinReader(BaseReader):
                         "created_time": self._convert_date(note["created_time"]),
                         "updated_time": self._convert_date(note["updated_time"]),
                     }
-                    yield Document(text=note["body"], extra_info=metadata)
+                    if self.parse_markdown:
+                        yield from self.parser.load_data(
+                            None, content=note["body"], extra_info=metadata
+                        )
+                    else:
+                        yield Document(text=note["body"], extra_info=metadata)
 
                 has_more = json_data["has_more"]
                 page += 1
@@ -97,7 +111,7 @@ class JoplinReader(BaseReader):
         req_tag = urllib.request.Request(self._get_tag_url.format(id=note_id))
         with urllib.request.urlopen(req_tag) as response:
             json_data = json.loads(response.read().decode())
-            return ','.join([tag["title"] for tag in json_data["items"]])
+            return ",".join([tag["title"] for tag in json_data["items"]])
 
     def _convert_date(self, date: int) -> str:
         return datetime.fromtimestamp(date / 1000).strftime("%Y-%m-%d %H:%M:%S")
