@@ -502,6 +502,11 @@
     "author": "iamadhee",
     "keywords": ["weather","openweather"]
   },
+    "OpenMap": {
+    "id": "maps",
+    "author": "carrotpy",
+    "keywords": ["open maps","maps","open street maps","overpass api","geo"]
+    },
   "KalturaESearchReader": {
     "id": "kaltura/esearch",
     "author": "kaltura",
