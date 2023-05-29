@@ -100,4 +100,4 @@ For all other PR's relevant to LlamaIndex, let's create it directly against the 
 
 ### Other questions?
 
-Feel free to hop into the [community Discord](https://discord.gg/dGcwcsnxhU) or tag the official [Twitter account](https://twitter.com/gpt_index)!
+Feel free to hop into the [community Discord](https://discord.gg/dGcwcsnxhU) or tag the official [Twitter account](https://twitter.com/llama_index)!
