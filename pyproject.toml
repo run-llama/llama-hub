@@ -15,7 +15,7 @@ include = [
 
 [tool.poetry.dependencies]
 # Updated Python version
-python = ">=3.8"
+python = ">=3.8.1,<4.0"
 llama-index = ">=0.6.9"
 atlassian-python-api = "*"
 html2text = "*"
@@ -31,5 +31,5 @@ isort = "5.11.4"
 
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=0.12", "poetry-core>=1.0.0"]
 build-backend = "poetry.masonry.api"
