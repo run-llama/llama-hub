@@ -94,7 +94,12 @@ class PandasAIReader(BaseReader):
             else:
                 raise ValueError("Unexpected type for result: {}".format(type(result)))
             # if not conversational answer, use Pandas CSV Reader
-            PandasCSVReader = download_loader("PandasCSVReader")
+
+            try:
+                from llama_hub.utils import import_loader
+                PandasCSVReader = import_loader("PandasCSVReader")
+            except ImportError:
+                PandasCSVReader = download_loader("PandasCSVReader")
 
             reader = PandasCSVReader(
                 concat_rows=self._concat_rows,

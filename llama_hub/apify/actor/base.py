@@ -49,7 +49,12 @@ class ApifyActor(BaseReader):
             timeout_secs=timeout_secs,
         )
 
-        ApifyDataset = download_loader("ApifyDataset")
+        try:
+            from llama_hub.utils import import_loader
+            ApifyDataset = import_loader("ApifyDataset")
+        except ImportError:
+            ApifyDataset = download_loader("ApifyDataset")
+
         reader = ApifyDataset(self.apify_api_token)
         documents = reader.load_data(
             dataset_id=actor_call.get("defaultDatasetId"),

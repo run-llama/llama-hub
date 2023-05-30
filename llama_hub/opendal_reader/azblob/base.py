@@ -55,7 +55,12 @@ class OpendalAzblobReader(BaseReader):
     def load_data(self) -> List[Document]:
         """Load file(s) from OpenDAL."""
 
-        OpendalReader = download_loader("OpendalReader")
+        try:
+            from llama_hub.utils import import_loader
+            OpendalReader = import_loader("OpendalReader")
+        except ImportError:
+            OpendalReader = download_loader("OpendalReader")
+
         loader = OpendalReader(
             scheme="azblob",
             path=self.path,

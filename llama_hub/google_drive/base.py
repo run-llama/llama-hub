@@ -261,7 +261,11 @@ class GoogleDriveReader(BaseReader):
                         "created at": fileid_meta[3],
                         "modified at": fileid_meta[4],
                     }
-                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+                try:
+                    from llama_hub.utils import import_loader
+                    SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
+                except ImportError:
+                    SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
                 loader = SimpleDirectoryReader(temp_dir, file_metadata=get_metadata)
                 documents = loader.load_data()
 

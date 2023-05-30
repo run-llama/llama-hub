@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Union
 
-from llama_index import download_loader
+from llama_index.readers.download import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -133,7 +133,11 @@ class SimpleDirectoryReader(BaseReader):
                 reader = self.file_extractor[input_file.suffix]
 
                 if isinstance(reader, str):
-                    reader = download_loader(reader)()
+                    try:
+                        from llama_hub.utils import import_loader
+                        reader = import_loader(reader)()
+                    except ImportError as e:
+                        reader = download_loader(reader)()
 
                 extracted_documents = reader.load_data(
                     file=input_file, extra_info=metadata

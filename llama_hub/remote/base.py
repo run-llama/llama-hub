@@ -61,7 +61,11 @@ class RemoteReader(BaseReader):
             text = "\n\n".join([str(el.decode("utf-8-sig")) for el in result])
             documents = [Document(text, extra_info=extra_info)]
         elif self._is_youtube_video(url):
-            YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")
+            try:
+                from llama_hub.utils import import_loader
+                YoutubeTranscriptReader = import_loader("YoutubeTranscriptReader")
+            except ImportError:
+                YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")
             youtube_reader = YoutubeTranscriptReader()
             # TODO should we have another langauge, like english / french?
             documents = youtube_reader.load_data([url])

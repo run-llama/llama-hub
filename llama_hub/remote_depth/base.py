@@ -29,7 +29,11 @@ class RemoteDepthReader(BaseReader):
         from tqdm.auto import tqdm
 
         """Parse whatever is at the URL.""" ""
-        RemoteReader = download_loader("RemoteReader")
+        try:
+            from llama_hub.utils import import_loader
+            RemoteReader = import_loader("RemoteReader")
+        except ImportError:
+            RemoteReader = download_loader("RemoteReader")
         remote_reader = RemoteReader(file_extractor=self.file_extractor)
         documents = []
         links = self.get_links(url)

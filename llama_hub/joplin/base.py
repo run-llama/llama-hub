@@ -51,7 +51,11 @@ class JoplinReader(BaseReader):
         """
         self.parse_markdown = parse_markdown
         if parse_markdown:
-            mr = download_loader("MarkdownReader")
+            try:
+                from llama_hub.utils import import_loader
+                mr = import_loader("MarkdownReader")
+            except:
+                mr = download_loader("MarkdownReader")
             self.parser = mr()
 
         access_token = access_token or self._get_token_from_env()

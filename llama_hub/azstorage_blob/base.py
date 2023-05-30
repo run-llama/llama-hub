@@ -109,7 +109,12 @@ class AzStorageBlobReader(BaseReader):
             total_elapsed_time = math.ceil(total_download_end_time - total_download_start_time)
             logger.info(f"Downloading completed in approximately {total_elapsed_time // 60}min {total_elapsed_time % 60}s.")
             logger.info(f"Document creation starting")
-            SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+
+            try:
+                from llama_hub.utils import import_loader
+                SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
+            except ImportError:
+                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
             loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor)
 
             return loader.load_data()         

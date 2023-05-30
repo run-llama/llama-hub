@@ -52,7 +52,11 @@ class OpendalReader(BaseReader):
             else:
                 asyncio.run(download_dir_from_opendal(self.op, temp_dir, self.path))
 
-            SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+            try:
+                from llama_hub.utils import import_loader
+                SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
+            except ImportError:
+                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
             loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor)
 
             return loader.load_data()

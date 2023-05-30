@@ -143,7 +143,11 @@ class ArxivReader(BaseReader):
         def get_paper_metadata(filename):
             return paper_lookup[filename]
 
-        SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+        try:
+            from llama_hub.utils import import_loader
+            SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
+        except ImportError: 
+            SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
         arxiv_documents = SimpleDirectoryReader(
             papers_dir, file_metadata=get_paper_metadata
         ).load_data()
