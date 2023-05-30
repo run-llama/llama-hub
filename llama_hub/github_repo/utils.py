@@ -11,7 +11,7 @@ from abc import ABC, abstractmethod
 from typing import List, Tuple
 
 if "pytest" in sys.modules:
-    from loader_hub.github_repo.github_client import (
+    from llama_hub.github_repo.github_client import (
         GitBlobResponseModel,
         GithubClient,
         GitTreeResponseModel,

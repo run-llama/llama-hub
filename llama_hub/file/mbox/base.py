@@ -73,7 +73,7 @@ class MboxReader(BaseReader):
                 content = msg.get_payload(decode=True)
 
             if not content:
-                print("WARNING loader_hub.file.mbox found messages with content that stayed None. Skipping entry...")
+                print("WARNING llama_hub.file.mbox found messages with content that stayed None. Skipping entry...")
                 continue
 
             # Parse message HTML content and remove unneeded whitespace

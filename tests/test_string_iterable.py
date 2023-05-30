@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.append(Path(__file__).parent.parent)
 
-from loader_hub.string_iterable.base import StringIterableReader
+from llama_hub.string_iterable.base import StringIterableReader
 
 
 def test_string_iterable() -> None:

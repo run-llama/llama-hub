@@ -22,14 +22,14 @@ from llama_index.readers.schema.base import Document
 
 
 if "pytest" in sys.modules:
-    from loader_hub.github_repo.github_client import (
+    from llama_hub.github_repo.github_client import (
         BaseGithubClient,
         GitBranchResponseModel,
         GitCommitResponseModel,
         GithubClient,
         GitTreeResponseModel,
     )
-    from loader_hub.github_repo.utils import (
+    from llama_hub.github_repo.utils import (
         BufferedGitBlobDataIterator,
         print_if_verbose,
         get_file_extension,

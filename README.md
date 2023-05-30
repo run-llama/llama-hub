@@ -54,9 +54,9 @@ Adding a loader simply requires forking this repo and making a Pull Request. The
 
 ### Step 1: Create a new directory
 
-In `loader_hub`, create a new directory for your new loader. It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
+In `llama_hub`, create a new directory for your new loader. It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
 
-If you'd like, you can create the new directory and files by running the following script in the `loader_hub` directory. Just remember to put your dependencies into a `requirements.txt` file.
+If you'd like, you can create the new directory and files by running the following script in the `llama_hub` directory. Just remember to put your dependencies into a `requirements.txt` file.
 
 ```
 ./add_loader.sh [NAME_OF_NEW_DIRECTORY]
@@ -68,7 +68,7 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 
 ### Step 3: Add your loader to the library.json file
 
-Finally, add your loader to the `loader_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within LlamaIndex.
+Finally, add your loader to the `llama_hub/library.json` file so that it may be used by others. As is exemplified by the current file, add in the class name of your loader, along with its id, author, etc. This file is referenced by the Loader Hub website and the download function within LlamaIndex.
 
 ### Step 4: Make a Pull Request!
 

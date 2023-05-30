@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 sys.path.append(Path(__file__).parent.parent)
 
-from loader_hub.file.base import SimpleDirectoryReader
+from llama_hub.file.base import SimpleDirectoryReader
 
 
 def test_recursive() -> None:
