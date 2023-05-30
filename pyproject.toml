@@ -2,7 +2,7 @@
 name = "llama-hub"
 version = "0.0.1"
 description = "A library of community-driven data loaders for LLMs. Use with LlamaIndex and/or LangChain. "
-authors = ["Jerry Liu"]
+authors = ["Jerry Liu", "Jesse Zhang"]
 # New attributes
 license = "MIT"
 readme = "README.md"
