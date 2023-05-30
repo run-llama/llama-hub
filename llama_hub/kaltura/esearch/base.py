@@ -115,14 +115,14 @@ class KalturaESearchReader(BaseReader):
                 entry_info = {
                     'entry_id': str(entry.id),
                     'entry_name': str(entry.name),
-                    'entry_description': str(entry.description),
-                    'entry_media_type': int(entry.mediaType.value),
-                    'entry_media_date': int(entry.createdAt),
-                    'entry_ms_duration': int(entry.msDuration),
-                    'entry_last_played_at': int(entry.lastPlayedAt),
-                    'entry_application': str(entry.application),
-                    'entry_tags': str(entry.tags),
-                    'entry_reference_id': str(entry.referenceId)
+                    'entry_description': str(entry.description or ''),
+                    'entry_media_type': int(entry.mediaType.value or 0),
+                    'entry_media_date': int(entry.createdAt or 0),
+                    'entry_ms_duration': int(entry.msDuration or 0),
+                    'entry_last_played_at': int(entry.lastPlayedAt or 0),
+                    'entry_application': str(entry.application or ''),
+                    'entry_tags': str(entry.tags or ''),
+                    'entry_reference_id': str(entry.referenceId or '')
                 }
 
                 if with_captions:
@@ -145,7 +145,7 @@ class KalturaESearchReader(BaseReader):
 
         except Exception as e:
             if e.code == "INVALID_KS":
-                raise ValueError('Kaltura Auth failed, check your credentials')
+                raise ValueError(f'Kaltura Auth failed, check your credentials: {e}')
             logger.error(f'An error occurred while loading with search params: {e}')
             return []
 
