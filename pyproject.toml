@@ -19,6 +19,7 @@ python = ">=3.8.1,<4.0"
 llama-index = ">=0.6.9"
 atlassian-python-api = "*"
 html2text = "*"
+psutil = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "7.2.1"
