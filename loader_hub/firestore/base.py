@@ -1,7 +1,6 @@
 """Firestore Reader."""
 
 from typing import Any, List, Optional
-from google.cloud import firestore
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -25,6 +24,7 @@ class FirestoreReader(BaseReader):
         **kwargs: Optional[Any],
     ) -> None:
         """Initialize with parameters."""
+        from google.cloud import firestore
         self.db = firestore.Client(project=project_id)
 
     def load_data(self, collection: str) -> List[Document]:
