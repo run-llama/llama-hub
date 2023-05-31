@@ -61,7 +61,7 @@ class ImageVisionLLMReader(BaseReader):
         """Parse file."""
         from PIL import Image
 
-        from gpt_index.img_utils import img_2_b64
+        from llama_index.img_utils import img_2_b64
 
         # load document image
         image = Image.open(file)
@@ -74,11 +74,11 @@ class ImageVisionLLMReader(BaseReader):
             image_str = img_2_b64(image)
 
         # Parse image into text
-        model = self.parser_config["model"]
-        processor = self.parser_config["processor"]
+        model = self._parser_config["model"]
+        processor = self._parser_config["processor"]
 
-        device = self.parser_config["device"]
-        dtype = self.parser_config["dtype"]
+        device = self._parser_config["device"]
+        dtype = self._parser_config["dtype"]
         model.to(device)
 
         # unconditional image captioning
