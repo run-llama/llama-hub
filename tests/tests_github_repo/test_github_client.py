@@ -14,18 +14,18 @@ from typing import List, Tuple
 #     allow_module_level=True,
 # )
 
-from loader_hub.github_repo.utils import (
+from llama_hub.github_repo.utils import (
     BufferedAsyncIterator,
     BufferedGitBlobDataIterator,
 )
 
-from loader_hub.github_repo.github_client import (
+from llama_hub.github_repo.github_client import (
     GithubClient,
     GitBlobResponseModel,
     GitTreeResponseModel,
 )
 
-from loader_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.base import GithubRepositoryReader
 
 
 @pytest.fixture
@@ -84,7 +84,7 @@ async def test_github_client(github_client):
         ("Makefile", "blob"),
         (".gitignore", "blob"),
         ("tests", "tree"),
-        ("loader_hub", "tree"),
+        ("llama_hub", "tree"),
         (".github", "tree"),
     ]
     # check if the first depth of the tree has the expected files. All the expected files should be in the first depth of the tree and vice versa

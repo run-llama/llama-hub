@@ -1,7 +1,7 @@
 import pytest
 import unittest
 from unittest.mock import patch
-from loader_hub.confluence.base import ConfluenceReader, Document
+from llama_hub.confluence.base import ConfluenceReader, Document
 
 
 @pytest.fixture
