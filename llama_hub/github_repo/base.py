@@ -35,14 +35,14 @@ if "pytest" in sys.modules:
         get_file_extension,
     )
 else:
-    from llama_index.readers.llamahub_modules.github_repo.github_client import (
+    from llama_hub.github_repo.github_client import (
         BaseGithubClient,
         GithubClient,
         GitBranchResponseModel,
         GitCommitResponseModel,
         GitTreeResponseModel,
     )
-    from llama_index.readers.llamahub_modules.github_repo.utils import (
+    from llama_hub.github_repo.utils import (
         BufferedGitBlobDataIterator,
         print_if_verbose,
         get_file_extension,
