@@ -17,7 +17,7 @@ if "pytest" in sys.modules:
         GitTreeResponseModel,
     )
 else:
-    from llama_index.readers.llamahub_modules.github_repo.github_client import (
+    from llama_hub.github_repo.github_client import (
         GitBlobResponseModel,
         GithubClient,
         GitTreeResponseModel,
