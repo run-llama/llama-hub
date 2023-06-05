@@ -83,5 +83,7 @@ if docs is None:
 
 index = GPTVectorStoreIndex.from_documents(docs)
 
-index.query("Explain each LlamaIndex class?")
+query_engine = index.as_query_engine()
+response = query_engine.query("Explain each LlamaIndex class?")
+print(response)
 ```
