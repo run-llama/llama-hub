@@ -1,6 +1,6 @@
 import pytest
 import os
-from loader_hub.kaltura.esearch.base import KalturaESearchReader
+from llama_hub.kaltura.esearch.base import KalturaESearchReader
 from llama_index import GPTVectorStoreIndex
 
 # Kaltura credentials
