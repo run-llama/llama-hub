@@ -388,6 +388,11 @@
     "author": "emmanuel-oliveira",
     "keywords": ["pdf", "flat", "flattened"]
   },
+    "PDFMinerReader": {
+    "id": "file/pdf_miner",
+    "author": "thunderbug1",
+    "keywords": ["pdf"]
+  },
   "MilvusReader": {
     "id": "milvus",
     "author": "filip-halt"
