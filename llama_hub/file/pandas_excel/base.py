@@ -29,12 +29,14 @@ class PandasExcelReader(BaseReader):
         *args: Any,
         pandas_config: dict = {},
         concat_rows: bool = True,
+        row_joiner: str = "\n",
         **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
         self._pandas_config = pandas_config
         self._concat_rows = concat_rows
+        self._row_joiner = row_joiner
 
     def load_data(
         self, file: Path, sheet_name: Optional[Union[str, int]] = None, extra_info: Optional[Dict] = None
