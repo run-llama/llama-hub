@@ -93,7 +93,7 @@ class S3Reader(BaseReader):
                 from llama_hub.utils import import_loader
                 SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
             except ImportError:
-                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+                SimpleDirectoryReader = download_loader("SimpleDirectoryReader", custom_path="/tmp/simple_directory_reader.py")
             loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor)
 
             return loader.load_data()
