@@ -76,10 +76,16 @@ class GoogleDocsReader(BaseReader):
         from google.auth.transport.requests import Request
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
+        from google.oauth2 import service_account
 
         creds = None
         if os.path.exists("token.json"):
             creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+        elif os.path.exists("service_account.json"):
+            creds = service_account.Credentials.from_service_account_file(
+                "service_account.json", scopes=SCOPES
+            )
+            return creds
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
