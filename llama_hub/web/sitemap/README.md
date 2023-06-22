@@ -18,11 +18,19 @@ from llama_index import download_loader
 AsyncWebPageReader = download_loader("SitemapReader")
 
 loader = AsyncWebPageReader()
-documents = loader.load_data(sitemap_url=['https://gpt-index.readthedocs.io/sitemap.xml'])
+documents = loader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitemap.xml')
 ```
 
 Be sure that the sitemap_url contains a proper [Sitemap](https://www.sitemaps.org/protocol.html)
 
-### Issues Jupyter Notebooks asyncio
+## Filter option
+
+You can filter locations from the sitemap that are actually being crawled by adding the *filter* argument to the load_data method
+
+```python
+documents = sitemap_reader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitemap.xml', filter="https://gpt-index.readthedocs.io/en/latest/")
+```
+
+## Issues Jupyter Notebooks asyncio
 
 If you get a `RuntimeError: asyncio.run() cannot be called from a running event loop` you might be interested in this (solution here)[https://saturncloud.io/blog/asynciorun-cannot-be-called-from-a-running-event-loop-a-guide-for-data-scientists-using-jupyter-notebook/#option-3-use-nest_asyncio]
