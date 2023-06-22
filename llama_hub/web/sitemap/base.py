@@ -2,6 +2,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 from typing import List
+from llama_index import download_loader
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -23,7 +24,11 @@ class SitemapReader(BaseReader):
     def __init__(self, html_to_text: bool = False, limit: int = 10) -> None:
         """Initialize with parameters."""
 
-        from llama_hub.web.async_web.base import AsyncWebPageReader
+        try:
+            from llama_hub.utils import import_loader
+            AsyncWebPageReader = import_loader("AsyncWebPageReader")
+        except ImportError:
+            AsyncWebPageReader = download_loader("AsyncWebPageReader")
 
         self._async_loader = AsyncWebPageReader(html_to_text=html_to_text, limit=limit)
         self._html_to_text = html_to_text
