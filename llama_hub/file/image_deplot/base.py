@@ -8,7 +8,7 @@ from llama_index.readers.schema.base import Document, ImageDocument
 class ImageTabularGraphReader(BaseReader):
     """Image parser.
 
-    Caption image using Blip2 (a multimodal VisionLLM similar to GPT4).
+    Extract tabular data from a chart or figure.
 
     """
 
@@ -81,7 +81,7 @@ class ImageTabularGraphReader(BaseReader):
         inputs = processor(image, self._prompt, return_tensors="pt").to(device, dtype)
 
         out = model.generate(**inputs, max_new_tokens=self._max_output_tokens)
-        text_str = processor.decode(out[0], skip_special_tokens=True)
+        text_str = "Figure or chart with tabular data: " + processor.decode(out[0], skip_special_tokens=True)
 
         return [
             ImageDocument(
