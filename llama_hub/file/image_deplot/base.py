@@ -5,7 +5,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document, ImageDocument
 
 
-class ImageTabularGraphReader(BaseReader):
+class ImageTabularChartReader(BaseReader):
     """Image parser.
 
     Extract tabular data from a chart or figure.

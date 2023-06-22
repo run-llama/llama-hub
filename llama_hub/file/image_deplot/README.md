@@ -1,4 +1,4 @@
-# Image Loader (Blip2)
+# Image Tabular Chart Loader (Deplot)
 
 This loader captions an image file containing a tabular graph (bar chart, line charts) using deplot.
 
@@ -8,8 +8,8 @@ To use this loader, you need to pass in a `Path` to a local file.
 
 ```python
 from pathlib import Path
-from llama_hub.file.image_deplot.base import ImageTabularGraphReader
+from llama_hub.file.image_deplot.base import ImageTabularChartReader
 
-loader = ImageTabularGraphReader()
+loader = ImageTabularChartReader()
 documents = loader.load_data(file=Path('./image.png'))
 ```
