@@ -441,10 +441,10 @@
     "author": "FarisHijazi",
     "keywords": ["image"]
   },
-  "ImageTabularGraphReader": {
+  "ImageTabularChartReader": {
     "id": "file/image_deplot",
     "author": "jon-chuang",
-    "keywords": ["image", "graph", "tabular"]
+    "keywords": ["image", "chart", "tabular", "figure"]
   },
   "IPYNBReader": {
     "id": "file/ipynb",
