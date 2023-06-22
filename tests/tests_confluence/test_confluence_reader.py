@@ -25,13 +25,13 @@ class TestConfluenceReader:
 
         # Test with oauth2
         ConfluenceReader(base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH)
-        mock_confluence.assert_called_once_with(
+        mock_confluence.assert_called_with(
             url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH, cloud=True
         )
 
         # Test with oauth2 and not cloud
         ConfluenceReader(base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH, cloud=False)
-        mock_confluence.assert_called_once_with(
+        mock_confluence.assert_called_with(
             url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH, cloud=False
         )
 
