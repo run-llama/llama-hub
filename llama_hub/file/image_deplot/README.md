@@ -1,6 +1,6 @@
 # Image Tabular Chart Loader (Deplot)
 
-This loader captions an image file containing a tabular graph (bar chart, line charts) using deplot.
+This loader captions an image file containing a tabular chart (bar chart, line charts) using deplot.
 
 ## Usage
 
