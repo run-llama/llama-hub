@@ -5,7 +5,6 @@ from typing import List
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from llama_hub.web.async_web.base import AsyncWebPageReader
 
 class SitemapReader(BaseReader):
     """Asynchronous sitemap reader for web.
@@ -23,6 +22,9 @@ class SitemapReader(BaseReader):
 
     def __init__(self, html_to_text: bool = False, limit: int = 10) -> None:
         """Initialize with parameters."""
+
+        from llama_hub.web.async_web.base import AsyncWebPageReader
+
         self._async_loader = AsyncWebPageReader(html_to_text=html_to_text, limit=limit)
         self._html_to_text = html_to_text
         self._limit = limit
