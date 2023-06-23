@@ -536,5 +536,9 @@
     "id": "firestore",
     "author": "rayzhudev",
     "keywords": ["firestore", "datastore"]
+  },
+  "KibelaReader": {
+    "id": "kibela",
+    "author": "higebu"
   }
 }
