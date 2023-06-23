@@ -169,24 +169,29 @@ class ConfluenceReader(BaseReader):
         return ret
 
     def _get_cql_data_with_paging(self, cql, max_num_results=50, expand='body.storage.value'):
-        start = 0
         max_num_remaining = max_num_results
         ret = []
-        cursor = None
+        params = {'cql': cql, 'start': 0, 'expand': expand}
+        if max_num_results is not None:
+            params['limit'] = max_num_remaining
         while True:
-            results = self._get_data_with_retry(self.confluence.get, path='rest/api/search', params={'cql': cql, 'start': start,
-                                                                             'limit': max_num_remaining,
-                                                                             'cursor': cursor, 'expand': expand})
+            results = self._get_data_with_retry(self.confluence.get, path='rest/api/content/search', params=params)
             ret.extend(results['results'])
-            next_url = results['_links']['next'] if 'next' in results['_links'] else None
+
+            params['start'] += len(results['results'])
+
             if max_num_results is not None:
-                max_num_remaining -= len(results['results'])
-            if not next_url or max_num_remaining <= 0:
+                params['limit'] -= len(results['results'])
+                if params['limit'] <= 0:
+                    break
+
+            next_url = results['_links']['next'] if 'next' in results['_links'] else None
+            if not next_url:
                 break
             cursor = next_url.split('cursor=')[1].split('&')[0]
+            params['cursor'] = cursor
+
         return ret
-
-
 
     @retry(stop_max_attempt_number=4, wait_fixed=4000)
     def _get_data_with_retry(self, function, **kwargs):
