@@ -80,7 +80,7 @@ class ConfluenceReader(BaseReader):
         if space_key:
             pages.extend(self._get_data_with_paging(self.confluence.get_all_pages_from_space,
                                                     max_num_results=max_num_results,
-                                                    space=space_key, page_status=page_status,
+                                                    space=space_key, status=page_status,
                                                     expand='body.storage.value'))
         if label:
             pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results,
