@@ -42,7 +42,7 @@ class TestConfluenceReader:
                 cloud=True,
             )
 
-    def test_confluence_reader_load_data_invalid_args(self, mock_confluence):
+    def test_confluence_reader_load_data_invalid_args_no_method(self, mock_confluence):
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
         )
@@ -50,9 +50,21 @@ class TestConfluenceReader:
 
         with pytest.raises(
             ValueError,
-            match="Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters.",
+            match="Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.",
         ):
             confluence_reader.load_data()
+
+    def test_confluence_reader_load_data_invalid_args_multiple_methods(self, mock_confluence):
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        with pytest.raises(
+                ValueError,
+                match="Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.",
+        ):
+            confluence_reader.load_data(space_key="123", page_ids=["123"])
 
     def test_confluence_reader_load_data_invalid_args_page_status_no_space_key(self, mock_confluence):
         confluence_reader = ConfluenceReader(
@@ -65,6 +77,18 @@ class TestConfluenceReader:
             match="Must specify `space_key` when `page_status` is specified.",
         ):
             confluence_reader.load_data(page_status="current", page_ids=["123"])
+
+    def test_confluence_reader_load_data_invalid_args_include_children_page_ids(self, mock_confluence):
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        with pytest.raises(
+                ValueError,
+                match="Must specify `page_ids` when `include_children` is specified.",
+        ):
+            confluence_reader.load_data(space_key="123", include_children=True)
 
     def test_confluence_reader_load_data_by_page_ids(self, mock_confluence):
         mock_confluence.get_page_by_id.side_effect = [

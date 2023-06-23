@@ -57,6 +57,21 @@ class ConfluenceReader(BaseReader):
                   page_status: Optional[str] = None, label: Optional[str] = None, cql: Optional[str] = None,
                   include_attachments=False, include_children=False, limit: Optional[int] = None,
                   max_num_results: Optional[int] = None) -> List[Document]:
+        """Load Confluence pages from Confluence, specifying by one of four mutually exlusive methods:
+        `space_key`, `page_ids`, `label`, or `cql`
+        (Confluence Query Language https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/ ).
+
+        Args:
+            space_key (str): Confluence space key, eg 'DS'
+            page_ids (list): List of page ids, eg ['123456', '123457']
+            page_status (str): Page status, eg 'any', 'current', 'archived', etc.  Only compatible with space_key.
+            label (str): Confluence label, eg 'my-label'
+            cql (str): Confluence Query Language query, eg 'label="my-label"'
+            include_attachments (bool): If True, include attachments.
+            include_children (bool): If True, do a DFS of the descendants of each page_id in `page_ids`.  Only compatible with `page_ids`.
+            limit (int): Deprecated, use `max_num_results` instead.
+            max_num_results (int): Maximum number of results to return.  If None, return all results.  Requests are made in batches to achieve the desired number of results.
+        """
 
         num_space_key_parameter = 1 if space_key else 0
         num_page_ids_parameter = 1 if page_ids is not None else 0
@@ -67,6 +82,9 @@ class ConfluenceReader(BaseReader):
 
         if page_status and not space_key:
             raise ValueError("Must specify `space_key` when `page_status` is specified.")
+
+        if include_children and not page_ids:
+            raise ValueError("Must specify `page_ids` when `include_children` is specified.")
 
         if limit is not None:
             max_num_results = limit
