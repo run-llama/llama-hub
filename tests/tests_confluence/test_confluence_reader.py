@@ -475,6 +475,77 @@ class TestConfluenceReader:
         actual_doc_ids = [doc.doc_id for doc in documents]
         assert actual_doc_ids == ["0", "1", "4", "7", "5", "2"]
 
+    def test_confluence_reader_load_data_cql_paging_max_none(self, mock_confluence):
+        mock_confluence.get.side_effect = [
+            {'results': [
+                {'id': '0', 'type': 'page', 'title': 'Page 0', 'body': {'storage': {'value': '<p>Content 0</p>'}}},
+                {'id': '1', 'type': 'page', 'title': 'Page 1', 'body': {'storage': {'value': '<p>Content 1</p>'}}},
+                {'id': '2', 'type': 'page', 'title': 'Page 2', 'body': {'storage': {'value': '<p>Content 2</p>'}}},
+            ],
+                '_links': {
+                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=3&cursor=RANDOMSTRING'}},
+            {'results': [
+                {'id': '3', 'type': 'page', 'title': 'Page 3', 'body': {'storage': {'value': '<p>Content 3</p>'}}},
+                {'id': '4', 'type': 'page', 'title': 'Page 4', 'body': {'storage': {'value': '<p>Content 4</p>'}}},
+                {'id': '5', 'type': 'page', 'title': 'Page 5', 'body': {'storage': {'value': '<p>Content 5</p>'}}},
+            ],
+                '_links': {
+                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=6&cursor=RANDOMSTRING'}},
+            {'results': [
+                {'id': '6', 'type': 'page', 'title': 'Page 6', 'body': {'storage': {'value': '<p>Content 6</p>'}}},
+                {'id': '7', 'type': 'page', 'title': 'Page 7', 'body': {'storage': {'value': '<p>Content 7</p>'}}},
+            ],
+                '_links': {}},
+        ]
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_cql = "type=page"
+        documents = confluence_reader.load_data(cql=mock_cql)
+
+        assert mock_confluence.get.call_count == 3
+
+        assert len(documents) == 8
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == [str(i) for i in range(8)]
+    def test_confluence_reader_load_data_cql_paging_max_6(self, mock_confluence):
+        mock_confluence.get.side_effect = [
+            {'results': [
+                {'id': '0', 'type': 'page', 'title': 'Page 0', 'body': {'storage': {'value': '<p>Content 0</p>'}}},
+                {'id': '1', 'type': 'page', 'title': 'Page 1', 'body': {'storage': {'value': '<p>Content 1</p>'}}},
+                {'id': '2', 'type': 'page', 'title': 'Page 2', 'body': {'storage': {'value': '<p>Content 2</p>'}}},
+            ],
+                '_links': {
+                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=3&cursor=RANDOMSTRING'}},
+            {'results': [
+                {'id': '3', 'type': 'page', 'title': 'Page 3', 'body': {'storage': {'value': '<p>Content 3</p>'}}},
+                {'id': '4', 'type': 'page', 'title': 'Page 4', 'body': {'storage': {'value': '<p>Content 4</p>'}}},
+                {'id': '5', 'type': 'page', 'title': 'Page 5', 'body': {'storage': {'value': '<p>Content 5</p>'}}},
+            ],
+                '_links': {
+                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=6&cursor=RANDOMSTRING'}},
+            {'results': [
+                {'id': '6', 'type': 'page', 'title': 'Page 6', 'body': {'storage': {'value': '<p>Content 6</p>'}}},
+                {'id': '7', 'type': 'page', 'title': 'Page 7', 'body': {'storage': {'value': '<p>Content 7</p>'}}},
+            ],
+                '_links': {}},
+        ]
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_cql = "type=page"
+        mock_max_num_results = 6
+        documents = confluence_reader.load_data(cql=mock_cql, max_num_results=mock_max_num_results)
+
+        assert mock_confluence.get.call_count == 2
+
+        assert len(documents) == 6
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == [str(i) for i in range(6)]
 
 def _mock_get_all_pages_from_space(space, start=0, limit=3, status="current", expand="body.storage.value",
                                    content_type="page"):
