@@ -6,3 +6,4 @@ Pillow
 docx2txt
 xlrd
 svglib
+retrying

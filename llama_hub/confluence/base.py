@@ -1,5 +1,6 @@
 """Confluence reader."""
 import os
+from retrying import retry
 from typing import List, Optional, Dict
 
 from llama_index.readers.base import BaseReader
@@ -51,82 +52,88 @@ class ConfluenceReader(BaseReader):
             self.confluence = Confluence(url=base_url, username=user_name, password=api_token, cloud=True)
 
     def load_data(self, space_key: Optional[str] = None, page_ids: Optional[List[str]] = None,
-                  label: Optional[str] = None, cql: Optional[str] = None, include_attachments=False,
-                  include_children=False, limit = 50) -> List[Document]:
+                  page_status: Optional[str] = None, label: Optional[str] = None, cql: Optional[str] = None,
+                  include_attachments=False, include_children=False, limit=50) -> List[Document]:
         if not space_key and not page_ids and not label and not cql:
             raise ValueError("Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters.")
+        if page_status and not space_key:
+            raise ValueError("Must specify `space_key` when `page_status` is specified.")
 
         try:
             import html2text  # type: ignore
         except ImportError:
             raise ImportError("`html2text` package not found, please run `pip install html2text`")
 
-        docs = []
-
         text_maker = html2text.HTML2Text()
         text_maker.ignore_links = True
         text_maker.ignore_images = True
 
+        pages: List = []
         if space_key:
-            # Don't just query all the pages since the number of pages can be very large
-            # instead we can page through them
-            start = 0
-            pages = []
-            while True:
-                pages_iter = self.confluence.get_all_pages_from_space(space_key, start=start, limit=limit, expand='body.storage.value')
-
-                if len(pages_iter) == 0:
-                    break
-
-                start += len(pages_iter)
-                pages.extend(pages_iter)
-
-                # no more to fetch
-                if len(pages_iter) < limit:
-                    break
-
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
+            pages.extend(self._get_data_with_paging(self.confluence.get_all_pages_from_space, limit_total=limit,
+                                                    space=space_key, page_status=page_status,
+                                                    expand='body.storage.value'))
         if label:
-            pages = self.confluence.get_all_pages_by_label(label=label, limit=limit, expand='body.storage.value')
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
+            pages.extend(self._get_data_with_paging(self.confluence.cql, limit_total=limit,
+                                                    cql=f'type="page" AND label="{label}"',
+                                                    expand='body.storage.value'))
         if cql:
-            pages = self.confluence.cql(cql=cql, limit=limit, expand='body.storage.value')
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
-        if label:
-            pages = self.confluence.get_all_pages_by_label(label=label, expand='body.storage.value')
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
+            pages.extend(self._get_data_with_paging(self.confluence.cql, limit_total=limit, cql=cql,
+                                                    expand='body.storage.value'))
         if page_ids:
-            # with the include children option we will dfs and get the children of all the pages 
-            # requested
             if include_children:
-                page_ids = self._dfs_page(self.confluence, page_ids[0])
+                dfs_page_ids = []
+                limit_subtotal = limit
+                for page_id in page_ids:
+                    current_dfs_page_ids = self._dfs_page_ids(page_id, limit_subtotal)
+                    dfs_page_ids.extend = current_dfs_page_ids
+                    limit_subtotal -= len(current_dfs_page_ids)
+                    if limit_subtotal <= 0:
+                        break
+                page_ids = dfs_page_ids
             for page_id in page_ids:
-                page = self.confluence.get_page_by_id(page_id=page_id, expand='body.storage.value')
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
+                pages.append(self._get_data_with_retry(self.confluence.get_page_by_id, page_id=page_id,
+                                                       expand='body.storage.value'))
+
+        docs = []
+        for page in pages:
+            doc = self.process_page(page, include_attachments, text_maker)
+            docs.append(doc)
 
         return docs
 
-    def _dfs_page(self, raw_confluence, page_id):
-        ret = []
-        ret += [page_id]
-        pages = self.confluence.get_page_child_by_type(page_id,  type='page', start=None, limit=None, expand=None)
-        ids = [page['id'] for page in pages]
-        for id in ids:
-            ret += self._dfs_page(raw_confluence, id)
+    def _dfs_page_ids(self, page_id, limit_total):
+        ret = [page_id]
+        limit_subtotal = limit_total - 1
+        if limit_subtotal <= 0:
+            return ret
+
+        child_page_ids = self._get_data_with_paging(self.confluence.get_child_id_list, page_id=page_id, type='page',
+                                                    limit_total=limit_subtotal)
+        for id in child_page_ids:
+            dfs_ids = self._dfs_page_ids(id, limit_subtotal)
+            limit_subtotal -= len(dfs_ids)
+            ret.extend(dfs_ids)
+            if limit_subtotal <= 0:
+                break
         return ret
+
+    def _get_data_with_paging(self, paged_function, limit_total=50, **kwargs):
+        start = 0
+        limit = limit_total
+        ret = []
+        while True:
+            results = self._get_data_with_retry(paged_function, start=start, limit=limit, **kwargs)
+            if len(results) == 0 or len(results) >= limit:
+                break
+            start += len(results)
+            limit -= len(results)
+            ret.extend(results)
+        return ret
+
+    @retry(stop_max_attempt_number=3, wait_exponential_multiplier=1000)
+    def _get_data_with_retry(self, function, **kwargs):
+        return function(**kwargs)
 
     def process_page(self, page, include_attachments, text_maker):
         if include_attachments:

@@ -103,7 +103,7 @@ class TestConfluenceReader:
             {
                 "id": "456",
                 "type": "page",
-                "status": "current",
+                "status": "archived",
                 "title": "Page 456",
                 "body": {"storage": {"value": "<p>Content 456</p>"}},
             },
@@ -121,6 +121,7 @@ class TestConfluenceReader:
         assert mock_confluence.get_all_pages_from_space.call_args[0][0] == "spaceId123"
         assert mock_confluence.get_all_pages_from_space.call_args[1]["start"] == 0
         assert mock_confluence.get_all_pages_from_space.call_args[1]["limit"] == 50
+        assert mock_confluence.get_all_pages_from_space.call_args[1]["page_status"] is None
 
         assert len(documents) == 2
         assert all(isinstance(doc, Document) for doc in documents)
@@ -150,7 +151,7 @@ class TestConfluenceReader:
                 {
                     "id": "456",
                     "type": "page",
-                    "status": "current",
+                    "status": "archived",
                     "title": "Page 456",
                     "body": {"storage": {"value": "<p>Content 456</p>"}},
                 }
@@ -182,3 +183,43 @@ class TestConfluenceReader:
         assert mock_confluence.get_all_pages_by_label.call_count == 0
         assert mock_confluence.cql.call_count == 0
         assert mock_confluence.get_page_child_by_type.call_count == 0
+
+    def test_confluence_reader_load_data_page_status(self, mock_confluence):
+        mock_confluence.get_all_pages_from_space.side_effect = [
+            [
+                {
+                    "id": "123",
+                    "type": "page",
+                    "status": "current",
+                    "title": "Page 123",
+                    "body": {"storage": {"value": "<p>Content 123</p>"}},
+                },
+            ],
+            [
+                {
+                    "id": "456",
+                    "type": "page",
+                    "status": "archived",
+                    "title": "Page 456",
+                    "body": {"storage": {"value": "<p>Content 456</p>"}},
+                }
+            ],
+            [],
+        ]
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_space_key = "spaceId123"
+        mock_page_status = "current"
+        documents = confluence_reader.load_data(mock_space_key, page_status=mock_page_status)
+
+        assert mock_confluence.get_all_pages_from_space.call_count == 1
+        assert mock_confluence.get_all_pages_from_space.call_args[0][0] == "spaceId123"
+        assert mock_confluence.get_all_pages_from_space.call_args[1]["page_status"] == "current"
+
+        assert len(documents) == 1
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert documents[0].doc_id == "123"
+        assert documents[0].extra_info == {"title": "Page 123"}
