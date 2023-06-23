@@ -81,7 +81,7 @@ class ConfluenceReader(BaseReader):
             pages.extend(self._get_data_with_paging(self.confluence.get_all_pages_from_space,
                                                     max_num_results=max_num_results,
                                                     space=space_key, status=page_status,
-                                                    expand='body.storage.value'))
+                                                    expand='body.storage.value', content_type='page'))
         if label:
             pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results,
                                                     cql=f'type="page" AND label="{label}"',
@@ -95,10 +95,11 @@ class ConfluenceReader(BaseReader):
                 max_num_remaining = max_num_results
                 for page_id in page_ids:
                     current_dfs_page_ids = self._dfs_page_ids(page_id, max_num_remaining)
-                    dfs_page_ids.extend = current_dfs_page_ids
-                    max_num_remaining -= len(current_dfs_page_ids)
-                    if max_num_results is not None and max_num_remaining <= 0:
-                        break
+                    dfs_page_ids.extend(current_dfs_page_ids)
+                    if max_num_results is not None:
+                        max_num_remaining -= len(current_dfs_page_ids)
+                        if max_num_remaining <= 0:
+                            break
                 page_ids = dfs_page_ids
             for page_id in (page_ids[:max_num_results] if max_num_results is not None else page_ids):
                 pages.append(self._get_data_with_retry(self.confluence.get_page_by_id, page_id=page_id,
@@ -113,7 +114,7 @@ class ConfluenceReader(BaseReader):
 
     def _dfs_page_ids(self, page_id, max_num_results):
         ret = [page_id]
-        max_num_remaining = max_num_results - 1 if max_num_results is not None else None
+        max_num_remaining = (max_num_results - 1) if max_num_results is not None else None
         if max_num_results is not None and max_num_remaining <= 0:
             return ret
 
@@ -121,10 +122,11 @@ class ConfluenceReader(BaseReader):
                                                     max_num_results=max_num_remaining)
         for child_page_id in child_page_ids:
             dfs_ids = self._dfs_page_ids(child_page_id, max_num_remaining)
-            max_num_remaining -= len(dfs_ids)
             ret.extend(dfs_ids)
-            if max_num_remaining is not None and max_num_remaining <= 0:
-                break
+            if max_num_results is not None:
+                max_num_remaining -= len(dfs_ids)
+                if max_num_remaining <= 0:
+                    break
         return ret
 
     def _get_data_with_paging(self, paged_function, max_num_results=50, **kwargs):
@@ -133,15 +135,15 @@ class ConfluenceReader(BaseReader):
         ret = []
         while True:
             results = self._get_data_with_retry(paged_function, start=start, limit=max_num_remaining, **kwargs)
+            ret.extend(results)
             if len(results) == 0 or max_num_results is not None and len(results) >= max_num_remaining:
                 break
             start += len(results)
             if max_num_remaining is not None:
                 max_num_remaining -= len(results)
-            ret.extend(results)
         return ret
 
-    @retry(stop_max_attempt_number=3, wait_exponential_multiplier=1000)
+    @retry(stop_max_attempt_number=4, wait_exponential_multiplier=1000)
     def _get_data_with_retry(self, function, **kwargs):
         return function(**kwargs)
 
