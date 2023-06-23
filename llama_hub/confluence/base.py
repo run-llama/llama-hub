@@ -174,7 +174,7 @@ class ConfluenceReader(BaseReader):
         ret = []
         cursor = None
         while True:
-            results = self._get_data_with_retry(self.confluence.get, params={'cql': cql, 'start': start,
+            results = self._get_data_with_retry(self.confluence.get, 'rest/api/search', params={'cql': cql, 'start': start,
                                                                              'limit': max_num_remaining,
                                                                              'cursor': cursor, 'expand': expand})
             ret.extend(results['results'])
