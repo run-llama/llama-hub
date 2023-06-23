@@ -64,7 +64,7 @@ class ConfluenceReader(BaseReader):
         Args:
             space_key (str): Confluence space key, eg 'DS'
             page_ids (list): List of page ids, eg ['123456', '123457']
-            page_status (str): Page status, eg 'any', 'current', 'archived', etc.  Only compatible with space_key.
+            page_status (str): Page status, one of 'any', 'current', 'draft', 'archived'.  Only compatible with space_key.
             label (str): Confluence label, eg 'my-label'
             cql (str): Confluence Query Language query, eg 'label="my-label"'
             include_attachments (bool): If True, include attachments.
