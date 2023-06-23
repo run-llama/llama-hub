@@ -25,20 +25,38 @@ class TestConfluenceReader:
 
         # Test with oauth2
         ConfluenceReader(base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH)
-        mock_confluence.assert_called_once_with(
+        mock_confluence.assert_called_with(
             url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH, cloud=True
         )
 
-        # Test without oauth2
+        # Test with oauth2 and not cloud
+        ConfluenceReader(base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH, cloud=False)
+        mock_confluence.assert_called_with(
+            url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH, cloud=False
+        )
+
+        # Test with api token
         with unittest.mock.patch.dict(
             "os.environ",
-            {"CONFLUENCE_USERNAME": "user", "CONFLUENCE_API_TOKEN": "api_token"},
+            {"CONFLUENCE_API_TOKEN": "api_token"},
+        ):
+            ConfluenceReader(base_url=CONFLUENCE_BASE_URL)
+            mock_confluence.assert_called_with(
+                url=CONFLUENCE_BASE_URL,
+                token="api_token",
+                cloud=True,
+            )
+
+        # Test with basic auth
+        with unittest.mock.patch.dict(
+            "os.environ",
+            {"CONFLUENCE_USERNAME": "user", "CONFLUENCE_PASSWORD": "password"},
         ):
             ConfluenceReader(base_url=CONFLUENCE_BASE_URL)
             mock_confluence.assert_called_with(
                 url=CONFLUENCE_BASE_URL,
                 username="user",
-                password="api_token",
+                password="password",
                 cloud=True,
             )
 
