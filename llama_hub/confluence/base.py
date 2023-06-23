@@ -1,4 +1,5 @@
 """Confluence reader."""
+import logging
 import os
 from retrying import retry
 from typing import List, Optional, Dict
@@ -9,6 +10,7 @@ from llama_index.readers.schema.base import Document
 CONFLUENCE_USERNAME = "CONFLUENCE_USERNAME"
 CONFLUENCE_API_TOKEN = "CONFLUENCE_API_TOKEN"
 
+logger = logging.getLogger(__name__)
 
 class ConfluenceReader(BaseReader):
     """Confluence reader.
@@ -53,11 +55,17 @@ class ConfluenceReader(BaseReader):
 
     def load_data(self, space_key: Optional[str] = None, page_ids: Optional[List[str]] = None,
                   page_status: Optional[str] = None, label: Optional[str] = None, cql: Optional[str] = None,
-                  include_attachments=False, include_children=False, limit=50) -> List[Document]:
+                  include_attachments=False, include_children=False, limit: Optional[int] = None,
+                  max_num_results: Optional[int] = None) -> List[Document]:
         if not space_key and not page_ids and not label and not cql:
             raise ValueError("Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters.")
         if page_status and not space_key:
             raise ValueError("Must specify `space_key` when `page_status` is specified.")
+
+        if limit is not None:
+            max_num_results = limit
+            logger.warning("`limit` is deprecated and no longer relates to the Confluence server's API limits.  If "
+                           "you wish to limit the number of returned results please use `max_num_results` instead.")
 
         try:
             import html2text  # type: ignore
@@ -70,28 +78,29 @@ class ConfluenceReader(BaseReader):
 
         pages: List = []
         if space_key:
-            pages.extend(self._get_data_with_paging(self.confluence.get_all_pages_from_space, limit_total=limit,
+            pages.extend(self._get_data_with_paging(self.confluence.get_all_pages_from_space,
+                                                    max_num_results=max_num_results,
                                                     space=space_key, page_status=page_status,
                                                     expand='body.storage.value'))
         if label:
-            pages.extend(self._get_data_with_paging(self.confluence.cql, limit_total=limit,
+            pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results,
                                                     cql=f'type="page" AND label="{label}"',
                                                     expand='body.storage.value'))
         if cql:
-            pages.extend(self._get_data_with_paging(self.confluence.cql, limit_total=limit, cql=cql,
+            pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results, cql=cql,
                                                     expand='body.storage.value'))
         if page_ids:
             if include_children:
                 dfs_page_ids = []
-                limit_subtotal = limit
+                max_num_remaining = max_num_results
                 for page_id in page_ids:
-                    current_dfs_page_ids = self._dfs_page_ids(page_id, limit_subtotal)
+                    current_dfs_page_ids = self._dfs_page_ids(page_id, max_num_remaining)
                     dfs_page_ids.extend = current_dfs_page_ids
-                    limit_subtotal -= len(current_dfs_page_ids)
-                    if limit_subtotal <= 0:
+                    max_num_remaining -= len(current_dfs_page_ids)
+                    if max_num_remaining <= 0:
                         break
                 page_ids = dfs_page_ids
-            for page_id in page_ids:
+            for page_id in page_ids[:max_num_results]:
                 pages.append(self._get_data_with_retry(self.confluence.get_page_by_id, page_id=page_id,
                                                        expand='body.storage.value'))
 
@@ -102,32 +111,32 @@ class ConfluenceReader(BaseReader):
 
         return docs
 
-    def _dfs_page_ids(self, page_id, limit_total):
+    def _dfs_page_ids(self, page_id, max_num_results):
         ret = [page_id]
-        limit_subtotal = limit_total - 1
-        if limit_subtotal <= 0:
+        max_num_remaining = max_num_results - 1
+        if max_num_remaining <= 0:
             return ret
 
         child_page_ids = self._get_data_with_paging(self.confluence.get_child_id_list, page_id=page_id, type='page',
-                                                    limit_total=limit_subtotal)
-        for id in child_page_ids:
-            dfs_ids = self._dfs_page_ids(id, limit_subtotal)
-            limit_subtotal -= len(dfs_ids)
+                                                    max_num_results=max_num_remaining)
+        for child_page_id in child_page_ids:
+            dfs_ids = self._dfs_page_ids(child_page_id, max_num_remaining)
+            max_num_remaining -= len(dfs_ids)
             ret.extend(dfs_ids)
-            if limit_subtotal <= 0:
+            if max_num_remaining <= 0:
                 break
         return ret
 
-    def _get_data_with_paging(self, paged_function, limit_total=50, **kwargs):
+    def _get_data_with_paging(self, paged_function, max_num_results=50, **kwargs):
         start = 0
-        limit = limit_total
+        max_num_remaining = max_num_results
         ret = []
         while True:
-            results = self._get_data_with_retry(paged_function, start=start, limit=limit, **kwargs)
-            if len(results) == 0 or len(results) >= limit:
+            results = self._get_data_with_retry(paged_function, start=start, limit=max_num_remaining, **kwargs)
+            if len(results) == 0 or len(results) >= max_num_remaining:
                 break
             start += len(results)
-            limit -= len(results)
+            max_num_remaining -= len(results)
             ret.extend(results)
         return ret
 
