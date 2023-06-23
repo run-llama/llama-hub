@@ -441,6 +441,11 @@
     "author": "FarisHijazi",
     "keywords": ["image"]
   },
+  "ImageTabularChartReader": {
+    "id": "file/image_deplot",
+    "author": "jon-chuang",
+    "keywords": ["image", "chart", "tabular", "figure"]
+  },
   "IPYNBReader": {
     "id": "file/ipynb",
     "author": "FarisHijazi",
