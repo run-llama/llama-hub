@@ -167,7 +167,7 @@ class ConfluenceReader(BaseReader):
                 max_num_remaining -= len(results)
         return ret
 
-    @retry(stop_max_attempt_number=4, wait_exponential_multiplier=1000)
+    @retry(stop_max_attempt_number=4, wait_fixed=4000)
     def _get_data_with_retry(self, function, **kwargs):
         return function(**kwargs)
 
