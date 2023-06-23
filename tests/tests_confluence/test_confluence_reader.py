@@ -54,6 +54,18 @@ class TestConfluenceReader:
         ):
             confluence_reader.load_data()
 
+    def test_confluence_reader_load_data_invalid_args_page_status_no_space_key(self, mock_confluence):
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        with pytest.raises(
+            ValueError,
+            match="Must specify `space_key` when `page_status` is specified.",
+        ):
+            confluence_reader.load_data(page_status="current", page_ids=["123"])
+
     def test_confluence_reader_load_data_by_page_ids(self, mock_confluence):
         mock_confluence.get_page_by_id.side_effect = [
             {
@@ -92,7 +104,7 @@ class TestConfluenceReader:
 
     def test_confluence_reader_load_data_by_space_id(self, mock_confluence):
         # one response with two pages
-        mock_confluence.get_all_pages_from_space.return_value = [
+        mock_confluence.get_all_pages_from_space.side_effect= [[
             {
                 "id": "123",
                 "type": "page",
@@ -107,7 +119,8 @@ class TestConfluenceReader:
                 "title": "Page 456",
                 "body": {"storage": {"value": "<p>Content 456</p>"}},
             },
-        ]
+        ],
+            []]
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -117,11 +130,12 @@ class TestConfluenceReader:
         mock_space_key = "spaceId123"
         documents = confluence_reader.load_data(space_key=mock_space_key)
 
-        assert mock_confluence.get_all_pages_from_space.call_count == 1
-        assert mock_confluence.get_all_pages_from_space.call_args[0][0] == "spaceId123"
-        assert mock_confluence.get_all_pages_from_space.call_args[1]["start"] == 0
-        assert mock_confluence.get_all_pages_from_space.call_args[1]["limit"] == 50
+        assert mock_confluence.get_all_pages_from_space.call_count == 2
+        assert mock_confluence.get_all_pages_from_space.call_args[1]["space"] == "spaceId123"
+        assert mock_confluence.get_all_pages_from_space.call_args[1]["start"] == 2
+        assert mock_confluence.get_all_pages_from_space.call_args[1]["limit"] == 48
         assert mock_confluence.get_all_pages_from_space.call_args[1]["page_status"] is None
+        assert mock_confluence.get_all_pages_from_space.call_args[1]["expand"] == 'body.storage.value'
 
         assert len(documents) == 2
         assert all(isinstance(doc, Document) for doc in documents)
@@ -136,7 +150,9 @@ class TestConfluenceReader:
         assert mock_confluence.get_page_child_by_type.call_count == 0
 
     def test_confluence_reader_load_data_by_space_id_pagination(self, mock_confluence):
-        # two api responses with one page each
+        """Test pagination where there are more pages to retrieve than the server limit."""
+        # two api responses with one page each, due to server limit of 1 page per response.
+        # third call returns empty list.
         mock_confluence.get_all_pages_from_space.side_effect = [
             [
                 {
@@ -151,7 +167,7 @@ class TestConfluenceReader:
                 {
                     "id": "456",
                     "type": "page",
-                    "status": "archived",
+                    "status": "current",
                     "title": "Page 456",
                     "body": {"storage": {"value": "<p>Content 456</p>"}},
                 }
@@ -165,7 +181,7 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_limit = 1  # fetch one page at a time
+        mock_limit = 3 # Asking for up to 3 pages. There are only two pages to retrieve though, and they'll come 1 at a time from Confluence.
         documents = confluence_reader.load_data(
             space_key=mock_space_key, limit=mock_limit
         )
@@ -183,43 +199,3 @@ class TestConfluenceReader:
         assert mock_confluence.get_all_pages_by_label.call_count == 0
         assert mock_confluence.cql.call_count == 0
         assert mock_confluence.get_page_child_by_type.call_count == 0
-
-    def test_confluence_reader_load_data_page_status(self, mock_confluence):
-        mock_confluence.get_all_pages_from_space.side_effect = [
-            [
-                {
-                    "id": "123",
-                    "type": "page",
-                    "status": "current",
-                    "title": "Page 123",
-                    "body": {"storage": {"value": "<p>Content 123</p>"}},
-                },
-            ],
-            [
-                {
-                    "id": "456",
-                    "type": "page",
-                    "status": "archived",
-                    "title": "Page 456",
-                    "body": {"storage": {"value": "<p>Content 456</p>"}},
-                }
-            ],
-            [],
-        ]
-        confluence_reader = ConfluenceReader(
-            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
-        )
-        confluence_reader.confluence = mock_confluence
-
-        mock_space_key = "spaceId123"
-        mock_page_status = "current"
-        documents = confluence_reader.load_data(mock_space_key, page_status=mock_page_status)
-
-        assert mock_confluence.get_all_pages_from_space.call_count == 1
-        assert mock_confluence.get_all_pages_from_space.call_args[0][0] == "spaceId123"
-        assert mock_confluence.get_all_pages_from_space.call_args[1]["page_status"] == "current"
-
-        assert len(documents) == 1
-        assert all(isinstance(doc, Document) for doc in documents)
-        assert documents[0].doc_id == "123"
-        assert documents[0].extra_info == {"title": "Page 123"}
