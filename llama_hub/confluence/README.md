@@ -17,7 +17,11 @@ Confluence pages are obtained through one of 4 four mutually exclusive ways:
 4. `cql`: Load all pages that match a given CQL query (Confluence Query Language https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/ ).
 
 When `page_ids` is specified, `include_children` will cause the loader to also load all descendent pages.
-When `space_key` is specified, `page_status` further specifies the status of pages to load.
+When `space_key` is specified, `page_status` further specifies the status of pages to load: None, 'current', 'archived', 'draft'.
+
+limit (int): Deprecated, use `max_num_results` instead.
+
+max_num_results (int): Maximum number of results to return.  If None, return all results.  Requests are made in batches to achieve the desired number of results.
 
 User can also specify a boolean `include_attachments` to 
 include attachments, this is set to `False` by default, if set to `True` all attachments will be downloaded and 

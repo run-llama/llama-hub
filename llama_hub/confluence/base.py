@@ -57,14 +57,14 @@ class ConfluenceReader(BaseReader):
                   page_status: Optional[str] = None, label: Optional[str] = None, cql: Optional[str] = None,
                   include_attachments=False, include_children=False, limit: Optional[int] = None,
                   max_num_results: Optional[int] = None) -> List[Document]:
-        """Load Confluence pages from Confluence, specifying by one of four mutually exlusive methods:
+        """Load Confluence pages from Confluence, specifying by one of four mutually exclusive methods:
         `space_key`, `page_ids`, `label`, or `cql`
         (Confluence Query Language https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/ ).
 
         Args:
             space_key (str): Confluence space key, eg 'DS'
             page_ids (list): List of page ids, eg ['123456', '123457']
-            page_status (str): Page status, one of 'any', 'current', 'draft', 'archived'.  Only compatible with space_key.
+            page_status (str): Page status, one of None (all statuses), 'current', 'draft', 'archived'.  Only compatible with space_key.
             label (str): Confluence label, eg 'my-label'
             cql (str): Confluence Query Language query, eg 'label="my-label"'
             include_attachments (bool): If True, include attachments.
