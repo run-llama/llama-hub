@@ -97,10 +97,10 @@ class ConfluenceReader(BaseReader):
                     current_dfs_page_ids = self._dfs_page_ids(page_id, max_num_remaining)
                     dfs_page_ids.extend = current_dfs_page_ids
                     max_num_remaining -= len(current_dfs_page_ids)
-                    if max_num_remaining <= 0:
+                    if max_num_results is not None and max_num_remaining <= 0:
                         break
                 page_ids = dfs_page_ids
-            for page_id in page_ids[:max_num_results]:
+            for page_id in (page_ids[:max_num_results] if max_num_results is not None else page_ids):
                 pages.append(self._get_data_with_retry(self.confluence.get_page_by_id, page_id=page_id,
                                                        expand='body.storage.value'))
 
@@ -113,8 +113,8 @@ class ConfluenceReader(BaseReader):
 
     def _dfs_page_ids(self, page_id, max_num_results):
         ret = [page_id]
-        max_num_remaining = max_num_results - 1
-        if max_num_remaining <= 0:
+        max_num_remaining = max_num_results - 1 if max_num_results is not None else None
+        if max_num_results is not None and max_num_remaining <= 0:
             return ret
 
         child_page_ids = self._get_data_with_paging(self.confluence.get_child_id_list, page_id=page_id, type='page',
@@ -123,7 +123,7 @@ class ConfluenceReader(BaseReader):
             dfs_ids = self._dfs_page_ids(child_page_id, max_num_remaining)
             max_num_remaining -= len(dfs_ids)
             ret.extend(dfs_ids)
-            if max_num_remaining <= 0:
+            if max_num_remaining is not None and max_num_remaining <= 0:
                 break
         return ret
 
@@ -133,10 +133,11 @@ class ConfluenceReader(BaseReader):
         ret = []
         while True:
             results = self._get_data_with_retry(paged_function, start=start, limit=max_num_remaining, **kwargs)
-            if len(results) == 0 or len(results) >= max_num_remaining:
+            if len(results) == 0 or max_num_results is not None and len(results) >= max_num_remaining:
                 break
             start += len(results)
-            max_num_remaining -= len(results)
+            if max_num_remaining is not None:
+                max_num_remaining -= len(results)
             ret.extend(results)
         return ret
 
