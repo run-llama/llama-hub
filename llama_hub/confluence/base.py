@@ -107,12 +107,13 @@ class ConfluenceReader(BaseReader):
                                                     space=space_key, status=page_status,
                                                     expand='body.storage.value', content_type='page'))
         elif label:
-            pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results,
-                                                    cql=f'type="page" AND label="{label}"',
-                                                    expand='body.storage.value'))
+            pages.extend(self._get_cql_data_with_paging(cql=f'type="page" AND label="{label}"',
+                                                        max_num_results=max_num_results,
+                                                        expand='body.storage.value'))
         elif cql:
-            pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results, cql=cql,
-                                                    expand='body.storage.value'))
+            pages.extend(self._get_cql_data_with_paging(cql=cql,
+                                                        max_num_results=max_num_results,
+                                                        expand='body.storage.value'))
         elif page_ids:
             if include_children:
                 dfs_page_ids = []
@@ -166,6 +167,26 @@ class ConfluenceReader(BaseReader):
             if max_num_remaining is not None:
                 max_num_remaining -= len(results)
         return ret
+
+    def _get_cql_data_with_paging(self, cql, max_num_results=50, expand='body.storage.value'):
+        start = 0
+        max_num_remaining = max_num_results
+        ret = []
+        cursor = None
+        while True:
+            results = self._get_data_with_retry(self.confluence.get, params={'cql': cql, 'start': start,
+                                                                             'limit': max_num_remaining,
+                                                                             'cursor': cursor, 'expand': expand})
+            ret.extend(results['results'])
+            next_url = results['_links']['next'] if 'next' in results['_links'] else None
+            if max_num_results is not None:
+                max_num_remaining -= len(results['results'])
+            if not next_url or max_num_remaining <= 0:
+                break
+            cursor = next_url.split('cursor=')[1].split('&')[0]
+        return ret
+
+
 
     @retry(stop_max_attempt_number=4, wait_fixed=4000)
     def _get_data_with_retry(self, function, **kwargs):
