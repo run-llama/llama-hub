@@ -57,8 +57,14 @@ class ConfluenceReader(BaseReader):
                   page_status: Optional[str] = None, label: Optional[str] = None, cql: Optional[str] = None,
                   include_attachments=False, include_children=False, limit: Optional[int] = None,
                   max_num_results: Optional[int] = None) -> List[Document]:
-        if not space_key and not page_ids and not label and not cql:
-            raise ValueError("Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters.")
+
+        num_space_key_parameter = 1 if space_key else 0
+        num_page_ids_parameter = 1 if page_ids is not None else 0
+        num_label_parameter = 1 if label else 0
+        num_cql_parameter = 1 if cql else 0
+        if num_space_key_parameter + num_page_ids_parameter + num_label_parameter + num_cql_parameter != 1:
+            raise ValueError("Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.")
+
         if page_status and not space_key:
             raise ValueError("Must specify `space_key` when `page_status` is specified.")
 
@@ -82,14 +88,14 @@ class ConfluenceReader(BaseReader):
                                                     max_num_results=max_num_results,
                                                     space=space_key, status=page_status,
                                                     expand='body.storage.value', content_type='page'))
-        if label:
+        elif label:
             pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results,
                                                     cql=f'type="page" AND label="{label}"',
                                                     expand='body.storage.value'))
-        if cql:
+        elif cql:
             pages.extend(self._get_data_with_paging(self.confluence.cql, max_num_results=max_num_results, cql=cql,
                                                     expand='body.storage.value'))
-        if page_ids:
+        elif page_ids:
             if include_children:
                 dfs_page_ids = []
                 max_num_remaining = max_num_results
