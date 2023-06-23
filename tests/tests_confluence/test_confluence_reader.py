@@ -282,6 +282,82 @@ class TestConfluenceReader:
         assert all(isinstance(doc, Document) for doc in documents)
         assert all(documents[i].doc_id == str(i) for i in range(8))
 
+    def test_confluence_reader_load_data_by_page_ids_max_10(self, mock_confluence):
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
+            {
+                "id": str(page_id),
+                "type": "page",
+                "status": "current",
+                "title": f"Page {page_id}",
+                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            }
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_page_ids = ["0", "1", "2", "3", "4", "5", "6", "7"]
+        mock_get_children = False
+        mock_max_num_results = 10 # Asking for up to 10 pages, but only requesting 8 specific ones.
+        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children, max_num_results=mock_max_num_results)
+
+        assert mock_confluence.get_page_by_id.call_count == 8
+        assert len(documents) == 8
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == mock_page_ids
+
+    def test_confluence_reader_load_data_by_page_ids_max_5(self, mock_confluence):
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
+            {
+                "id": str(page_id),
+                "type": "page",
+                "status": "current",
+                "title": f"Page {page_id}",
+                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            }
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_page_ids = ["0", "1", "2", "3", "4", "5", "6", "7"]
+        mock_get_children = False
+        mock_max_num_results = 5 # Asking for up to 5 pages
+        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children, max_num_results=mock_max_num_results)
+
+        assert mock_confluence.get_page_by_id.call_count == 5
+        assert len(documents) == 5
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == mock_page_ids[:5]
+
+    def test_confluence_reader_load_data_by_page_ids_max_5(self, mock_confluence):
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
+            {
+                "id": str(page_id),
+                "type": "page",
+                "status": "current",
+                "title": f"Page {page_id}",
+                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            }
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_page_ids = ["0", "1", "2", "3", "4", "5", "6", "7"]
+        mock_get_children = False
+        mock_max_num_results = None
+        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children, max_num_results=mock_max_num_results)
+
+        assert mock_confluence.get_page_by_id.call_count == 8
+        assert len(documents) == 8
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == mock_page_ids
+
+# TODO: test for when we call more than one type of getting method.  label cql, etc.
     def test_confluence_reader_load_data_dfs(self, mock_confluence):
         mock_confluence.get_child_id_list.side_effect = _mock_get_child_id_list
         mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
