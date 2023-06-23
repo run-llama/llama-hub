@@ -357,7 +357,6 @@ class TestConfluenceReader:
         assert all(isinstance(doc, Document) for doc in documents)
         assert [doc.doc_id for doc in documents] == mock_page_ids
 
-# TODO: test for when we call more than one type of getting method.  label cql, etc.
     def test_confluence_reader_load_data_dfs(self, mock_confluence):
         mock_confluence.get_child_id_list.side_effect = _mock_get_child_id_list
         mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
