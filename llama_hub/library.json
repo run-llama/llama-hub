@@ -541,7 +541,7 @@
     "id": "kibela",
     "author": "higebu"
   },
-  "GitHubIssuesReader": {
+  "GitHubRepositoryIssuesReader": {
     "id": "github_repo_issues",
     "author": "moncho",
     "keywords": [
