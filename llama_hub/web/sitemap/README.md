@@ -2,22 +2,22 @@
 
 This loader is an asynchronous web scraper that fetches the text from static websites by using its sitemap and optionally converting the HTML to text.
 
-It is based on the [Async Website Loader](../async_web/README.md)
+It is based on the [Async Website Loader](https://llama-hub-ui.vercel.app/l/web-async_web)
 
 ## Usage
 
 To use this loader, you just declare the sitemap.xml url like this:
 
 ```python
-from llama_index import download_loader
+from llama_hub.web.sitemap.base import SitemapReader
 
 # for jupyter notebooks uncomment the following two lines of code:
 # import nest_asyncio
 # nest_asyncio.apply()
 
-AsyncWebPageReader = download_loader("SitemapReader")
+SitemapReader = download_loader("SitemapReader")
 
-loader = AsyncWebPageReader()
+loader = SitemapReader()
 documents = loader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitemap.xml')
 ```
 
@@ -28,7 +28,7 @@ Be sure that the sitemap_url contains a proper [Sitemap](https://www.sitemaps.or
 You can filter locations from the sitemap that are actually being crawled by adding the *filter* argument to the load_data method
 
 ```python
-documents = sitemap_reader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitemap.xml', filter="https://gpt-index.readthedocs.io/en/latest/")
+documents = loader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitemap.xml', filter="https://gpt-index.readthedocs.io/en/latest/")
 ```
 
 ## Issues Jupyter Notebooks asyncio
