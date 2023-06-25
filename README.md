@@ -137,6 +137,10 @@ pip3 install -r test_requirements.txt
 poetry run pytest tests 
 ```
 
+## Changelog
+
+If you want to track the latest version updates / see which loaders are added to each release, take a look at our [full changelog here](https://github.com/emptycrown/llama-hub/blob/main/CHANGELOG.md)! 
+
 ## FAQ
 
 ### How do I test my loader before it's merged?
