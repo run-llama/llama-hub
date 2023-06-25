@@ -17,7 +17,7 @@ export GITHUB_TOKEN='...'
 ```python
 import os
 
-from llama_hub.github_repo import GitHubRepositoryIssuesReader, GitHubIssuesClient
+from llama_hub.github_repo_issues import GitHubRepositoryIssuesReader, GitHubIssuesClient
 
 github_client = GitHubIssuesClient()
 loader = GitHubRepositoryIssuesReader(
@@ -47,7 +47,7 @@ export GITHUB_TOKEN='...'
 import pickle
 import os
 
-from llama_index import download_loader, GPTVectorStoreIndex
+from llama_index import download_loader, VectorStoreIndex
 from llama_hub.github_repo_issues import GitHubIssuesClient, GitHubRepositoryIssuesReader
 
 docs = None
@@ -69,7 +69,7 @@ if docs is None:
     with open("docs.pkl", "wb") as f:
         pickle.dump(docs, f)
 
-index = GPTVectorStoreIndex.from_documents(docs)
+index = VectorStoreIndex.from_documents(docs)
 
 query_engine = index.as_query_engine()
 response = query_engine.query("Summarize issues that mention stream")
