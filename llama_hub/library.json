@@ -540,5 +540,15 @@
   "KibelaReader": {
     "id": "kibela",
     "author": "higebu"
+  },
+  "GitHubRepositoryIssuesReader": {
+    "id": "github_repo_issues",
+    "author": "moncho",
+    "keywords": [
+      "github",
+      "repository",
+      "issues"
+    ],
+    "extra_files": ["github_client.py", "__init__.py"]
   }
 }
