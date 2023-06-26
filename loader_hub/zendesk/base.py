@@ -3,7 +3,7 @@ import json
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class ZendeskReader(BaseReader):
@@ -36,7 +36,7 @@ class ZendeskReader(BaseReader):
             body = article["body"]
             soup = BeautifulSoup(body, "html.parser")
             body = soup.get_text()
-            extra_info = {
+            metadata = {
                 "id": article["id"],
                 "title": article["title"],
                 "url": article["html_url"],
@@ -45,8 +45,8 @@ class ZendeskReader(BaseReader):
 
             results.append(
                 Document(
-                    body,
-                    extra_info=extra_info,
+                    text=body,
+                    metadata=metadata,
                 )
             )
 

@@ -3,7 +3,7 @@
 from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class SimpleMongoReader(BaseReader):
@@ -68,5 +68,5 @@ class SimpleMongoReader(BaseReader):
         for item in cursor:
             if "text" not in item:
                 raise ValueError("`text` field not found in Mongo document.")
-            documents.append(Document(item["text"]))
+            documents.append(Document(text=item["text"]))
         return documents

@@ -1,7 +1,7 @@
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class TrafilaturaWebReader(BaseReader):
@@ -30,6 +30,6 @@ class TrafilaturaWebReader(BaseReader):
         for url in urls:
             downloaded = trafilatura.fetch_url(url)
             response = trafilatura.extract(downloaded)
-            documents.append(Document(response))
+            documents.append(Document(text=response))
 
         return documents

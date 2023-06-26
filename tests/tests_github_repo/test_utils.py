@@ -1,11 +1,5 @@
-from llama_index import Document
-import httpx
 import pytest
 import asyncio
-import base64
-import os
-from unittest.mock import MagicMock, AsyncMock, call
-import unittest
 from typing import List, Tuple
 
 # Remove this to test changes to GithubRepositoryReader.
@@ -20,12 +14,9 @@ from loader_hub.github_repo.utils import (
 )
 
 from loader_hub.github_repo.github_client import (
-    GithubClient,
-    GitBlobResponseModel,
     GitTreeResponseModel,
 )
 
-from loader_hub.github_repo.base import GithubRepositoryReader
 
 
 class MockGithubClient:

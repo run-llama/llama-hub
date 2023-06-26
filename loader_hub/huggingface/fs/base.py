@@ -6,11 +6,11 @@ A parser for HF files.
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Dict, List, Optional
+from typing import Dict, List
 
 import pandas as pd
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class HuggingFaceFSReader(BaseReader):
@@ -67,5 +67,5 @@ class HuggingFaceFSReader(BaseReader):
         json_dicts = self.load_dicts(path)
         docs = []
         for d in json_dicts:
-            docs.append(Document(str(d)))
+            docs.append(Document(text=str(d)))
         return docs

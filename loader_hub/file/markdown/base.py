@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, cast
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class MarkdownReader(BaseReader):
@@ -95,10 +95,8 @@ class MarkdownReader(BaseReader):
         markdown_tups = self.markdown_to_tups(content)
         return markdown_tups
 
-    def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
-    ) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Parse file into string."""
         tups = self.parse_tups(file)
         # TODO: don't include headers right now
-        return [Document(value, extra_info=extra_info) for _, value in tups]
+        return [Document(text=value, metadata=metadata) for _, value in tups]

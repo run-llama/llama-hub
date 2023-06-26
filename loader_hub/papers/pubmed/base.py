@@ -2,7 +2,7 @@
 from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class PubmedReader(BaseReader):
@@ -77,8 +77,8 @@ class PubmedReader(BaseReader):
                 text = "\n".join([p["text"] for p in d["passages"]])
                 pubmed_documents.append(
                     Document(
-                        text,
-                        extra_info={
+                        text=text,
+                        metadata={
                             "Title of this paper": paper["title"],
                             "URL": paper["url"],
                             "Date published": datetime.strptime(
@@ -156,8 +156,8 @@ class PubmedReader(BaseReader):
         for paper in pubmed_search:
             pubmed_documents.append(
                 Document(
-                    paper["text"],
-                    extra_info={
+                    text=paper["text"],
+                    metadata={
                         "Title of this paper": paper["title"],
                         "Journal it was published in:": paper["journal"],
                         "URL": paper["url"],

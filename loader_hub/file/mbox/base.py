@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class MboxReader(BaseReader):
@@ -73,7 +73,9 @@ class MboxReader(BaseReader):
                 content = msg.get_payload(decode=True)
 
             if not content:
-                print("WARNING loader_hub.file.mbox found messages with content that stayed None. Skipping entry...")
+                print(
+                    "WARNING loader_hub.file.mbox found messages with content that stayed None. Skipping entry..."
+                )
                 continue
 
             # Parse message HTML content and remove unneeded whitespace
@@ -95,9 +97,7 @@ class MboxReader(BaseReader):
                 break
         return results
 
-    def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
-    ) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Load data from the input directory.
 
         load_kwargs:
@@ -107,5 +107,5 @@ class MboxReader(BaseReader):
         docs: List[Document] = []
         content = self.parse_file(file)
         for msg in content:
-            docs.append(Document(msg, extra_info=extra_info))
+            docs.append(Document(text=msg, metadata=metadata))
         return docs

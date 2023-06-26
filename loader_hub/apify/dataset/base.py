@@ -1,8 +1,8 @@
 """Apify dataset reader"""
-from typing import Any, Callable, Dict, List
+from typing import Callable, Dict, List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class ApifyDataset(BaseReader):

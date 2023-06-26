@@ -2,7 +2,7 @@
 from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class RedditReader(BaseReader):
@@ -48,10 +48,10 @@ class RedditReader(BaseReader):
                 relevant_posts = ml_subreddit.search(kw, limit=post_limit)
 
                 for post in relevant_posts:
-                    posts.append(Document(post.selftext))
+                    posts.append(Document(text=post.selftext))
                     for top_level_comment in post.comments:
                         if isinstance(top_level_comment, MoreComments):
                             continue
-                        posts.append(Document(top_level_comment.body))
+                        posts.append(Document(text=top_level_comment.body))
 
         return posts

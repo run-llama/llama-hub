@@ -5,20 +5,20 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 from urllib.parse import urljoin
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 logger = logging.getLogger(__name__)
 
 
 def _substack_reader(soup: Any, **kwargs) -> Tuple[str, Dict[str, Any]]:
     """Extract text from Substack blog post."""
-    extra_info = {
+    metadata = {
         "Title of this Substack post": soup.select_one("h1.post-title").getText(),
         "Subtitle": soup.select_one("h3.subtitle").getText(),
         "Author": soup.select_one("span.byline-names").getText(),
     }
     text = soup.select_one("div.available-content").getText()
-    return text, extra_info
+    return text, metadata
 
 
 def _readthedocs_reader(soup: Any, url: str, **kwargs) -> Tuple[str, Dict[str, Any]]:
@@ -49,7 +49,9 @@ def _readthedocs_reader(soup: Any, url: str, **kwargs) -> Tuple[str, Dict[str, A
     return "\n".join(texts), {}
 
 
-def _readmedocs_reader(soup: Any, url: str, include_url_in_text: bool = True) -> Tuple[str, Dict[str, Any]]:
+def _readmedocs_reader(
+    soup: Any, url: str, include_url_in_text: bool = True
+) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site"""
     import requests
     from bs4 import BeautifulSoup
@@ -75,10 +77,12 @@ def _readmedocs_reader(soup: Any, url: str, include_url_in_text: bool = True) ->
                             if url is not None and "edit" in url:
                                 text += child.text
                             else:
-                                text += f"{child.text} (Reference url: {doc_link}{url}) "
+                                text += (
+                                    f"{child.text} (Reference url: {doc_link}{url}) "
+                                )
                     elif child.string and child.string.strip():
-                        text += child.string.strip() + " "  
-                            
+                        text += child.string.strip() + " "
+
         except IndexError:
             text = None
             logger.error(f"Could not extract text from {doc_link}")
@@ -86,7 +90,10 @@ def _readmedocs_reader(soup: Any, url: str, include_url_in_text: bool = True) ->
         texts.append("\n".join([t for t in text.split("\n") if t]))
     return "\n".join(texts), {}
 
-def _gitbook_reader(soup: Any, url: str, include_url_in_text: bool = True) -> Tuple[str, Dict[str, Any]]:
+
+def _gitbook_reader(
+    soup: Any, url: str, include_url_in_text: bool = True
+) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site"""
     import requests
     from bs4 import BeautifulSoup
@@ -144,7 +151,10 @@ class BeautifulSoupWebReader(BaseReader):
         self.website_extractor = website_extractor or DEFAULT_WEBSITE_EXTRACTOR
 
     def load_data(
-        self, urls: List[str], custom_hostname: Optional[str] = None,include_url_in_text: Optional[bool] = True
+        self,
+        urls: List[str],
+        custom_hostname: Optional[str] = None,
+        include_url_in_text: Optional[bool] = True,
     ) -> List[Document]:
         """Load data from the urls.
 
@@ -175,18 +185,16 @@ class BeautifulSoupWebReader(BaseReader):
             soup = BeautifulSoup(page.content, "html.parser")
 
             data = ""
-            extra_info = {"URL": url}
+            metadata = {"URL": url}
             if hostname in self.website_extractor:
                 data, metadata = self.website_extractor[hostname](
-                    soup=soup,
-                    url=url,
-                    include_url_in_text=include_url_in_text
+                    soup=soup, url=url, include_url_in_text=include_url_in_text
                 )
-                extra_info.update(metadata)
+                metadata.update(metadata)
 
             else:
                 data = soup.getText()
 
-            documents.append(Document(data, extra_info=extra_info))
+            documents.append(Document(text=data, metadata=metadata))
 
         return documents

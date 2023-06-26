@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class RemoteReader(BaseReader):
@@ -51,15 +51,15 @@ class RemoteReader(BaseReader):
         from urllib.parse import urlparse
         from urllib.request import urlopen, Request
 
-        extra_info = {"Source": url}
+        metadata = {"Source": url}
 
-        req = Request(url, headers={'User-Agent' : "Magic Browser"})
+        req = Request(url, headers={"User-Agent": "Magic Browser"})
         result = urlopen(req)
         url_type = result.info().get_content_type()
         documents = []
         if url_type == "text/html" or url_type == "text/plain":
             text = "\n\n".join([str(el.decode("utf-8-sig")) for el in result])
-            documents = [Document(text, extra_info=extra_info)]
+            documents = [Document(text=text, metadata=metadata)]
         elif self._is_youtube_video(url):
             YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")
             youtube_reader = YoutubeTranscriptReader()
@@ -75,7 +75,7 @@ class RemoteReader(BaseReader):
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
                 loader = SimpleDirectoryReader(
                     temp_dir,
-                    file_metadata=(lambda _: extra_info),
+                    file_metadata=(lambda _: metadata),
                     file_extractor=self.file_extractor,
                 )
                 documents = loader.load_data()

@@ -1,17 +1,9 @@
 from llama_index import Document
 import httpx
 import pytest
-import asyncio
-import base64
-import os
 from unittest.mock import MagicMock, AsyncMock, call
-import unittest
 from typing import List, Tuple
 
-from loader_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
 
 from loader_hub.github_repo.github_client import (
     GithubClient,
@@ -414,28 +406,28 @@ async def test__generate_documents():
     expected_documents = [
         Document(
             text="print('hello world')",
-            extra_info={
+            metadata={
                 "file_path": "file1.py",
                 "file_name": "file1.py",
             },
         ),
         Document(
             text="console.log('hello world')",
-            extra_info={
+            metadata={
                 "file_path": "folder1/file2.ts",
                 "file_name": "file2.ts",
             },
         ),
         Document(
             text='println!("hello world")',
-            extra_info={
+            metadata={
                 "file_path": "folder1/folder2/file3.rs",
                 "file_name": "file3.rs",
             },
         ),
         Document(
             text='std::cout << "hello world" << std::endl;',
-            extra_info={
+            metadata={
                 "file_path": "folder1/folder2/folder3/file4.cc",
                 "file_name": "file4.cc",
             },
@@ -443,15 +435,15 @@ async def test__generate_documents():
     ]
 
     for document, expected_document in zip(
-        sorted(documents, key=lambda x: x.extra_info["file_path"]),
-        sorted(expected_documents, key=lambda x: x.extra_info["file_path"]),
+        sorted(documents, key=lambda x: x.metadata["file_path"]),
+        sorted(expected_documents, key=lambda x: x.metadata["file_path"]),
     ):
         assert (
             document.text == expected_document.text
         ), "The text of the document should be the decoded content of the blob"
         assert (
-            document.extra_info == expected_document.extra_info
-        ), "The extra_info of the document should be the file_path and file_name"
+            document.metadata == expected_document.metadata
+        ), "The metadata of the document should be the file_path and file_name"
 
     with pytest.raises(
         httpx.HTTPError,
@@ -752,98 +744,98 @@ def test_load_data_without_filters():
     expected_docs = [
         Document(
             text="this is the file content for README.md",
-            extra_info={
+            metadata={
                 "file_path": "README.md",
                 "file_name": "README.md",
             },
         ),
         Document(
             text="this is the file content for LICENSE",
-            extra_info={
+            metadata={
                 "file_path": "LICENSE",
                 "file_name": "LICENSE",
             },
         ),
         Document(
             text="this is the file content for setup.py",
-            extra_info={
+            metadata={
                 "file_path": "setup.py",
                 "file_name": "setup.py",
             },
         ),
         Document(
             text="this is the file content for settings.json",
-            extra_info={
+            metadata={
                 "file_path": ".vscode/settings.json",
                 "file_name": "settings.json",
             },
         ),
         Document(
             text="this is the file content for index.rst",
-            extra_info={
+            metadata={
                 "file_path": "docs/index.rst",
                 "file_name": "index.rst",
             },
         ),
         Document(
             text="this is the file content for __init__.py",
-            extra_info={
+            metadata={
                 "file_path": "src/__init__.py",
                 "file_name": "__init__.py",
             },
         ),
         Document(
             text="this is the file content for lint.yml",
-            extra_info={
+            metadata={
                 "file_path": ".github/workflows/lint.yml",
                 "file_name": "lint.yml",
             },
         ),
         Document(
             text="this is the file content for build_package.yml",
-            extra_info={
+            metadata={
                 "file_path": ".github/workflows/build_package.yml",
                 "file_name": "build_package.yml",
             },
         ),
         Document(
             text="hello world",
-            extra_info={
+            metadata={
                 "file_path": "docs/gallery/example_picture.png",
                 "file_name": "example_picture.png",
             },
         ),
         Document(
             text="this is the file content for example_guide.md",
-            extra_info={
+            metadata={
                 "file_path": "docs/guides/example_guide.md",
                 "file_name": "example_guide.md",
             },
         ),
         Document(
             text="this is the file content for example_package.py",
-            extra_info={
+            metadata={
                 "file_path": "src/package/example_package.py",
                 "file_name": "example_package.py",
             },
         ),
         Document(
             text="this is the file content for test_file1.py",
-            extra_info={
+            metadata={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
         ),
         Document(
             text="this is the file content for test_file2.js",
-            extra_info={
+            metadata={
                 "file_path": "src/tests/test_file2.js",
                 "file_name": "test_file2.js",
             },
         ),
         Document(
             text="this is the file content for example_subpackage.py",
-            extra_info={
+            metadata={
                 "file_path": "src/package/subpackage/example_subpackage.py",
                 "file_name": "example_subpackage.py",
             },
@@ -864,20 +856,16 @@ def test_load_data_without_filters():
     for doc in docs:
         print(doc)
     for expected, actual in zip(
-        sorted(expected_docs, key=lambda x: x.extra_info["file_name"]),
-        sorted(docs, key=lambda x: x.extra_info["file_name"]),
+        sorted(expected_docs, key=lambda x: x.metadata["file_name"]),
+        sorted(docs, key=lambda x: x.metadata["file_name"]),
     ):
         assert expected.text == actual.text, (
             "The content of the expected doc and the actual doc should be the same"
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.metadata["file_path"] == actual.metadata["file_path"]
+        assert expected.metadata["file_name"] == actual.metadata["file_name"]
 
 
 def test_load_data_with_filters1():
@@ -902,7 +890,7 @@ def test_load_data_with_filters1():
     expected_docs = [
         Document(
             text="this is the file content for test_file1.py",
-            extra_info={
+            metadata={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
@@ -924,20 +912,16 @@ def test_load_data_with_filters1():
         print(doc)
 
     for expected, actual in zip(
-        sorted(expected_docs, key=lambda x: x.extra_info["file_name"]),
-        sorted(docs, key=lambda x: x.extra_info["file_name"]),
+        sorted(expected_docs, key=lambda x: x.metadata["file_name"]),
+        sorted(docs, key=lambda x: x.metadata["file_name"]),
     ):
         assert expected.text == actual.text, (
             "The content of the expected doc and the actual doc should be the same"
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.metadata["file_path"] == actual.metadata["file_path"]
+        assert expected.metadata["file_name"] == actual.metadata["file_name"]
 
 
 def test_load_data_with_filters2():
@@ -962,35 +946,35 @@ def test_load_data_with_filters2():
     expected_docs = [
         Document(
             text="this is the file content for lint.yml",
-            extra_info={
+            metadata={
                 "file_path": ".github/workflows/lint.yml",
                 "file_name": "lint.yml",
             },
         ),
         Document(
             text="this is the file content for build_package.yml",
-            extra_info={
+            metadata={
                 "file_path": ".github/workflows/build_package.yml",
                 "file_name": "build_package.yml",
             },
         ),
         Document(
             text="hello world",
-            extra_info={
+            metadata={
                 "file_path": "docs/gallery/example_picture.png",
                 "file_name": "example_picture.png",
             },
         ),
         Document(
             text="this is the file content for README.md",
-            extra_info={
+            metadata={
                 "file_path": "README.md",
                 "file_name": "README.md",
             },
         ),
         Document(
             text="this is the file content for test_file2.js",
-            extra_info={
+            metadata={
                 "file_path": "src/tests/test_file2.js",
                 "file_name": "test_file2.js",
             },
@@ -1012,20 +996,16 @@ def test_load_data_with_filters2():
         print(doc)
 
     for expected, actual in zip(
-        sorted(expected_docs, key=lambda x: x.extra_info["file_name"]),
-        sorted(docs, key=lambda x: x.extra_info["file_name"]),
+        sorted(expected_docs, key=lambda x: x.metadata["file_name"]),
+        sorted(docs, key=lambda x: x.metadata["file_name"]),
     ):
         assert expected.text == actual.text, (
             "The content of the expected doc and the actual doc should be the same"
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.metadata["file_path"] == actual.metadata["file_path"]
+        assert expected.metadata["file_name"] == actual.metadata["file_name"]
 
 
 def test_load_data_with_filters3():
@@ -1050,14 +1030,14 @@ def test_load_data_with_filters3():
     expected_docs = [
         Document(
             text="this is the file content for test_file1.py",
-            extra_info={
+            metadata={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
         ),
         Document(
             text="this is the file content for example_subpackage.py",
-            extra_info={
+            metadata={
                 "file_path": "src/package/subpackage/example_subpackage.py",
                 "file_name": "example_subpackage.py",
             },
@@ -1079,20 +1059,16 @@ def test_load_data_with_filters3():
         print(doc)
 
     for expected, actual in zip(
-        sorted(expected_docs, key=lambda x: x.extra_info["file_name"]),
-        sorted(docs, key=lambda x: x.extra_info["file_name"]),
+        sorted(expected_docs, key=lambda x: x.metadata["file_name"]),
+        sorted(docs, key=lambda x: x.metadata["file_name"]),
     ):
         assert expected.text == actual.text, (
             "The content of the expected doc and the actual doc should be the same"
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.metadata["file_path"] == actual.metadata["file_path"]
+        assert expected.metadata["file_name"] == actual.metadata["file_name"]
 
 
 def test_load_data_with_filters4():
@@ -1117,49 +1093,49 @@ def test_load_data_with_filters4():
     expected_docs = [
         Document(
             text="this is the file content for settings.json",
-            extra_info={
+            metadata={
                 "file_path": ".vscode/settings.json",
                 "file_name": "settings.json",
             },
         ),
         Document(
             text="this is the file content for index.rst",
-            extra_info={
+            metadata={
                 "file_path": "docs/index.rst",
                 "file_name": "index.rst",
             },
         ),
         Document(
             text="this is the file content for test_file1.py",
-            extra_info={
+            metadata={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
         ),
         Document(
             text="this is the file content for setup.py",
-            extra_info={
+            metadata={
                 "file_path": "setup.py",
                 "file_name": "setup.py",
             },
         ),
         Document(
             text="this is the file content for example_package.py",
-            extra_info={
+            metadata={
                 "file_path": "src/package/example_package.py",
                 "file_name": "example_package.py",
             },
         ),
         Document(
             text="this is the file content for __init__.py",
-            extra_info={
+            metadata={
                 "file_path": "src/__init__.py",
                 "file_name": "__init__.py",
             },
         ),
         Document(
             text="this is the file content for LICENSE",
-            extra_info={
+            metadata={
                 "file_path": "LICENSE",
                 "file_name": "LICENSE",
             },
@@ -1181,17 +1157,13 @@ def test_load_data_with_filters4():
         print(doc)
 
     for expected, actual in zip(
-        sorted(expected_docs, key=lambda x: x.extra_info["file_name"]),
-        sorted(docs, key=lambda x: x.extra_info["file_name"]),
+        sorted(expected_docs, key=lambda x: x.metadata["file_name"]),
+        sorted(docs, key=lambda x: x.metadata["file_name"]),
     ):
         assert expected.text == actual.text, (
             "The content of the expected doc and the actual doc should be the same"
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.metadata["file_path"] == actual.metadata["file_path"]
+        assert expected.metadata["file_name"] == actual.metadata["file_name"]

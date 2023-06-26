@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class PandasCSVReader(BaseReader):
@@ -52,9 +52,7 @@ class PandasCSVReader(BaseReader):
         self._row_joiner = row_joiner
         self._pandas_config = pandas_config
 
-    def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
-    ) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Parse file."""
         import pandas as pd
 
@@ -65,6 +63,8 @@ class PandasCSVReader(BaseReader):
         ).tolist()
 
         if self._concat_rows:
-            return [Document((self._row_joiner).join(text_list), extra_info=extra_info)]
+            return [
+                Document(text=(self._row_joiner).join(text_list), metadata=metadata)
+            ]
         else:
-            return [Document(text, extra_info=extra_info) for text in text_list]
+            return [Document(text=text, metadata=metadata) for text in text_list]

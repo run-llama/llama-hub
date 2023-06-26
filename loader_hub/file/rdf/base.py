@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class RDFReader(BaseReader):
@@ -18,7 +18,7 @@ class RDFReader(BaseReader):
         """Initialize loader."""
         super().__init__(*args, **kwargs)
 
-        from rdflib import Graph, URIRef
+        from rdflib import Graph
         from rdflib.namespace import RDF, RDFS
 
         self.Graph = Graph
@@ -48,12 +48,10 @@ class RDFReader(BaseReader):
 
         raise Exception(f"Label not found for: {uri}")
 
-    def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
-    ) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Parse file."""
 
-        lang = extra_info["lang"] if extra_info is not None else "en"
+        lang = metadata["lang"] if metadata is not None else "en"
 
         self.g_local = self.Graph()
         self.g_local.parse(file)
@@ -76,4 +74,4 @@ class RDFReader(BaseReader):
 
         text = "\n".join(text_list)
 
-        return [Document(text, extra_info=extra_info)]
+        return [Document(text, metadata=metadata)]

@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class KnowledgeBaseWebReader(BaseReader):
@@ -66,12 +66,12 @@ class KnowledgeBaseWebReader(BaseReader):
                     browser,
                     url,
                 )
-                extra_info = {
+                metadata = {
                     "title": article["title"],
                     "subtitle": article["subtitle"],
                     "url": article["url"],
                 }
-                documents.append(Document(article["body"], extra_info=extra_info))
+                documents.append(Document(text=article["body"], metadata=metadata))
 
             browser.close()
 

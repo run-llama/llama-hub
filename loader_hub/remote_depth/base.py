@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Union
 import requests
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class RemoteDepthReader(BaseReader):
@@ -40,8 +40,8 @@ class RemoteDepthReader(BaseReader):
             new_links = []
             print(f"Reading links at depth {i}...")
             for link in tqdm(links):
-                """Checking if the link belongs the provided domain. """
-                if ((self.domain_lock and link.find(url)>-1) or (not self.domain_lock)):
+                """Checking if the link belongs the provided domain."""
+                if (self.domain_lock and link.find(url) > -1) or (not self.domain_lock):
                     print("Loading link: " + link)
                     if link in links_visited:
                         continue
@@ -50,7 +50,7 @@ class RemoteDepthReader(BaseReader):
                         new_links.extend(self.get_links(link))
                     links_visited.append(link)
                 else:
-                    print("Link ignored: " +link)
+                    print("Link ignored: " + link)
             new_links = list(set(new_links))
             links = new_links
         print(f"Found {len(urls)} links at depth {self.depth}.")

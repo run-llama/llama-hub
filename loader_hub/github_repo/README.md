@@ -36,7 +36,7 @@ docs = loader.load_data(branch="main")
 # docs = loader.load_data(commit_sha="a6c89159bf8e7086bea2f4305cff3f0a4102e370")
 
 for doc in docs:
-    print(doc.extra_info)
+    print(doc.metadata)
 ```
 
 ## Examples

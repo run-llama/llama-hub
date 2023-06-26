@@ -2,7 +2,7 @@ import logging
 from typing import List
 
 from langchain.document_loaders.base import BaseLoader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 logger = logging.getLogger(__file__)
 
@@ -54,7 +54,7 @@ class UnstructuredURLLoader(BaseLoader):
                     elements = partition_html(url=url)
                 text = "\n\n".join([str(el) for el in elements])
                 metadata = {"source": url}
-                docs.append(Document(text, extra_info=metadata))
+                docs.append(Document(text=text, metadata=metadata))
             except Exception as e:
                 if self.continue_on_failure:
                     logger.error(f"Error fetching or processing {url}, exeption: {e}")

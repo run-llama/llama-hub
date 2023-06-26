@@ -2,7 +2,7 @@
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class AsanaReader(BaseReader):
@@ -45,8 +45,8 @@ class AsanaReader(BaseReader):
                 )
                 results.append(
                     Document(
-                        task["name"] + " " + task["notes"] + " " + comments,
-                        extra_info={
+                        text=task["name"] + " " + task["notes"] + " " + comments,
+                        metadata={
                             "task_id": task["gid"],
                             "name": task["name"],
                             "assignee": task["assignee"],

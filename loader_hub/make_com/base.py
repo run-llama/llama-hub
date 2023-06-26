@@ -8,7 +8,7 @@ from typing import Any, List, Optional
 
 import requests
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 from llama_index.response.schema import Response
 from llama_index.data_structs.node import Node, NodeWithScore
 

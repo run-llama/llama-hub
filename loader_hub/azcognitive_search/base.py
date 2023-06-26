@@ -6,7 +6,7 @@ A loader that fetches documents from specific index.
 from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class AzCognitiveSearchReader(BaseReader):
@@ -16,7 +16,7 @@ class AzCognitiveSearchReader(BaseReader):
         service_name (str): the name of azure cognitive search service.
         search_key (str): provide azure search access key directly.
         index (str): index name
-    
+
     """
 
     def __init__(self, service_name: str, searck_key: str, index: str) -> None:
@@ -58,7 +58,7 @@ class AzCognitiveSearchReader(BaseReader):
         return [
             Document(
                 text=result[content_field],
-                extra_info={"id": result["id"], "score": result["@search.score"]},
+                metadata={"id": result["id"], "score": result["@search.score"]},
             )
             for result in search_result
         ]

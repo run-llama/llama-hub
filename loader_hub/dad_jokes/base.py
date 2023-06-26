@@ -4,7 +4,7 @@ from typing import List
 
 import requests
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class DadJokesReader(BaseReader):
@@ -29,4 +29,4 @@ class DadJokesReader(BaseReader):
             None.
 
         """
-        return [Document(self._get_random_dad_joke())]
+        return [Document(text=self._get_random_dad_joke())]

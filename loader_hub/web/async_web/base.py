@@ -2,7 +2,7 @@ import asyncio
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class AsyncWebPageReader(BaseReader):
@@ -75,6 +75,6 @@ class AsyncWebPageReader(BaseReader):
 
                 response = html2text.html2text(response)
 
-            documents.append(Document(response))
+            documents.append(Document(text=response))
 
         return documents

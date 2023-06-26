@@ -3,7 +3,7 @@
 from typing import Any
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class ChromaReader(BaseReader):
@@ -23,9 +23,6 @@ class ChromaReader(BaseReader):
         persist_directory: str,
     ) -> None:
         """Initialize with parameters."""
-        import_err_msg = (
-            "`chromadb` package not found, please run `pip install chromadb`"
-        )
         import chromadb  # noqa: F401
         from chromadb.config import Settings
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class SimpleCSVReader(BaseReader):
@@ -25,18 +25,16 @@ class SimpleCSVReader(BaseReader):
         super().__init__(*args, **kwargs)
         self._concat_rows = concat_rows
 
-    def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
-    ) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Parse file."""
         import csv
 
         text_list = []
-        with open(file, "r", encoding='utf-8') as fp:
+        with open(file, "r", encoding="utf-8") as fp:
             csv_reader = csv.reader(fp)
             for row in csv_reader:
                 text_list.append(", ".join(row))
         if self._concat_rows:
-            return [Document("\n".join(text_list), extra_info=extra_info)]
+            return [Document(text="\n".join(text_list), metadata=metadata)]
         else:
-            return [Document(text, extra_info=extra_info) for text in text_list]
+            return [Document(text, metadata=metadata) for text in text_list]

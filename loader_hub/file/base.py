@@ -6,7 +6,7 @@ from typing import Callable, Dict, List, Optional, Union
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".pdf": "PDFReader",
@@ -136,7 +136,7 @@ class SimpleDirectoryReader(BaseReader):
                     reader = download_loader(reader)()
 
                 extracted_documents = reader.load_data(
-                    file=input_file, extra_info=metadata
+                    file=input_file, metadata=metadata
                 )
                 documents.extend(extracted_documents)
             else:
@@ -144,7 +144,7 @@ class SimpleDirectoryReader(BaseReader):
                 # do standard read
                 with open(input_file, "r", errors=self.errors) as f:
                     data = f.read()
-                document = Document(data, extra_info=metadata)
+                document = Document(text=data, metadata=metadata)
                 documents.append(document)
 
         return documents

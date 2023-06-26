@@ -4,7 +4,7 @@ from typing import Dict, List
 from urllib.parse import urljoin
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class MemosReader(BaseReader):
@@ -43,17 +43,17 @@ class MemosReader(BaseReader):
         except:
             raise ValueError("Your Memo URL is not valid")
 
-        if not "data" in res:
+        if "data" not in res:
             raise ValueError("Invalid Memo response")
 
         memos = res["data"]
         for memo in memos:
             content = memo["content"]
-            extra_info = {
+            metadata = {
                 "creator": memo["creator"],
                 "resource_list": memo["resourceList"],
                 id: memo["id"],
             }
-            documents.append(Document(content, extra_info=extra_info))
+            documents.append(Document(text=content, metadata=metadata))
 
         return documents

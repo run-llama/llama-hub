@@ -3,7 +3,7 @@ import warnings
 from typing import Any, List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class BilibiliTranscriptReader(BaseReader):
@@ -56,7 +56,7 @@ class BilibiliTranscriptReader(BaseReader):
         for bili_url in video_urls:
             try:
                 transcript = self.get_bilibili_info_and_subs(bili_url)
-                results.append(Document(transcript))
+                results.append(Document(text=transcript))
             except Exception as e:
                 warnings.warn(
                     f"Error loading transcript for video {bili_url}: {str(e)}. Skipping video."

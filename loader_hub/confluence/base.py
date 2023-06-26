@@ -3,7 +3,7 @@ import os
 from typing import List, Optional, Dict
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 CONFLUENCE_USERNAME = "CONFLUENCE_USERNAME"
 CONFLUENCE_API_TOKEN = "CONFLUENCE_API_TOKEN"
@@ -33,7 +33,9 @@ class ConfluenceReader(BaseReader):
         try:
             from atlassian import Confluence
         except ImportError:
-            raise ImportError("`atlassian` package not found, please run `pip install atlassian-python-api`")
+            raise ImportError(
+                "`atlassian` package not found, please run `pip install atlassian-python-api`"
+            )
         self.confluence: Confluence = None
         if oauth2:
             self.confluence = Confluence(url=base_url, oauth2=oauth2, cloud=True)
@@ -48,18 +50,31 @@ class ConfluenceReader(BaseReader):
                 raise ValueError(
                     "Must set environment variable `CONFLUENCE_API_TOKEN` if neither oauth nor oauth2 are provided."
                 )
-            self.confluence = Confluence(url=base_url, username=user_name, password=api_token, cloud=True)
+            self.confluence = Confluence(
+                url=base_url, username=user_name, password=api_token, cloud=True
+            )
 
-    def load_data(self, space_key: Optional[str] = None, page_ids: Optional[List[str]] = None,
-                  label: Optional[str] = None, cql: Optional[str] = None, include_attachments=False,
-                  include_children=False, limit = 50) -> List[Document]:
+    def load_data(
+        self,
+        space_key: Optional[str] = None,
+        page_ids: Optional[List[str]] = None,
+        label: Optional[str] = None,
+        cql: Optional[str] = None,
+        include_attachments=False,
+        include_children=False,
+        limit=50,
+    ) -> List[Document]:
         if not space_key and not page_ids and not label and not cql:
-            raise ValueError("Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters.")
+            raise ValueError(
+                "Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters."
+            )
 
         try:
             import html2text  # type: ignore
         except ImportError:
-            raise ImportError("`html2text` package not found, please run `pip install html2text`")
+            raise ImportError(
+                "`html2text` package not found, please run `pip install html2text`"
+            )
 
         docs = []
 
@@ -73,7 +88,9 @@ class ConfluenceReader(BaseReader):
             start = 0
             pages = []
             while True:
-                pages_iter = self.confluence.get_all_pages_from_space(space_key, start=start, limit=limit, expand='body.storage.value')
+                pages_iter = self.confluence.get_all_pages_from_space(
+                    space_key, start=start, limit=limit, expand="body.storage.value"
+                )
 
                 if len(pages_iter) == 0:
                     break
@@ -90,30 +107,38 @@ class ConfluenceReader(BaseReader):
                 docs.append(doc)
 
         if label:
-            pages = self.confluence.get_all_pages_by_label(label=label, limit=limit, expand='body.storage.value')
+            pages = self.confluence.get_all_pages_by_label(
+                label=label, limit=limit, expand="body.storage.value"
+            )
             for page in pages:
                 doc = self.process_page(page, include_attachments, text_maker)
                 docs.append(doc)
 
         if cql:
-            pages = self.confluence.cql(cql=cql, limit=limit, expand='body.storage.value')
+            pages = self.confluence.cql(
+                cql=cql, limit=limit, expand="body.storage.value"
+            )
             for page in pages:
                 doc = self.process_page(page, include_attachments, text_maker)
                 docs.append(doc)
 
         if label:
-            pages = self.confluence.get_all_pages_by_label(label=label, expand='body.storage.value')
+            pages = self.confluence.get_all_pages_by_label(
+                label=label, expand="body.storage.value"
+            )
             for page in pages:
                 doc = self.process_page(page, include_attachments, text_maker)
                 docs.append(doc)
 
         if page_ids:
-            # with the include children option we will dfs and get the children of all the pages 
+            # with the include children option we will dfs and get the children of all the pages
             # requested
             if include_children:
                 page_ids = self._dfs_page(self.confluence, page_ids[0])
             for page_id in page_ids:
-                page = self.confluence.get_page_by_id(page_id=page_id, expand='body.storage.value')
+                page = self.confluence.get_page_by_id(
+                    page_id=page_id, expand="body.storage.value"
+                )
                 doc = self.process_page(page, include_attachments, text_maker)
                 docs.append(doc)
 
@@ -122,44 +147,56 @@ class ConfluenceReader(BaseReader):
     def _dfs_page(self, raw_confluence, page_id):
         ret = []
         ret += [page_id]
-        pages = self.confluence.get_page_child_by_type(page_id,  type='page', start=None, limit=None, expand=None)
-        ids = [page['id'] for page in pages]
+        pages = self.confluence.get_page_child_by_type(
+            page_id, type="page", start=None, limit=None, expand=None
+        )
+        ids = [page["id"] for page in pages]
         for id in ids:
             ret += self._dfs_page(raw_confluence, id)
         return ret
 
     def process_page(self, page, include_attachments, text_maker):
         if include_attachments:
-            attachment_texts = self.process_attachment(page['id'])
+            attachment_texts = self.process_attachment(page["id"])
         else:
             attachment_texts = []
-        text = text_maker.handle(page['body']['storage']['value']) + "".join(attachment_texts)
-        return Document(text=text, doc_id=page['id'], extra_info={"title": page['title']})
+        text = text_maker.handle(page["body"]["storage"]["value"]) + "".join(
+            attachment_texts
+        )
+        return Document(text=text, doc_id=page["id"], metadata={"title": page["title"]})
 
     def process_attachment(self, page_id):
         try:
-            import requests
-            from PIL import Image
+            pass
         except ImportError:
-            raise ImportError("`pytesseract` or `pdf2image` or `Pillow` package not found, please run `pip install "
-                              "pytesseract pdf2image Pillow`")
+            raise ImportError(
+                "`pytesseract` or `pdf2image` or `Pillow` package not found, please run `pip install "
+                "pytesseract pdf2image Pillow`"
+            )
 
         # depending on setup you may also need to set the correct path for poppler and tesseract
-        attachments = self.confluence.get_attachments_from_content(page_id)['results']
+        attachments = self.confluence.get_attachments_from_content(page_id)["results"]
         texts = []
         for attachment in attachments:
-            media_type = attachment['metadata']['mediaType']
-            absolute_url = self.base_url + attachment['_links']['download']
-            title = attachment['title']
-            if media_type == 'application/pdf':
+            media_type = attachment["metadata"]["mediaType"]
+            absolute_url = self.base_url + attachment["_links"]["download"]
+            title = attachment["title"]
+            if media_type == "application/pdf":
                 text = title + self.process_pdf(absolute_url)
-            elif media_type == 'image/png' or media_type == 'image/jpg' or media_type == 'image/jpeg':
+            elif (
+                media_type == "image/png"
+                or media_type == "image/jpg"
+                or media_type == "image/jpeg"
+            ):
                 text = title + self.process_image(absolute_url)
-            elif media_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            elif (
+                media_type
+                == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            ):
                 text = title + self.process_doc(absolute_url)
-            elif media_type == 'application/vnd.ms-excel':
+            elif media_type == "application/vnd.ms-excel":
                 text = title + self.process_xls(absolute_url)
-            elif media_type == 'image/svg+xml':
+            elif media_type == "image/svg+xml":
                 text = title + self.process_svg(absolute_url)
             else:
                 continue
@@ -173,15 +210,20 @@ class ConfluenceReader(BaseReader):
             from pdf2image import convert_from_bytes  # type: ignore
         except ImportError:
             raise ImportError(
-                "`pytesseract` or `pdf2image` package not found, please run `pip install pytesseract pdf2image`")
+                "`pytesseract` or `pdf2image` package not found, please run `pip install pytesseract pdf2image`"
+            )
 
         import pytesseract  # type: ignore
         from pdf2image import convert_from_bytes  # type: ignore
 
         response = self.confluence.request(path=link, absolute=True)
-        text = ''
+        text = ""
 
-        if response.status_code != 200 or response.content == b'' or response.content is None:
+        if (
+            response.status_code != 200
+            or response.content == b""
+            or response.content is None
+        ):
             return text
         try:
             images = convert_from_bytes(response.content)
@@ -201,12 +243,17 @@ class ConfluenceReader(BaseReader):
             from io import BytesIO  # type: ignore
         except ImportError:
             raise ImportError(
-                "`pytesseract` or `Pillow` package not found, please run `pip install pytesseract Pillow`")
+                "`pytesseract` or `Pillow` package not found, please run `pip install pytesseract Pillow`"
+            )
 
         response = self.confluence.request(path=link, absolute=True)
-        text = ''
+        text = ""
 
-        if response.status_code != 200 or response.content == b'' or response.content is None:
+        if (
+            response.status_code != 200
+            or response.content == b""
+            or response.content is None
+        ):
             return text
         try:
             image = Image.open(BytesIO(response.content))
@@ -220,12 +267,18 @@ class ConfluenceReader(BaseReader):
             import docx2txt  # type: ignore
             from io import BytesIO  # type: ignore
         except ImportError:
-            raise ImportError("`docx2txt` package not found, please run `pip install docx2txt`")
+            raise ImportError(
+                "`docx2txt` package not found, please run `pip install docx2txt`"
+            )
 
         response = self.confluence.request(path=link, absolute=True)
-        text = ''
+        text = ""
 
-        if response.status_code != 200 or response.content == b'' or response.content is None:
+        if (
+            response.status_code != 200
+            or response.content == b""
+            or response.content is None
+        ):
             return text
         file_data = BytesIO(response.content)
 
@@ -238,9 +291,13 @@ class ConfluenceReader(BaseReader):
             raise ImportError("`xlrd` package not found, please run `pip install xlrd`")
 
         response = self.confluence.request(path=link, absolute=True)
-        text = ''
+        text = ""
 
-        if response.status_code != 200 or response.content == b'' or response.content is None:
+        if (
+            response.status_code != 200
+            or response.content == b""
+            or response.content is None
+        ):
             return text
 
         workbook = xlrd.open_workbook(file_contents=response.content)
@@ -260,16 +317,20 @@ class ConfluenceReader(BaseReader):
             from PIL import Image  # type: ignore
             from io import BytesIO  # type: ignore
             from svglib.svglib import svg2rlg  # type: ignore
-            from reportlab.graphics.shapes import Drawing
             from reportlab.graphics import renderPM  # type: ignore
         except ImportError:
             raise ImportError(
-                "`pytesseract`, `Pillow`, or `svglib` package not found, please run `pip install pytesseract Pillow svglib`")
+                "`pytesseract`, `Pillow`, or `svglib` package not found, please run `pip install pytesseract Pillow svglib`"
+            )
 
         response = self.confluence.request(path=link, absolute=True)
-        text = ''
+        text = ""
 
-        if response.status_code != 200 or response.content == b'' or response.content is None:
+        if (
+            response.status_code != 200
+            or response.content == b""
+            or response.content is None
+        ):
             return text
 
         drawing = svg2rlg(BytesIO(response.content))

@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class WhatsappChatLoader(BaseReader):
@@ -26,7 +26,6 @@ class WhatsappChatLoader(BaseReader):
         Parse Whatsapp file into Documents
         """
 
-        import pandas as pd
         from chatminer.chatparsers import WhatsAppParser
 
         path = Path(self.file_path)
@@ -40,7 +39,7 @@ class WhatsappChatLoader(BaseReader):
         docs = []
         n = 0
         for row in df.itertuples():
-            extra_info = {
+            metadata = {
                 "source": str(path).split("/")[-1].replace(".txt", ""),
                 "author": row.author,
                 "timestamp": str(row.timestamp),
@@ -48,8 +47,13 @@ class WhatsappChatLoader(BaseReader):
 
             docs.append(
                 Document(
-                    str(row.timestamp) + " " + row.author + ":" + " " + row.message,
-                    extra_info=extra_info,
+                    text=str(row.timestamp)
+                    + " "
+                    + row.author
+                    + ":"
+                    + " "
+                    + row.message,
+                    metadata=metadata,
                 )
             )
 

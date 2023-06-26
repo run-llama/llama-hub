@@ -8,7 +8,7 @@ from typing import Any, List
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 logger = logging.getLogger(__name__)
 

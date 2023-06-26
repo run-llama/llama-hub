@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Dict, Optional, List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document, ImageDocument
+from llama_index.schema import Document, ImageDocument
 
 
 class ImageVisionLLMReader(BaseReader):
@@ -52,12 +52,17 @@ class ImageVisionLLMReader(BaseReader):
             model = Blip2ForConditionalGeneration.from_pretrained(
                 "Salesforce/blip2-opt-2.7b", torch_dtype=dtype
             )
-            parser_config = {"processor": processor, "model": model, "device": device, "dtype": dtype}
+            parser_config = {
+                "processor": processor,
+                "model": model,
+                "device": device,
+                "dtype": dtype,
+            }
         self._parser_config = parser_config
         self._keep_image = keep_image
         self._prompt = prompt
 
-    def load_data(self, file: Path, extra_info: Optional[Dict] = None) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Parse file."""
         from PIL import Image
 
@@ -82,7 +87,7 @@ class ImageVisionLLMReader(BaseReader):
         model.to(device)
 
         # unconditional image captioning
-        
+
         inputs = processor(image, self._prompt, return_tensors="pt").to(device, dtype)
 
         out = model.generate(**inputs)

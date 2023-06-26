@@ -8,7 +8,7 @@ This only uses the basic search api, so it will work with Elasticsearch and Open
 from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class ElasticsearchReader(BaseReader):
@@ -27,10 +27,8 @@ class ElasticsearchReader(BaseReader):
         self, endpoint: str, index: str, httpx_client_args: Optional[dict] = None
     ):
         """Initialize with parameters."""
-        import_err_msg = """
-            `httpx` package not found. Install via `pip install httpx`
-        """
         import httpx  # noqa: F401
+
         self._client = httpx.Client(base_url=endpoint, **(httpx_client_args or {}))
         self._index = index
         self._endpoint = endpoint
@@ -61,6 +59,6 @@ class ElasticsearchReader(BaseReader):
             value = hit["_source"][field]
             embedding = hit["_source"].get(embedding_field or "", None)
             documents.append(
-                Document(text=value, extra_info=hit["_source"], embedding=embedding)
+                Document(text=value, metadata=hit["_source"], embedding=embedding)
             )
         return documents

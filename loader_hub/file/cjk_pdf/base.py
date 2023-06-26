@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class CJKPDFReader(BaseReader):
@@ -64,14 +64,12 @@ class CJKPDFReader(BaseReader):
         # Return the text list
         return text_list
 
-    def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
-    ) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Parse file."""
 
         text_list = self._extract_text_by_page(file)
 
         if self._concat_pages:
-            return [Document("\n".join(text_list), extra_info=extra_info)]
+            return [Document(text="\n".join(text_list), metadata=metadata)]
         else:
-            return [Document(text, extra_info=extra_info) for text in text_list]
+            return [Document(text=text, metadata=metadata) for text in text_list]

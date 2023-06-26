@@ -3,7 +3,7 @@ import json
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class WordpressReader(BaseReader):
@@ -42,7 +42,7 @@ class WordpressReader(BaseReader):
             if not title:
                 title = article.get("title")
 
-            extra_info = {
+            metadata = {
                 "id": article["id"],
                 "title": title,
                 "url": article["link"],
@@ -51,8 +51,8 @@ class WordpressReader(BaseReader):
 
             results.append(
                 Document(
-                    body,
-                    extra_info=extra_info,
+                    text=body,
+                    metadata=metadata,
                 )
             )
         return results

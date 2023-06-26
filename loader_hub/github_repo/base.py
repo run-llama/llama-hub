@@ -18,7 +18,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 if "pytest" in sys.modules:
@@ -450,7 +450,7 @@ class GithubRepositoryReader(BaseReader):
             document = Document(
                 text=decoded_text,
                 doc_id=blob_data.sha,
-                extra_info={
+                metadata={
                     "file_path": full_path,
                     "file_name": full_path.split("/")[-1],
                 },
@@ -523,7 +523,7 @@ class GithubRepositoryReader(BaseReader):
                 return Document(
                     text=parsed_file,
                     doc_id=tree_sha,
-                    extra_info={
+                    metadata={
                         "file_path": file_path,
                         "file_name": tree_path,
                     },
@@ -579,14 +579,14 @@ if __name__ == "__main__":
             commit_sha="22e198b3b166b5facd2843d6a62ac0db07894a13"
         )
         for document in documents:
-            print(document.extra_info)
+            print(document.metadata)
 
     @timeit
     def load_data_from_branch() -> None:
         """Load data from a branch."""
         documents = reader1.load_data(branch="main")
         for document in documents:
-            print(document.extra_info)
+            print(document.metadata)
 
     input("Press enter to load github repository from branch name...")
 

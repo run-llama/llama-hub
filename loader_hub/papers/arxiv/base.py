@@ -6,7 +6,7 @@ from typing import List, Optional, Tuple
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class ArxivReader(BaseReader):
@@ -80,7 +80,7 @@ class ArxivReader(BaseReader):
         abstract_documents = []
         for paper in search_results:
             d = f"The following is a summary of the paper: {paper.title}\n\nSummary: {paper.summary}"
-            abstract_documents.append(Document(d))
+            abstract_documents.append(Document(text=d))
 
         # Delete downloaded papers
         try:
@@ -93,8 +93,7 @@ class ArxivReader(BaseReader):
             print("Unable to delete files or directory")
 
         return arxiv_documents + abstract_documents
-    
-    
+
     def load_papers_and_abstracts(
         self,
         search_query: str,
@@ -151,7 +150,7 @@ class ArxivReader(BaseReader):
         abstract_documents = []
         for paper in search_results:
             d = f"The following is a summary of the paper: {paper.title}\n\nSummary: {paper.summary}"
-            abstract_documents.append(Document(d))
+            abstract_documents.append(Document(text=d))
 
         # Delete downloaded papers
         try:

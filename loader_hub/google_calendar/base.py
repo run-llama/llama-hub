@@ -5,7 +5,7 @@ import os
 from typing import Any, List, Optional, Union
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 
@@ -99,7 +99,7 @@ class GoogleCalendarReader(BaseReader):
             else:
                 event_string += f"Organizer: {email}"
 
-            results.append(Document(event_string))
+            results.append(Document(text=event_string))
 
         return results
 

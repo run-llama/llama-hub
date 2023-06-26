@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class UnstructuredReader(BaseReader):
@@ -27,7 +27,7 @@ class UnstructuredReader(BaseReader):
     def load_data(
         self,
         file: Path,
-        extra_info: Optional[Dict] = None,
+        metadata: Optional[Dict] = None,
         split_documents: Optional[bool] = False,
     ) -> List[Document]:
         """Parse file."""
@@ -37,6 +37,6 @@ class UnstructuredReader(BaseReader):
         text_chunks = [" ".join(str(el).split()) for el in elements]
 
         if split_documents:
-            return [Document(chunk, extra_info=extra_info) for chunk in text_chunks]
+            return [Document(text=chunk, metadata=metadata) for chunk in text_chunks]
         else:
-            return [Document("\n\n".join(text_chunks), extra_info=extra_info)]
+            return [Document(text="\n\n".join(text_chunks), metadata=metadata)]

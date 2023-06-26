@@ -1,12 +1,12 @@
 """Pandas AI loader."""
 
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import List, Optional, Any
 import pandas as pd
 import numpy as np
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 from llama_index.readers.download import download_loader
 from tempfile import TemporaryDirectory
 
@@ -67,7 +67,6 @@ class PandasAIReader(BaseReader):
         is_conversational_answer: bool = False,
     ) -> Any:
         """Load dataframe."""
-        import pandasai
 
         return self._pandas_ai.run(
             initial_df, prompt=query, is_conversational_answer=is_conversational_answer

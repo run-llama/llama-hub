@@ -3,7 +3,7 @@
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class RssReader(BaseReader):
@@ -67,7 +67,7 @@ class RssReader(BaseReader):
 
                     data = html2text.html2text(data)
 
-                extra_info = {"title": entry.title, "link": entry.link}
-                documents.append(Document(data, extra_info=extra_info))
+                metadata = {"title": entry.title, "link": entry.link}
+                documents.append(Document(text=data, metadata=metadata))
 
         return documents

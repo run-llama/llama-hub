@@ -20,13 +20,13 @@ and set your [Apify API token](https://console.apify.com/account/integrations) i
 
 ```python
 from llama_index import download_loader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 # Converts a single record from the Apify dataset to the LlamaIndex format
 def tranform_dataset_item(item):
     return Document(
-        item.get("text"),
-        extra_info={
+        text=item.get("text"),
+        metadata={
             "url": item.get("url"),
         },
     )

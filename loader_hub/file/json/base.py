@@ -6,7 +6,7 @@ from typing import Dict, Generator, List, Optional
 from pathlib import Path
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 def _depth_first_yield(
@@ -50,11 +50,7 @@ class JSONReader(BaseReader):
         super().__init__()
         self.levels_back = levels_back
 
-    def load_data(
-        self, 
-        file: Path, 
-        extra_info: Optional[Dict] = None
-    ) -> List[Document]:
+    def load_data(self, file: Path, metadata: Optional[Dict] = None) -> List[Document]:
         """Load data from the input file."""
         # TODO: change Path typing for file in all load_data calls
         if not isinstance(file, Path):
@@ -69,9 +65,9 @@ class JSONReader(BaseReader):
                 useful_lines = [
                     line for line in lines if not re.match(r"^[{}\[\],]*$", line)
                 ]
-                return [Document("\n".join(useful_lines), extra_info=extra_info)]
+                return [Document(text="\n".join(useful_lines), metadata=metadata)]
             elif self.levels_back is not None:
                 # If levels_back is set, we make the embeddings contain the labels
                 # from further up the JSON tree
                 lines = [*_depth_first_yield(data, self.levels_back, [])]
-                return [Document("\n".join(lines), extra_info=extra_info)]
+                return [Document(text="\n".join(lines), metadata=metadata)]

@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class PptxReader(BaseReader):
@@ -19,8 +19,11 @@ class PptxReader(BaseReader):
         """Init reader."""
         self.caption_images = caption_images
         if caption_images:
-            from transformers import (AutoTokenizer, VisionEncoderDecoderModel,
-                                      ViTFeatureExtractor)
+            from transformers import (
+                AutoTokenizer,
+                VisionEncoderDecoderModel,
+                ViTFeatureExtractor,
+            )
 
             model = VisionEncoderDecoderModel.from_pretrained(
                 "nlpconnect/vit-gpt2-image-captioning"
@@ -74,7 +77,7 @@ class PptxReader(BaseReader):
     def load_data(
         self,
         file: Path,
-        extra_info: Optional[Dict] = None,
+        metadata: Optional[Dict] = None,
     ) -> List[Document]:
         """Parse file."""
         from pptx import Presentation
@@ -100,4 +103,4 @@ class PptxReader(BaseReader):
                 if hasattr(shape, "text"):
                     result += f"{shape.text}\n"
 
-        return [Document(result, extra_info=extra_info)]
+        return [Document(text=result, metadata=metadata)]

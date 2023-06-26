@@ -2,7 +2,7 @@
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class TrelloReader(BaseReader):
@@ -35,16 +35,15 @@ class TrelloReader(BaseReader):
         documents = []
         for card in cards:
             document = Document(
-                card.name,
-                card.description,
-                extra_info={
+                doc_id=card.name,
+                text=card.description,
+                metadata={
                     "id": card.id,
                     "url": card.url,
                     "due_date": card.due_date,
                     "labels": [label.name for label in card.labels],
-                }
+                },
             )
             documents.append(document)
 
         return documents
-
