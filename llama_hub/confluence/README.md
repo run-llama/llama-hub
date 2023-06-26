@@ -35,9 +35,8 @@ Hint: `space_key` and `page_id` can both be found in the URL of a page in Conflu
 Here's an example usage of the ConfluenceReader.
 
 ```python
-from llama_index import download_loader
 
-ConfluenceReader = download_loader('ConfluenceReader', refresh_cache=True)
+from llama_hub.confluence.base import ConfluenceReader
 
 token = {
     access_token: "<access_token>",
