@@ -1,5 +1,7 @@
 """Confluence reader."""
+import logging
 import os
+from retrying import retry
 from typing import List, Optional, Dict
 
 from llama_index.readers.base import BaseReader
@@ -9,6 +11,7 @@ CONFLUENCE_API_TOKEN = "CONFLUENCE_API_TOKEN"
 CONFLUENCE_PASSWORD = "CONFLUENCE_PASSWORD"
 CONFLUENCE_USERNAME = "CONFLUENCE_USERNAME"
 
+logger = logging.getLogger(__name__)
 
 class ConfluenceReader(BaseReader):
     """Confluence reader.
@@ -57,82 +60,148 @@ class ConfluenceReader(BaseReader):
                 self.confluence = Confluence(url=base_url, username=user_name, password=password, cloud=cloud)
 
     def load_data(self, space_key: Optional[str] = None, page_ids: Optional[List[str]] = None,
-                  label: Optional[str] = None, cql: Optional[str] = None, include_attachments=False,
-                  include_children=False, limit = 50) -> List[Document]:
-        if not space_key and not page_ids and not label and not cql:
-            raise ValueError("Must specify at least one among `space_key`, `page_ids`, `label`, `cql` parameters.")
+                  page_status: Optional[str] = None, label: Optional[str] = None, cql: Optional[str] = None,
+                  include_attachments=False, include_children=False, limit: Optional[int] = None,
+                  max_num_results: Optional[int] = None) -> List[Document]:
+        """Load Confluence pages from Confluence, specifying by one of four mutually exclusive methods:
+        `space_key`, `page_ids`, `label`, or `cql`
+        (Confluence Query Language https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/ ).
+
+        Args:
+            space_key (str): Confluence space key, eg 'DS'
+            page_ids (list): List of page ids, eg ['123456', '123457']
+            page_status (str): Page status, one of None (all statuses), 'current', 'draft', 'archived'.  Only compatible with space_key.
+            label (str): Confluence label, eg 'my-label'
+            cql (str): Confluence Query Language query, eg 'label="my-label"'
+            include_attachments (bool): If True, include attachments.
+            include_children (bool): If True, do a DFS of the descendants of each page_id in `page_ids`.  Only compatible with `page_ids`.
+            limit (int): Deprecated, use `max_num_results` instead.
+            max_num_results (int): Maximum number of results to return.  If None, return all results.  Requests are made in batches to achieve the desired number of results.
+        """
+
+        num_space_key_parameter = 1 if space_key else 0
+        num_page_ids_parameter = 1 if page_ids is not None else 0
+        num_label_parameter = 1 if label else 0
+        num_cql_parameter = 1 if cql else 0
+        if num_space_key_parameter + num_page_ids_parameter + num_label_parameter + num_cql_parameter != 1:
+            raise ValueError("Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.")
+
+        if page_status and not space_key:
+            raise ValueError("Must specify `space_key` when `page_status` is specified.")
+
+        if include_children and not page_ids:
+            raise ValueError("Must specify `page_ids` when `include_children` is specified.")
+
+        if limit is not None:
+            max_num_results = limit
+            logger.warning("`limit` is deprecated and no longer relates to the Confluence server's API limits.  If "
+                           "you wish to limit the number of returned results please use `max_num_results` instead.")
 
         try:
             import html2text  # type: ignore
         except ImportError:
             raise ImportError("`html2text` package not found, please run `pip install html2text`")
 
-        docs = []
-
         text_maker = html2text.HTML2Text()
         text_maker.ignore_links = True
         text_maker.ignore_images = True
 
+        pages: List = []
         if space_key:
-            # Don't just query all the pages since the number of pages can be very large
-            # instead we can page through them
-            start = 0
-            pages = []
-            while True:
-                pages_iter = self.confluence.get_all_pages_from_space(space_key, start=start, limit=limit, expand='body.storage.value')
-
-                if len(pages_iter) == 0:
-                    break
-
-                start += len(pages_iter)
-                pages.extend(pages_iter)
-
-                # no more to fetch
-                if len(pages_iter) < limit:
-                    break
-
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
-        if label:
-            pages = self.confluence.get_all_pages_by_label(label=label, limit=limit, expand='body.storage.value')
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
-        if cql:
-            pages = self.confluence.cql(cql=cql, limit=limit, expand='body.storage.value')
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
-        if label:
-            pages = self.confluence.get_all_pages_by_label(label=label, expand='body.storage.value')
-            for page in pages:
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
-
-        if page_ids:
-            # with the include children option we will dfs and get the children of all the pages 
-            # requested
+            pages.extend(self._get_data_with_paging(self.confluence.get_all_pages_from_space,
+                                                    max_num_results=max_num_results,
+                                                    space=space_key, status=page_status,
+                                                    expand='body.storage.value', content_type='page'))
+        elif label:
+            pages.extend(self._get_cql_data_with_paging(cql=f'type="page" AND label="{label}"',
+                                                        max_num_results=max_num_results,
+                                                        expand='body.storage.value'))
+        elif cql:
+            pages.extend(self._get_cql_data_with_paging(cql=cql,
+                                                        max_num_results=max_num_results,
+                                                        expand='body.storage.value'))
+        elif page_ids:
             if include_children:
-                page_ids = self._dfs_page(self.confluence, page_ids[0])
-            for page_id in page_ids:
-                page = self.confluence.get_page_by_id(page_id=page_id, expand='body.storage.value')
-                doc = self.process_page(page, include_attachments, text_maker)
-                docs.append(doc)
+                dfs_page_ids = []
+                max_num_remaining = max_num_results
+                for page_id in page_ids:
+                    current_dfs_page_ids = self._dfs_page_ids(page_id, max_num_remaining)
+                    dfs_page_ids.extend(current_dfs_page_ids)
+                    if max_num_results is not None:
+                        max_num_remaining -= len(current_dfs_page_ids)
+                        if max_num_remaining <= 0:
+                            break
+                page_ids = dfs_page_ids
+            for page_id in (page_ids[:max_num_results] if max_num_results is not None else page_ids):
+                pages.append(self._get_data_with_retry(self.confluence.get_page_by_id, page_id=page_id,
+                                                       expand='body.storage.value'))
+
+        docs = []
+        for page in pages:
+            doc = self.process_page(page, include_attachments, text_maker)
+            docs.append(doc)
 
         return docs
 
-    def _dfs_page(self, raw_confluence, page_id):
-        ret = []
-        ret += [page_id]
-        pages = self.confluence.get_page_child_by_type(page_id,  type='page', start=None, limit=None, expand=None)
-        ids = [page['id'] for page in pages]
-        for id in ids:
-            ret += self._dfs_page(raw_confluence, id)
+    def _dfs_page_ids(self, page_id, max_num_results):
+        ret = [page_id]
+        max_num_remaining = (max_num_results - 1) if max_num_results is not None else None
+        if max_num_results is not None and max_num_remaining <= 0:
+            return ret
+
+        child_page_ids = self._get_data_with_paging(self.confluence.get_child_id_list, page_id=page_id, type='page',
+                                                    max_num_results=max_num_remaining)
+        for child_page_id in child_page_ids:
+            dfs_ids = self._dfs_page_ids(child_page_id, max_num_remaining)
+            ret.extend(dfs_ids)
+            if max_num_results is not None:
+                max_num_remaining -= len(dfs_ids)
+                if max_num_remaining <= 0:
+                    break
         return ret
+
+    def _get_data_with_paging(self, paged_function, max_num_results=50, **kwargs):
+        start = 0
+        max_num_remaining = max_num_results
+        ret = []
+        while True:
+            results = self._get_data_with_retry(paged_function, start=start, limit=max_num_remaining, **kwargs)
+            ret.extend(results)
+            if len(results) == 0 or max_num_results is not None and len(results) >= max_num_remaining:
+                break
+            start += len(results)
+            if max_num_remaining is not None:
+                max_num_remaining -= len(results)
+        return ret
+
+    def _get_cql_data_with_paging(self, cql, max_num_results=50, expand='body.storage.value'):
+        max_num_remaining = max_num_results
+        ret = []
+        params = {'cql': cql, 'start': 0, 'expand': expand}
+        if max_num_results is not None:
+            params['limit'] = max_num_remaining
+        while True:
+            results = self._get_data_with_retry(self.confluence.get, path='rest/api/content/search', params=params)
+            ret.extend(results['results'])
+
+            params['start'] += len(results['results'])
+
+            if max_num_results is not None:
+                params['limit'] -= len(results['results'])
+                if params['limit'] <= 0:
+                    break
+
+            next_url = results['_links']['next'] if 'next' in results['_links'] else None
+            if not next_url:
+                break
+            cursor = next_url.split('cursor=')[1].split('&')[0]
+            params['cursor'] = cursor
+
+        return ret
+
+    @retry(stop_max_attempt_number=4, wait_fixed=4000)
+    def _get_data_with_retry(self, function, **kwargs):
+        return function(**kwargs)
 
     def process_page(self, page, include_attachments, text_maker):
         if include_attachments:
