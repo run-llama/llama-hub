@@ -31,8 +31,8 @@ class HubspotReader(BaseReader):
         all_contacts = api_client.crm.contacts.get_all()
         all_companies = api_client.crm.companies.get_all()
         results = [
-            Document(f"{all_deals}".replace("\n", ""), extra_info={type: "deals"}), 
-            Document(f"{all_contacts}".replace("\n", ""), extra_info={type: "contacts"}),
-            Document(f"{all_companies}".replace("\n", ""), extra_info={type: "companies"})
+            Document(f"{all_deals}".replace("\n", ""), extra_info={"type": "deals"}), 
+            Document(f"{all_contacts}".replace("\n", ""), extra_info={"type": "contacts"}),
+            Document(f"{all_companies}".replace("\n", ""), extra_info={"type": "companies"})
         ]
         return results

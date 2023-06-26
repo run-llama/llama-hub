@@ -107,6 +107,11 @@
     "author": "bborn",
     "keywords": ["feed", "rss", "atom"]
   },
+  "SitemapReader": {
+    "id": "web/sitemap",
+    "author": "selamanse",
+    "keywords": ["sitemap", "website", "seo"]
+  },
   "DatabaseReader": {
     "id": "database",
     "author": "kevinqz",
@@ -441,6 +446,11 @@
     "author": "FarisHijazi",
     "keywords": ["image"]
   },
+  "ImageTabularChartReader": {
+    "id": "file/image_deplot",
+    "author": "jon-chuang",
+    "keywords": ["image", "chart", "tabular", "figure"]
+  },
   "IPYNBReader": {
     "id": "file/ipynb",
     "author": "FarisHijazi",
@@ -531,5 +541,19 @@
     "id": "firestore",
     "author": "rayzhudev",
     "keywords": ["firestore", "datastore"]
+  },
+  "KibelaReader": {
+    "id": "kibela",
+    "author": "higebu"
+  },
+  "GitHubRepositoryIssuesReader": {
+    "id": "github_repo_issues",
+    "author": "moncho",
+    "keywords": [
+      "github",
+      "repository",
+      "issues"
+    ],
+    "extra_files": ["github_client.py", "__init__.py"]
   }
 }
