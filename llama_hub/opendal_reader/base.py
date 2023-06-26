@@ -54,6 +54,7 @@ class OpendalReader(BaseReader):
 
             try:
                 from llama_hub.utils import import_loader
+
                 SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")

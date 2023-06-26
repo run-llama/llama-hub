@@ -7,12 +7,12 @@ files into a List of Documents.
 from datetime import datetime
 import json
 import os
-from typing import Any, Iterator, List, Optional
+from typing import Iterator, List, Optional
 import urllib
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 LINK_NOTE_TEMPLATE = "joplin://x-callback-url/openNote?id={id}"
 
@@ -53,6 +53,7 @@ class JoplinReader(BaseReader):
         if parse_markdown:
             try:
                 from llama_hub.utils import import_loader
+
                 mr = import_loader("MarkdownReader")
             except:
                 mr = download_loader("MarkdownReader")
@@ -97,7 +98,7 @@ class JoplinReader(BaseReader):
                     }
                     if self.parse_markdown:
                         yield from self.parser.load_data(
-                            None, content=note["body"], extra_info=metadata
+                            None, content=note["body"], metadata=metadata
                         )
                     else:
                         yield Document(text=note["body"], extra_info=metadata)

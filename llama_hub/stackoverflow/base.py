@@ -140,7 +140,7 @@ class StackoverflowReader(BaseReader):
                 post_document = Document(
                     text=post.body_markdown,
                     doc_id=post.post_id,
-                    metadata={
+                    extra_info={
                         "title": post.title,
                         "author": post.owner_display_name,
                         "timestamp": datetime.fromtimestamp(post.creation_date),

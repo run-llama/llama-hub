@@ -70,7 +70,7 @@ class PandasExcelReader(BaseReader):
 
         if self._concat_rows:
             return [
-                Document(text=(self._row_joiner).join(text_list), metadata=metadata)
+                Document(text=(self._row_joiner).join(text_list), extra_info=metadata)
             ]
         else:
-            return [Document(text=text, metadata=metadata) for text in text_list]
+            return [Document(text=text, extra_info=metadata) for text in text_list]

@@ -54,7 +54,7 @@ class PyMuPDFReader(BaseReader):
             return [
                 Document(
                     text=page.get_text().encode("utf-8"),
-                    metadata=dict(
+                    extra_info=dict(
                         metadata,
                         **{
                             "source": f"{page.number+1}",
@@ -66,6 +66,6 @@ class PyMuPDFReader(BaseReader):
 
         else:
             return [
-                Document(text=page.get_text().encode("utf-8"), metadata=metadata)
+                Document(text=page.get_text().encode("utf-8"), extra_info=metadata)
                 for page in doc
             ]

@@ -30,7 +30,7 @@ loader = GitHubRepositoryIssuesReader(
 docs = loader.load_data()
 
 for doc in docs:
-    print(doc.extra_info)
+    print(doc.metadata)
 ```
 
 ## Examples

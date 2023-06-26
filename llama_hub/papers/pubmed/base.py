@@ -78,7 +78,7 @@ class PubmedReader(BaseReader):
                 pubmed_documents.append(
                     Document(
                         text=text,
-                        metadata={
+                        extra_info={
                             "Title of this paper": paper["title"],
                             "URL": paper["url"],
                             "Date published": datetime.strptime(
@@ -157,7 +157,7 @@ class PubmedReader(BaseReader):
             pubmed_documents.append(
                 Document(
                     text=paper["text"],
-                    metadata={
+                    extra_info={
                         "Title of this paper": paper["title"],
                         "Journal it was published in:": paper["journal"],
                         "URL": paper["url"],

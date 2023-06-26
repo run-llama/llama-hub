@@ -30,4 +30,4 @@ class AirtableReader(BaseReader):
 
         table = Table(self.api_key, base_id, table_id)
         all_records = table.all()
-        return [Document(text=f"{all_records}", metadata={})]
+        return [Document(text=f"{all_records}", extra_info={})]

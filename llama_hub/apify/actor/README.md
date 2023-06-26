@@ -25,7 +25,7 @@ from llama_index.schema import Document
 def tranform_dataset_item(item):
     return Document(
         text=item.get("text"),
-        metadata={
+        extra_info={
             "url": item.get("url"),
         },
     )

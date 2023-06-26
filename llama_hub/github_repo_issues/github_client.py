@@ -6,6 +6,7 @@ import os
 from typing import Any, Dict, Optional
 from typing import Protocol
 
+
 class BaseGitHubIssuesClient(Protocol):
     def get_all_endpoints(self) -> Dict[str, str]:
         ...
@@ -34,7 +35,7 @@ class GitHubIssuesClient:
     """
     An asynchronous client for interacting with the GitHub API for issues.
 
-    The client requires a GitHub token for authentication, which can be passed as an argument 
+    The client requires a GitHub token for authentication, which can be passed as an argument
     or set as an environment variable.
     If no GitHub token is provided, the client will raise a ValueError.
 
@@ -125,7 +126,9 @@ class GitHubIssuesClient:
         try:
             import httpx
         except ImportError:
-            raise ImportError("`https` package not found, please run `pip install httpx`")
+            raise ImportError(
+                "`https` package not found, please run `pip install httpx`"
+            )
 
         _headers = {**self._headers, **headers}
 
@@ -144,7 +147,7 @@ class GitHubIssuesClient:
             return response
 
     async def get_issues(
-        self, 
+        self,
         owner: str,
         repo: str,
         state: str = "open",
@@ -153,16 +156,16 @@ class GitHubIssuesClient:
         """
         List issues in a repository.
 
-        Note: GitHub's REST API considers every pull request an issue, but not every issue is a pull request. 
-        For this reason, "Issues" endpoints may return both issues and pull requests in the response. 
-        You can identify pull requests by the pull_request key. 
-        Be aware that the id of a pull request returned from "Issues" endpoints will be an issue id. 
+        Note: GitHub's REST API considers every pull request an issue, but not every issue is a pull request.
+        For this reason, "Issues" endpoints may return both issues and pull requests in the response.
+        You can identify pull requests by the pull_request key.
+        Be aware that the id of a pull request returned from "Issues" endpoints will be an issue id.
         To find out the pull request id, use the "List pull requests" endpoint.
 
         Args:
             - `owner (str)`: Owner of the repository.
             - `repo (str)`: Name of the repository.
-            - `state (str)`: Indicates the state of the issues to return. 
+            - `state (str)`: Indicates the state of the issues to return.
                 Default: open
                 Can be one of: open, closed, all.
 
@@ -172,12 +175,22 @@ class GitHubIssuesClient:
         Examples:
             >>> repo_issues = client.get_issues("owner", "repo")
         """
-        return (await self.request(
-                    endpoint= "getIssues", 
-                    method = "GET",
-                    params = {"state": state, "per_page": 100, "sort": "updated", "direction": "desc", "page": page},
-                    owner=owner, repo=repo
-                )).json()
+        return (
+            await self.request(
+                endpoint="getIssues",
+                method="GET",
+                params={
+                    "state": state,
+                    "per_page": 100,
+                    "sort": "updated",
+                    "direction": "desc",
+                    "page": page,
+                },
+                owner=owner,
+                repo=repo,
+            )
+        ).json()
+
 
 if __name__ == "__main__":
     import asyncio
@@ -185,8 +198,7 @@ if __name__ == "__main__":
     async def main() -> None:
         """Test the GitHubIssuesClient."""
         client = GitHubIssuesClient()
-        issues = await client.get_issues(
-            owner="moncho", repo="dry", state="all")
+        issues = await client.get_issues(owner="moncho", repo="dry", state="all")
 
         for issue in issues:
             print(issue["title"])

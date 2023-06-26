@@ -450,7 +450,7 @@ class GithubRepositoryReader(BaseReader):
             document = Document(
                 text=decoded_text,
                 doc_id=blob_data.sha,
-                metadata={
+                extra_info={
                     "file_path": full_path,
                     "file_name": full_path.split("/")[-1],
                 },
@@ -523,7 +523,7 @@ class GithubRepositoryReader(BaseReader):
                 return Document(
                     text=parsed_file,
                     doc_id=tree_sha,
-                    metadata={
+                    extra_info={
                         "file_path": file_path,
                         "file_name": tree_path,
                     },

@@ -53,7 +53,7 @@ class WhatsappChatLoader(BaseReader):
                     + ":"
                     + " "
                     + row.message,
-                    metadata=metadata,
+                    extra_info=metadata,
                 )
             )
 

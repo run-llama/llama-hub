@@ -54,6 +54,6 @@ class MemosReader(BaseReader):
                 "resource_list": memo["resourceList"],
                 id: memo["id"],
             }
-            documents.append(Document(text=content, metadata=metadata))
+            documents.append(Document(text=content, extra_info=metadata))
 
         return documents

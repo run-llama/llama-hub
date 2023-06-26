@@ -107,7 +107,7 @@ class ReadabilityWebPageReader(BaseReader):
 
             browser.close()
 
-            return [Document(text=x, metadata=metadata) for x in texts]
+            return [Document(text=x, extra_info=metadata) for x in texts]
 
     def scrape_page(
         self,

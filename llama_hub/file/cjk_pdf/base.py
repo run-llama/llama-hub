@@ -70,6 +70,6 @@ class CJKPDFReader(BaseReader):
         text_list = self._extract_text_by_page(file)
 
         if self._concat_pages:
-            return [Document(text="\n".join(text_list), metadata=metadata)]
+            return [Document(text="\n".join(text_list), extra_info=metadata)]
         else:
-            return [Document(text=text, metadata=metadata) for text in text_list]
+            return [Document(text=text, extra_info=metadata) for text in text_list]

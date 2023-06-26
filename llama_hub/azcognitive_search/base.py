@@ -58,7 +58,7 @@ class AzCognitiveSearchReader(BaseReader):
         return [
             Document(
                 text=result[content_field],
-                metadata={"id": result["id"], "score": result["@search.score"]},
+                extra_info={"id": result["id"], "score": result["@search.score"]},
             )
             for result in search_result
         ]

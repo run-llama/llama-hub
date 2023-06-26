@@ -103,4 +103,4 @@ class PptxReader(BaseReader):
                 if hasattr(shape, "text"):
                     result += f"{shape.text}\n"
 
-        return [Document(text=result, metadata=metadata)]
+        return [Document(text=result, extra_info=metadata)]

@@ -74,4 +74,4 @@ class RDFReader(BaseReader):
 
         text = "\n".join(text_list)
 
-        return [Document(text, metadata=metadata)]
+        return [Document(text, extra_info=metadata)]

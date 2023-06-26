@@ -32,5 +32,5 @@ class DeepDoctectionReader(BaseReader):
             metadata = {
                 k: getattr(page, k) for k in self.attrs_as_metadata if hasattr(page, k)
             }
-            result_docs.append(Document(text=doc_text, metadata=metadata))
+            result_docs.append(Document(text=doc_text, extra_info=metadata))
         return result_docs

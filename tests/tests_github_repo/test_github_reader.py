@@ -4,10 +4,6 @@ import pytest
 from unittest.mock import MagicMock, AsyncMock, call
 from typing import List, Tuple
 
-from llama_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
 
 from llama_hub.github_repo.github_client import (
     GithubClient,
@@ -410,28 +406,28 @@ async def test__generate_documents():
     expected_documents = [
         Document(
             text="print('hello world')",
-            metadata={
+            extra_info={
                 "file_path": "file1.py",
                 "file_name": "file1.py",
             },
         ),
         Document(
             text="console.log('hello world')",
-            metadata={
+            extra_info={
                 "file_path": "folder1/file2.ts",
                 "file_name": "file2.ts",
             },
         ),
         Document(
             text='println!("hello world")',
-            metadata={
+            extra_info={
                 "file_path": "folder1/folder2/file3.rs",
                 "file_name": "file3.rs",
             },
         ),
         Document(
             text='std::cout << "hello world" << std::endl;',
-            metadata={
+            extra_info={
                 "file_path": "folder1/folder2/folder3/file4.cc",
                 "file_name": "file4.cc",
             },
@@ -748,98 +744,98 @@ def test_load_data_without_filters():
     expected_docs = [
         Document(
             text="this is the file content for README.md",
-            metadata={
+            extra_info={
                 "file_path": "README.md",
                 "file_name": "README.md",
             },
         ),
         Document(
             text="this is the file content for LICENSE",
-            metadata={
+            extra_info={
                 "file_path": "LICENSE",
                 "file_name": "LICENSE",
             },
         ),
         Document(
             text="this is the file content for setup.py",
-            metadata={
+            extra_info={
                 "file_path": "setup.py",
                 "file_name": "setup.py",
             },
         ),
         Document(
             text="this is the file content for settings.json",
-            metadata={
+            extra_info={
                 "file_path": ".vscode/settings.json",
                 "file_name": "settings.json",
             },
         ),
         Document(
             text="this is the file content for index.rst",
-            metadata={
+            extra_info={
                 "file_path": "docs/index.rst",
                 "file_name": "index.rst",
             },
         ),
         Document(
             text="this is the file content for __init__.py",
-            metadata={
+            extra_info={
                 "file_path": "src/__init__.py",
                 "file_name": "__init__.py",
             },
         ),
         Document(
             text="this is the file content for lint.yml",
-            metadata={
+            extra_info={
                 "file_path": ".github/workflows/lint.yml",
                 "file_name": "lint.yml",
             },
         ),
         Document(
             text="this is the file content for build_package.yml",
-            metadata={
+            extra_info={
                 "file_path": ".github/workflows/build_package.yml",
                 "file_name": "build_package.yml",
             },
         ),
         Document(
             text="hello world",
-            metadata={
+            extra_info={
                 "file_path": "docs/gallery/example_picture.png",
                 "file_name": "example_picture.png",
             },
         ),
         Document(
             text="this is the file content for example_guide.md",
-            metadata={
+            extra_info={
                 "file_path": "docs/guides/example_guide.md",
                 "file_name": "example_guide.md",
             },
         ),
         Document(
             text="this is the file content for example_package.py",
-            metadata={
+            extra_info={
                 "file_path": "src/package/example_package.py",
                 "file_name": "example_package.py",
             },
         ),
         Document(
             text="this is the file content for test_file1.py",
-            metadata={
+            extra_info={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
         ),
         Document(
             text="this is the file content for test_file2.js",
-            metadata={
+            extra_info={
                 "file_path": "src/tests/test_file2.js",
                 "file_name": "test_file2.js",
             },
         ),
         Document(
             text="this is the file content for example_subpackage.py",
-            metadata={
+            extra_info={
                 "file_path": "src/package/subpackage/example_subpackage.py",
                 "file_name": "example_subpackage.py",
             },
@@ -894,7 +890,7 @@ def test_load_data_with_filters1():
     expected_docs = [
         Document(
             text="this is the file content for test_file1.py",
-            metadata={
+            extra_info={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
@@ -950,35 +946,35 @@ def test_load_data_with_filters2():
     expected_docs = [
         Document(
             text="this is the file content for lint.yml",
-            metadata={
+            extra_info={
                 "file_path": ".github/workflows/lint.yml",
                 "file_name": "lint.yml",
             },
         ),
         Document(
             text="this is the file content for build_package.yml",
-            metadata={
+            extra_info={
                 "file_path": ".github/workflows/build_package.yml",
                 "file_name": "build_package.yml",
             },
         ),
         Document(
             text="hello world",
-            metadata={
+            extra_info={
                 "file_path": "docs/gallery/example_picture.png",
                 "file_name": "example_picture.png",
             },
         ),
         Document(
             text="this is the file content for README.md",
-            metadata={
+            extra_info={
                 "file_path": "README.md",
                 "file_name": "README.md",
             },
         ),
         Document(
             text="this is the file content for test_file2.js",
-            metadata={
+            extra_info={
                 "file_path": "src/tests/test_file2.js",
                 "file_name": "test_file2.js",
             },
@@ -1034,14 +1030,14 @@ def test_load_data_with_filters3():
     expected_docs = [
         Document(
             text="this is the file content for test_file1.py",
-            metadata={
+            extra_info={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
         ),
         Document(
             text="this is the file content for example_subpackage.py",
-            metadata={
+            extra_info={
                 "file_path": "src/package/subpackage/example_subpackage.py",
                 "file_name": "example_subpackage.py",
             },
@@ -1097,49 +1093,49 @@ def test_load_data_with_filters4():
     expected_docs = [
         Document(
             text="this is the file content for settings.json",
-            metadata={
+            extra_info={
                 "file_path": ".vscode/settings.json",
                 "file_name": "settings.json",
             },
         ),
         Document(
             text="this is the file content for index.rst",
-            metadata={
+            extra_info={
                 "file_path": "docs/index.rst",
                 "file_name": "index.rst",
             },
         ),
         Document(
             text="this is the file content for test_file1.py",
-            metadata={
+            extra_info={
                 "file_path": "src/tests/test_file1.py",
                 "file_name": "test_file1.py",
             },
         ),
         Document(
             text="this is the file content for setup.py",
-            metadata={
+            extra_info={
                 "file_path": "setup.py",
                 "file_name": "setup.py",
             },
         ),
         Document(
             text="this is the file content for example_package.py",
-            metadata={
+            extra_info={
                 "file_path": "src/package/example_package.py",
                 "file_name": "example_package.py",
             },
         ),
         Document(
             text="this is the file content for __init__.py",
-            metadata={
+            extra_info={
                 "file_path": "src/__init__.py",
                 "file_name": "__init__.py",
             },
         ),
         Document(
             text="this is the file content for LICENSE",
-            metadata={
+            extra_info={
                 "file_path": "LICENSE",
                 "file_name": "LICENSE",
             },

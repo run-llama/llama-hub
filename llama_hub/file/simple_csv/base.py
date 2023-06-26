@@ -35,6 +35,6 @@ class SimpleCSVReader(BaseReader):
             for row in csv_reader:
                 text_list.append(", ".join(row))
         if self._concat_rows:
-            return [Document(text="\n".join(text_list), metadata=metadata)]
+            return [Document(text="\n".join(text_list), extra_info=metadata)]
         else:
-            return [Document(text, metadata=metadata) for text in text_list]
+            return [Document(text, extra_info=metadata) for text in text_list]

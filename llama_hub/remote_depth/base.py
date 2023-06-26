@@ -31,6 +31,7 @@ class RemoteDepthReader(BaseReader):
         """Parse whatever is at the URL.""" ""
         try:
             from llama_hub.utils import import_loader
+
             RemoteReader = import_loader("RemoteReader")
         except ImportError:
             RemoteReader = download_loader("RemoteReader")

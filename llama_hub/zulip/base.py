@@ -54,7 +54,9 @@ class ZulipReader(BaseReader):
         data = []
         for stream_name in streams:
             stream_content = self._read_stream(stream_name, reverse_chronological)
-            data.append(Document(text=stream_content, metadata={"stream": stream_name}))
+            data.append(
+                Document(text=stream_content, extra_info={"stream": stream_name})
+            )
         return data
 
     def get_all_streams(self) -> list:

@@ -106,7 +106,10 @@ class GoogleDriveReader(BaseReader):
         return creds, drive
 
     def _get_fileids_meta(
-        self, folder_id: Optional[str] = None, file_id: Optional[str] = None, mime_types: Optional[list] = None
+        self,
+        folder_id: Optional[str] = None,
+        file_id: Optional[str] = None,
+        mime_types: Optional[list] = None,
     ) -> List[List[str]]:
         """Get file ids present in folder/ file id
         Args:
@@ -125,29 +128,41 @@ class GoogleDriveReader(BaseReader):
                 folder_mime_type = "application/vnd.google-apps.folder"
                 query = "'" + folder_id + "' in parents"
 
-                #Add mimeType filter to query
+                # Add mimeType filter to query
                 if mime_types:
                     if folder_mime_type not in mime_types:
-                        mime_types.append(folder_mime_type) #keep the recursiveness
-                    mime_query = " or ".join([f"mimeType='{mime_type}'" for mime_type in mime_types])
+                        mime_types.append(folder_mime_type)  # keep the recursiveness
+                    mime_query = " or ".join(
+                        [f"mimeType='{mime_type}'" for mime_type in mime_types]
+                    )
                     query += f" and ({mime_query})"
 
-                results = service.files().list(
-                    q=query, 
-                    includeItemsFromAllDrives=True,
-                    supportsAllDrives=True, 
-                    fields="*"
-                ).execute()
+                results = (
+                    service.files()
+                    .list(
+                        q=query,
+                        includeItemsFromAllDrives=True,
+                        supportsAllDrives=True,
+                        fields="*",
+                    )
+                    .execute()
+                )
                 items = results.get("files", [])
                 for item in items:
                     if item["mimeType"] == folder_mime_type:
                         fileids_meta.extend(
-                            self._get_fileids_meta(folder_id=item["id"], mime_types=mime_types)
+                            self._get_fileids_meta(
+                                folder_id=item["id"], mime_types=mime_types
+                            )
                         )
                     else:
                         # Check if file doesn't belong to a Shared Drive. "owners" doesn't exist in a Shared Drive
-                        is_shared_drive = 'driveId' in item
-                        author = item["owners"][0]["displayName"] if not is_shared_drive else "Shared Drive"
+                        is_shared_drive = "driveId" in item
+                        author = (
+                            item["owners"][0]["displayName"]
+                            if not is_shared_drive
+                            else "Shared Drive"
+                        )
 
                         fileids_meta.append(
                             (
@@ -161,11 +176,19 @@ class GoogleDriveReader(BaseReader):
 
             else:
                 # Get the file details
-                file = service.files().get(fileId=file_id, supportsAllDrives=True, fields="*").execute()
+                file = (
+                    service.files()
+                    .get(fileId=file_id, supportsAllDrives=True, fields="*")
+                    .execute()
+                )
                 # Get metadata of the file
                 # Check if file doesn't belong to a Shared Drive. "owners" doesn't exist in a Shared Drive
-                is_shared_drive = 'driveId' in file
-                author = file["owners"][0]["displayName"] if not is_shared_drive else "Shared Drive"
+                is_shared_drive = "driveId" in file
+                author = (
+                    file["owners"][0]["displayName"]
+                    if not is_shared_drive
+                    else "Shared Drive"
+                )
 
                 fileids_meta.append(
                     (
@@ -201,13 +224,15 @@ class GoogleDriveReader(BaseReader):
             service = build("drive", "v3", credentials=self._creds)
             file = service.files().get(fileId=fileid, supportsAllDrives=True).execute()
 
-            if file['mimeType'] in self._mimetypes:
-                download_mimetype = self._mimetypes[file['mimeType']]['mimetype']
-                download_extension = self._mimetypes[file['mimeType']]['extension']
+            if file["mimeType"] in self._mimetypes:
+                download_mimetype = self._mimetypes[file["mimeType"]]["mimetype"]
+                download_extension = self._mimetypes[file["mimeType"]]["extension"]
                 new_file_name = filename + download_extension
 
                 # Download and convert file
-                request = service.files().export_media(fileId=fileid, mimeType=download_mimetype)
+                request = service.files().export_media(
+                    fileId=fileid, mimeType=download_mimetype
+                )
             else:
                 new_file_name = filename
 
@@ -223,7 +248,7 @@ class GoogleDriveReader(BaseReader):
                 status, done = downloader.next_chunk()
 
             # Save the downloaded file
-            with open(new_file_name, 'wb') as f:
+            with open(new_file_name, "wb") as f:
                 f.write(file_data.getvalue())
 
             return new_file_name
@@ -262,6 +287,7 @@ class GoogleDriveReader(BaseReader):
                     }
                 try:
                     from llama_hub.utils import import_loader
+
                     SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
                 except ImportError:
                     SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
@@ -274,7 +300,9 @@ class GoogleDriveReader(BaseReader):
                 "An error occurred while loading data from fileids meta: {}".format(e)
             )
 
-    def _load_from_file_ids(self, file_ids: List[str], mime_types: list) -> List[Document]:
+    def _load_from_file_ids(
+        self, file_ids: List[str], mime_types: list
+    ) -> List[Document]:
         """Load data from file ids
         Args:
             file_ids: file ids of the files in google drive.
@@ -285,7 +313,9 @@ class GoogleDriveReader(BaseReader):
         try:
             fileids_meta = []
             for file_id in file_ids:
-                fileids_meta.extend(self._get_fileids_meta(file_id=file_id, mime_types=mime_types))
+                fileids_meta.extend(
+                    self._get_fileids_meta(file_id=file_id, mime_types=mime_types)
+                )
             documents = self._load_data_fileids_meta(fileids_meta)
 
             return documents
@@ -301,14 +331,19 @@ class GoogleDriveReader(BaseReader):
             Document: List of Documents of text.
         """
         try:
-            fileids_meta = self._get_fileids_meta(folder_id=folder_id,mime_types=mime_types)
+            fileids_meta = self._get_fileids_meta(
+                folder_id=folder_id, mime_types=mime_types
+            )
             documents = self._load_data_fileids_meta(fileids_meta)
             return documents
         except Exception as e:
             logger.error("An error occurred while loading from folder: {}".format(e))
 
     def load_data(
-        self, folder_id: str = None, file_ids: List[str] = None, mime_types: List[str] = None
+        self,
+        folder_id: str = None,
+        file_ids: List[str] = None,
+        mime_types: List[str] = None,
     ) -> List[Document]:
         """Load data from the folder id and file ids.
         Args:

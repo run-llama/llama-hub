@@ -57,6 +57,7 @@ class OpendalAzblobReader(BaseReader):
 
         try:
             from llama_hub.utils import import_loader
+
             OpendalReader = import_loader("OpendalReader")
         except ImportError:
             OpendalReader = download_loader("OpendalReader")

@@ -31,4 +31,4 @@ class EpubReader(BaseReader):
                 )
 
         text = "\n".join(text_list)
-        return [Document(text=text, metadata=metadata)]
+        return [Document(text=text, extra_info=metadata)]

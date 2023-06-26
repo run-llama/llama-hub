@@ -47,7 +47,7 @@ class IntercomReader(BaseReader):
             results.append(
                 Document(
                     text=body,
-                    metadata=metadata,
+                    extra_info=metadata,
                 )
             )
 

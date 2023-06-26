@@ -10,14 +10,15 @@ def safe_value_dict(dict_obj):
             dict_obj[key] = value
         elif isinstance(value, list):
             # Convert lists to strings
-            dict_obj[key] = ', '.join(map(str, value))
+            dict_obj[key] = ", ".join(map(str, value))
         elif value is None:
             # Replace None with a default string
-            dict_obj[key] = ''
+            dict_obj[key] = ""
         else:
             # Convert other types to strings
             dict_obj[key] = str(value)
     return dict_obj
+
 
 class JiraReader(BaseReader):
     """Jira reader. Reads data from Jira issues from passed query.
@@ -54,34 +55,39 @@ class JiraReader(BaseReader):
                 if issue.fields.reporter:
                     reporter = issue.fields.reporter.displayName
 
-                if issue.raw['fields']['parent']['key']:
-                    epic_key = issue.raw['fields']['parent']['key']
+                if issue.raw["fields"]["parent"]["key"]:
+                    epic_key = issue.raw["fields"]["parent"]["key"]
 
-                if issue.raw['fields']['parent']['fields']['summary']:
-                    epic_summary = issue.raw['fields']['parent']['fields']['summary']
+                if issue.raw["fields"]["parent"]["fields"]["summary"]:
+                    epic_summary = issue.raw["fields"]["parent"]["fields"]["summary"]
 
-                if issue.raw['fields']['parent']['fields']['status']['description']:
-                    epic_descripton = issue.raw['fields']['parent']['fields']['status']['description']
+                if issue.raw["fields"]["parent"]["fields"]["status"]["description"]:
+                    epic_descripton = issue.raw["fields"]["parent"]["fields"]["status"][
+                        "description"
+                    ]
 
                 issues.append(
                     Document(
                         text=f"{issue.fields.summary} \n {issue.fields.description}",
-                        metadata = safe_value_dict({
-                            'id': issue.id,
-                            'title': issue.fields.summary,
-                            'url': issue.permalink(),
-                            'created_at': issue.fields.created,
-                            'updated_at': issue.fields.updated,
-                            'labels': issue.fields.labels,
-                            'status': issue.fields.status.name,
-                            'assignee': assignee,
-                            'reporter': reporter,
-                            'project': issue.fields.project.name,
-                            'issue_type': issue.fields.issuetype.name,
-                            'priority': issue.fields.priority.name,
-                            'epic_key': epic_key,
-                            'epic_summary': epic_summary,
-                            'epic_description': epic_descripton})
+                        extra_info=safe_value_dict(
+                            {
+                                "id": issue.id,
+                                "title": issue.fields.summary,
+                                "url": issue.permalink(),
+                                "created_at": issue.fields.created,
+                                "updated_at": issue.fields.updated,
+                                "labels": issue.fields.labels,
+                                "status": issue.fields.status.name,
+                                "assignee": assignee,
+                                "reporter": reporter,
+                                "project": issue.fields.project.name,
+                                "issue_type": issue.fields.issuetype.name,
+                                "priority": issue.fields.priority.name,
+                                "epic_key": epic_key,
+                                "epic_summary": epic_summary,
+                                "epic_description": epic_descripton,
+                            }
+                        ),
                     )
                 )
 

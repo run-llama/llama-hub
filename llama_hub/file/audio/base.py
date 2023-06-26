@@ -50,4 +50,4 @@ class AudioTranscriber(BaseReader):
 
         transcript = result["text"]
 
-        return [Document(text=transcript, metadata=metadata)]
+        return [Document(text=transcript, extra_info=metadata)]

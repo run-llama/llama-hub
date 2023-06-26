@@ -195,6 +195,6 @@ class BeautifulSoupWebReader(BaseReader):
             else:
                 data = soup.getText()
 
-            documents.append(Document(text=data, metadata=metadata))
+            documents.append(Document(text=data, extra_info=metadata))
 
         return documents

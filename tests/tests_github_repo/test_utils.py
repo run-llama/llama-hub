@@ -14,12 +14,8 @@ from llama_hub.github_repo.utils import (
 )
 
 from llama_hub.github_repo.github_client import (
-    GithubClient,
-    GitBlobResponseModel,
     GitTreeResponseModel,
 )
-
-from llama_hub.github_repo.base import GithubRepositoryReader
 
 
 class MockGithubClient:

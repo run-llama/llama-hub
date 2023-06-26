@@ -54,7 +54,9 @@ class FlatPdfReader(BaseReader):
             )
 
             for page_number in range(0, pdf_pages_count):
-                document = self.image_loader.load_data(file=Path(work_dir + f"/page-{page_number}.png"))
+                document = self.image_loader.load_data(
+                    file=Path(work_dir + f"/page-{page_number}.png")
+                )
                 pdf_content += document[0].text
             return Document(text=pdf_content)
 

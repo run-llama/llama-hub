@@ -2,7 +2,7 @@
 from typing import List
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class SnscrapeTwitterReader(BaseReader):
@@ -12,24 +12,26 @@ class SnscrapeTwitterReader(BaseReader):
         username (str): Twitter Username.
         num_tweets (int): Number of tweets to fetch.
     """
-    
+
     def __init__(self):
         """Initialize SnscrapeTwitter reader."""
 
-  
     def load_data(self, username: str, num_tweets: int) -> List[Document]:
         """Load data from a twitter profile.
 
         Args:
-            username (str): Twitter Username. 
+            username (str): Twitter Username.
             num_tweets (int): Number of tweets to fetch.
         Returns:
             List[Document]: List of documents.
         """
         import snscrape.modules.twitter as sntwitter
+
         attributes_container = []
-        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{username}').get_items()):
-            if i>num_tweets:
+        for i, tweet in enumerate(
+            sntwitter.TwitterSearchScraper(f"from:{username}").get_items()
+        ):
+            if i > num_tweets:
                 break
             attributes_container.append(tweet.rawContent)
-        return [Document(text=attributes_container,extra_info={"username": username})]
+        return [Document(text=attributes_container, extra_info={"username": username})]

@@ -93,7 +93,7 @@ class MangoppsGuidesReader(BaseReader):
             results.append(
                 Document(
                     text=v["text"],
-                    metadata=metadata,
+                    extra_info=metadata,
                 )
             )
 

@@ -96,6 +96,7 @@ class PandasAIReader(BaseReader):
 
             try:
                 from llama_hub.utils import import_loader
+
                 PandasCSVReader = import_loader("PandasCSVReader")
             except ImportError:
                 PandasCSVReader = download_loader("PandasCSVReader")

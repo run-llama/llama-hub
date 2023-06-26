@@ -11,10 +11,6 @@ from typing import List, Tuple
 #     allow_module_level=True,
 # )
 
-from llama_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
 
 from llama_hub.github_repo.github_client import (
     GithubClient,

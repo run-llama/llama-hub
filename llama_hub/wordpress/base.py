@@ -52,7 +52,7 @@ class WordpressReader(BaseReader):
             results.append(
                 Document(
                     text=body,
-                    metadata=metadata,
+                    extra_info=metadata,
                 )
             )
         return results

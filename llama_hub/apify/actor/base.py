@@ -51,6 +51,7 @@ class ApifyActor(BaseReader):
 
         try:
             from llama_hub.utils import import_loader
+
             ApifyDataset = import_loader("ApifyDataset")
         except ImportError:
             ApifyDataset = download_loader("ApifyDataset")

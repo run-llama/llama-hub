@@ -59,6 +59,6 @@ class ElasticsearchReader(BaseReader):
             value = hit["_source"][field]
             embedding = hit["_source"].get(embedding_field or "", None)
             documents.append(
-                Document(text=value, metadata=hit["_source"], embedding=embedding)
+                Document(text=value, extra_info=hit["_source"], embedding=embedding)
             )
         return documents

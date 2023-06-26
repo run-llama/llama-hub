@@ -26,8 +26,10 @@ class PagedCSVReader(BaseReader):
             for row in csv_reader:
                 docs.append(
                     Document(
-                        "\n".join(f"{k.strip()}: {v.strip()}" for k, v in row.items()),
-                        metadata=metadata,
+                        text="\n".join(
+                            f"{k.strip()}: {v.strip()}" for k, v in row.items()
+                        ),
+                        extra_info=metadata,
                     )
                 )
         return docs

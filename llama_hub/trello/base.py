@@ -37,7 +37,7 @@ class TrelloReader(BaseReader):
             document = Document(
                 doc_id=card.name,
                 text=card.description,
-                metadata={
+                extra_info={
                     "id": card.id,
                     "url": card.url,
                     "due_date": card.due_date,

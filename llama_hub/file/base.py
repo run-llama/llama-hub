@@ -135,12 +135,13 @@ class SimpleDirectoryReader(BaseReader):
                 if isinstance(reader, str):
                     try:
                         from llama_hub.utils import import_loader
+
                         reader = import_loader(reader)()
-                    except ImportError as e:
+                    except ImportError:
                         reader = download_loader(reader)()
 
                 extracted_documents = reader.load_data(
-                    file=input_file, metadata=metadata
+                    file=input_file, extra_info=metadata
                 )
                 documents.extend(extracted_documents)
             else:
@@ -148,7 +149,7 @@ class SimpleDirectoryReader(BaseReader):
                 # do standard read
                 with open(input_file, "r", errors=self.errors) as f:
                     data = f.read()
-                document = Document(text=data, metadata=metadata)
+                document = Document(text=data, extra_info=metadata)
                 documents.append(document)
 
         return documents
