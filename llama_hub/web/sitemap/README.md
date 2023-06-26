@@ -15,8 +15,6 @@ from llama_hub.web.sitemap.base import SitemapReader
 # import nest_asyncio
 # nest_asyncio.apply()
 
-SitemapReader = download_loader("SitemapReader")
-
 loader = SitemapReader()
 documents = loader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitemap.xml')
 ```
@@ -34,3 +32,17 @@ documents = loader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitem
 ## Issues Jupyter Notebooks asyncio
 
 If you get a `RuntimeError: asyncio.run() cannot be called from a running event loop` you might be interested in this (solution here)[https://saturncloud.io/blog/asynciorun-cannot-be-called-from-a-running-event-loop-a-guide-for-data-scientists-using-jupyter-notebook/#option-3-use-nest_asyncio]
+
+
+### Old Usage 
+
+use this syntax for earlier versions of llama_index where llama_hub loaders where loaded via separate download process:
+
+```python
+from llama_index import download_loader
+
+SitemapReader = download_loader("SitemapReader")
+
+loader = SitemapReader()
+documents = loader.load_data(sitemap_url='https://gpt-index.readthedocs.io/sitemap.xml')
+```
