@@ -107,6 +107,11 @@
     "author": "bborn",
     "keywords": ["feed", "rss", "atom"]
   },
+  "SitemapReader": {
+    "id": "web/sitemap",
+    "author": "selamanse",
+    "keywords": ["sitemap", "website", "seo"]
+  },
   "DatabaseReader": {
     "id": "database",
     "author": "kevinqz",
