@@ -4,15 +4,19 @@ import pytest
 from unittest.mock import MagicMock, AsyncMock, call
 from typing import List, Tuple
 
+from llama_hub.github_repo.utils import (
+    BufferedAsyncIterator,
+    BufferedGitBlobDataIterator,
+)
 
-from loader_hub.github_repo.github_client import (
+from llama_hub.github_repo.github_client import (
     GithubClient,
     GitBlobResponseModel,
     GitTreeResponseModel,
     GitBranchResponseModel,
 )
 
-from loader_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.base import GithubRepositoryReader
 
 ## Test GithubRepositoryReader's _recurse_tree method
 

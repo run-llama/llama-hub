@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/stable/</loc>
+    
+    
+    <lastmod>2023-06-21T15:16:07.364227+00:00</lastmod>
+    
+    <changefreq>weekly</changefreq>
+    <priority>1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/latest/</loc>
+    
+    
+    <lastmod>2023-06-21T16:31:55.065748+00:00</lastmod>
+    
+    <changefreq>daily</changefreq>
+    <priority>0,9</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.30/</loc>
+    
+    
+    <lastmod>2023-06-21T15:16:07.478538+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,8</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.29/</loc>
+    
+    
+    <lastmod>2023-06-20T08:51:06.606470+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,7</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.28/</loc>
+    
+    
+    <lastmod>2023-06-19T08:35:40.081042+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,6</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.27/</loc>
+    
+    
+    <lastmod>2023-06-17T00:26:37.422479+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,5</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.26/</loc>
+    
+    
+    <lastmod>2023-06-14T14:45:08.229924+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,4</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.25.post1/</loc>
+    
+    
+    <lastmod>2023-06-13T08:24:14.470432+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,3</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.25/</loc>
+    
+    
+    <lastmod>2023-06-13T08:22:48.123997+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,2</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.24/</loc>
+    
+    
+    <lastmod>2023-06-12T17:57:34.804123+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.23/</loc>
+    
+    
+    <lastmod>2023-06-11T09:03:43.288916+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.22/</loc>
+    
+    
+    <lastmod>2023-06-10T08:47:45.289154+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.21.post1/</loc>
+    
+    
+    <lastmod>2023-06-07T08:08:41.470381+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.21/</loc>
+    
+    
+    <lastmod>2023-06-07T07:46:48.932751+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.20/</loc>
+    
+    
+    <lastmod>2023-06-05T15:50:49.779455+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.19/</loc>
+    
+    
+    <lastmod>2023-06-04T15:59:56.085267+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.18/</loc>
+    
+    
+    <lastmod>2023-06-03T04:05:46.236723+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.17/</loc>
+    
+    
+    <lastmod>2023-06-02T17:03:30.381431+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.16.post1/</loc>
+    
+    
+    <lastmod>2023-06-01T01:52:26.886932+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.16/</loc>
+    
+    
+    <lastmod>2023-06-01T00:09:21.058812+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.15/</loc>
+    
+    
+    <lastmod>2023-05-31T00:22:21.883809+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.14/</loc>
+    
+    
+    <lastmod>2023-05-30T00:01:31.467450+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.13/</loc>
+    
+    
+    <lastmod>2023-05-28T09:41:30.770978+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.12/</loc>
+    
+    
+    <lastmod>2023-05-27T15:56:47.268538+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.11/</loc>
+    
+    
+    <lastmod>2023-05-25T16:27:11.202113+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.10.post1/</loc>
+    
+    
+    <lastmod>2023-05-24T21:30:08.025669+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.10/</loc>
+    
+    
+    <lastmod>2023-05-24T01:07:46.616668+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.9/</loc>
+    
+    
+    <lastmod>2023-05-19T20:28:42.456685+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.8/</loc>
+    
+    
+    <lastmod>2023-05-16T04:13:20.782253+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.7/</loc>
+    
+    
+    <lastmod>2023-05-14T19:12:24.667561+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.6/</loc>
+    
+    
+    <lastmod>2023-05-13T00:10:50.456533+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.5/</loc>
+    
+    
+    <lastmod>2023-05-11T00:31:54.191114+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.4/</loc>
+    
+    
+    <lastmod>2023-05-10T00:13:25.392406+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.3/</loc>
+    
+    
+    <lastmod>2023-05-10T00:01:07.156470+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.2/</loc>
+    
+    
+    <lastmod>2023-05-08T07:06:48.761219+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.1/</loc>
+    
+    
+    <lastmod>2023-05-05T06:16:36.458120+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.6.0/</loc>
+    
+    
+    <lastmod>2023-05-02T20:48:39.746636+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+  <url>
+    <loc>https://gpt-index.readthedocs.io/en/v0.5.27/</loc>
+    
+    
+    <lastmod>2023-04-28T19:29:06.529486+00:00</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0,1</priority>
+  </url>
+  
+</urlset>

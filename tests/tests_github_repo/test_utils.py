@@ -8,15 +8,18 @@ from typing import List, Tuple
 #     allow_module_level=True,
 # )
 
-from loader_hub.github_repo.utils import (
+from llama_hub.github_repo.utils import (
     BufferedAsyncIterator,
     BufferedGitBlobDataIterator,
 )
 
-from loader_hub.github_repo.github_client import (
+from llama_hub.github_repo.github_client import (
+    GithubClient,
+    GitBlobResponseModel,
     GitTreeResponseModel,
 )
 
+from llama_hub.github_repo.base import GithubRepositoryReader
 
 
 class MockGithubClient:
