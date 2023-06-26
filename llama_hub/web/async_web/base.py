@@ -1,9 +1,12 @@
+import logging
 import asyncio
 from typing import List
+from aiohttp import ClientResponse
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+logger = logging.getLogger(__name__)
 
 class AsyncWebPageReader(BaseReader):
     """Asynchronous web page reader.
@@ -14,11 +17,13 @@ class AsyncWebPageReader(BaseReader):
         html_to_text (bool): Whether to convert HTML to text.
             Requires `html2text` package.
         limit (int): Maximum number of concurrent requests.
-
+        dedupe (bool): to deduplicate urls if there is exact-match within given list
+        fail_on_error (bool): if requested url does not return status code 200 the routine will raise an ValueError
     """
 
-    def __init__(self, html_to_text: bool = False, limit: int = 10) -> None:
+    def __init__(self, html_to_text: bool = False, limit: int = 10, dedupe: bool = True, fail_on_error: bool = False) -> None:
         """Initialize with parameters."""
+        
         try:
             import html2text  # noqa: F401
         except ImportError:
@@ -33,6 +38,8 @@ class AsyncWebPageReader(BaseReader):
             )
         self._limit = limit
         self._html_to_text = html_to_text
+        self._dedupe = dedupe
+        self._fail_on_error = fail_on_error
 
     def load_data(self, urls: List[str]) -> List[Document]:
         """Load data from the input urls.
@@ -44,6 +51,9 @@ class AsyncWebPageReader(BaseReader):
             List[Document]: List of documents.
 
         """
+        if self._dedupe:
+            urls = list(dict.fromkeys(urls))
+
         import aiohttp
 
         def chunked_http_client(limit: int):
@@ -52,7 +62,7 @@ class AsyncWebPageReader(BaseReader):
             async def http_get(url: str, session: aiohttp.ClientSession):
                 async with semaphore:
                     async with session.get(url) as response:
-                        return await response.text()
+                        return response, await response.text()
 
             return http_get
 
@@ -67,14 +77,29 @@ class AsyncWebPageReader(BaseReader):
 
         documents = []
         responses = asyncio.run(fetch_urls(urls))
-        for i, response in enumerate(responses):
-            if isinstance(response, Exception):
+
+        for i, response_tuple in enumerate(responses):
+            if not isinstance(response_tuple, tuple):
                 raise ValueError(f"One of the inputs is not a valid url: {urls[i]}")
+
+            response, raw_page = response_tuple
+
+
+            if response.status != 200:
+                logger.warning(f"error fetching page from {urls[i]}")
+                logger.info(response)
+
+                if self._fail_on_error:
+                    raise ValueError(f"error fetching page from {urls[i]}. server returned status: {response.status} and response {raw_page}")
+
+                continue
+
             if self._html_to_text:
                 import html2text
+                response_text = html2text.html2text(raw_page)
+            else:
+                response_text = raw_page
 
-                response = html2text.html2text(response)
-
-            documents.append(Document(text=response))
+            documents.append(Document(text=response_text, extra_info={"Source": str(response.url)}))
 
         return documents

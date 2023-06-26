@@ -2,9 +2,9 @@ import pytest
 import unittest
 from unittest.mock import patch
 from llama_hub.web.sitemap.base import SitemapReader
+from llama_index.readers.schema.base import Document
 
-MOCK_URL = "https://gpt-index.readthedocs.io/sitemap.xml"
-
+MOCK_URL = 'https://gpt-index.readthedocs.io/sitemap.xml'
 
 def get_sitemapdata():
     f = open("tests/tests_web_sitemap/test_sitemap.xml", "r")
@@ -12,8 +12,11 @@ def get_sitemapdata():
 
 
 def dummy_load_pages(urls: str):
-    return ["Document"] * len(urls)
-
+    documents = []
+    for u in urls:
+        doc = Document(text="Bla", extra_info={"Source": u})
+        documents.append(doc)
+    return documents
 
 class TestSitemapReader(unittest.TestCase):
     def test_sitemap_reader_init(self):
@@ -77,3 +80,4 @@ class TestSitemapReader(unittest.TestCase):
             mock_response.read.assert_called_once()
             assert mock_load_data.call_count == 1
             assert len(documents) == 1
+            assert documents[0].extra_info['Source'] == 'https://gpt-index.readthedocs.io/en/latest/'
