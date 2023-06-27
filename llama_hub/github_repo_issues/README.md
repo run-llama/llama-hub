@@ -56,15 +56,14 @@ if os.path.exists("docs.pkl"):
         docs = pickle.load(f)
 
 if docs is None:
-    github_client = GitHubIssuesClient()
     loader = GitHubRepositoryIssuesReader(
-        github_client,
+        GitHubIssuesClient(),
         owner =                  "jerryjliu",
         repo =                   "llama_index",
         verbose =                True,
     )
 
-    docs = loader.load_data(branch="main")
+    docs = loader.load_data()
 
     with open("docs.pkl", "wb") as f:
         pickle.dump(docs, f)
