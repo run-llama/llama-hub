@@ -52,14 +52,25 @@ class ImageCaptionReader(BaseReader):
             device = "cuda" if torch.cuda.is_available() else "cpu"
             dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-            processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-large")
-            model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large", torch_dtype=dtype)
+            processor = BlipProcessor.from_pretrained(
+                "Salesforce/blip-image-captioning-large"
+            )
+            model = BlipForConditionalGeneration.from_pretrained(
+                "Salesforce/blip-image-captioning-large", torch_dtype=dtype
+            )
 
-            parser_config = {"processor": processor, "model": model, "device": device, "dtype": dtype}
+            parser_config = {
+                "processor": processor,
+                "model": model,
+                "device": device,
+                "dtype": dtype,
+            }
 
         self._parser_config = parser_config
 
-    def load_data(self, file: Path, extra_info: Optional[Dict] = None) -> List[Document]:
+    def load_data(
+        self, file: Path, extra_info: Optional[Dict] = None
+    ) -> List[Document]:
         """Parse file."""
         from PIL import Image
 
@@ -84,7 +95,7 @@ class ImageCaptionReader(BaseReader):
         model.to(device)
 
         # unconditional image captioning
-        
+
         inputs = processor(image, self._prompt, return_tensors="pt").to(device, dtype)
 
         out = model.generate(**inputs)

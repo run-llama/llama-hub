@@ -48,10 +48,10 @@ class RedditReader(BaseReader):
                 relevant_posts = ml_subreddit.search(kw, limit=post_limit)
 
                 for post in relevant_posts:
-                    posts.append(Document(post.selftext))
+                    posts.append(Document(text=post.selftext))
                     for top_level_comment in post.comments:
                         if isinstance(top_level_comment, MoreComments):
                             continue
-                        posts.append(Document(top_level_comment.body))
+                        posts.append(Document(text=top_level_comment.body))
 
         return posts

@@ -54,6 +54,7 @@ class OpendalReader(BaseReader):
 
             try:
                 from llama_hub.utils import import_loader
+
                 SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
@@ -62,11 +63,10 @@ class OpendalReader(BaseReader):
             return loader.load_data()
 
 
-async def download_file_from_opendal(
-    op: Any, temp_dir: str, path: str
-) -> str:
+async def download_file_from_opendal(op: Any, temp_dir: str, path: str) -> str:
     """Download file from OpenDAL."""
     import opendal
+
     op = cast(opendal.AsyncOperator, op)
 
     suffix = Path(path).suffix
@@ -79,12 +79,11 @@ async def download_file_from_opendal(
     return filepath
 
 
-async def download_dir_from_opendal(
-    op: Any, temp_dir: str, dir: str
-) -> str:
+async def download_dir_from_opendal(op: Any, temp_dir: str, dir: str) -> str:
     """Download directory from opendal."""
 
     import opendal
+
     op = cast(opendal.AsyncOperator, op)
     async for obj in await op.scan(dir):
         await download_file_from_opendal(op, temp_dir, obj.path)

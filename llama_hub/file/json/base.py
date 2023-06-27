@@ -51,9 +51,7 @@ class JSONReader(BaseReader):
         self.levels_back = levels_back
 
     def load_data(
-        self, 
-        file: Path, 
-        extra_info: Optional[Dict] = None
+        self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Load data from the input file."""
         # TODO: change Path typing for file in all load_data calls
@@ -69,9 +67,9 @@ class JSONReader(BaseReader):
                 useful_lines = [
                     line for line in lines if not re.match(r"^[{}\[\],]*$", line)
                 ]
-                return [Document("\n".join(useful_lines), extra_info=extra_info)]
+                return [Document(text="\n".join(useful_lines), extra_info=extra_info)]
             elif self.levels_back is not None:
                 # If levels_back is set, we make the embeddings contain the labels
                 # from further up the JSON tree
                 lines = [*_depth_first_yield(data, self.levels_back, [])]
-                return [Document("\n".join(lines), extra_info=extra_info)]
+                return [Document(text="\n".join(lines), extra_info=extra_info)]

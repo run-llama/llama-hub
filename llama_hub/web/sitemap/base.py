@@ -7,6 +7,7 @@ from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+
 class SitemapReader(BaseReader):
     """Asynchronous sitemap reader for web.
 
@@ -19,13 +20,15 @@ class SitemapReader(BaseReader):
         limit (int): Maximum number of concurrent requests.
 
     """
-    xml_schema_sitemap = 'http://www.sitemaps.org/schemas/sitemap/0.9'
+
+    xml_schema_sitemap = "http://www.sitemaps.org/schemas/sitemap/0.9"
 
     def __init__(self, html_to_text: bool = False, limit: int = 10) -> None:
         """Initialize with parameters."""
 
         try:
             from llama_hub.utils import import_loader
+
             AsyncWebPageReader = import_loader("AsyncWebPageReader")
         except ImportError:
             AsyncWebPageReader = download_loader("AsyncWebPageReader")
@@ -48,13 +51,11 @@ class SitemapReader(BaseReader):
 
             if filter_locs is None or filter_locs in location:
                 sitemap_urls.append(location)
-        
+
         return sitemap_urls
 
     def load_data(self, sitemap_url: str, filter: str = None) -> List[Document]:
         sitemap = self._load_sitemap(sitemap_url=sitemap_url)
         sitemap_urls = self._parse_sitemap(sitemap, filter)
-        
 
         return self._async_loader.load_data(urls=sitemap_urls)
- 

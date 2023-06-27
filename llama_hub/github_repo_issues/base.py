@@ -41,10 +41,12 @@ else:
 
 logger = logging.getLogger(__name__)
 
+
 def print_if_verbose(verbose: bool, message: str) -> None:
     """Log message if verbose is True."""
     if verbose:
         print(message)
+
 
 class GitHubRepositoryIssuesReader(BaseReader):
     """
@@ -58,11 +60,12 @@ class GitHubRepositoryIssuesReader(BaseReader):
         >>> print(issues)
 
     """
+
     class IssueState(enum.Enum):
         """
         Issue type.
 
-        Used to decide what issues to retrieve. 
+        Used to decide what issues to retrieve.
 
         Attributes:
             - OPEN: Just open issues. This is the default.
@@ -73,6 +76,7 @@ class GitHubRepositoryIssuesReader(BaseReader):
         OPEN = "open"
         CLOSED = "closed"
         ALL = "all"
+
     class FilterType(enum.Enum):
         """
         Filter type.
@@ -117,7 +121,6 @@ class GitHubRepositoryIssuesReader(BaseReader):
             self._loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self._loop)
 
-        
         self._github_client = github_client
 
     def load_data(
@@ -144,8 +147,8 @@ class GitHubRepositoryIssuesReader(BaseReader):
 
         Args:
             - state (IssueState): State of the issues to retrieve. Default is IssueState.OPEN.
-            - labelFilters: an optional list of filters to apply to the issue list based on labels. 
-                
+            - labelFilters: an optional list of filters to apply to the issue list based on labels.
+
         :return: list of documents
         """
         documents = []
@@ -153,14 +156,18 @@ class GitHubRepositoryIssuesReader(BaseReader):
         # Loop until there are no more issues
         while True:
             issues: Dict = self._loop.run_until_complete(
-                self._github_client.get_issues(self._owner, self._repo, state=state.value, page= page)
+                self._github_client.get_issues(
+                    self._owner, self._repo, state=state.value, page=page
+                )
             )
 
             if len(issues) == 0:
                 print_if_verbose(self._verbose, "No more issues found, stopping")
 
                 break
-            print_if_verbose(self._verbose, f"Found {len(issues)} issues in the repo page {page}")
+            print_if_verbose(
+                self._verbose, f"Found {len(issues)} issues in the repo page {page}"
+            )
             page += 1
             filterCount = 0
             for issue in issues:
@@ -174,9 +181,9 @@ class GitHubRepositoryIssuesReader(BaseReader):
                     text=f"{title}\n{body}",
                 )
                 extra_info = {
-                    "state" : issue["state"],
-                    "created_at" : issue["created_at"],
-                    "url" : issue["url"],
+                    "state": issue["state"],
+                    "created_at": issue["created_at"],
+                    "url": issue["url"],
                 }
                 if issue["closed_at"] is not None:
                     extra_info["closed_at"] = issue["closed_at"]
@@ -204,7 +211,7 @@ class GitHubRepositoryIssuesReader(BaseReader):
             elif filterType == self.FilterType.EXCLUDE:
                 return label not in labels
 
-        return True        
+        return True
 
 
 if __name__ == "__main__":
@@ -216,7 +223,7 @@ if __name__ == "__main__":
         owner="moncho",
         repo="dry",
         verbose=True,
-        )
+    )
 
     documents = reader.load_data(
         state=GitHubRepositoryIssuesReader.IssueState.ALL,

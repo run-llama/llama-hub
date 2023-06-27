@@ -16,7 +16,7 @@ class ImageTabularChartReader(BaseReader):
         self,
         parser_config: Optional[Dict] = None,
         keep_image: bool = False,
-        max_output_tokens = 512,
+        max_output_tokens=512,
         prompt: str = "Generate underlying data table of the figure below:",
     ):
         """Init params."""
@@ -25,8 +25,10 @@ class ImageTabularChartReader(BaseReader):
             try:
                 import torch  # noqa: F401
                 from PIL import Image  # noqa: F401
-                from transformers import (Pix2StructForConditionalGeneration,
-                                          Pix2StructProcessor)
+                from transformers import (
+                    Pix2StructForConditionalGeneration,
+                    Pix2StructProcessor,
+                )
             except ImportError:
                 raise ImportError(
                     "Please install extra dependencies that are required for "
@@ -36,8 +38,10 @@ class ImageTabularChartReader(BaseReader):
 
             device = "cuda" if torch.cuda.is_available() else "cpu"
             dtype = torch.float16 if torch.cuda.is_available() else torch.float32
-            processor = Pix2StructProcessor.from_pretrained('google/deplot')
-            model = Pix2StructForConditionalGeneration.from_pretrained('google/deplot', torch_dtype=dtype)
+            processor = Pix2StructProcessor.from_pretrained("google/deplot")
+            model = Pix2StructForConditionalGeneration.from_pretrained(
+                "google/deplot", torch_dtype=dtype
+            )
             parser_config = {
                 "processor": processor,
                 "model": model,
@@ -81,7 +85,9 @@ class ImageTabularChartReader(BaseReader):
         inputs = processor(image, self._prompt, return_tensors="pt").to(device, dtype)
 
         out = model.generate(**inputs, max_new_tokens=self._max_output_tokens)
-        text_str = "Figure or chart with tabular data: " + processor.decode(out[0], skip_special_tokens=True)
+        text_str = "Figure or chart with tabular data: " + processor.decode(
+            out[0], skip_special_tokens=True
+        )
 
         return [
             ImageDocument(

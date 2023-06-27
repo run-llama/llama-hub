@@ -45,7 +45,7 @@ class ZendeskReader(BaseReader):
 
             results.append(
                 Document(
-                    body,
+                    text=body,
                     extra_info=extra_info,
                 )
             )

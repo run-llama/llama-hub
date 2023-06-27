@@ -7,6 +7,7 @@ from llama_index.langchain_helpers.text_splitter import TextSplitter
 import unicodedata
 
 from pathlib import Path
+
 path = Path(__file__).parent / "Readability.js"
 
 readabilityjs = ""
@@ -23,8 +24,10 @@ inject_readability = f"""
     }}())
 """
 
+
 def nfkc_normalize(text: str) -> str:
-    return unicodedata.normalize('NFKC', text)
+    return unicodedata.normalize("NFKC", text)
+
 
 class ReadabilityWebPageReader(BaseReader):
     """Readability Webpage Loader
@@ -42,11 +45,14 @@ class ReadabilityWebPageReader(BaseReader):
         normalizer (Optional[Callable[[str], str]], optional): Text normalizer. Defaults to nfkc_normalize.
     """
 
-    def __init__(self, proxy: Optional[str] = None, wait_until: Optional[
+    def __init__(
+        self,
+        proxy: Optional[str] = None,
+        wait_until: Optional[
             Literal["commit", "domcontentloaded", "load", "networkidle"]
-        ] = "domcontentloaded", 
+        ] = "domcontentloaded",
         text_splitter: Optional[TextSplitter] = None,
-        normalize: Optional[Callable[[str], str]] = nfkc_normalize
+        normalize: Optional[Callable[[str], str]] = nfkc_normalize,
     ) -> None:
         self._launch_options = {
             "headless": True,
@@ -78,15 +84,18 @@ class ReadabilityWebPageReader(BaseReader):
                 browser,
                 url,
             )
-            extra_info = {key: article[key] for key in [
-                "title",
-                "length",
-                "excerpt",
-                "byline",
-                "dir",
-                "lang",
-                "siteName",
-            ]}
+            extra_info = {
+                key: article[key]
+                for key in [
+                    "title",
+                    "length",
+                    "excerpt",
+                    "byline",
+                    "dir",
+                    "lang",
+                    "siteName",
+                ]
+            }
 
             if self._normalize is not None:
                 article["textContent"] = self._normalize(article["textContent"])
@@ -95,10 +104,10 @@ class ReadabilityWebPageReader(BaseReader):
                 texts = self._text_splitter.split_text(article["textContent"])
             else:
                 texts = [article["textContent"]]
-                
+
             browser.close()
 
-            return [Document(x, extra_info=extra_info) for x in texts]
+            return [Document(text=x, extra_info=extra_info) for x in texts]
 
     def scrape_page(
         self,
@@ -125,6 +134,7 @@ class ReadabilityWebPageReader(BaseReader):
 
         """
         from playwright.sync_api._generated import Browser
+
         browser = cast(Browser, browser)
         page = browser.new_page(ignore_https_errors=True)
         page.set_default_timeout(60000)

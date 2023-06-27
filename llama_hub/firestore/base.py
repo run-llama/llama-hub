@@ -25,6 +25,7 @@ class FirestoreReader(BaseReader):
     ) -> None:
         """Initialize with parameters."""
         from google.cloud import firestore
+
         self.db = firestore.Client(project=project_id)
 
     def load_data(self, collection: str) -> List[Document]:
@@ -40,7 +41,7 @@ class FirestoreReader(BaseReader):
         col_ref = self.db.collection(collection)
         for doc in col_ref.stream():
             doc_str = ", ".join([f"{k}: {v}" for k, v in doc.to_dict().items()])
-            documents.append(Document(doc_str))
+            documents.append(Document(text=doc_str))
         return documents
 
     def load_document(self, document_url: str) -> Document:
@@ -67,4 +68,4 @@ class FirestoreReader(BaseReader):
         if not doc.exists:
             raise ValueError(f"No such document: {document_url}")
         doc_str = ", ".join([f"{k}: {v}" for k, v in doc.to_dict().items()])
-        return Document(doc_str)
+        return Document(text=doc_str)

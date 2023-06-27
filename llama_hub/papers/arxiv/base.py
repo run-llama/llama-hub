@@ -80,7 +80,7 @@ class ArxivReader(BaseReader):
         abstract_documents = []
         for paper in search_results:
             d = f"The following is a summary of the paper: {paper.title}\n\nSummary: {paper.summary}"
-            abstract_documents.append(Document(d))
+            abstract_documents.append(Document(text=d))
 
         # Delete downloaded papers
         try:
@@ -93,8 +93,7 @@ class ArxivReader(BaseReader):
             print("Unable to delete files or directory")
 
         return arxiv_documents + abstract_documents
-    
-    
+
     def load_papers_and_abstracts(
         self,
         search_query: str,
@@ -145,8 +144,9 @@ class ArxivReader(BaseReader):
 
         try:
             from llama_hub.utils import import_loader
+
             SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
-        except ImportError: 
+        except ImportError:
             SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
         arxiv_documents = SimpleDirectoryReader(
             papers_dir, file_metadata=get_paper_metadata
@@ -155,7 +155,7 @@ class ArxivReader(BaseReader):
         abstract_documents = []
         for paper in search_results:
             d = f"The following is a summary of the paper: {paper.title}\n\nSummary: {paper.summary}"
-            abstract_documents.append(Document(d))
+            abstract_documents.append(Document(text=d))
 
         # Delete downloaded papers
         try:

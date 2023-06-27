@@ -12,9 +12,11 @@ class YoutubeTranscriptReader(BaseReader):
     @staticmethod
     def _extract_video_id(yt_link) -> Optional[str]:
         # regular expressions to match the different syntax of YouTube links
-        patterns = [r'^https?://(?:www\.)?youtube\.com/watch\?v=([\w-]+)',
-                    r'^https?://(?:www\.)?youtube\.com/embed/([\w-]+)',
-                    r'^https?://youtu\.be/([\w-]+)',]  # youtu.be does not use www
+        patterns = [
+            r"^https?://(?:www\.)?youtube\.com/watch\?v=([\w-]+)",
+            r"^https?://(?:www\.)?youtube\.com/embed/([\w-]+)",
+            r"^https?://youtu\.be/([\w-]+)",
+        ]  # youtu.be does not use www
 
         for pattern in patterns:
             match = re.search(pattern, yt_link)
@@ -42,10 +44,9 @@ class YoutubeTranscriptReader(BaseReader):
         results = []
         for link in ytlinks:
             video_id = self._extract_video_id(link)
-            srt = YouTubeTranscriptApi.get_transcript(
-                video_id, languages=languages)
+            srt = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
             transcript = ""
             for chunk in srt:
                 transcript = transcript + chunk["text"] + "\n"
-            results.append(Document(transcript))
+            results.append(Document(text=transcript))
         return results

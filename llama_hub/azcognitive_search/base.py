@@ -16,7 +16,7 @@ class AzCognitiveSearchReader(BaseReader):
         service_name (str): the name of azure cognitive search service.
         search_key (str): provide azure search access key directly.
         index (str): index name
-    
+
     """
 
     def __init__(self, service_name: str, searck_key: str, index: str) -> None:

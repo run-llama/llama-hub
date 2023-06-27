@@ -7,7 +7,7 @@ files into a List of Documents.
 from datetime import datetime
 import json
 import os
-from typing import Any, Iterator, List, Optional
+from typing import Iterator, List, Optional
 import urllib
 
 from llama_index import download_loader
@@ -53,6 +53,7 @@ class JoplinReader(BaseReader):
         if parse_markdown:
             try:
                 from llama_hub.utils import import_loader
+
                 mr = import_loader("MarkdownReader")
             except:
                 mr = download_loader("MarkdownReader")

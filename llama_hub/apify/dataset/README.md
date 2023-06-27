@@ -25,7 +25,7 @@ from llama_index.readers.schema.base import Document
 # Converts a single record from the Apify dataset to the LlamaIndex format
 def tranform_dataset_item(item):
     return Document(
-        item.get("text"),
+        text=item.get("text"),
         extra_info={
             "url": item.get("url"),
         },

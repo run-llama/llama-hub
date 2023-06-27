@@ -7,7 +7,6 @@ Created on Sun Apr 16 12:03:19 2023
 """
 
 
-
 import datetime
 import importlib
 import platform
@@ -17,7 +16,6 @@ from typing import List, Optional, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
 
 
 # Copyright 2023 Evslin Consulting
@@ -45,7 +43,7 @@ class OutlookLocalCalendarReader(BaseReader):
         number_of_results: Optional[int] = 100,
         start_date: Optional[Union[str, datetime.date]] = None,
         end_date: Optional[Union[str, datetime.date]] = None,
-        more_attributes: Optional [ List[str]]=None
+        more_attributes: Optional[List[str]] = None,
     ) -> List[Document]:
 
         """Load data from user's local calendar.
@@ -54,23 +52,28 @@ class OutlookLocalCalendarReader(BaseReader):
             start_date (Optional[Union[str, datetime.date]]): the start date to return events from. Defaults to today.
             end_date (Optional[Union[str, datetime.date]]): the last date (inclusive) to return events from. Defaults to 2199-01-01.
             more_attributes (Optional[ List[str]]): additional attributes to be retrieved from calendar entries. Non-existnat attributes are ignored.
-            
+
         Returns a list of documents sutitable for indexing by llam_index. Always returns Start, End, Subject, Location, and Organizer
         attributes and optionally returns additional attributes specified in the more_attributes parameter.
         """
         if platform.system().lower() != "windows":
-            return([])
-        attributes=["Start","End","Subject","Location","Organizer"] # base attrubutes to return
-        if not more_attributes is None: #if the user has specified more attributes
-            attributes+=more_attributes
+            return []
+        attributes = [
+            "Start",
+            "End",
+            "Subject",
+            "Location",
+            "Organizer",
+        ]  # base attrubutes to return
+        if more_attributes is not None:  # if the user has specified more attributes
+            attributes += more_attributes
         if start_date is None:
             start_date = datetime.date.today()
         elif isinstance(start_date, str):
             start_date = datetime.date.fromisoformat(start_date)
 
-
         # Initialize the Outlook application
-        winstuff=importlib.import_module("win32com.client")
+        winstuff = importlib.import_module("win32com.client")
         outlook = winstuff.Dispatch("Outlook.Application").GetNamespace("MAPI")
 
         # Get the Calendar folder
@@ -81,25 +84,25 @@ class OutlookLocalCalendarReader(BaseReader):
 
         if not events:
             return []
-        events.Sort('[Start]')  # Sort items by start time
-        numberReturned=0
+        events.Sort("[Start]")  # Sort items by start time
+        numberReturned = 0
         results = []
         for event in events:
-            converted_date = datetime.date(event.Start.year, event.Start.month, event.Start.day)
-            if converted_date>start_date: #if past start date
-                numberReturned+=1
-                eventstring=''
+            converted_date = datetime.date(
+                event.Start.year, event.Start.month, event.Start.day
+            )
+            if converted_date > start_date:  # if past start date
+                numberReturned += 1
+                eventstring = ""
                 for attribute in attributes:
-                    if hasattr(event,attribute):
-                        eventstring+=f"{attribute}: {getattr(event,attribute)}, "
-                results.append(Document(eventstring))
-            if numberReturned>=number_of_results:
+                    if hasattr(event, attribute):
+                        eventstring += f"{attribute}: {getattr(event,attribute)}, "
+                results.append(Document(text=eventstring))
+            if numberReturned >= number_of_results:
                 break
 
         return results
-        
 
-   
 
 if __name__ == "__main__":
     reader = OutlookLocalCalendarReader()
