@@ -23,9 +23,6 @@ class ChromaReader(BaseReader):
         persist_directory: str,
     ) -> None:
         """Initialize with parameters."""
-        import_err_msg = (
-            "`chromadb` package not found, please run `pip install chromadb`"
-        )
         import chromadb  # noqa: F401
         from chromadb.config import Settings
 

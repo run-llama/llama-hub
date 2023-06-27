@@ -99,7 +99,7 @@ class GoogleCalendarReader(BaseReader):
             else:
                 event_string += f"Organizer: {email}"
 
-            results.append(Document(event_string))
+            results.append(Document(text=event_string))
 
         return results
 

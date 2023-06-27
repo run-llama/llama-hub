@@ -1,10 +1,7 @@
-from llama_index import Document
-import httpx
 import pytest
-import asyncio
 import base64
 import os
-from unittest.mock import MagicMock, AsyncMock, call
+from unittest.mock import MagicMock
 import unittest
 from typing import List, Tuple
 
@@ -14,15 +11,9 @@ from typing import List, Tuple
 #     allow_module_level=True,
 # )
 
-from llama_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
 
 from llama_hub.github_repo.github_client import (
     GithubClient,
-    GitBlobResponseModel,
-    GitTreeResponseModel,
 )
 
 from llama_hub.github_repo.base import GithubRepositoryReader
@@ -51,8 +42,7 @@ async def test_github_client(github_client):
         == f"https://api.github.com/repos/{owner}/{repo}/branches/{branch}"
     ), "Branch self link is incorrect"
     assert (
-        branch_data._links.html
-        == f"https://github.com/{owner}/{repo}/tree/{branch}"
+        branch_data._links.html == f"https://github.com/{owner}/{repo}/tree/{branch}"
     ), "Branch html link is incorrect"
 
     # test get_commit
@@ -64,16 +54,12 @@ async def test_github_client(github_client):
     ), "Commit url is incorrect"
 
     # test get_tree
-    tree_data = await github_client.get_tree(
-        owner, repo, commit_data.commit.tree.sha
-    )
+    tree_data = await github_client.get_tree(owner, repo, commit_data.commit.tree.sha)
     assert (
         tree_data.url
         == f"https://api.github.com/repos/{owner}/{repo}/git/trees/{commit_data.commit.tree.sha}"
     ), "Tree url is incorrect"
-    assert (
-        tree_data.sha == commit_data.commit.tree.sha
-    ), "Tree sha is incorrect"
+    assert tree_data.sha == commit_data.commit.tree.sha, "Tree sha is incorrect"
     print(tree_data.tree[0].sha)
     assert 1 == 1
 
@@ -112,9 +98,7 @@ async def test_github_client(github_client):
     ][0]
 
     # test get_blob
-    blob_data = await github_client.get_blob(
-        owner, repo, test_requirements_txt.sha
-    )
+    blob_data = await github_client.get_blob(owner, repo, test_requirements_txt.sha)
     assert blob_data.encoding == "base64", "Blob encoding is incorrect"
     assert (
         blob_data.url
@@ -184,17 +168,13 @@ class TestGithubRepositoryReader(unittest.TestCase):
             [".py"],
             GithubRepositoryReader.FilterType.INCLUDE,
         )
-        self.assertTrue(
-            self.reader._check_filter_file_extensions(tree_obj_path)
-        )
+        self.assertTrue(self.reader._check_filter_file_extensions(tree_obj_path))
 
         self.reader._filter_file_extensions = (
             [".txt"],
             GithubRepositoryReader.FilterType.EXCLUDE,
         )
-        self.assertTrue(
-            self.reader._check_filter_file_extensions(tree_obj_path)
-        )
+        self.assertTrue(self.reader._check_filter_file_extensions(tree_obj_path))
 
     def test__allow_tree_obj_with_files_only(self):
         tree_obj_paths = [

@@ -30,7 +30,7 @@ class MangoppsGuidesReader(BaseReader):
         self.limit = limit
         self.start_url = f"{self.domain_url}/home/"
 
-        fetched_urls = self.crawl_urls()[:self.limit]
+        fetched_urls = self.crawl_urls()[: self.limit]
 
         results = []
 
@@ -38,12 +38,14 @@ class MangoppsGuidesReader(BaseReader):
         for url in fetched_urls:
             try:
                 response = requests.get(url)
-                soup = BeautifulSoup(response.content, 'html.parser')
+                soup = BeautifulSoup(response.content, "html.parser")
 
-                page_title = soup.find('title').text
+                page_title = soup.find("title").text
 
                 # Remove the div with aria-label="Table of contents"
-                table_of_contents_div = soup.find("div", {"aria-label": "Table of contents"})
+                table_of_contents_div = soup.find(
+                    "div", {"aria-label": "Table of contents"}
+                )
                 if table_of_contents_div:
                     table_of_contents_div.decompose()
 
@@ -65,33 +67,32 @@ class MangoppsGuidesReader(BaseReader):
                         element.decompose()
 
                 # Find the main element containing the desired content
-                main_element = soup.find("main")  # Replace "main" with the appropriate element tag or CSS class
+                main_element = soup.find(
+                    "main"
+                )  # Replace "main" with the appropriate element tag or CSS class
 
                 # Extract the text content from the main element
                 if main_element:
                     text_content = main_element.get_text("\n")
                     # Remove multiple consecutive newlines and keep only one newline
-                    text_content = re.sub(r'\n+', '\n', text_content)
+                    text_content = re.sub(r"\n+", "\n", text_content)
                 else:
                     text_content = ""
 
                 page_text = text_content
 
                 guides_page = {}
-                guides_page['title'] =page_title
+                guides_page["title"] = page_title
                 guides_page["text"] = page_text
                 guides_pages[url] = guides_page
             except Exception as e:
                 print(f"Failed for {url} => {e}")
 
         for k, v in guides_pages.items():
-            extra_info = {
-                "url": k,
-                "title": v["title"]
-            }
+            extra_info = {"url": k, "title": v["title"]}
             results.append(
                 Document(
-                    v["text"],
+                    text=v["text"],
                     extra_info=extra_info,
                 )
             )
@@ -104,7 +105,7 @@ class MangoppsGuidesReader(BaseReader):
         self.visited = []
 
         fetched_urls = self.fetch_url(self.start_url)
-        fetched_urls = (list(set(fetched_urls)))
+        fetched_urls = list(set(fetched_urls))
 
         return fetched_urls
 
@@ -136,11 +137,12 @@ class MangoppsGuidesReader(BaseReader):
             ):
                 newurls = newurls + self.fetch_url(newurl)
 
-        newurls = (list(set(newurls)))
+        newurls = list(set(newurls))
         return newurls
+
 
 if __name__ == "__main__":
     reader = MangoppsGuidesReader()
     print("Initialized MangoppsGuidesReader")
-    output = reader.load_data( domain_url="https://guides.mangoapps.com", limit=5 )
+    output = reader.load_data(domain_url="https://guides.mangoapps.com", limit=5)
     print(output)

@@ -6,6 +6,7 @@ import json
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+
 class FeedlyRssReader(BaseReader):
     """Feedly Rss Reader.
 
@@ -19,7 +20,9 @@ class FeedlyRssReader(BaseReader):
         super().__init__()
         self.bearer_token = bearer_token
 
-    def setup_auth(self, directory: Path = Path.home() / ".config/feedly", overwrite: bool = False):
+    def setup_auth(
+        self, directory: Path = Path.home() / ".config/feedly", overwrite: bool = False
+    ):
         """Modified from python-api-client/feedly/api_client/utils.py
         Instead promopting for user input, we take the token as an argument
         """
@@ -29,11 +32,10 @@ class FeedlyRssReader(BaseReader):
 
         if not auth_file.exists() or overwrite:
             auth = self.bearer_token
-            auth_file.write_text(auth.strip()) 
+            auth_file.write_text(auth.strip())
 
-    def load_data(self, category_name, max_count = 100):
-        """Get the entries from a feedly category
-        """
+    def load_data(self, category_name, max_count=100):
+        """Get the entries from a feedly category"""
 
         from feedly.api_client.session import FeedlySession
         from feedly.api_client.stream import StreamOptions
@@ -43,19 +45,21 @@ class FeedlyRssReader(BaseReader):
         category = sess.user.user_categories.get(category_name)
 
         documents = []
-        for article in category.stream_contents(options = StreamOptions(max_count = max_count)):
+        for article in category.stream_contents(
+            options=StreamOptions(max_count=max_count)
+        ):
             # doc for available fields: https://developer.feedly.com/v3/streams/
             entry = {
-                'title': article["title"],
-                'published': article["published"],
-                'summary': article["summary"],
-                'author': article["author"],
-                'content': article["content"],
-                'keywords': article["keywords"],
-                'commonTopics': article["commonTopics"]
+                "title": article["title"],
+                "published": article["published"],
+                "summary": article["summary"],
+                "author": article["author"],
+                "content": article["content"],
+                "keywords": article["keywords"],
+                "commonTopics": article["commonTopics"],
             }
 
             text = json.dumps(entry, ensure_ascii=False)
 
-            documents.append(Document(text))
+            documents.append(Document(text=text))
         return documents

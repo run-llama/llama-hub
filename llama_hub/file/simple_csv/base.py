@@ -32,11 +32,11 @@ class SimpleCSVReader(BaseReader):
         import csv
 
         text_list = []
-        with open(file, "r", encoding='utf-8') as fp:
+        with open(file, "r", encoding="utf-8") as fp:
             csv_reader = csv.reader(fp)
             for row in csv_reader:
                 text_list.append(", ".join(row))
         if self._concat_rows:
-            return [Document("\n".join(text_list), extra_info=extra_info)]
+            return [Document(text="\n".join(text_list), extra_info=extra_info)]
         else:
-            return [Document(text, extra_info=extra_info) for text in text_list]
+            return [Document(text=text, extra_info=extra_info) for text in text_list]

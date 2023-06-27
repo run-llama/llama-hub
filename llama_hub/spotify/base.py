@@ -36,7 +36,7 @@ class SpotifyReader(BaseReader):
                 album_name = album["name"]
                 artist_name = album["artists"][0]["name"]
                 album_string = f"Album {album_name} by Artist {artist_name}\n"
-                results.append(Document(album_string))
+                results.append(Document(text=album_string))
         elif collection == "tracks":
             response = sp.current_user_saved_tracks()
             items = response["items"]
@@ -45,7 +45,7 @@ class SpotifyReader(BaseReader):
                 track_name = track["name"]
                 artist_name = track["artists"][0]["name"]
                 artist_string = f"Track {track_name} by Artist {artist_name}\n"
-                results.append(Document(artist_string))
+                results.append(Document(text=artist_string))
         elif collection == "playlists":
             response = sp.current_user_playlists()
             items = response["items"]
@@ -53,7 +53,7 @@ class SpotifyReader(BaseReader):
                 playlist_name = item["name"]
                 owner_name = item["owner"]["display_name"]
                 playlist_string = f"Playlist {playlist_name} created by {owner_name}\n"
-                results.append(Document(playlist_string))
+                results.append(Document(text=playlist_string))
         else:
             raise ValueError(
                 "Invalid collection parameter value. Allowed values are 'albums', 'tracks', or 'playlists'."

@@ -29,10 +29,10 @@ class PDFReader(BaseReader):
                 # Extract the text from the page
                 page_text = pdf.pages[page].extract_text()
                 page_label = pdf.page_labels[page]
-                metadata = {"page_label": page_label, "file_name":file.name}
-                
+                metadata = {"page_label": page_label, "file_name": file.name}
+
                 if extra_info is not None:
                     metadata.update(extra_info)
-                    
-                docs.append(Document(page_text, extra_info=metadata))
+
+                docs.append(Document(text=page_text, extra_info=metadata))
             return docs

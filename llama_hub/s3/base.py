@@ -68,10 +68,10 @@ class S3Reader(BaseReader):
             session = boto3.Session(
                 aws_access_key_id=self.aws_access_id,
                 aws_secret_access_key=self.aws_access_secret,
-                aws_session_token=self.aws_session_token, 
+                aws_session_token=self.aws_session_token,
             )
             s3 = session.resource("s3")
-            s3_client = session.client("s3", endpoint_url=self.s3_endpoint_url )
+            s3_client = session.client("s3", endpoint_url=self.s3_endpoint_url)
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.key:
@@ -91,6 +91,7 @@ class S3Reader(BaseReader):
 
             try:
                 from llama_hub.utils import import_loader
+
                 SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")

@@ -17,6 +17,7 @@ class DeepDoctectionReader(BaseReader):
     def __init__(self, attrs_as_metadata: Optional[Set] = None) -> None:
         """Init params."""
         import deepdoctection as dd
+
         self.analyzer = dd.get_dd_analyzer()
         self.attrs_as_metadata = attrs_as_metadata or set()
 
@@ -33,7 +34,5 @@ class DeepDoctectionReader(BaseReader):
             extra_info = {
                 k: getattr(page, k) for k in self.attrs_as_metadata if hasattr(page, k)
             }
-            result_docs.append(
-                Document(doc_text, extra_info=extra_info)
-            )
+            result_docs.append(Document(text=doc_text, extra_info=extra_info))
         return result_docs

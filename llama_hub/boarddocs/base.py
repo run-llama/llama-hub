@@ -7,6 +7,7 @@ from llama_index.readers.schema.base import Document
 import json
 import requests
 
+
 class BoardDocsReader(BaseReader):
     """BoardDocs doc reader.
 
@@ -19,8 +20,8 @@ class BoardDocsReader(BaseReader):
 
     def __init__(
         self,
-        site:str,
-        committee_id:str,
+        site: str,
+        committee_id: str,
     ) -> None:
         """Initialize with parameters."""
         self.site = site
@@ -32,13 +33,13 @@ class BoardDocsReader(BaseReader):
             "accept": "application/json, text/javascript, */*; q=0.01",
             "accept-language": "en-US,en;q=0.9",
             "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "sec-ch-ua": "\"Google Chrome\";v=\"113\", \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"",
+            "sec-ch-ua": '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
             "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-ch-ua-platform": '"macOS"',
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
-            "x-requested-with": "XMLHttpRequest"
+            "x-requested-with": "XMLHttpRequest",
         }
         super().__init__()
 
@@ -57,15 +58,19 @@ class BoardDocsReader(BaseReader):
         response = requests.post(meeting_list_url, headers=self.headers, data=data)
         meetingsData = json.loads(response.text)
 
-        meetings = [{"meetingID": meeting.get('unique', None),
-                    "date": meeting.get('numberdate', None),
-                    "unid": meeting.get('unid', None)} for meeting in meetingsData]
+        meetings = [
+            {
+                "meetingID": meeting.get("unique", None),
+                "date": meeting.get("numberdate", None),
+                "unid": meeting.get("unid", None),
+            }
+            for meeting in meetingsData
+        ]
         return meetings
 
-
-    def process_meeting(self,
-                       meeting_id:str,
-                       index_pdfs:bool = True) -> List[Document]:
+    def process_meeting(
+        self, meeting_id: str, index_pdfs: bool = True
+    ) -> List[Document]:
         """
         Returns documents from the given meeting
         """
@@ -83,30 +88,31 @@ class BoardDocsReader(BaseReader):
 
         # parse the returned HTML
         soup = BeautifulSoup(response.content, "html.parser")
-        agenda_date = soup.find("div", {"class":"print-meeting-date"}).string
-        agenda_title = soup.find("div", {"class":"print-meeting-name"}).string
-        agenda_files = [fd.a.get('href') for fd in soup.find_all("div", {"class":"public-file"})]
+        agenda_date = soup.find("div", {"class": "print-meeting-date"}).string
+        agenda_title = soup.find("div", {"class": "print-meeting-name"}).string
+        [
+            fd.a.get("href") for fd in soup.find_all("div", {"class": "public-file"})
+        ]
         agenda_data = html2text.html2text(response.text)
 
         # TODO: index the linked PDFs in agenda_files!
 
         docs = []
-        agenda_doc = Document(text=agenda_data,
-                              doc_id=meeting_id,
-                              extra_info={
-                                    "committee": self.committee_id,
-                                    "title": agenda_title,
-                                    "date": agenda_date,
-                                    "url": agenda_url,
-                              })
+        agenda_doc = Document(
+            text=agenda_data,
+            doc_id=meeting_id,
+            extra_info={
+                "committee": self.committee_id,
+                "title": agenda_title,
+                "date": agenda_date,
+                "url": agenda_url,
+            },
+        )
         docs.append(agenda_doc)
         return docs
 
-
     def load_data(
-        self,
-        meeting_ids: Optional[List[str]] = None,
-        **load_kwargs: Any
+        self, meeting_ids: Optional[List[str]] = None, **load_kwargs: Any
     ) -> List[Document]:
         """Load all meetings of the committee.
 
@@ -116,7 +122,9 @@ class BoardDocsReader(BaseReader):
 
         # if a list of meetings wasn't provided, enumerate them all
         if not meeting_ids:
-            meeting_ids = [meeting.get('meetingID') for meeting in self.get_meeting_list()]
+            meeting_ids = [
+                meeting.get("meetingID") for meeting in self.get_meeting_list()
+            ]
 
         # process all relevant meetings & return the documents
         docs = []

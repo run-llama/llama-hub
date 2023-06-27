@@ -6,6 +6,7 @@ from llama_index.readers.schema.base import Document
 import logging
 import json
 
+
 class SimpleCouchDBReader(BaseReader):
     """Simple CouchDB reader.
 
@@ -17,19 +18,27 @@ class SimpleCouchDBReader(BaseReader):
 
     """
 
-    def __init__(self, user: str, pwd: str, host: str, port: int, couchdb_url: Optional[Dict] = None, max_docs: int = 1000) -> None:
+    def __init__(
+        self,
+        user: str,
+        pwd: str,
+        host: str,
+        port: int,
+        couchdb_url: Optional[Dict] = None,
+        max_docs: int = 1000,
+    ) -> None:
         """Initialize with parameters."""
         import couchdb3
 
         if couchdb_url is not None:
             self.client: CouchDBClient = couchdb3.Server(couchdb_url)
         else:
-            self.client: CouchDBClient = couchdb3.Server(f'http://{user}:{pwd}@{host}:{port}')
+            self.client: CouchDBClient = couchdb3.Server(
+                f"http://{user}:{pwd}@{host}:{port}"
+            )
         self.max_docs = max_docs
 
-    def load_data(
-        self, db_name: str, query: Optional[str] = None
-    ) -> List[Document]:
+    def load_data(self, db_name: str, query: Optional[str] = None) -> List[Document]:
         """Load data from the input directory.
 
         Args:
@@ -44,11 +53,11 @@ class SimpleCouchDBReader(BaseReader):
         documents = []
         db = self.client.get(db_name)
         if query is None:
-            #if no query is specified, return all docs in database
-            logging.debug('showing all docs')
-            results = db.view('_all_docs',include_docs=True)
+            # if no query is specified, return all docs in database
+            logging.debug("showing all docs")
+            results = db.view("_all_docs", include_docs=True)
         else:
-            logging.debug('executing query')
+            logging.debug("executing query")
             results = db.find(query)
 
         if type(results) is not dict:
@@ -56,20 +65,20 @@ class SimpleCouchDBReader(BaseReader):
         else:
             logging.debug(results)
 
-        #check if more than one result
+        # check if more than one result
         if type(results) is not dict and results.rows is not None:
             for row in results.rows:
-                #check that the id field exists
+                # check that the id field exists
                 if "id" not in row:
                     raise ValueError("`id` field not found in CouchDB document.")
-                documents.append(Document(json.dumps(row.doc)))
+                documents.append(Document(text=json.dumps(row.doc)))
         else:
-            #only one result
-            if results.get('docs') is not None:
-                for item in results.get('docs'):
-                    #check that the _id field exists
+            # only one result
+            if results.get("docs") is not None:
+                for item in results.get("docs"):
+                    # check that the _id field exists
                     if "_id" not in item:
                         raise ValueError("`_id` field not found in CouchDB document.")
-                    documents.append(Document(json.dumps(item)))
+                    documents.append(Document(text=json.dumps(item)))
 
         return documents

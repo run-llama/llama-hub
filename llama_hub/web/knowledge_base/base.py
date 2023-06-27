@@ -71,7 +71,7 @@ class KnowledgeBaseWebReader(BaseReader):
                     "subtitle": article["subtitle"],
                     "url": article["url"],
                 }
-                documents.append(Document(article["body"], extra_info=extra_info))
+                documents.append(Document(text=article["body"], extra_info=extra_info))
 
             browser.close()
 

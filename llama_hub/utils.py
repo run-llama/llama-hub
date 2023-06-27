@@ -14,11 +14,10 @@ def import_loader(reader_str: str) -> Type[BaseReader]:
     """Import or download loader."""
 
     # read library json file
-    json_dict = json.load(open(LIBRARY_JSON_PATH, 'r'))
+    json_dict = json.load(open(LIBRARY_JSON_PATH, "r"))
     dir_name = str(json_dict[reader_str]["id"])
 
-    fmt_dir_name = dir_name.replace('/', '.')
+    fmt_dir_name = dir_name.replace("/", ".")
     module = importlib.import_module("llama_hub." + fmt_dir_name + ".base")
     reader_cls = getattr(module, reader_str)
     return reader_cls
-        

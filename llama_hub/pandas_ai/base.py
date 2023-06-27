@@ -1,7 +1,7 @@
 """Pandas AI loader."""
 
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import List, Optional, Any
 import pandas as pd
 import numpy as np
 
@@ -67,7 +67,6 @@ class PandasAIReader(BaseReader):
         is_conversational_answer: bool = False,
     ) -> Any:
         """Load dataframe."""
-        import pandasai
 
         return self._pandas_ai.run(
             initial_df, prompt=query, is_conversational_answer=is_conversational_answer
@@ -97,6 +96,7 @@ class PandasAIReader(BaseReader):
 
             try:
                 from llama_hub.utils import import_loader
+
                 PandasCSVReader = import_loader("PandasCSVReader")
             except ImportError:
                 PandasCSVReader = download_loader("PandasCSVReader")

@@ -35,16 +35,15 @@ class TrelloReader(BaseReader):
         documents = []
         for card in cards:
             document = Document(
-                card.name,
-                card.description,
+                doc_id=card.name,
+                text=card.description,
                 extra_info={
                     "id": card.id,
                     "url": card.url,
                     "due_date": card.due_date,
                     "labels": [label.name for label in card.labels],
-                }
+                },
             )
             documents.append(document)
 
         return documents
-

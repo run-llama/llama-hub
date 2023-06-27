@@ -31,6 +31,7 @@ class RemoteDepthReader(BaseReader):
         """Parse whatever is at the URL.""" ""
         try:
             from llama_hub.utils import import_loader
+
             RemoteReader = import_loader("RemoteReader")
         except ImportError:
             RemoteReader = download_loader("RemoteReader")
@@ -44,8 +45,8 @@ class RemoteDepthReader(BaseReader):
             new_links = []
             print(f"Reading links at depth {i}...")
             for link in tqdm(links):
-                """Checking if the link belongs the provided domain. """
-                if ((self.domain_lock and link.find(url)>-1) or (not self.domain_lock)):
+                """Checking if the link belongs the provided domain."""
+                if (self.domain_lock and link.find(url) > -1) or (not self.domain_lock):
                     print("Loading link: " + link)
                     if link in links_visited:
                         continue
@@ -54,7 +55,7 @@ class RemoteDepthReader(BaseReader):
                         new_links.extend(self.get_links(link))
                     links_visited.append(link)
                 else:
-                    print("Link ignored: " +link)
+                    print("Link ignored: " + link)
             new_links = list(set(new_links))
             links = new_links
         print(f"Found {len(urls)} links at depth {self.depth}.")

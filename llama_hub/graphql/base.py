@@ -29,9 +29,7 @@ class GraphQLReader(BaseReader):
             from gql.transport.requests import RequestsHTTPTransport
 
         except ImportError:
-            raise ImportError(
-                "`gql` package not found, please run `pip install gql`"
-            )
+            raise ImportError("`gql` package not found, please run `pip install gql`")
         if uri:
             if uri is None:
                 raise ValueError("`uri` must be provided.")
@@ -39,10 +37,8 @@ class GraphQLReader(BaseReader):
                 headers = {}
             transport = RequestsHTTPTransport(url=uri, headers=headers)
             self.client = Client(transport=transport, fetch_schema_from_transport=True)
-            
-    def load_data(
-        self, query: str, variables: Optional[Dict] = None
-    ) -> List[Document]:
+
+    def load_data(self, query: str, variables: Optional[Dict] = None) -> List[Document]:
         """Run query with optional variables and turn results into documents
 
         Args:
@@ -57,21 +53,19 @@ class GraphQLReader(BaseReader):
             from gql import gql
 
         except ImportError:
-            raise ImportError(
-                "`gql` package not found, please run `pip install gql`"
-            )
+            raise ImportError("`gql` package not found, please run `pip install gql`")
         if variables is None:
             variables = {}
 
         documents = []
-        
-        result = self.client.execute(gql(query), variable_values = variables)
+
+        result = self.client.execute(gql(query), variable_values=variables)
 
         for key in result:
             entry = result[key]
             if type(entry) == list:
-                documents.extend([Document(yaml.dump(v)) for v in entry])
+                documents.extend([Document(text=yaml.dump(v)) for v in entry])
             else:
-                documents.append(Document(yaml.dump(entry)))
+                documents.append(Document(text=yaml.dump(entry)))
 
         return documents
