@@ -88,8 +88,7 @@ class KibelaReader(BaseReader):
           }
         }
         """
-        after = ""
-        params = {"after": after}
+        params = {"after": ""}
         has_next = True
         documents = []
         # Due to the request limit of 10 requests per second on the Kibela API, we do not process in parallel.
@@ -101,6 +100,6 @@ class KibelaReader(BaseReader):
                 doc = f"---\nurl: {note.node.url}\ntitle: {note.node.title}\n---\ncontent:\n{note.node.content}\n"
                 documents.append(Document(text=doc))
             has_next = note_conn.pageInfo.hasNextPage
-            after = note_conn.pageInfo.endCursor
+            params = {"after": note_conn.pageInfo.endCursor}
 
         return documents
