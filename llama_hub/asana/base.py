@@ -45,7 +45,7 @@ class AsanaReader(BaseReader):
                 )
                 results.append(
                     Document(
-                        task["name"] + " " + task["notes"] + " " + comments,
+                        text=task["name"] + " " + task["notes"] + " " + comments,
                         extra_info={
                             "task_id": task["gid"],
                             "name": task["name"],

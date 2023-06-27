@@ -1,17 +1,9 @@
 from llama_index import Document
 import httpx
 import pytest
-import asyncio
-import base64
-import os
 from unittest.mock import MagicMock, AsyncMock, call
-import unittest
 from typing import List, Tuple
 
-from llama_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
 
 from llama_hub.github_repo.github_client import (
     GithubClient,
@@ -872,12 +864,8 @@ def test_load_data_without_filters():
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.extra_info["file_path"] == actual.extra_info["file_path"]
+        assert expected.extra_info["file_name"] == actual.extra_info["file_name"]
 
 
 def test_load_data_with_filters1():
@@ -932,12 +920,8 @@ def test_load_data_with_filters1():
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.extra_info["file_path"] == actual.extra_info["file_path"]
+        assert expected.extra_info["file_name"] == actual.extra_info["file_name"]
 
 
 def test_load_data_with_filters2():
@@ -1020,12 +1004,8 @@ def test_load_data_with_filters2():
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.extra_info["file_path"] == actual.extra_info["file_path"]
+        assert expected.extra_info["file_name"] == actual.extra_info["file_name"]
 
 
 def test_load_data_with_filters3():
@@ -1087,12 +1067,8 @@ def test_load_data_with_filters3():
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.extra_info["file_path"] == actual.extra_info["file_path"]
+        assert expected.extra_info["file_name"] == actual.extra_info["file_name"]
 
 
 def test_load_data_with_filters4():
@@ -1189,9 +1165,5 @@ def test_load_data_with_filters4():
             f"Expected: {expected.text}"
             f"Actual: {actual.text}"
         )
-        assert (
-            expected.extra_info["file_path"] == actual.extra_info["file_path"]
-        )
-        assert (
-            expected.extra_info["file_name"] == actual.extra_info["file_name"]
-        )
+        assert expected.extra_info["file_path"] == actual.extra_info["file_path"]
+        assert expected.extra_info["file_name"] == actual.extra_info["file_name"]

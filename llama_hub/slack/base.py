@@ -127,19 +127,21 @@ class SlackReader(BaseReader):
                         cursor=next_cursor,
                         oldest=str(self.earliest_date_timestamp),
                         latest=str(self.latest_date_timestamp),
-                    )                    
+                    )
                 conversation_history = result["messages"]
                 # Print results
                 logger.info(
                     "{} messages found in {}".format(len(conversation_history), id)
                 )
-                # 'reply_count' is present if there are replies in the 
+                # 'reply_count' is present if there are replies in the
                 # conversation thread otherwise not.
                 # using it to reduce number of slack api calls.
-                result_messages.extend(self._read_message(channel_id, message["ts"]) 
-                            if 'reply_count' in message 
-                            else message['text'] 
-                            for message in conversation_history)
+                result_messages.extend(
+                    self._read_message(channel_id, message["ts"])
+                    if "reply_count" in message
+                    else message["text"]
+                    for message in conversation_history
+                )
                 if not result["has_more"]:
                     break
                 next_cursor = result["response_metadata"]["next_cursor"]
@@ -177,7 +179,7 @@ class SlackReader(BaseReader):
                 channel_id, reverse_chronological=reverse_chronological
             )
             results.append(
-                Document(channel_content, extra_info={"channel": channel_id})
+                Document(text=channel_content, extra_info={"channel": channel_id})
             )
         return results
 

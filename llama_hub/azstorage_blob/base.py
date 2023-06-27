@@ -11,26 +11,26 @@ from pathlib import Path
 from typing import Any, List, Optional, Union, Dict
 
 
-
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 logger = logging.getLogger(__name__)
 
+
 class AzStorageBlobReader(BaseReader):
-    """General reader for any Azure Storage Blob file or directory. 
+    """General reader for any Azure Storage Blob file or directory.
 
     Args:
         container_name (str): name of the container for the blob.
-        blob (Optional[str]): name of the file to download. If none specified          
+        blob (Optional[str]): name of the file to download. If none specified
             this loader will iterate through list of blobs in the container.
-        name_starts_with (Optional[str]): filter the list of blobs to download 
+        name_starts_with (Optional[str]): filter the list of blobs to download
             to only those whose names begin with the specified string.
-        include: (Union[str, List[str], None]): Specifies one or more additional 
-            datasets to include in the response. Options include: 'snapshots', 
-            'metadata', 'uncommittedblobs', 'copy', 'deleted', 
-            'deletedwithversions', 'tags', 'versions', 'immutabilitypolicy', 
+        include: (Union[str, List[str], None]): Specifies one or more additional
+            datasets to include in the response. Options include: 'snapshots',
+            'metadata', 'uncommittedblobs', 'copy', 'deleted',
+            'deletedwithversions', 'tags', 'versions', 'immutabilitypolicy',
             'legalhold'.
         file_extractor (Optional[Dict[str, Union[str, BaseReader]]]): A mapping of file
             extension to a BaseReader class that specifies how to convert that file
@@ -46,14 +46,13 @@ class AzStorageBlobReader(BaseReader):
         container_name: str,
         blob: Optional[str] = None,
         name_starts_with: Optional[str] = None,
-        include: Optional[Any] = None, 
+        include: Optional[Any] = None,
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         account_url: str,
         credential: Optional[Any] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
-        """Initializes Azure Storage Account
-        """
+        """Initializes Azure Storage Account"""
         super().__init__(*args, **kwargs)
 
         self.container_name = container_name
@@ -68,18 +67,21 @@ class AzStorageBlobReader(BaseReader):
 
     def load_data(self) -> List[Document]:
         """Load file(s) from Azure Storage Blob"""
-        #from azure.core.credentials import AzureNamedKeyCredential, AzureSasCredential, TokenCredential
-        #from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+        # from azure.core.credentials import AzureNamedKeyCredential, AzureSasCredential, TokenCredential
+        # from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
         from azure.storage.blob import ContainerClient
 
-
-        container_client = ContainerClient(self.account_url, self.container_name, credential=self.credential)
+        container_client = ContainerClient(
+            self.account_url, self.container_name, credential=self.credential
+        )
         total_download_start_time = time.time()
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.blob:
                 extension = Path(self.blob).suffix
-                download_file_path = f"{temp_dir}/{next(tempfile._get_candidate_names())}{extension}"
+                download_file_path = (
+                    f"{temp_dir}/{next(tempfile._get_candidate_names())}{extension}"
+                )
                 logger.info(f"Start download of {self.blob}")
                 start_time = time.time()
                 stream = container_client.download_blob(self.blob)
@@ -90,11 +92,15 @@ class AzStorageBlobReader(BaseReader):
                     f"{self.blob} downloaded in {end_time - start_time} seconds."
                 )
             else:
-                logger.info(f"Listing blobs")
-                blobs_list = container_client.list_blobs(self.name_starts_with, self.include)
+                logger.info("Listing blobs")
+                blobs_list = container_client.list_blobs(
+                    self.name_starts_with, self.include
+                )
                 for obj in blobs_list:
                     extension = Path(obj.name).suffix
-                    download_file_path = f"{temp_dir}/{next(tempfile._get_candidate_names())}{extension}"
+                    download_file_path = (
+                        f"{temp_dir}/{next(tempfile._get_candidate_names())}{extension}"
+                    )
                     logger.info(f"Start download of {obj.name}")
                     start_time = time.time()
                     stream = container_client.download_blob(obj)
@@ -104,19 +110,22 @@ class AzStorageBlobReader(BaseReader):
                     logger.info(
                         f"{obj.name} downloaded in {end_time - start_time} seconds."
                     )
-            
+
             total_download_end_time = time.time()
-            total_elapsed_time = math.ceil(total_download_end_time - total_download_start_time)
-            logger.info(f"Downloading completed in approximately {total_elapsed_time // 60}min {total_elapsed_time % 60}s.")
-            logger.info(f"Document creation starting")
+            total_elapsed_time = math.ceil(
+                total_download_end_time - total_download_start_time
+            )
+            logger.info(
+                f"Downloading completed in approximately {total_elapsed_time // 60}min {total_elapsed_time % 60}s."
+            )
+            logger.info("Document creation starting")
 
             try:
                 from llama_hub.utils import import_loader
+
                 SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
             loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor)
 
-            return loader.load_data()         
-
-
+            return loader.load_data()

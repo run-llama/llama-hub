@@ -75,6 +75,6 @@ class AsyncWebPageReader(BaseReader):
 
                 response = html2text.html2text(response)
 
-            documents.append(Document(response))
+            documents.append(Document(text=response))
 
         return documents

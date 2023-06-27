@@ -150,6 +150,6 @@ class GPTRepoReader(BaseReader):
         docs = []
         for text in text_list:
             doc_text = output_text + text + "\n--END--\n"
-            docs.append(Document(doc_text))
+            docs.append(Document(text=doc_text))
 
         return docs

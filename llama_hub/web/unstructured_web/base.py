@@ -54,7 +54,7 @@ class UnstructuredURLLoader(BaseLoader):
                     elements = partition_html(url=url)
                 text = "\n\n".join([str(el) for el in elements])
                 metadata = {"source": url}
-                docs.append(Document(text, extra_info=metadata))
+                docs.append(Document(text=text, extra_info=metadata))
             except Exception as e:
                 if self.continue_on_failure:
                     logger.error(f"Error fetching or processing {url}, exeption: {e}")

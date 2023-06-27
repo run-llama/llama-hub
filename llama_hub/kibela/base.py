@@ -52,8 +52,7 @@ class KibelaReader(BaseReader):
         self.url = f"https://{team}.kibe.la/api/v1"
         self.headers = {"Authorization": f"Bearer {token}"}
         transport = AIOHTTPTransport(url=self.url, headers=self.headers)
-        self.client = Client(transport=transport,
-                             fetch_schema_from_transport=True)
+        self.client = Client(transport=transport, fetch_schema_from_transport=True)
 
     def request(self, query: str, params: dict) -> Dict:
         from gql import gql
@@ -99,7 +98,7 @@ class KibelaReader(BaseReader):
             note_conn = parse_obj_as(Connection[Note], res["notes"])
             for note in note_conn.edges:
                 doc = f"---\nurl: {note.node.url}\ntitle: {note.node.title}\n---\ncontent:\n{note.node.content}\n"
-                documents.append(Document(doc))
+                documents.append(Document(text=doc))
             has_next = note_conn.pageInfo.hasNextPage
             params = {"after": note_conn.pageInfo.endCursor}
 

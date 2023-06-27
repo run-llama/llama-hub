@@ -77,7 +77,7 @@ class PubmedReader(BaseReader):
                 text = "\n".join([p["text"] for p in d["passages"]])
                 pubmed_documents.append(
                     Document(
-                        text,
+                        text=text,
                         extra_info={
                             "Title of this paper": paper["title"],
                             "URL": paper["url"],
@@ -156,7 +156,7 @@ class PubmedReader(BaseReader):
         for paper in pubmed_search:
             pubmed_documents.append(
                 Document(
-                    paper["text"],
+                    text=paper["text"],
                     extra_info={
                         "Title of this paper": paper["title"],
                         "Journal it was published in:": paper["journal"],

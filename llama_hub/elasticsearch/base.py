@@ -27,10 +27,8 @@ class ElasticsearchReader(BaseReader):
         self, endpoint: str, index: str, httpx_client_args: Optional[dict] = None
     ):
         """Initialize with parameters."""
-        import_err_msg = """
-            `httpx` package not found. Install via `pip install httpx`
-        """
         import httpx  # noqa: F401
+
         self._client = httpx.Client(base_url=endpoint, **(httpx_client_args or {}))
         self._index = index
         self._endpoint = endpoint

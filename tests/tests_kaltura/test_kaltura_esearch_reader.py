@@ -1,7 +1,6 @@
 import pytest
 import os
 from llama_hub.kaltura.esearch.base import KalturaESearchReader
-from llama_index import GPTVectorStoreIndex
 
 # Kaltura credentials
 PARTNER_ID: int = int(os.getenv("KALTURA_PARTNER_ID", 0))
@@ -13,11 +12,11 @@ KS_PRIVILEGES: str = "disableentitlement"
 KALTURA_API_ENDPOINT: str = "https://cdnapi-ev.kaltura.com/"
 REQUEST_TIMEOUT: int = 500
 SHOULD_LOG_API_CALLS: bool = True
-MAX_ENTRIES = 1 # how many entries to load (pageSize)
+MAX_ENTRIES = 1  # how many entries to load (pageSize)
+
 
 class TestKalturaESearchReader:
-
-    def test_kaltura_reader_simple_search(self): 
+    def test_kaltura_reader_simple_search(self):
         reader = KalturaESearchReader(
             partner_id=PARTNER_ID,
             api_secret=API_SECRET,
@@ -27,26 +26,25 @@ class TestKalturaESearchReader:
             ks_privileges=KS_PRIVILEGES,
             kaltura_api_endpoint=KALTURA_API_ENDPOINT,
             request_timeout=REQUEST_TIMEOUT,
-            should_log_api_calls=SHOULD_LOG_API_CALLS
+            should_log_api_calls=SHOULD_LOG_API_CALLS,
         )
-        entry_docs = reader.load_data(search_operator_and=True, 
-                                    free_text="education", 
-                                    category_ids=None, 
-                                    with_captions=True, 
-                                    max_entries=MAX_ENTRIES)
+        entry_docs = reader.load_data(
+            search_operator_and=True,
+            free_text="education",
+            category_ids=None,
+            with_captions=True,
+            max_entries=MAX_ENTRIES,
+        )
         # test that we indeed gotten the number of entries we asked for -
         assert len(entry_docs) == MAX_ENTRIES
-    
+
     def test_kaltura_reader_load_data_invalid_args(self):
         faulty_reader = KalturaESearchReader(
-            partner_id=0,
-            api_secret="willfail",
-            user_id="somefaileduser"
+            partner_id=0, api_secret="willfail", user_id="somefaileduser"
         )
-        
+
         with pytest.raises(
             ValueError,
-            match='Kaltura Auth failed, check your credentials',
+            match="Kaltura Auth failed, check your credentials",
         ):
             faulty_reader.load_data(search_operator_and=True, free_text="education")
-            

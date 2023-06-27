@@ -164,8 +164,7 @@ class BufferedGitBlobDataIterator(BufferedAsyncIterator):
         if self._verbose:
             end_t = time.time()
             blob_names_and_sizes = [
-                (blob.path, blob.size)
-                for blob, _ in self._blobs_and_paths[start:end]
+                (blob.path, blob.size) for blob, _ in self._blobs_and_paths[start:end]
             ]
             print(
                 "Time to get blobs ("
@@ -175,7 +174,5 @@ class BufferedGitBlobDataIterator(BufferedAsyncIterator):
 
         self._buffer = [
             (result, path)
-            for result, (_, path) in zip(
-                results, self._blobs_and_paths[start:end]
-            )
+            for result, (_, path) in zip(results, self._blobs_and_paths[start:end])
         ]

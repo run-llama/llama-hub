@@ -4,14 +4,14 @@ from typing import List, Dict
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-ATOM_PUB_ENTRY_URL = '{root_endpoint}/entry'
+ATOM_PUB_ENTRY_URL = "{root_endpoint}/entry"
 
 
 class Article:
     def __init__(self) -> None:
-        self.title = ''
-        self.content = ''
-        self.published = ''
+        self.title = ""
+        self.content = ""
+        self.published = ""
 
 
 class HatenaBlogReader(BaseReader):
@@ -34,7 +34,10 @@ class HatenaBlogReader(BaseReader):
         articles = self.get_all_articles()
         for a in articles:
             results.append(
-                Document(a.content, extra_info={'title': a.title, 'published': a.published})
+                Document(
+                    text=a.content,
+                    extra_info={"title": a.title, "published": a.published},
+                )
             )
 
         return results
@@ -45,8 +48,8 @@ class HatenaBlogReader(BaseReader):
 
         while True:
             res = self.get_articles(page_url)
-            articles += res.get('articles')
-            page_url = res.get('next_page')
+            articles += res.get("articles")
+            page_url = res.get("next_page")
             if page_url is None:
                 break
 
@@ -61,22 +64,26 @@ class HatenaBlogReader(BaseReader):
         next_page = None
 
         res = requests.get(url, auth=HTTPBasicAuth(self.username, self.api_key))
-        soup = BeautifulSoup(res.text, 'xml')
-        for entry in soup.find_all('entry'):
-            if entry.find('app:control').find('app:draft').string == 'yes':
+        soup = BeautifulSoup(res.text, "xml")
+        for entry in soup.find_all("entry"):
+            if entry.find("app:control").find("app:draft").string == "yes":
                 continue
             article = Article()
-            article.title = entry.find('title').string
-            article.published = entry.find('published').string
-            content = entry.find('content')
-            if content.get('type') == 'text/html':
-                article.content = BeautifulSoup(entry.find('content').string, 'html.parser').get_text().strip()
+            article.title = entry.find("title").string
+            article.published = entry.find("published").string
+            content = entry.find("content")
+            if content.get("type") == "text/html":
+                article.content = (
+                    BeautifulSoup(entry.find("content").string, "html.parser")
+                    .get_text()
+                    .strip()
+                )
             else:
-                article.content = entry.find('content').string.strip()
+                article.content = entry.find("content").string.strip()
             articles.append(article)
 
-        next = soup.find('link', attrs={'rel': 'next'})
+        next = soup.find("link", attrs={"rel": "next"})
         if next:
-            next_page = next.get('href')
+            next_page = next.get("href")
 
-        return {'articles': articles, 'next_page': next_page}
+        return {"articles": articles, "next_page": next_page}

@@ -33,20 +33,20 @@ class IntercomReader(BaseReader):
 
         for article in articles:
 
-            body = article['body']
-            soup = BeautifulSoup(body, 'html.parser')
+            body = article["body"]
+            soup = BeautifulSoup(body, "html.parser")
             body = soup.get_text()
 
             extra_info = {
-                "id": article['id'],
-                "title": article['title'],
-                "url": article['url'],
-                "updated_at": article['updated_at']
+                "id": article["id"],
+                "title": article["title"],
+                "url": article["url"],
+                "updated_at": article["updated_at"],
             }
 
             results.append(
                 Document(
-                    body,
+                    text=body,
                     extra_info=extra_info,
                 )
             )
@@ -59,8 +59,8 @@ class IntercomReader(BaseReader):
 
         while True:
             response = self.get_articles_page(next_page)
-            articles.extend(response['articles'])
-            next_page = response['next_page']
+            articles.extend(response["articles"])
+            next_page = response["next_page"]
 
             if next_page is None:
                 break
@@ -69,6 +69,7 @@ class IntercomReader(BaseReader):
 
     def get_articles_page(self, next_page: str = None):
         import requests
+
         if next_page is None:
             url = "https://api.intercom.io/articles"
         else:
@@ -77,18 +78,15 @@ class IntercomReader(BaseReader):
         headers = {
             "accept": "application/json",
             "Intercom-Version": "2.8",
-            "authorization": f"Bearer {self.intercom_access_token}"
+            "authorization": f"Bearer {self.intercom_access_token}",
         }
 
         response = requests.get(url, headers=headers)
 
         response_json = json.loads(response.text)
 
-        next_page = response_json.get('pages', {}).get('next', None)
+        next_page = response_json.get("pages", {}).get("next", None)
 
-        articles = response_json.get('data', [])
+        articles = response_json.get("data", [])
 
-        return {
-            "articles": articles,
-            "next_page": next_page
-        }
+        return {"articles": articles, "next_page": next_page}

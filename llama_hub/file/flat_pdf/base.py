@@ -30,32 +30,42 @@ class FlatPdfReader(BaseReader):
         :return: A document object
         """
         import shutil
+
         try:
 
             if not file.is_file() and file.suffix != ".pdf":
                 raise Exception("Invalid file")
 
             pdf_dir: Path = file
-            work_dir: str = str(pathlib.Path().resolve()) + "/flat_pdf/{file_name}".format(
-                file_name=file.name.replace(file.suffix, ""))
+            work_dir: str = str(
+                pathlib.Path().resolve()
+            ) + "/flat_pdf/{file_name}".format(
+                file_name=file.name.replace(file.suffix, "")
+            )
             pdf_content: str = ""
 
-            shutil.rmtree(str(pathlib.Path().resolve()) + f"/flat_pdf", ignore_errors=True)
+            shutil.rmtree(
+                str(pathlib.Path().resolve()) + "/flat_pdf", ignore_errors=True
+            )
             os.makedirs(work_dir)
 
-            pdf_pages_count: int = self.convert_pdf_in_images(pdf_dir=pdf_dir, work_dir=work_dir)
+            pdf_pages_count: int = self.convert_pdf_in_images(
+                pdf_dir=pdf_dir, work_dir=work_dir
+            )
 
             for page_number in range(0, pdf_pages_count):
-                document = self.image_loader.load_data(file=Path(work_dir + f"/page-{page_number}.png"))
+                document = self.image_loader.load_data(
+                    file=Path(work_dir + f"/page-{page_number}.png")
+                )
                 pdf_content += document[0].text
             return Document(text=pdf_content)
 
         except Exception as e:
-            warnings.warn(
-                f"{str(e)}"
-            )
+            warnings.warn(f"{str(e)}")
         finally:
-            shutil.rmtree(str(pathlib.Path().resolve()) + f"/flat_pdf", ignore_errors=True)
+            shutil.rmtree(
+                str(pathlib.Path().resolve()) + "/flat_pdf", ignore_errors=True
+            )
 
     def convert_pdf_in_images(self, pdf_dir: Path, work_dir: str) -> int:
         """
@@ -66,6 +76,7 @@ class FlatPdfReader(BaseReader):
         :return: The number of pages in the pdf file
         """
         import fitz
+
         zoom_x = 2.0  # horizontal zoom
         zoom_y = 2.0  # vertical zoom
         mat = fitz.Matrix(zoom_x, zoom_y)

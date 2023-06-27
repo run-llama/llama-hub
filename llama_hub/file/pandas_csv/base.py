@@ -65,6 +65,8 @@ class PandasCSVReader(BaseReader):
         ).tolist()
 
         if self._concat_rows:
-            return [Document((self._row_joiner).join(text_list), extra_info=extra_info)]
+            return [
+                Document(text=self._row_joiner.join(text_list), extra_info=extra_info)
+            ]
         else:
-            return [Document(text, extra_info=extra_info) for text in text_list]
+            return [Document(text=text, extra_info=extra_info) for text in text_list]

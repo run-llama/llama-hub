@@ -4,7 +4,7 @@ A parser for tabular data files.
 
 """
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -28,7 +28,9 @@ class PagedCSVReader(BaseReader):
             for row in csv_reader:
                 docs.append(
                     Document(
-                        "\n".join(f"{k.strip()}: {v.strip()}" for k, v in row.items()),
+                        text="\n".join(
+                            f"{k.strip()}: {v.strip()}" for k, v in row.items()
+                        ),
                         extra_info=extra_info,
                     )
                 )

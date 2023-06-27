@@ -6,6 +6,7 @@ from typing import Dict, List, Optional
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+
 class PDFMinerReader(BaseReader):
     """PDF parser based on pdfminer.six."""
 
@@ -23,21 +24,23 @@ class PDFMinerReader(BaseReader):
             def _extract_text_from_page(page):
                 resource_manager = PDFResourceManager()
                 output_string = StringIO()
-                codec = 'utf-8'
+                codec = "utf-8"
                 laparams = LAParams()
-                device = TextConverter(resource_manager, output_string, codec=codec, laparams=laparams)
+                device = TextConverter(
+                    resource_manager, output_string, codec=codec, laparams=laparams
+                )
                 interpreter = PDFPageInterpreter(resource_manager, device)
                 interpreter.process_page(page)
                 text = output_string.getvalue()
                 device.close()
                 output_string.close()
                 return text
-            
+
         except ImportError:
             raise ImportError(
                 "pdfminer.six is required to read PDF files: `pip install pypdf`"
             )
-        with open(file, 'rb') as fp:
+        with open(file, "rb") as fp:
             reader = PDF_Page.get_pages(fp)
 
             # Iterate over every page
@@ -50,5 +53,5 @@ class PDFMinerReader(BaseReader):
                 if extra_info is not None:
                     metadata.update(extra_info)
 
-                docs.append(Document(page_text, extra_info=metadata))
+                docs.append(Document(text=page_text, extra_info=metadata))
             return docs

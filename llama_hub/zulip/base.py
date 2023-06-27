@@ -7,27 +7,30 @@ from llama_index.readers.schema.base import Document
 
 logger = logging.getLogger(__name__)
 
+
 class ZulipReader(BaseReader):
     """Zulip reader."""
 
     def __init__(
-            self,
-            zulip_email: str,
-            zulip_domain: str,
-            earliest_date: Optional[datetime] = None,
-            latest_date: Optional[datetime] = None,
-        ) -> None:
-            import zulip
+        self,
+        zulip_email: str,
+        zulip_domain: str,
+        earliest_date: Optional[datetime] = None,
+        latest_date: Optional[datetime] = None,
+    ) -> None:
+        import zulip
 
-            """Initialize with parameters."""
-            # Read the Zulip token from the environment variable
-            zulip_token = os.environ.get("ZULIP_TOKEN")
+        """Initialize with parameters."""
+        # Read the Zulip token from the environment variable
+        zulip_token = os.environ.get("ZULIP_TOKEN")
 
-            if zulip_token is None:
-                raise ValueError("ZULIP_TOKEN environment variable not set.")
+        if zulip_token is None:
+            raise ValueError("ZULIP_TOKEN environment variable not set.")
 
-            # Initialize Zulip client with provided parameters
-            self.client = zulip.Client(api_key=zulip_token, email=zulip_email, site=zulip_domain)
+        # Initialize Zulip client with provided parameters
+        self.client = zulip.Client(
+            api_key=zulip_token, email=zulip_email, site=zulip_domain
+        )
 
     def _read_stream(self, stream_name: str, reverse_chronological: bool) -> str:
         """Read a stream."""
@@ -51,7 +54,9 @@ class ZulipReader(BaseReader):
         data = []
         for stream_name in streams:
             stream_content = self._read_stream(stream_name, reverse_chronological)
-            data.append(Document(stream_content, extra_info={"stream": stream_name}))
+            data.append(
+                Document(text=stream_content, extra_info={"stream": stream_name})
+            )
         return data
 
     def get_all_streams(self) -> list:
@@ -59,9 +64,13 @@ class ZulipReader(BaseReader):
         response = self.client.get_streams()
         streams_data = response["streams"]
         # Collect the stream IDs
-        stream_names = [stream['name'] for stream in streams_data]
+        stream_names = [stream["name"] for stream in streams_data]
         return stream_names
 
+
 if __name__ == "__main__":
-    reader = ZulipReader(zulip_email="ianita-bot@plurigrid.zulipchat.com", zulip_domain="plurigrid.zulipchat.com")
+    reader = ZulipReader(
+        zulip_email="ianita-bot@plurigrid.zulipchat.com",
+        zulip_domain="plurigrid.zulipchat.com",
+    )
     logging.info(reader.load_data(reader.get_all_streams()))

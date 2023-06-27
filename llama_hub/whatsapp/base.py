@@ -26,7 +26,6 @@ class WhatsappChatLoader(BaseReader):
         Parse Whatsapp file into Documents
         """
 
-        import pandas as pd
         from chatminer.chatparsers import WhatsAppParser
 
         path = Path(self.file_path)
@@ -48,7 +47,12 @@ class WhatsappChatLoader(BaseReader):
 
             docs.append(
                 Document(
-                    str(row.timestamp) + " " + row.author + ":" + " " + row.message,
+                    text=str(row.timestamp)
+                    + " "
+                    + row.author
+                    + ":"
+                    + " "
+                    + row.message,
                     extra_info=extra_info,
                 )
             )

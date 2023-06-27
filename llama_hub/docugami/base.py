@@ -285,10 +285,11 @@ class DocugamiReader(BaseReader):
             )
 
     def load_data(
-            self,
-            docset_id: str,
-            document_ids: Optional[List[str]] = None,
-            access_token: Optional[str] = None) -> List[Document]:
+        self,
+        docset_id: str,
+        document_ids: Optional[List[str]] = None,
+        access_token: Optional[str] = None,
+    ) -> List[Document]:
         """Load data the given docset_id in Docugami
 
         Args:
@@ -302,7 +303,9 @@ class DocugamiReader(BaseReader):
             self.access_token = access_token
 
         if not self.access_token:
-            raise Exception("Please specify access token as argument or set the DOCUGAMI_API_KEY env var.")
+            raise Exception(
+                "Please specify access token as argument or set the DOCUGAMI_API_KEY env var."
+            )
 
         _document_details = self._document_details_for_docset_id(docset_id)
         if document_ids:
@@ -320,9 +323,7 @@ class DocugamiReader(BaseReader):
 
         for doc in _document_details:
             doc_metadata = combined_project_metadata.get(doc["id"])
-            chunks += self._load_chunks_for_document(
-                docset_id, doc, doc_metadata
-            )
+            chunks += self._load_chunks_for_document(docset_id, doc, doc_metadata)
 
         return chunks
 
@@ -330,5 +331,7 @@ class DocugamiReader(BaseReader):
 if __name__ == "__main__":
     reader = DocugamiReader()
     print(
-        reader.load_data(docset_id="ecxqpipcoe2p", document_ids=["43rj0ds7s0ur", "bpc1vibyeke2"])
+        reader.load_data(
+            docset_id="ecxqpipcoe2p", document_ids=["43rj0ds7s0ur", "bpc1vibyeke2"]
+        )
     )
