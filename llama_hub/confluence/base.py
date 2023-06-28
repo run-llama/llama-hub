@@ -13,6 +13,7 @@ CONFLUENCE_USERNAME = "CONFLUENCE_USERNAME"
 
 logger = logging.getLogger(__name__)
 
+
 class ConfluenceReader(BaseReader):
     """Confluence reader.
 
@@ -65,10 +66,18 @@ class ConfluenceReader(BaseReader):
                     url=base_url, username=user_name, password=password, cloud=cloud
                 )
 
-    def load_data(self, space_key: Optional[str] = None, page_ids: Optional[List[str]] = None,
-                  page_status: Optional[str] = None, label: Optional[str] = None, cql: Optional[str] = None,
-                  include_attachments=False, include_children=False, limit: Optional[int] = None,
-                  max_num_results: Optional[int] = None) -> List[Document]:
+    def load_data(
+        self,
+        space_key: Optional[str] = None,
+        page_ids: Optional[List[str]] = None,
+        page_status: Optional[str] = None,
+        label: Optional[str] = None,
+        cql: Optional[str] = None,
+        include_attachments=False,
+        include_children=False,
+        limit: Optional[int] = None,
+        max_num_results: Optional[int] = None,
+    ) -> List[Document]:
         """Load Confluence pages from Confluence, specifying by one of four mutually exclusive methods:
         `space_key`, `page_ids`, `label`, or `cql`
         (Confluence Query Language https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/ ).
@@ -89,19 +98,33 @@ class ConfluenceReader(BaseReader):
         num_page_ids_parameter = 1 if page_ids is not None else 0
         num_label_parameter = 1 if label else 0
         num_cql_parameter = 1 if cql else 0
-        if num_space_key_parameter + num_page_ids_parameter + num_label_parameter + num_cql_parameter != 1:
-            raise ValueError("Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.")
+        if (
+            num_space_key_parameter
+            + num_page_ids_parameter
+            + num_label_parameter
+            + num_cql_parameter
+            != 1
+        ):
+            raise ValueError(
+                "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters."
+            )
 
         if page_status and not space_key:
-            raise ValueError("Must specify `space_key` when `page_status` is specified.")
+            raise ValueError(
+                "Must specify `space_key` when `page_status` is specified."
+            )
 
         if include_children and not page_ids:
-            raise ValueError("Must specify `page_ids` when `include_children` is specified.")
+            raise ValueError(
+                "Must specify `page_ids` when `include_children` is specified."
+            )
 
         if limit is not None:
             max_num_results = limit
-            logger.warning("`limit` is deprecated and no longer relates to the Confluence server's API limits.  If "
-                           "you wish to limit the number of returned results please use `max_num_results` instead.")
+            logger.warning(
+                "`limit` is deprecated and no longer relates to the Confluence server's API limits.  If "
+                "you wish to limit the number of returned results please use `max_num_results` instead."
+            )
 
         try:
             import html2text  # type: ignore
@@ -116,33 +139,56 @@ class ConfluenceReader(BaseReader):
 
         pages: List = []
         if space_key:
-            pages.extend(self._get_data_with_paging(self.confluence.get_all_pages_from_space,
-                                                    max_num_results=max_num_results,
-                                                    space=space_key, status=page_status,
-                                                    expand='body.storage.value', content_type='page'))
+            pages.extend(
+                self._get_data_with_paging(
+                    self.confluence.get_all_pages_from_space,
+                    max_num_results=max_num_results,
+                    space=space_key,
+                    status=page_status,
+                    expand="body.storage.value",
+                    content_type="page",
+                )
+            )
         elif label:
-            pages.extend(self._get_cql_data_with_paging(cql=f'type="page" AND label="{label}"',
-                                                        max_num_results=max_num_results,
-                                                        expand='body.storage.value'))
+            pages.extend(
+                self._get_cql_data_with_paging(
+                    cql=f'type="page" AND label="{label}"',
+                    max_num_results=max_num_results,
+                    expand="body.storage.value",
+                )
+            )
         elif cql:
-            pages.extend(self._get_cql_data_with_paging(cql=cql,
-                                                        max_num_results=max_num_results,
-                                                        expand='body.storage.value'))
+            pages.extend(
+                self._get_cql_data_with_paging(
+                    cql=cql,
+                    max_num_results=max_num_results,
+                    expand="body.storage.value",
+                )
+            )
         elif page_ids:
             if include_children:
                 dfs_page_ids = []
                 max_num_remaining = max_num_results
                 for page_id in page_ids:
-                    current_dfs_page_ids = self._dfs_page_ids(page_id, max_num_remaining)
+                    current_dfs_page_ids = self._dfs_page_ids(
+                        page_id, max_num_remaining
+                    )
                     dfs_page_ids.extend(current_dfs_page_ids)
                     if max_num_results is not None:
                         max_num_remaining -= len(current_dfs_page_ids)
                         if max_num_remaining <= 0:
                             break
                 page_ids = dfs_page_ids
-            for page_id in (page_ids[:max_num_results] if max_num_results is not None else page_ids):
-                pages.append(self._get_data_with_retry(self.confluence.get_page_by_id, page_id=page_id,
-                                                       expand='body.storage.value'))
+            for page_id in (
+                page_ids[:max_num_results] if max_num_results is not None else page_ids
+            ):
+                pages.append(
+                    self._get_data_with_retry(
+                        self.confluence.get_page_by_id,
+                        page_id=page_id,
+                        expand="body.storage.value",
+                    )
+                )
 
         docs = []
         for page in pages:
@@ -153,12 +199,18 @@ class ConfluenceReader(BaseReader):
 
     def _dfs_page_ids(self, page_id, max_num_results):
         ret = [page_id]
-        max_num_remaining = (max_num_results - 1) if max_num_results is not None else None
+        max_num_remaining = (
+            (max_num_results - 1) if max_num_results is not None else None
+        )
         if max_num_results is not None and max_num_remaining <= 0:
             return ret
 
-        child_page_ids = self._get_data_with_paging(self.confluence.get_child_id_list, page_id=page_id, type='page',
-                                                    max_num_results=max_num_remaining)
+        child_page_ids = self._get_data_with_paging(
+            self.confluence.get_child_id_list,
+            page_id=page_id,
+            type="page",
+            max_num_results=max_num_remaining,
+        )
         for child_page_id in child_page_ids:
             dfs_ids = self._dfs_page_ids(child_page_id, max_num_remaining)
             ret.extend(dfs_ids)
@@ -173,37 +225,49 @@ class ConfluenceReader(BaseReader):
         max_num_remaining = max_num_results
         ret = []
         while True:
-            results = self._get_data_with_retry(paged_function, start=start, limit=max_num_remaining, **kwargs)
+            results = self._get_data_with_retry(
+                paged_function, start=start, limit=max_num_remaining, **kwargs
+            )
             ret.extend(results)
-            if len(results) == 0 or max_num_results is not None and len(results) >= max_num_remaining:
+            if (
+                len(results) == 0
+                or max_num_results is not None
+                and len(results) >= max_num_remaining
+            ):
                 break
             start += len(results)
             if max_num_remaining is not None:
                 max_num_remaining -= len(results)
         return ret
 
-    def _get_cql_data_with_paging(self, cql, max_num_results=50, expand='body.storage.value'):
+    def _get_cql_data_with_paging(
+        self, cql, max_num_results=50, expand="body.storage.value"
+    ):
         max_num_remaining = max_num_results
         ret = []
-        params = {'cql': cql, 'start': 0, 'expand': expand}
+        params = {"cql": cql, "start": 0, "expand": expand}
         if max_num_results is not None:
-            params['limit'] = max_num_remaining
+            params["limit"] = max_num_remaining
         while True:
-            results = self._get_data_with_retry(self.confluence.get, path='rest/api/content/search', params=params)
-            ret.extend(results['results'])
+            results = self._get_data_with_retry(
+                self.confluence.get, path="rest/api/content/search", params=params
+            )
+            ret.extend(results["results"])
 
-            params['start'] += len(results['results'])
+            params["start"] += len(results["results"])
 
             if max_num_results is not None:
-                params['limit'] -= len(results['results'])
-                if params['limit'] <= 0:
+                params["limit"] -= len(results["results"])
+                if params["limit"] <= 0:
                     break
 
-            next_url = results['_links']['next'] if 'next' in results['_links'] else None
+            next_url = (
+                results["_links"]["next"] if "next" in results["_links"] else None
+            )
             if not next_url:
                 break
-            cursor = next_url.split('cursor=')[1].split('&')[0]
-            params['cursor'] = cursor
+            cursor = next_url.split("cursor=")[1].split("&")[0]
+            params["cursor"] = cursor
 
         return ret
 

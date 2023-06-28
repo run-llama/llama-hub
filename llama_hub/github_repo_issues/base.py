@@ -181,12 +181,12 @@ class GitHubRepositoryIssuesReader(BaseReader):
                     text=f"{title}\n{body}",
                 )
                 extra_info = {
-                    "state" : issue["state"],
-                    "created_at" : issue["created_at"],
+                    "state": issue["state"],
+                    "created_at": issue["created_at"],
                     # url is the API URL
-                    "url" : issue["url"],
+                    "url": issue["url"],
                     # source is the HTML URL, more conveninent for humans
-                    "source" : issue["html_url"],
+                    "source": issue["html_url"],
                 }
                 if issue["closed_at"] is not None:
                     extra_info["closed_at"] = issue["closed_at"]

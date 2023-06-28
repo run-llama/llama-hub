@@ -38,7 +38,7 @@ class GmailReader(BaseReader, BaseModel):
         for message in messsages:
             text = message.pop("body")
             extra_info = message
-            results.append(Document(text=text, extra_info=extra_info))
+            results.append(Document(text=text, extra_info=extra_info or {}))
 
         return results
 

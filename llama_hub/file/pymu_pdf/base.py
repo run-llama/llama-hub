@@ -66,6 +66,8 @@ class PyMuPDFReader(BaseReader):
 
         else:
             return [
-                Document(text=page.get_text().encode("utf-8"), extra_info=extra_info)
+                Document(
+                    text=page.get_text().encode("utf-8"), extra_info=extra_info or {}
+                )
                 for page in doc
             ]

@@ -94,4 +94,4 @@ class GladiaAudioTranscriber(BaseReader):
         response_dict = response.json()
         transcript = response_dict["prediction"]
 
-        return [Document(text=transcript, extra_info=extra_info)]
+        return [Document(text=transcript, extra_info=extra_info or {})]

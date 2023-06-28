@@ -109,5 +109,5 @@ class MboxReader(BaseReader):
         docs: List[Document] = []
         content = self.parse_file(file)
         for msg in content:
-            docs.append(Document(text=msg, extra_info=extra_info))
+            docs.append(Document(text=msg, extra_info=extra_info or {}))
         return docs

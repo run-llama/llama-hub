@@ -47,7 +47,7 @@ class IntercomReader(BaseReader):
             results.append(
                 Document(
                     text=body,
-                    extra_info=extra_info,
+                    extra_info=extra_info or {},
                 )
             )
 

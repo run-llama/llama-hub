@@ -50,9 +50,7 @@ if __name__ == "__main__":
     wrapper = MakeWrapper()
     test_response = Response(
         response="test response",
-        source_nodes=[
-            NodeWithScore(node=TextNode(text="test source", id_="test id"))
-        ],
+        source_nodes=[NodeWithScore(node=TextNode(text="test source", id_="test id"))],
     )
     wrapper.pass_response_to_webhook(
         "https://hook.us1.make.com/asdfadsfasdfasdfd",
