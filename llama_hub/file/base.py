@@ -149,7 +149,7 @@ class SimpleDirectoryReader(BaseReader):
                 # do standard read
                 with open(input_file, "r", errors=self.errors) as f:
                     data = f.read()
-                document = Document(text=data, extra_info=metadata)
+                document = Document(text=data, extra_info=metadata or {})
                 documents.append(document)
 
         return documents

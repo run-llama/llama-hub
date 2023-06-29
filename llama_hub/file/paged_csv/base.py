@@ -31,7 +31,7 @@ class PagedCSVReader(BaseReader):
                         text="\n".join(
                             f"{k.strip()}: {v.strip()}" for k, v in row.items()
                         ),
-                        extra_info=extra_info,
+                        extra_info=extra_info or {},
                     )
                 )
         return docs

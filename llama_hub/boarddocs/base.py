@@ -90,9 +90,7 @@ class BoardDocsReader(BaseReader):
         soup = BeautifulSoup(response.content, "html.parser")
         agenda_date = soup.find("div", {"class": "print-meeting-date"}).string
         agenda_title = soup.find("div", {"class": "print-meeting-name"}).string
-        [
-            fd.a.get("href") for fd in soup.find_all("div", {"class": "public-file"})
-        ]
+        [fd.a.get("href") for fd in soup.find_all("div", {"class": "public-file"})]
         agenda_data = html2text.html2text(response.text)
 
         # TODO: index the linked PDFs in agenda_files!
