@@ -252,6 +252,11 @@
     "author": "sidu",
     "keywords": ["jokes", "dad jokes"]
   },
+  "WordLiftLoader": {
+    "id": "WordLift",
+    "author": "msftwarelab",
+    "keywords": ["wordlift", "knowledge graph", "graphql", "structured data", "seo"]
+  },
   "WhatsappChatLoader": {
     "id": "whatsapp",
     "author": "batmanscode",
