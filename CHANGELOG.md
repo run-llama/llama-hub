@@ -1,3 +1,10 @@
+## [v0.0.6] - 2023-06-28
+
+### Smaller features + Bug Fixes
+- feat: add source metadata to documents created by the GH issues reader (#341)
+- Update markdown reader (#344)
+- ensure metadata always valid (#343)
+
 ## [v0.0.5] - 2023-06-26
 
 ### Major (Breaking) Changes
