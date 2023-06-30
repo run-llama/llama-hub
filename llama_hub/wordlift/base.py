@@ -16,12 +16,12 @@ DEFAULT_PAGE = 0
 DEFAULT_ROWS = 500
 
 
-class WordLiftGraphQLReaderError(Exception):
-    """Base class for WordLiftGraphQLReader exceptions."""
+class WordLiftReaderError(Exception):
+    """Base class for WordLiftReader exceptions."""
     pass
 
 
-class APICallError(WordLiftGraphQLReaderError):
+class APICallError(WordLiftReaderError):
     """Exception raised for errors in API calls."""
 
     def __init__(self, message):
@@ -29,7 +29,7 @@ class APICallError(WordLiftGraphQLReaderError):
         super().__init__(self.message)
 
 
-class DataTransformError(WordLiftGraphQLReaderError):
+class DataTransformError(WordLiftReaderError):
     """Exception raised for errors in data transformation."""
 
     def __init__(self, message):
@@ -37,7 +37,7 @@ class DataTransformError(WordLiftGraphQLReaderError):
         super().__init__(self.message)
 
 
-class WordLiftGraphQLReader(BaseReader):
+class WordLiftReader(BaseReader):
     """
     A reader class for fetching and transforming data from WordLift GraphQL API.
 
