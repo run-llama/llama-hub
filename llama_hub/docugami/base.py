@@ -121,7 +121,7 @@ class DocugamiReader(BaseReader):
 
             return Document(
                 text=text,
-                extra_info=metadata,
+                metadata=metadata,
             )
 
         # parse the tree and return chunks
