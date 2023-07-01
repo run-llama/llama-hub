@@ -1,10 +1,11 @@
 """Google Mail reader."""
+import base64
 import email
 from typing import Any, List
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from pydantic import BaseModel
-import base64
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
@@ -15,14 +16,18 @@ class GmailReader(BaseReader, BaseModel):
     Reads emails
 
     Args:
+        max_results (int): Max number of results per page. Defaults to 10.
         query (str): Gmail query. Defaults to None.
-        max_results (int): Max number of results. Defaults to 10.
+        service (Any): Gmail service. Defaults to None.
+        total_results (int): Max number of results. Defaults to 500.
+        use_iterative_parser (bool): Use iterative parser. Defaults to False.
     """
 
-    query: str = None
-    use_iterative_parser: bool = False
     max_results: int = 10
+    query: str = None
     service: Any
+    total_results: int = 500
+    use_iterative_parser: bool = False
 
     def load_data(self) -> List[Document]:
         """Load emails from the user's account"""
@@ -53,6 +58,7 @@ class GmailReader(BaseReader, BaseModel):
             Credentials, the obtained credential.
         """
         import os
+
         from google.auth.transport.requests import Request
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
@@ -80,13 +86,26 @@ class GmailReader(BaseReader, BaseModel):
 
         max_results = self.max_results
 
-        messages = (
+        results = (
             self.service.users()
             .messages()
             .list(userId="me", q=query, maxResults=int(max_results))
             .execute()
-            .get("messages", [])
         )
+        messages = results.get("messages", [])
+
+        # paginate if there are more results
+        while "nextPageToken" in results:
+            page_token = results["nextPageToken"]
+            results = (
+                self.service.users()
+                .messages()
+                .list(userId="me", q=query, pageToken=page_token)
+                .execute()
+            )
+            messages.extend(results["messages"])
+            if len(messages) >= self.total_results:
+                break
 
         result = []
         try:
