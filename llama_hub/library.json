@@ -555,5 +555,14 @@
       "issues"
     ],
     "extra_files": ["github_client.py", "__init__.py"]
+  },
+  "FirebaseRealtimeDatabaseReader": {
+    "id": "firebase_realtimedb",
+    "author": "ajay",
+    "keywords": [
+      "firebase",
+      "realtimedb",
+      "database"
+    ]
   }
 }
