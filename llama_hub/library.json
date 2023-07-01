@@ -253,7 +253,7 @@
     "keywords": ["jokes", "dad jokes"]
   },
   "WordLiftLoader": {
-    "id": "WordLift",
+    "id": "wordlift",
     "author": "msftwarelab",
     "keywords": ["wordlift", "knowledge graph", "graphql", "structured data", "seo"]
   },
