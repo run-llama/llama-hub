@@ -23,11 +23,11 @@ class GmailReader(BaseReader, BaseModel):
         use_iterative_parser (bool): Use iterative parser. Defaults to False.
     """
 
-    max_results: int = 10
     query: str = None
+    use_iterative_parser: bool = False
+    max_results: int = 10
     service: Any
     results_per_page: Optional[int]
-    use_iterative_parser: bool = False
 
     def load_data(self) -> List[Document]:
         """Load emails from the user's account"""
