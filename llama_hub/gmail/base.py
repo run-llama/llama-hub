@@ -1,7 +1,7 @@
 """Google Mail reader."""
 import base64
 import email
-from typing import Any, List
+from typing import Any, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -16,17 +16,17 @@ class GmailReader(BaseReader, BaseModel):
     Reads emails
 
     Args:
-        max_results (int): Max number of results per page. Defaults to 10.
+        max_results (int): Defaults to 10.
         query (str): Gmail query. Defaults to None.
         service (Any): Gmail service. Defaults to None.
-        total_results (int): Max number of results. Defaults to 500.
+        results_per_page (Optional[int]): Max number of results per page. Defaults to 10.
         use_iterative_parser (bool): Use iterative parser. Defaults to False.
     """
 
     max_results: int = 10
     query: str = None
     service: Any
-    total_results: int = 500
+    results_per_page: Optional[int]
     use_iterative_parser: bool = False
 
     def load_data(self) -> List[Document]:
@@ -85,6 +85,8 @@ class GmailReader(BaseReader, BaseModel):
         query = self.query
 
         max_results = self.max_results
+        if self.results_per_page:
+            max_results = self.results_per_page
 
         results = (
             self.service.users()
@@ -109,7 +111,7 @@ class GmailReader(BaseReader, BaseModel):
                 .execute()
             )
             messages.extend(results["messages"])
-            if len(messages) >= self.total_results:
+            if len(messages) >= self.max_results:
                 break
 
         result = []
