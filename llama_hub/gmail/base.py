@@ -100,7 +100,12 @@ class GmailReader(BaseReader, BaseModel):
             results = (
                 self.service.users()
                 .messages()
-                .list(userId="me", q=query, pageToken=page_token)
+                .list(
+                    userId="me",
+                    q=query,
+                    pageToken=page_token,
+                    maxResults=int(max_results),
+                )
                 .execute()
             )
             messages.extend(results["messages"])
