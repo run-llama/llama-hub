@@ -4,8 +4,6 @@ from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import firebase_admin
-from firebase_admin import db, credentials
 
 
 class FirebaseRealtimeDatabaseReader(BaseReader):
@@ -26,18 +24,22 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
     ) -> None:
         """Initialize with parameters."""
         try:
-            if not firebase_admin._apps:
-                if service_account_key_path:
-                    cred = credentials.Certificate(service_account_key_path)
-                    firebase_admin.initialize_app(
-                        cred, options={"databaseURL": database_url}
-                    )
-                else:
-                    firebase_admin.initialize_app(
-                        options={"databaseURL": database_url}
-                    )
+            import firebase_admin
+            from firebase_admin import credentials
         except ImportError:
             raise ImportError("`firebase_admin` package not found, please run `pip install firebase-admin`")
+        
+        if not firebase_admin._apps:
+            if service_account_key_path:
+                cred = credentials.Certificate(service_account_key_path)
+                firebase_admin.initialize_app(
+                    cred, options={"databaseURL": database_url}
+                )
+            else:
+                firebase_admin.initialize_app(
+                    options={"databaseURL": database_url}
+                )
+        
 
     def load_data(self, path: str, field: Optional[str] = None) -> List[Document]:
         """Load data from Firebase Realtime Database and convert it into documents.
@@ -50,18 +52,23 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
             List[Document]: A list of documents.
 
         """
+        try:
+            from firebase_admin import db
+        except ImportError:
+            raise ImportError("`firebase_admin` package not found, please run `pip install firebase-admin`")
+        
         ref = db.reference(path)
         data = ref.get()
 
         documents = []
 
-        if isinstance(data, dict):
+        if isinstance(data, Dict):
             for key in data:
                 entry = data[key]
                 extra_info = {
                     "document_id": key,
                 }
-                if type(entry) is dict and field in entry:
+                if type(entry) is Dict and field in entry:
                   text = entry[field]
                 else:
                   text = str(entry)
