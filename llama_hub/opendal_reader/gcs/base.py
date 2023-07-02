@@ -18,8 +18,8 @@ class OpendalGcsReader(BaseReader):
         self,
         bucket: str,
         path: str = "/",
-        endpoint: Optional[str] = None,
-        credentials: Optional[str] = None,
+        endpoint: str = "",
+        credentials: str = "",
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
     ) -> None:
         """Initialize Gcs container, along with credentials if needed.
