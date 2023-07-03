@@ -48,5 +48,5 @@ class YoutubeTranscriptReader(BaseReader):
             transcript = ""
             for chunk in srt:
                 transcript = transcript + chunk["text"] + "\n"
-            results.append(Document(text=transcript))
+            results.append(Document(text=transcript, extra_info={"video_id": video_id}))
         return results
