@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from typing import List
-from graphql import parse, print_ast
-from graphql.language.ast import ArgumentNode, NameNode, IntValueNode
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 import logging
@@ -167,6 +165,8 @@ class WordLiftReader(BaseReader):
         Returns:
             str: The altered GraphQL query with pagination arguments.
         """
+        from graphql import parse, print_ast
+        from graphql.language.ast import ArgumentNode, NameNode, IntValueNode
         query = self.query
         page = DEFAULT_PAGE
         rows = DEFAULT_ROWS
