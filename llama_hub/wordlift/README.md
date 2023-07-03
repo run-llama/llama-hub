@@ -6,7 +6,7 @@ The WordLift GraphQL Reader is a connector to fetch and transform data from a Wo
 To use the WordLift GraphQL Reader, follow the steps below:
 
 1. Set up the necessary configuration options, such as the API endpoint, headers, query, fields, and configuration options (make sure you have with you the [Wordlift Key](https://docs.wordlift.io/pages/key-concepts/#wordlift-key)).
-2. Create an instance of the `WordLiftReader` class, passing in the configuration options.
+2. Create an instance of the `WordLiftLoader` class, passing in the configuration options.
 3. Use the `load_data` method to fetch and transform the data.
 4. Process the loaded documents as needed.
 
@@ -19,7 +19,7 @@ from llama_index import VectorStoreIndex
 from llama_index.readers.schema.base import Document
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
-from llama_hub.wordlift.base import WordLiftReader
+from llama_hub.wordlift.base import WordLiftLoader
 
 # Set up the necessary configuration options
 endpoint = "https://api.wordlift.io/graphql/graphql"
@@ -36,8 +36,8 @@ config_options = {
     'text_fields': ['<YOUR_TEXT_FIELDS>'],
     'metadata_fields': ['<YOUR_METADATA_FIELDS>']
 }
-# Create an instance of the WordLiftReader
-reader = WordLiftReader(endpoint, headers, query, fields, config_options)
+# Create an instance of the WordLiftLoader
+reader = WordLiftLoader(endpoint, headers, query, fields, config_options)
 
 # Load the data
 documents = reader.load_data()
