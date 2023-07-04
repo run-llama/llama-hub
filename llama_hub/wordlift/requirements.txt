@@ -1,3 +1,2 @@
 langchain
 graphql-core
-graphql
