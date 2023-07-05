@@ -22,7 +22,7 @@ from langchain.chains.question_answering import load_qa_chain
 from llama_hub.wordlift.base import WordLiftLoader
 
 # Set up the necessary configuration options
-endpoint = "https://api.wordlift.io/graphql/graphql"
+endpoint = "https://api.wordlift.io/graphql"
 headers = {
     "Authorization": "<YOUR_WORDLIFT_KEY>",
     "Content-Type": "application/json"
@@ -50,7 +50,7 @@ for doc in documents:
                          embedding=doc.embedding, doc_hash=doc.doc_hash, extra_info=doc.extra_info))
 
 # Create the index and query engine
-index = GPTVectorStoreIndex.from_documents(converted_doc)
+index = VectorStoreIndex.from_documents(converted_doc)
 query_engine = index.as_query_engine()
 
 # Perform a query
