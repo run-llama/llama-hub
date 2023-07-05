@@ -14,11 +14,9 @@ Here's an example of how to use the WordLift GraphQL Reader:
 
 ```python
 import json
-import logging
 from llama_index import VectorStoreIndex
 from llama_index.readers.schema.base import Document
 from langchain.llms import OpenAI
-from langchain.chains.question_answering import load_qa_chain
 from llama_hub.wordlift.base import WordLiftLoader
 
 # Set up the necessary configuration options
