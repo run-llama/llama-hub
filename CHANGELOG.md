@@ -1,3 +1,10 @@
+## [v0.0.7] - 2023-07-01
+
+### Smaller features + Bug Fixes
+- Add extra_info with Source to web reader (#337)
+- support pagination on gmail loader (#348)
+
+
 ## [v0.0.6] - 2023-06-28
 
 ### Smaller features + Bug Fixes

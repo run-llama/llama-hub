@@ -18,9 +18,9 @@ class OpendalAzblobReader(BaseReader):
         self,
         container: str,
         path: str = "/",
-        endpoint: Optional[str] = None,
-        account_name: Optional[str] = None,
-        account_key: Optional[str] = None,
+        endpoint: str = "",
+        account_name: str = "",
+        account_key: str = "",
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
     ) -> None:
         """Initialize Azblob container, along with credentials if needed.
