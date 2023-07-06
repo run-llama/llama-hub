@@ -151,7 +151,7 @@ class GmailReader(BaseReader, BaseModel):
 
     def extract_message_body_iterative(self, message: dict):
         if message["raw"]:
-            body = base64.urlsafe_b64decode(message["raw"].encode("utf8"))
+            body = base64.urlsafe_b64decode(message["raw"].encode("utf-8"))
             mime_msg = email.message_from_bytes(body)
         else:
             mime_msg = message
@@ -173,14 +173,14 @@ class GmailReader(BaseReader, BaseModel):
         from bs4 import BeautifulSoup
 
         try:
-            body = base64.urlsafe_b64decode(message["raw"].encode("ASCII"))
+            body = base64.urlsafe_b64decode(message["raw"].encode("utf-8"))
             mime_msg = email.message_from_bytes(body)
 
             # If the message body contains HTML, parse it with BeautifulSoup
             if "text/html" in mime_msg:
                 soup = BeautifulSoup(body, "html.parser")
                 body = soup.get_text()
-            return body.decode("ascii")
+            return body.decode("utf-8")
         except Exception as e:
             raise Exception("Can't parse message body" + str(e))
 
