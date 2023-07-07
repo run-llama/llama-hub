@@ -99,9 +99,7 @@ class S3Reader(BaseReader):
                     s3_client.download_file(self.bucket, obj.key, filepath)
 
             try:
-                from llama_hub.utils import import_loader
-
-                SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
+                from llama_index import SimpleDirectoryReader
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
             loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor, required_exts=self.required_exts)
