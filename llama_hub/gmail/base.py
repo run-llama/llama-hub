@@ -96,6 +96,10 @@ class GmailReader(BaseReader, BaseModel):
         )
         messages = results.get("messages", [])
 
+        # return if there are enough results
+        if len(messages) >= self.max_results:
+            return messages
+
         # paginate if there are more results
         while "nextPageToken" in results:
             page_token = results["nextPageToken"]
