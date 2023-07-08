@@ -95,8 +95,8 @@ class S3Reader(BaseReader):
                 s3_client.download_file(self.bucket, self.key, filepath)
             else:
                 bucket = s3.Bucket(self.bucket)
-                for obj in bucket.objects.filter(Prefix=self.prefix):
-                    if self.num_files_limit is not None and self.num_files_limit > 0:
+                for i, obj in enumerate(bucket.objects.filter(Prefix=self.prefix)):
+                    if self.num_files_limit is not None and i > self.num_files_limit:
                         break
 
                     suffix = Path(obj.key).suffix
