@@ -569,5 +569,13 @@
       "realtimedb",
       "database"
     ]
+  },
+  "GoogleKeepReader": {
+    "id": "google_keep",
+    "author": "pycui",
+    "keywords": [
+      "google keep",
+      "google notes"
+    ]
   }
 }
