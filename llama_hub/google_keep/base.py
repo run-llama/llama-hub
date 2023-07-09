@@ -42,7 +42,7 @@ class GoogleKeepReader(BaseReader):
 
         results = []
         for note_id in note_ids:
-            note = self._load_note(note_ids)
+            note = self._load_note(note_id)
             results.append(Document(text=note, extra_info={"note_id": note_id}))
         return results
 
@@ -58,8 +58,8 @@ class GoogleKeepReader(BaseReader):
         import googleapiclient.discovery as discovery
 
         credentials = self._get_credentials()
-        notes_service = discovery.build("note", "v1", credentials=credentials)
-        note = notes_service.notes().get(name="note").execute()
+        notes_service = discovery.build("keep", "v1", credentials=credentials)
+        note = notes_service.notes().get(name=f"notes/{note_id}").execute()
         note_content = note.get("body").get("text")
         # TODO: support list content.
         return note_content
@@ -106,5 +106,5 @@ class GoogleKeepReader(BaseReader):
 if __name__ == "__main__":
     reader = GoogleKeepReader()
     print(
-        reader.load_data(note_id=["1eKU7kGn8eJCErZ52OC7vCzHDSQaspFYGHHCiTX_IvhFOc7ZQZVJhTIDFMdTJOPiejOk"])
+        reader.load_data(note_ids=["1eKU7kGn8eJCErZ52OC7vCzHDSQaspFYGHHCiTX_IvhFOc7ZQZVJhTIDFMdTJOPiejOk"])
     )
