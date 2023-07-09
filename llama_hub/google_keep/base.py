@@ -60,7 +60,8 @@ class GoogleKeepReader(BaseReader):
         credentials = self._get_credentials()
         notes_service = discovery.build("keep", "v1", credentials=credentials)
         note = notes_service.notes().get(name=f"notes/{note_id}").execute()
-        note_content = note.get("body").get("text")
+        note_content = 'Title: ' + note.get('title') + '\n'
+        note_content += 'Body: ' + note.get("body").get("text")
         # TODO: support list content.
         return note_content
 
@@ -79,28 +80,15 @@ class GoogleKeepReader(BaseReader):
         from google_auth_oauthlib.flow import InstalledAppFlow
         from google.oauth2 import service_account
 
-        creds = None
-        if os.path.exists("token.json"):
-            creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-        elif os.path.exists("service_account.json"):
+        if os.path.exists("service_account.json"):
             creds = service_account.Credentials.from_service_account_file(
                 "service_account.json", scopes=SCOPES
             )
             return creds
-        # If there are no (valid) credentials available, let the user log in.
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", SCOPES
-                )
-                creds = flow.run_local_server(port=8080)
-            # Save the credentials for the next run
-            with open("token.json", "w") as token:
-                token.write(creds.to_json())
-
-        return creds
+        # If there are no (valid) credentials available, notify the user.
+        # Note Google Keep API currently only supports service accounts with
+        # domain-wide delegation access.
+        raise RuntimeError('Need to authenticate with service account.')
 
 
 if __name__ == "__main__":
