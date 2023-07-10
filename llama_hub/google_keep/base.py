@@ -68,16 +68,12 @@ class GoogleKeepReader(BaseReader):
     def _get_credentials(self) -> Any:
         """Get valid user credentials from storage.
 
-        The file token.json stores the user's access and refresh tokens, and is
-        created automatically when the authorization flow completes for the first
-        time.
+        The file service_account.json stores the service account credentials which should have
+        domain-wide delegation access to the Google Keep API.
 
         Returns:
             Credentials, the obtained credential.
         """
-        from google.auth.transport.requests import Request
-        from google.oauth2.credentials import Credentials
-        from google_auth_oauthlib.flow import InstalledAppFlow
         from google.oauth2 import service_account
 
         if os.path.exists("service_account.json"):

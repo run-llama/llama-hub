@@ -1,8 +1,8 @@
 # Google Keep Loader
 
-This loader takes in IDs of Google Keep and parses their text into `Note`s. You can extract a Google Keep's ID directly from its URL. For example, the ID of `https://docs.google.com/document/d/1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec/edit` is `1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec`.
+This loader takes in IDs of Google Keep and parses their text into `Document`s. You can extract a Google Keep's ID directly from its URL. For example, the ID of `https://keep.google.com/u/6/#NOTE/1OySsaIrx_pvQaJJk3VPQfYQvSuxTQuPndEEGl7qvrhFaN8VnO4K8Bti0SL2YklU` is `1OySsaIrx_pvQaJJk3VPQfYQvSuxTQuPndEEGl7qvrhFaN8VnO4K8Bti0SL2YklU`.
 
-As a prerequisite, you will need to register with Google and generate a `credentials.json` file in the directory where you run this loader. See [here](https://developers.google.com/workspace/guides/create-credentials) for instructions.
+As a prerequisite, you will need to register with Google and generate a `service_account.json` file in the directory where you run this loader. In addition, due to the limitation of current Google Keep API, your account has to be an Enterprise (Google Workspace) account. You will need to enable Domain-wide Delegation to enable the service account with Google Read APIs. See [here](https://issuetracker.google.com/issues/210500028) for details.
 
 ## Usage
 
@@ -29,11 +29,11 @@ from llama_index import GPTVectorStoreIndex, download_loader
 
 GoogleKeepReader = download_loader('GoogleKeepReader')
 
-gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
+gkeep_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleKeepReader()
-documents = loader.load_data(document_ids=gdoc_ids)
-index = GPTVectorStoreIndex.from_documents(documents)
-index.query('Where did the author go to school?')
+notes = loader.load_data(note_ids=gkeep_ids)
+index = GPTVectorStoreIndex.from_documents(notes)
+index.query('What are my current TODOs?')
 ```
 
 ### LangChain
@@ -48,14 +48,14 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 
 GoogleKeepReader = download_loader('GoogleKeepReader')
 
-gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
+gkeep_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
-documents = loader.load_data(document_ids=gdoc_ids)
-index = GPTVectorStoreIndex.from_documents(documents)
+notes = loader.load_data(note_ids=gkeep_ids)
+index = GPTVectorStoreIndex.from_documents(notes)
 
 tools = [
     Tool(
-        name="Google Doc Index",
+        name="Google Keep Index",
         func=lambda q: index.query(q),
         description=f"Useful when you want answer questions about the Google Keep Notes.",
     ),
@@ -66,5 +66,5 @@ agent_chain = initialize_agent(
     tools, llm, agent="zero-shot-react-description", memory=memory
 )
 
-output = agent_chain.run(input="Where did the author go to school?")
+output = agent_chain.run(input="What are my current TODOs?")
 ```
