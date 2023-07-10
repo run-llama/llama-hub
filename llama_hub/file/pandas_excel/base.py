@@ -41,6 +41,7 @@ class PandasExcelReader(BaseReader):
     def load_data(
         self,
         file: Path,
+        include_sheetname: bool = False,
         sheet_name: Optional[Union[str, int]] = None,
         extra_info: Optional[Dict] = None,
     ) -> List[Document]:
@@ -63,7 +64,10 @@ class PandasExcelReader(BaseReader):
         df_sheets = []
 
         for key in keys:
-            sheet = df[key].values.astype(str).tolist()
+            sheet = []
+            if include_sheetname:
+                sheet.append([key])
+            sheet.extend(df[key].values.astype(str).tolist())
             df_sheets.append(sheet)
 
         text_list = list(
@@ -73,7 +77,10 @@ class PandasExcelReader(BaseReader):
         if self._concat_rows:
             return [
                 Document(
-                    text=self._row_joiner.join(text_list), extra_info=extra_info or {}
+                    text=(self._row_joiner).join(
+                        self._row_joiner.join(sublist) for sublist in text_list
+                    ),
+                    extra_info=extra_info or {},
                 )
             ]
         else:
