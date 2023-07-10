@@ -1,3 +1,26 @@
+## [v0.0.9] - 2023-07-09
+
+### Smaller features + Bug Fixes
+- change readme and requirements (#354)
+- Update zendesk loader (#358)
+- Remove ascii in gmail loader (#361)
+- Fix readme for wordlift (#357)
+- address bug in paginated loader that always fetches the next page, even if the max_results is met (#363)
+- S3 Extensions Filtering (#362)
+- Add argument encoding to specify the encoding to open the csv file. (#367)
+- Update README.md for unstructured (#366)
+- fix bug where messages are returned without getting message data (#368)
+
+## [v0.0.8] - 2023-07-04
+
+### New Loaders
+- Add firebase realtime db (#347)
+- Add WordLift Loader (#346)
+
+### Bug Fixes
+- [bugfix] replace None to empty string to avoid TypeError (#351)
+- chore: add youtube_id to document metadata (#352)
+
 ## [v0.0.7] - 2023-07-01
 
 ### Smaller features + Bug Fixes
