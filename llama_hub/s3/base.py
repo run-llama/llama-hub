@@ -22,6 +22,7 @@ class S3Reader(BaseReader):
         key: Optional[str] = None,
         prefix: Optional[str] = "",
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
+        required_exts: Optional[List[str]] = None,
         aws_access_id: Optional[str] = None,
         aws_access_secret: Optional[str] = None,
         aws_session_token: Optional[str] = None,
@@ -52,6 +53,7 @@ class S3Reader(BaseReader):
         self.prefix = prefix
 
         self.file_extractor = file_extractor
+        self.required_exts = required_exts
 
         self.aws_access_id = aws_access_id
         self.aws_access_secret = aws_access_secret
@@ -81,20 +83,25 @@ class S3Reader(BaseReader):
             else:
                 bucket = s3.Bucket(self.bucket)
                 for obj in bucket.objects.filter(Prefix=self.prefix):
-                    if obj.key.endswith("/"):  # skip folders
-                        continue
                     suffix = Path(obj.key).suffix
+
+                    is_dir = obj.key.endswith("/") # skip folders
+                    is_bad_ext = (
+                        self.required_exts is not None and suffix not in self.required_exts # skip other extentions
+                    )
+
+                    if is_dir or is_bad_ext:
+                        continue
+
                     filepath = (
                         f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
                     )
                     s3_client.download_file(self.bucket, obj.key, filepath)
 
             try:
-                from llama_hub.utils import import_loader
-
-                SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
+                from llama_index import SimpleDirectoryReader
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
-            loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor)
+            loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor, required_exts=self.required_exts)
 
             return loader.load_data()

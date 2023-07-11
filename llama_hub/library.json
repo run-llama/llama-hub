@@ -252,6 +252,11 @@
     "author": "sidu",
     "keywords": ["jokes", "dad jokes"]
   },
+  "WordLiftLoader": {
+    "id": "wordlift",
+    "author": "msftwarelab",
+    "keywords": ["wordlift", "knowledge graph", "graphql", "structured data", "seo"]
+  },
   "WhatsappChatLoader": {
     "id": "whatsapp",
     "author": "batmanscode",
@@ -555,5 +560,14 @@
       "issues"
     ],
     "extra_files": ["github_client.py", "__init__.py"]
+  },
+  "FirebaseRealtimeDatabaseReader": {
+    "id": "firebase_realtimedb",
+    "author": "ajay",
+    "keywords": [
+      "firebase",
+      "realtimedb",
+      "database"
+    ]
   }
 }

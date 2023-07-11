@@ -10,9 +10,7 @@ To use this loader, you need to pass in a `Path` to a local file. Optionally, yo
 
 ```python
 from pathlib import Path
-from llama_index import download_loader
-
-UnstructuredReader = download_loader("UnstructuredReader")
+from llama_hub.file.unstructured.base import UnstructuredReader
 
 loader = UnstructuredReader()
 documents = loader.load_data(file=Path('./10k_filing.html'))
@@ -27,10 +25,9 @@ from llama_index import download_loader
 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
 loader = SimpleDirectoryReader('./data', file_extractor={
-  ".pdf": "UnstructuredReader",
-  ".html": "UnstructuredReader",
-  ".eml": "UnstructuredReader",
-  ".pptx": "PptxReader"
+  ".pdf": UnstructuredReader(),
+  ".html": UnstructuredReader(),
+  ".eml": UnstructuredReader(),
 })
 documents = loader.load_data()
 ```

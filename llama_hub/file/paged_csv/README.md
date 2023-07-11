@@ -19,7 +19,7 @@ from llama_index import download_loader
 
 PagedCSVReader = download_loader("PagedCSVReader")
 
-loader = PagedCSVReader()
+loader = PagedCSVReader(encoding="utf-8")
 documents = loader.load_data(file=Path('./transactions.csv'))
 ```
 

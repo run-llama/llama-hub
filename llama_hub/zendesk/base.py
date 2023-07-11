@@ -34,6 +34,8 @@ class ZendeskReader(BaseReader):
         articles = self.get_all_articles()
         for article in articles:
             body = article["body"]
+            if body == None:
+                continue
             soup = BeautifulSoup(body, "html.parser")
             body = soup.get_text()
             extra_info = {
