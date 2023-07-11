@@ -569,5 +569,13 @@
       "realtimedb",
       "database"
     ]
+  },
+  "SingleStoreReader": {
+    "id": "singlestore",
+    "author": "singlestore",
+    "keywords": [
+      "singlestore",
+      "memsql"
+    ]
   }
 }
