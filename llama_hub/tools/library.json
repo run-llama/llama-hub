@@ -1,0 +1,60 @@
+{
+  "DatabaseToolSpec": {
+    "id": "tool/database",
+    "author": "ajhofmann",
+    "keywords": ["sql", "postgres", "snowflake", "aws rds"]
+  },
+  "GmailToolSpec": {
+    "id": "tool/gmail",
+    "author": "ajhofmann",
+    "keywords": ["gmail", "email"]
+  },
+  "GoogleCalendarToolSpec": {
+    "id": "tool/google_calendar",
+    "author": "ajhofmann"
+  },
+  "GoogleSearchToolSpec": {
+    "id": "tool/google_search",
+    "author": "ajhofmann"
+  },
+  "LoadAndSearchToolSpec": {
+    "id": "tool/load_and_search",
+    "author": "ajhofmann"
+  },
+  "NotionToolSpec": {
+    "id": "tool/notion",
+    "author": "jerryjliu"
+  },
+  "OpenAPIToolSpec": {
+    "id": "tool/openapi",
+    "author": "ajhofmann"
+  },
+  "RequestsToolSpec": {
+    "id": "tool/requests",
+    "author": "ajhofmann"
+  },
+  "SlackToolSpec": {
+    "id": "tool/slack",
+    "author": "jerryjliu"
+  },
+  "VectorDBToolSpec": {
+    "id": "tool/vector_db",
+    "author": "jerryjliu"
+  },
+  "WikipediaToolSpec": {
+    "id": "tool/wikipedia",
+    "author": "ajhofmann"
+  },
+  "WolframAlphaToolSpec": {
+    "id": "tool/wolfram_alpha",
+    "author": "ajhofmann"
+  },
+  "YelpToolSpec": {
+    "id": "tool/yelp",
+    "author": "ajhofmann"
+  },
+  "ZapierToolSpec": {
+    "id": "tool/zapier",
+    "author": "ajhofmann"
+  }
+}

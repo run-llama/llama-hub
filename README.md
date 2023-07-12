@@ -69,6 +69,8 @@ index.query('Where did the author go to school?')
 
 ```
 
+For examples on how to use Agent Tools, reference the notebooks [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks)
+
 
 ## How to add a loader
 
