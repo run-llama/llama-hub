@@ -1,3 +1,12 @@
+## [v0.0.10] - 2023-07-12
+
+
+### New Feature Release
+- Adding Agent Tools to LlamaHub (#377)
+
+### Smaller features + Bug Fixes 
+- Docugami: use metadata over deprecated extra_info (#375)
+
 ## [v0.0.9] - 2023-07-09
 
 ### Smaller features + Bug Fixes
