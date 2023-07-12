@@ -121,7 +121,8 @@ class DocugamiReader(BaseReader):
 
             return Document(
                 text=text,
-                extra_info=metadata,
+                metadata=metadata,
+                excluded_llm_metadata_keys=[XPATH_KEY, DOCUMENT_ID_KEY, STRUCTURE_KEY]
             )
 
         # parse the tree and return chunks
