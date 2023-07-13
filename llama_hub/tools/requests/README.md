@@ -10,7 +10,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the RequestsToolSpec.
 
 ```python
-from llama_hub.tools.tool_spec.requests.base import RequestsToolSpec
+from llama_hub.tools.requests.base import RequestsToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = RequestsToolSpec(headers=headers)

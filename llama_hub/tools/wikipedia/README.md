@@ -7,7 +7,7 @@ This tool fetches content from wikipedia and makes it available to the agent as 
 This tool has more extensive example usage documented in a Jupyter notebook [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks/wikipedia.ipynb)
 
 ```python
-from llama_hub.tools.tool_spec.wikipedia.base import WikipediaToolSpec
+from llama_hub.tools.wikipedia.base import WikipediaToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = WikipediaToolSpec()
