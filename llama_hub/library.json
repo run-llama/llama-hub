@@ -569,5 +569,9 @@
       "realtimedb",
       "database"
     ]
+  },
+  "FeishuDocsReader": {
+    "id": "feishu_docs",
+    "author": "ma-chengcheng"
   }
 }
