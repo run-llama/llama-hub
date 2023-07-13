@@ -1,27 +1,12 @@
-"""Google Keep reader."""
+"""(Unofficial) Google Keep reader using gkeepapi."""
 
 import os
+import gkeepapi
+import json
 from typing import Any, List
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
-SCOPES = ["https://www.googleapis.com/auth/keep.readonly"]
-
-
-# Copyright 2019 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 
 class GoogleKeepReader(BaseReader):
@@ -30,6 +15,32 @@ class GoogleKeepReader(BaseReader):
     Reads notes from Google Keep
 
     """
+
+    def __init__(self, **kwargs: Any) -> None:
+        """Initialize a GoogleKeepReader.
+
+        Args:
+            **kwargs: keyword arguments.
+        """
+        super().__init__(**kwargs)
+        self._keep = self._get_keep()
+
+    def _get_keep(self) -> gkeepapi.Keep:
+        """Get a Google Keep object with login."""
+        # Read username and password from keep_credentials.json
+        if os.path.exists("keep_credentials.json"):
+            with open("keep_credentials.json", "r") as f:
+                credentials = json.load(f)
+        else:
+            raise RuntimeError('Failed to load keep_credentials.json.')
+
+        keep = gkeepapi.Keep()
+
+        success = keep.login(credentials["username"], credentials["password"])
+        if not success:
+            raise RuntimeError('Failed to login to Google Keep.')
+
+        return keep
 
     def load_data(self, note_ids: List[str]) -> List[Document]:
         """Load data from the note_ids.
@@ -42,53 +53,27 @@ class GoogleKeepReader(BaseReader):
 
         results = []
         for note_id in note_ids:
-            note = self._load_note(note_id)
-            results.append(Document(text=note, extra_info={"note_id": note_id}))
+            note = self._keep.get(note_id)
+            if note is None:
+                raise ValueError(f'Note with id {note_id} not found.')
+            text = f"Title: {note.title}\nContent: {note.text}"
+            results.append(Document(text=text, extra_info={"note_id":
+                                                           note_id}))
         return results
 
-    def _load_note(self, note_id: str) -> str:
-        """Load a note from Google Keep.
-
-        Args:
-            note_id: the note id.
-
-        Returns:
-            The note text.
-        """
-        import googleapiclient.discovery as discovery
-
-        credentials = self._get_credentials()
-        notes_service = discovery.build("keep", "v1", credentials=credentials)
-        note = notes_service.notes().get(name=f"notes/{note_id}").execute()
-        note_content = 'Title: ' + note.get('title') + '\n'
-        note_content += 'Body: ' + note.get("body").get("text")
-        # TODO: support list content.
-        return note_content
-
-    def _get_credentials(self) -> Any:
-        """Get valid user credentials from storage.
-
-        The file service_account.json stores the service account credentials which should have
-        domain-wide delegation access to the Google Keep API.
-
-        Returns:
-            Credentials, the obtained credential.
-        """
-        from google.oauth2 import service_account
-
-        if os.path.exists("service_account.json"):
-            creds = service_account.Credentials.from_service_account_file(
-                "service_account.json", scopes=SCOPES
-            )
-            return creds
-        # If there are no (valid) credentials available, notify the user.
-        # Note Google Keep API currently only supports service accounts with
-        # domain-wide delegation access.
-        raise RuntimeError('Need to authenticate with service account.')
+    def load_all_notes(self) -> List[Document]:
+        """Load all notes from Google Keep."""
+        notes = self._keep.all()
+        results = []
+        for note in notes:
+            text = f"Title: {note.title}\nContent: {note.text}"
+            results.append(Document(text=text, extra_info={"note_id":
+                                                           note.id}))
 
 
 if __name__ == "__main__":
     reader = GoogleKeepReader()
     print(
-        reader.load_data(note_ids=["1eKU7kGn8eJCErZ52OC7vCzHDSQaspFYGHHCiTX_IvhFOc7ZQZVJhTIDFMdTJOPiejOk"])
-    )
+        reader.load_data(note_ids=[
+            "1eKU7kGn8eJCErZ52OC7vCzHDSQaspFYGHHCiTX_IvhFOc7ZQZVJhTIDFMdTJOPiejOk"
+        ]))
