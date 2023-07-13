@@ -25,6 +25,10 @@
     "id": "tools/openapi",
     "author": "ajhofmann"
   },
+  "OpenWeatherMapToolSpec": {
+    "id": "tools/weather",
+    "author": "logan-markewich"
+  },
   "RequestsToolSpec": {
     "id": "tools/requests",
     "author": "ajhofmann"
