@@ -1,16 +1,13 @@
-"""Asana reader."""
-from typing import List
+from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
 
 class AsanaReader(BaseReader):
     """Asana reader. Reads data from an Asana workspace.
 
     Args:
         asana_token (str): Asana token.
-        asana_workspace (str): Asana workspace.
     """
 
     def __init__(self, asana_token: str) -> None:
@@ -19,23 +16,33 @@ class AsanaReader(BaseReader):
 
         self.client = asana.Client.access_token(asana_token)
 
-    def load_data(self, workspace_id: str) -> List[Document]:
+    def load_data(self, id: str, id_type: str) -> List[Document]:
         """Load data from the workspace.
 
         Args:
-            workspace_id (str): Workspace ID.
+            id (str): Workspace ID or Project ID based on id_type.
+            id_type (str): Type of the ID, either "workspace" or "project".
         Returns:
             List[Document]: List of documents.
         """
         results = []
 
-        projects = self.client.projects.find_all({"workspace": workspace_id})
+        if id_type == "workspace":
+            workspace_id = id
+            workspace_name = self.client.workspaces.find_by_id(workspace_id)['name']
+            projects = self.client.projects.find_all({"workspace": workspace_id})
+        elif id_type == "project":
+            project_id = id
+            projects = [self.client.projects.find_by_id(project_id)]
+            workspace_name = projects[0]["workspace"]["name"]
+        else:
+            raise ValueError("id_type must be either 'workspace' or 'project'")
 
         for project in projects:
             tasks = self.client.tasks.find_all(
                 {
                     "project": project["gid"],
-                    "opt_fields": "name,notes,completed,due_on,assignee",
+                    "opt_fields": "name,notes,completed,completed_at,completed_by,assignee,followers",
                 }
             )
             for task in tasks:
@@ -43,14 +50,22 @@ class AsanaReader(BaseReader):
                 comments = "\n".join(
                     [story["text"] for story in stories if story["type"] == "comment"]
                 )
+
+                # Get followers' names
+                followers = [f.get('name', 'Unknown') for f in task.get('followers', [])]
+
                 results.append(
                     Document(
                         text=task["name"] + " " + task["notes"] + " " + comments,
                         extra_info={
                             "task_id": task["gid"],
                             "name": task["name"],
-                            "assignee": task["assignee"],
-                            "project": project["name"],
+                            "assignee": (task.get("assignee") or {}).get("name", ""),
+                            "completed_on": task.get("completed_at", ""),
+                            "completed_by": (task.get("completed_by") or {}).get("name", ""),
+                            "project_name": project["name"],
+                            "workspace_name": workspace_name,
+                            "followers": followers,
                         },
                     )
                 )
