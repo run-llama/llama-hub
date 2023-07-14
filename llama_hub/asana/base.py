@@ -48,11 +48,8 @@ class AsanaReader(BaseReader):
             for task in tasks:
                 stories = self.client.tasks.stories(task["gid"], opt_fields="type,text")
                 comments = "\n".join(
-                    [story["text"] for story in stories if story["type"] == "comment"]
+                    [story["text"] for story in stories if story.get("type") == "comment" and "text" in story]
                 )
-
-                # Get followers' names
-                followers = [f.get('name', '') for f in task.get('followers', []) if f.get('name', '') != "Unknown"]
 
                 results.append(
                     Document(
@@ -65,7 +62,7 @@ class AsanaReader(BaseReader):
                             "completed_by": (task.get("completed_by") or {}).get("name", ""),
                             "project_name": project.get("name", ""),
                             "workspace_name": workspace_name,
-                            "followers": followers,
+                            "followers": ", ".join(follower.get('name') for follower in task.get('followers', []) if follower.get('name') is not None),
                         },
                     )
                 )
