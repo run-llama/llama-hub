@@ -52,18 +52,18 @@ class AsanaReader(BaseReader):
                 )
 
                 # Get followers' names
-                followers = [f.get('name', 'Unknown') for f in task.get('followers', [])]
+                followers = [f.get('name', '') for f in task.get('followers', []) if f.get('name', '') != "Unknown"]
 
                 results.append(
                     Document(
-                        text=task["name"] + " " + task["notes"] + " " + comments,
+                        text=task.get("name", "") + " " + task.get("notes", "") + " " + comments,
                         extra_info={
-                            "task_id": task["gid"],
-                            "name": task["name"],
+                            "task_id": task.get("gid", ""),
+                            "name": task.get("name", ""),
                             "assignee": (task.get("assignee") or {}).get("name", ""),
                             "completed_on": task.get("completed_at", ""),
                             "completed_by": (task.get("completed_by") or {}).get("name", ""),
-                            "project_name": project["name"],
+                            "project_name": project.get("name", ""),
                             "workspace_name": workspace_name,
                             "followers": followers,
                         },
