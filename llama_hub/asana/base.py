@@ -42,7 +42,7 @@ class AsanaReader(BaseReader):
             tasks = self.client.tasks.find_all(
                 {
                     "project": project["gid"],
-                    "opt_fields": "name,notes,completed,completed_at,completed_by,assignee,followers",
+                    "opt_fields": "name,notes,completed,completed_at,completed_by,assignee,followers,custom_fields",
                 }
             )
             for task in tasks:
@@ -51,19 +51,26 @@ class AsanaReader(BaseReader):
                     [story["text"] for story in stories if story.get("type") == "comment" and "text" in story]
                 )
 
+                task_metadata = {
+                    "task_id": task.get("gid", ""),
+                    "name": task.get("name", ""),
+                    "assignee": (task.get("assignee") or {}).get("name", ""),
+                    "completed_on": task.get("completed_at", ""),
+                    "completed_by": (task.get("completed_by") or {}).get("name", ""),
+                    "project_name": project.get("name", ""),
+                    "custom_fields": [i['display_value'] for i in task.get("custom_fields") if task.get("custom_fields") is not None],
+                    "workspace_name": workspace_name,
+                }
+
+                if task.get("followers") is not None:
+                    task_metadata["followers"] = [i.get('name') for i in task.get("followers") if 'name' in i]
+                else:
+                    task_metadata["followers"] = []
+
                 results.append(
                     Document(
                         text=task.get("name", "") + " " + task.get("notes", "") + " " + comments,
-                        extra_info={
-                            "task_id": task.get("gid", ""),
-                            "name": task.get("name", ""),
-                            "assignee": (task.get("assignee") or {}).get("name", ""),
-                            "completed_on": task.get("completed_at", ""),
-                            "completed_by": (task.get("completed_by") or {}).get("name", ""),
-                            "project_name": project.get("name", ""),
-                            "workspace_name": workspace_name,
-                            "followers": ", ".join(follower.get('name') for follower in task.get('followers', []) if follower.get('name') is not None),
-                        },
+                        extra_info=task_metadata,
                     )
                 )
 
