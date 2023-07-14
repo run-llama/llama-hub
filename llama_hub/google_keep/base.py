@@ -42,17 +42,17 @@ class GoogleKeepReader(BaseReader):
 
         return keep
 
-    def load_data(self, note_ids: List[str]) -> List[Document]:
-        """Load data from the note_ids.
+    def load_data(self, document_ids: List[str]) -> List[Document]:
+        """Load data from the document_ids.
 
         Args:
-            note_ids (List[str]): a list of note ids.
+            document_ids (List[str]): a list of note ids.
         """
-        if note_ids is None:
-            raise ValueError('Must specify a "note_ids" in `load_kwargs`.')
+        if document_ids is None:
+            raise ValueError('Must specify a "document_ids" in `load_kwargs`.')
 
         results = []
-        for note_id in note_ids:
+        for note_id in document_ids:
             note = self._keep.get(note_id)
             if note is None:
                 raise ValueError(f'Note with id {note_id} not found.')
@@ -74,6 +74,6 @@ class GoogleKeepReader(BaseReader):
 if __name__ == "__main__":
     reader = GoogleKeepReader()
     print(
-        reader.load_data(note_ids=[
+        reader.load_data(document_ids=[
             "1eKU7kGn8eJCErZ52OC7vCzHDSQaspFYGHHCiTX_IvhFOc7ZQZVJhTIDFMdTJOPiejOk"
         ]))

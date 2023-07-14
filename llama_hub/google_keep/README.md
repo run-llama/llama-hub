@@ -11,13 +11,11 @@ To use gkeepapi, you will need to login with username and a password. I highly r
 To use this loader, you simply need to pass in an array of Google Keep IDs.
 
 ```python
-from llama_index import download_loader
+from llama_hub.google_keep.base import GoogleKeepReader
 
-GoogleKeepReader = download_loader('GoogleKeepReader')
-
-gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
+gkeep_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleKeepReader()
-documents = loader.load_data(document_ids=gdoc_ids)
+documents = loader.load_data(document_ids=gkeep_ids)
 ```
 
 ## Examples
@@ -27,13 +25,12 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ### LlamaIndex
 
 ```python
-from llama_index import VectorStoreIndex, download_loader
-
-GoogleKeepReader = download_loader('GoogleKeepReader')
+from llama_index import VectorStoreIndex
+from llama_hub.google_keep.base import GoogleKeepReader
 
 gkeep_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleKeepReader()
-notes = loader.load_data(note_ids=gkeep_ids)
+notes = loader.load_data(document_ids=gkeep_ids)
 index = VectorStoreIndex.from_documents(notes)
 query_engine = index.as_query_engine()
 query_engine.query('What are my current TODOs?')
@@ -44,16 +41,16 @@ query_engine.query('What are my current TODOs?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from llama_index import VectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex
+from llama_hub.google_keep.base import GoogleKeepReader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
-GoogleKeepReader = download_loader('GoogleKeepReader')
 
 gkeep_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleKeepReader()
-notes = loader.load_data(note_ids=gkeep_ids)
+notes = loader.load_data(document_ids=gkeep_ids)
 index = VectorStoreIndex.from_documents(notes)
 query_engine = index.as_query_engine()
 
