@@ -1,3 +1,13 @@
+## [v0.0.11] - 2023-07-13
+
+### New Feature Release
+- Add weather agent tool (#384) 
+
+### Smaller Features + Bug Fixes
+- fix tool readme imports (#381)
+- fix tool notebooks (#380)
+- fix gmail notebook  (#379)
+
 ## [v0.0.10] - 2023-07-12
 
 
