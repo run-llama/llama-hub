@@ -1,7 +1,6 @@
 """(Unofficial) Google Keep reader using gkeepapi."""
 
 import os
-import gkeepapi
 import json
 from typing import Any, List
 
@@ -16,16 +15,42 @@ class GoogleKeepReader(BaseReader):
 
     """
 
-    def __init__(self, **kwargs: Any) -> None:
-        """Initialize a GoogleKeepReader.
+    def load_data(self, document_ids: List[str]) -> List[Document]:
+        """Load data from the document_ids.
 
         Args:
-            **kwargs: keyword arguments.
+            document_ids (List[str]): a list of note ids.
         """
-        super().__init__(**kwargs)
-        self._keep = self._get_keep()
+        keep = self._get_keep()
 
-    def _get_keep(self) -> gkeepapi.Keep:
+        if document_ids is None:
+            raise ValueError('Must specify a "document_ids" in `load_kwargs`.')
+
+        results = []
+        for note_id in document_ids:
+            note = keep.get(note_id)
+            if note is None:
+                raise ValueError(f'Note with id {note_id} not found.')
+            text = f"Title: {note.title}\nContent: {note.text}"
+            results.append(Document(text=text, extra_info={"note_id":
+                                                           note_id}))
+        return results
+
+    def load_all_notes(self) -> List[Document]:
+        """Load all notes from Google Keep."""
+        keep = self._get_keep()
+
+        notes = keep.all()
+        results = []
+        for note in notes:
+            text = f"Title: {note.title}\nContent: {note.text}"
+            results.append(Document(text=text, extra_info={"note_id":
+                                                           note.id}))
+        return results
+
+    def _get_keep(self) -> Any:
+        import gkeepapi
+
         """Get a Google Keep object with login."""
         # Read username and password from keep_credentials.json
         if os.path.exists("keep_credentials.json"):
@@ -41,34 +66,6 @@ class GoogleKeepReader(BaseReader):
             raise RuntimeError('Failed to login to Google Keep.')
 
         return keep
-
-    def load_data(self, document_ids: List[str]) -> List[Document]:
-        """Load data from the document_ids.
-
-        Args:
-            document_ids (List[str]): a list of note ids.
-        """
-        if document_ids is None:
-            raise ValueError('Must specify a "document_ids" in `load_kwargs`.')
-
-        results = []
-        for note_id in document_ids:
-            note = self._keep.get(note_id)
-            if note is None:
-                raise ValueError(f'Note with id {note_id} not found.')
-            text = f"Title: {note.title}\nContent: {note.text}"
-            results.append(Document(text=text, extra_info={"note_id":
-                                                           note_id}))
-        return results
-
-    def load_all_notes(self) -> List[Document]:
-        """Load all notes from Google Keep."""
-        notes = self._keep.all()
-        results = []
-        for note in notes:
-            text = f"Title: {note.title}\nContent: {note.text}"
-            results.append(Document(text=text, extra_info={"note_id":
-                                                           note.id}))
 
 
 if __name__ == "__main__":
