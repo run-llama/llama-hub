@@ -12,7 +12,7 @@ from llama_index import download_loader
 
 SimpleCSVReader = download_loader("SimpleCSVReader")
 
-loader = SimpleCSVReader()
+loader = SimpleCSVReader(encoding="utf-8")
 documents = loader.load_data(file=Path('./transactions.csv'))
 ```
 

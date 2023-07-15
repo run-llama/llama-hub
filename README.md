@@ -1,6 +1,6 @@
 # LlamaHub 🦙
 
-This is a simple library of all the data loaders / readers that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/jerryjliu/llama_index) (e.g. when building a index) and [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use). For example, there are loaders to parse Google Docs, SQL Databases, PDF files, PowerPoints, Notion, Slack, Obsidian, and many more. Note that because different loaders produce the same types of Documents, you can easily use them together in the same index.
+This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/jerryjliu/llama_index) (e.g. when building a index) and [LangChain](https://github.com/hwchase17/langchain) (e.g. when building different tools an agent can use). For example, there are loaders to parse Google Docs, SQL Databases, PDF files, PowerPoints, Notion, Slack, Obsidian, and many more. Note that because different loaders produce the same types of Documents, you can easily use them together in the same index.
 
 Check out our website here: https://llamahub.ai/.
 
@@ -50,7 +50,17 @@ question="<query here>"
 answer = qa_chain.run(input_documents=langchain_documents, question=question)
 
 ```
-## Usage (Use `download_loader` from LlamaIndex)
+
+## Loaders vs Tools
+
+This repo contains two main types of plugins for large language models, loaders and tools. Loaders are contained in the llama_hub folder [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub), while tools are in the tools subfolder here: [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools).
+
+Loaders are intended to be used for a human to load data into the large language model, while tools are data services that are meant for a LLM agent to interact with to load or modify data.
+
+For examples on how to use Tools, reference the notebooks [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks)
+
+
+## Loader Usage (Use `download_loader` from LlamaIndex)
 
 You can also use the loaders with `download_loader` from LlamaIndex in a single line of code.
 
@@ -68,7 +78,6 @@ index = GPTVectorStoreIndex.from_documents(documents)
 index.query('Where did the author go to school?')
 
 ```
-
 
 ## How to add a loader
 

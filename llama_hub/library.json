@@ -570,6 +570,10 @@
       "database"
     ]
   },
+  "FeishuDocsReader": {
+    "id": "feishu_docs",
+    "author": "ma-chengcheng"
+  },
   "GoogleKeepReader": {
     "id": "google_keep",
     "author": "pycui",
