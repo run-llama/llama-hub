@@ -32,7 +32,7 @@ class PandasExcelReader(BaseReader):
         row_joiner: str = "\n",
         **kwargs: Any
     ) -> None:
-        '''Init params.'''
+        """Init params."""
         super().__init__(*args, **kwargs)
         self._pandas_config = pandas_config
         self._concat_rows = concat_rows
