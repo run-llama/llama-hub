@@ -32,15 +32,16 @@ class PandasExcelReader(BaseReader):
         row_joiner: str = "\n",
         **kwargs: Any
     ) -> None:
-        """Init params."""
+        '''Init params.'''
         super().__init__(*args, **kwargs)
         self._pandas_config = pandas_config
         self._concat_rows = concat_rows
-        self._row_joiner = row_joiner
+        self._row_joiner = row_joiner if row_joiner else "\n"
 
     def load_data(
         self,
         file: Path,
+        pandas_config: dict = {},
         include_sheetname: bool = False,
         sheet_name: Optional[Union[str, int]] = None,
         extra_info: Optional[Dict] = None,
