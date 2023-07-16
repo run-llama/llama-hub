@@ -32,12 +32,14 @@ class MboxReader(BaseReader):
         *args: Any,
         max_count: int = 0,
         message_format: str = DEFAULT_MESSAGE_FORMAT,
+        beautifulsoup_parser: str = 'html.parser',
         **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
         self.max_count = max_count
         self.message_format = message_format
+        self.beautifulsoup_parser = beautifulsoup_parser
 
     def parse_file(self, filepath: Path, errors: str = "ignore") -> List[str]:
         """Parse file into string."""
@@ -79,7 +81,7 @@ class MboxReader(BaseReader):
                 continue
 
             # Parse message HTML content and remove unneeded whitespace
-            soup = BeautifulSoup(content)
+            soup = BeautifulSoup(content, self.beautifulsoup_parser)
             stripped_content = " ".join(soup.get_text().split())
             # Format message to include date, sender, receiver and subject
             msg_string = self.message_format.format(
