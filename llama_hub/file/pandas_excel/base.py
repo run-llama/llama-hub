@@ -27,16 +27,16 @@ class PandasExcelReader(BaseReader):
     def __init__(
         self,
         *args: Any,
-        pandas_config: dict = {},
+        pandas_config: Optional[dict] = None,
         concat_rows: bool = True,
         row_joiner: str = "\n",
         **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
-        self._pandas_config = pandas_config
+        self._pandas_config = pandas_config or {}
         self._concat_rows = concat_rows
-        self._row_joiner = row_joiner
+        self._row_joiner = row_joiner if row_joiner else "\n"
 
     def load_data(
         self,
