@@ -63,6 +63,8 @@ class ZapierToolSpec(BaseToolSpec):
         Args:
             id (str): The id of the zapier action to call
             params (Optional[dict]): The instructions and other values instructing the action to be taken
+
+        If the error field is not null, interpret the error and try to fix it. Otherwise, inform the user of how they might fix it.
         """
 
         response = requests.post(
