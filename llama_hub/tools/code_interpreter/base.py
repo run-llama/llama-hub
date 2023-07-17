@@ -14,12 +14,6 @@ class CodeInterpreterToolSpec(BaseToolSpec):
 
     spec_functions = ["code_interpreter"]
 
-    def __init__(
-        self,
-        llm_cls: Optional[LLM] = OpenAI,
-        llm_args: Optional[dict] = {}
-    ) -> None:
-
     def code_interpreter(self, code: str):
         """
         A function to execute python code, and return the stdout and stderr
