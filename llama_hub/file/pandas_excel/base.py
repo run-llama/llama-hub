@@ -58,6 +58,8 @@ class PandasExcelReader(BaseReader):
 
         import pandas as pd
 
+        pandas_config = pandas_config or {}
+
         df = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
 
         keys = df.keys()
