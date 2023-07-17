@@ -27,25 +27,27 @@ class PandasExcelReader(BaseReader):
     def __init__(
         self,
         *args: Any,
-        pandas_config: dict = {},
+        pandas_config: Optional[dict] = None,
         concat_rows: bool = True,
         row_joiner: str = "\n",
         **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
-        self._pandas_config = pandas_config
+        self._pandas_config = pandas_config or {}
         self._concat_rows = concat_rows
         self._row_joiner = row_joiner if row_joiner else "\n"
+        self._pandas_config = pandas_config or {}
 
     def load_data(
         self,
         file: Path,
-        pandas_config: dict = {},
+        pandas_config: Optional[dict] = None,
         include_sheetname: bool = False,
         sheet_name: Optional[Union[str, int]] = None,
         extra_info: Optional[Dict] = None,
     ) -> List[Document]:
+        pandas_config = pandas_config or {}
         """Parse file and extract values from a specific column.
 
         Args:
