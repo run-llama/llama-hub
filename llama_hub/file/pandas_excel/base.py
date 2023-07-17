@@ -41,7 +41,6 @@ class PandasExcelReader(BaseReader):
     def load_data(
         self,
         file: Path,
-        pandas_config: Optional[dict] = None,
         include_sheetname: bool = False,
         sheet_name: Optional[Union[str, int]] = None,
         extra_info: Optional[Dict] = None,
@@ -57,8 +56,6 @@ class PandasExcelReader(BaseReader):
         import itertools
 
         import pandas as pd
-
-        pandas_config = pandas_config or {}
 
         df = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
 
