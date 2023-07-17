@@ -9,8 +9,6 @@ from typing import Any, Dict, List, Optional, Tuple, cast
 
 from llama_index.readers.base import BaseReader
 from llama_index.schema import Document
-# from llama_index.readers.schema.base import Document
-
 
 class MarkdownReader(BaseReader):
     """Markdown parser.
@@ -83,10 +81,6 @@ class MarkdownReader(BaseReader):
         content = re.sub(pattern, r"\1", content)
         return content
     
-    def _init_parser(self) -> Dict:
-        """Initialize the parser with the config."""
-        return {}
-
     def parse_tups(
         self, filepath: Path, content: Optional[str] = None, errors: str = "ignore"
     ) -> List[Tuple[Optional[str], str]]:
@@ -113,7 +107,6 @@ class MarkdownReader(BaseReader):
         tups = self.parse_tups(file, content=content)
         results = []
         # TODO: don't include headers right now
-        # return [Document(text=value, extra_info=extra_info or {}) for _, value in tups]
         results = [
             Document(
                 text=f"\n\n{header}\n{value}" if header else value, 
