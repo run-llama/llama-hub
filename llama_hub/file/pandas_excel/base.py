@@ -37,7 +37,6 @@ class PandasExcelReader(BaseReader):
         self._pandas_config = pandas_config or {}
         self._concat_rows = concat_rows
         self._row_joiner = row_joiner if row_joiner else "\n"
-        self._pandas_config = pandas_config or {}
 
     def load_data(
         self,
@@ -47,7 +46,6 @@ class PandasExcelReader(BaseReader):
         sheet_name: Optional[Union[str, int]] = None,
         extra_info: Optional[Dict] = None,
     ) -> List[Document]:
-        pandas_config = pandas_config or {}
         """Parse file and extract values from a specific column.
 
         Args:
