@@ -1,4 +1,8 @@
 {
+  "CodeInterpreterToolSpec": {
+    "id": "tools/code_interpreter",
+    "author": "ajhofmann"
+  },
   "DatabaseToolSpec": {
     "id": "tools/database",
     "author": "ajhofmann",

@@ -3,8 +3,6 @@
 from llama_index.tools.tool_spec.base import BaseToolSpec
 from llama_index.readers.schema.base import Document
 from typing import Any, List
-import wikipedia
-from wikipedia import PageError
 
 
 class WikipediaToolSpec(BaseToolSpec):
@@ -26,6 +24,7 @@ class WikipediaToolSpec(BaseToolSpec):
             lang  (str): language of wikipedia texts (default English)
         """
         import wikipedia
+        from wikipedia import PageError
 
         try:
             results = []

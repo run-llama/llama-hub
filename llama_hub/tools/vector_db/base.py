@@ -11,7 +11,7 @@ from llama_index.vector_stores.types import (
 from llama_index.retrievers import VectorIndexRetriever
 
 
-class VectorDB(BaseToolSpec):
+class VectorDBToolSpec(BaseToolSpec):
     """Vector DB tool spec."""
 
     spec_functions = ["auto_retrieve_fn"]
@@ -53,3 +53,6 @@ class VectorDB(BaseToolSpec):
 
         response = query_engine.query(query)
         return str(response)
+
+# backwards compatibility
+VectorDB = VectorDBToolSpec
