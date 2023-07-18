@@ -1,3 +1,16 @@
+## [v0.0.12] - 2023-07-17
+
+### New Feature Release
+- Add code interpreter tool (#398)
+- Add Feishu Docs Reader (#383)
+- Add Google Keep reader (#370)
+
+### Smaller Features + Bug Fixes
+- Various bug fix and improvements to pandas excel reader (#397, #372, #391)
+- Update README.md to better highlight data agents (#395)
+- Update Zapier tool to use parameters in addition to instructions (#390)
+- Make S3Reader more configurable (#364)
+
 ## [v0.0.11] - 2023-07-13
 
 ### New Feature Release
