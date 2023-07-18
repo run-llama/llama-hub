@@ -67,6 +67,7 @@ class OpenAPIToolSpec(BaseToolSpec):
                     "The jsonschema library is required to parse OpenAPI documents. "
                     "Please install it with `pip install jsonschema`."
                 )
+
             resolver = jsonschema.RefResolver.from_schema(openapi_doc)
 
             def _dereference(obj):
