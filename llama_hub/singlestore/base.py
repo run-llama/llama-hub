@@ -66,33 +66,3 @@ class SingleStoreReader(BaseReader):
         """
         
         return self.reader.load_data(query=query)
-
-
-# # Example usage:
-
-# single_store_reader = SingleStoreReader(
-#     scheme="mysql",
-#     host="svc-xxx-.svc.singlestore.com",
-#     port="3306",
-#     user="admin",
-#     password="xxx",
-#     dbname="winter_wikipedia",
-#     table_name="winter_olympics_2022",
-#     content_field="text",
-#     vector_field="embedding"
-# )
-
-# # Example search_embedding as JSON string
-# query_text = "What countries won medals for curling?"
-
-# search_embedding = json.dumps(get_embedding(query_text, engine="text-embedding-ada-002"))
-
-# documents = single_store_reader.load_data(search_embedding=search_embedding)
-
-# index = ListIndex.from_documents(documents)
-
-# query_engine = index.as_query_engine()
-
-# response = query_engine.query(query_text)
-
-# print(response)
