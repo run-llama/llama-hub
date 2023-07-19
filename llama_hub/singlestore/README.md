@@ -7,9 +7,7 @@ The SingleStore Loader retrieves a set of documents from a specified table in a 
 Here's an example usage of the SingleStoreReader:
 
 ```python
-from llama_index import download_loader
-
-SingleStoreReader = download_loader("SingleStoreReader")
+from llama_hub.singlestore.base import SingleStoreReader
 
 # Initialize the reader with your SingleStore database credentials and other relevant details
 reader = SingleStoreReader(
