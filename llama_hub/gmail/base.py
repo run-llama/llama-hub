@@ -143,10 +143,12 @@ class GmailReader(BaseReader, BaseModel):
         if not body:
             return None
 
+        # https://developers.google.com/gmail/api/reference/rest/v1/users.messages
         return {
             "id": message_data["id"],
             "threadId": message_data["threadId"],
             "snippet": message_data["snippet"],
+            "internalDate": message_data["internalDate"],
             "body": body,
         }
 
