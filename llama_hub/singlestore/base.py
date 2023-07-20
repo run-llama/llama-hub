@@ -38,7 +38,11 @@ class SingleStoreReader(BaseReader):
 
         pymysql.install_as_MySQLdb()
 
-        self.DatabaseReader = download_loader('DatabaseReader')
+        try:
+            from llama_hub.utils import import_loader
+            self.DatabaseReader = import_loader('DatabaseReader')
+        except:
+            self.DatabaseReader = download_loader('DatabaseReader')
         self.reader = self.DatabaseReader(
             scheme=self.scheme,
             host=self.host,
