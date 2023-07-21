@@ -1,5 +1,4 @@
 import os
-import tempfile
 from contextlib import contextmanager
 from pathlib import Path
 from urllib.request import Request, urlopen
