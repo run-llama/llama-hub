@@ -30,7 +30,7 @@ def test_transcribing_a_remote_mp3() -> None:
     else:
         with load_remote_audio_sample() as filename:
             documents = AudioTranscriber().load_data(file=Path(filename))
-    
+
     # It technically gets the transcription incorrect, at least with
     # the base model. The final word is 'moor', not 'more'. (This
     # sample is from 'The Secret Garden'.) So skipping that word
