@@ -1,8 +1,8 @@
 """Deepdoctection Data Reader."""
 
 from pathlib import Path
-from typing import Optional, Set
-from typing import Dict, List
+from typing import Dict, List, Optional, Set
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 

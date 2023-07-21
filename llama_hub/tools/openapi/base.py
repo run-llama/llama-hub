@@ -60,7 +60,7 @@ class OpenAPIToolSpec(BaseToolSpec):
 
         def dereference_openapi(openapi_doc):
             """Dereferences a Swagger/OpenAPI document by resolving all $ref pointers."""
-            try: 
+            try:
                 import jsonschema
             except ImportError:
                 raise ImportError(

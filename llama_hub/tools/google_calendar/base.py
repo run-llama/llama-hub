@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_index.readers.schema.base import Document
 import datetime
 import os
 from typing import Any, List, Optional, Union
+
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 

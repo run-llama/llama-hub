@@ -16,13 +16,11 @@ class PagedCSVReader(BaseReader):
     Displayed each row in an LLM-friendly format on a separate document.
 
     Args:
-        encoding (str): Encoding used to open the file.  
+        encoding (str): Encoding used to open the file.
             utf-8 by default.
     """
 
-    def __init__(
-        self, *args: Any, encoding: str = "utf-8", **kwargs: Any
-    ) -> None:
+    def __init__(self, *args: Any, encoding: str = "utf-8", **kwargs: Any) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
         self._encoding = encoding

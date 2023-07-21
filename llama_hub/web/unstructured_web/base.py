@@ -16,7 +16,8 @@ class UnstructuredURLLoader(BaseLoader):
         """Initialize with file path."""
         try:
             import unstructured  # noqa:F401
-            from unstructured.__version__ import __version__ as __unstructured_version__
+            from unstructured.__version__ import \
+                __version__ as __unstructured_version__
 
             self.__version = __unstructured_version__
         except ImportError:

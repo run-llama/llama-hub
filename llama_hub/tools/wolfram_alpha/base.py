@@ -1,11 +1,13 @@
 """Wolfram Alpha tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional
-import requests
 import urllib.parse
+from typing import Optional
+
+import requests
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 QUERY_URL_TMPL = "http://api.wolframalpha.com/v1/result?appid={app_id}&i={query}"
+
 
 class WolframAlphaToolSpec(BaseToolSpec):
     """Wolfram Alpha tool spec."""

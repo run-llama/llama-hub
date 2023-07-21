@@ -1,27 +1,27 @@
 """Zapier tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, Dict
-import requests
 import json
+from typing import Dict, Optional
+
+import requests
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 ACTION_URL_TMPL = "https://nla.zapier.com/api/v1/dynamic/exposed/{action_id}/execute/"
+
 
 class ZapierToolSpec(BaseToolSpec):
     """Zapier tool spec."""
 
     spec_functions = ["list_actions", "natural_language_query"]
 
-    def __init__(self, api_key: Optional[str] = None, oauth_access_token: Optional[str] = None) -> None:
+    def __init__(
+        self, api_key: Optional[str] = None, oauth_access_token: Optional[str] = None
+    ) -> None:
         """Initialize with parameters."""
         if api_key:
-            self._headers = {
-                "x-api-key": api_key
-                }
+            self._headers = {"x-api-key": api_key}
         elif oauth_access_token:
-            self._headers = {
-                "Authorization": f"Bearer {oauth_access_token}"
-            }
+            self._headers = {"Authorization": f"Bearer {oauth_access_token}"}
         else:
             raise ValueError("Must provide either api_key or oauth_access_token")
 
@@ -47,11 +47,9 @@ class ZapierToolSpec(BaseToolSpec):
         """
 
         response = requests.get(
-            "https://nla.zapier.com/api/v1/dynamic/exposed/",
-            headers=self._headers
+            "https://nla.zapier.com/api/v1/dynamic/exposed/", headers=self._headers
         )
         return response.text
-
 
     def natural_language_query(self, id: str, params: Dict[str, str]):
         """
@@ -59,7 +57,7 @@ class ZapierToolSpec(BaseToolSpec):
         This endpoint accepts natural language instructions to integrate with other services
         You should always provide a natural language string in the params dict descrbing the overall action to be taken
 
-        The action being called must have an id obtained from list_actions. If the action is not exposed it can be here: 
+        The action being called must have an id obtained from list_actions. If the action is not exposed it can be here:
         Args:
             id (str): The id of the zapier action to call
             params (Optional[dict]): The instructions and other values instructing the action to be taken
@@ -70,6 +68,6 @@ class ZapierToolSpec(BaseToolSpec):
         response = requests.post(
             ACTION_URL_TMPL.format(action_id=id),
             headers=self._headers,
-            data=json.dumps(params)
+            data=json.dumps(params),
         )
         return response.text

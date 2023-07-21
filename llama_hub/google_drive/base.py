@@ -216,8 +216,9 @@ class GoogleDriveReader(BaseReader):
         """
 
         from io import BytesIO
-        from googleapiclient.http import MediaIoBaseDownload
+
         from googleapiclient.discovery import build
+        from googleapiclient.http import MediaIoBaseDownload
 
         try:
             # Get file details

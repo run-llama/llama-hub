@@ -1,11 +1,11 @@
 """Confluence reader."""
 import logging
 import os
-from retrying import retry
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+from retrying import retry
 
 CONFLUENCE_API_TOKEN = "CONFLUENCE_API_TOKEN"
 CONFLUENCE_PASSWORD = "CONFLUENCE_PASSWORD"
@@ -360,9 +360,10 @@ class ConfluenceReader(BaseReader):
 
     def process_image(self, link):
         try:
+            from io import BytesIO  # type: ignore
+
             import pytesseract  # type: ignore
             from PIL import Image  # type: ignore
-            from io import BytesIO  # type: ignore
         except ImportError:
             raise ImportError(
                 "`pytesseract` or `Pillow` package not found, please run `pip install pytesseract Pillow`"
@@ -386,8 +387,9 @@ class ConfluenceReader(BaseReader):
 
     def process_doc(self, link):
         try:
-            import docx2txt  # type: ignore
             from io import BytesIO  # type: ignore
+
+            import docx2txt  # type: ignore
         except ImportError:
             raise ImportError(
                 "`docx2txt` package not found, please run `pip install docx2txt`"
@@ -435,11 +437,12 @@ class ConfluenceReader(BaseReader):
 
     def process_svg(self, link):
         try:
+            from io import BytesIO  # type: ignore
+
             import pytesseract  # type: ignore
             from PIL import Image  # type: ignore
-            from io import BytesIO  # type: ignore
-            from svglib.svglib import svg2rlg  # type: ignore
             from reportlab.graphics import renderPM  # type: ignore
+            from svglib.svglib import svg2rlg  # type: ignore
         except ImportError:
             raise ImportError(
                 "`pytesseract`, `Pillow`, or `svglib` package not found, please run `pip install pytesseract Pillow svglib`"

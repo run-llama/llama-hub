@@ -1,9 +1,10 @@
 """Google Search tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_index.readers.schema.base import Document
-import requests
 import urllib.parse
+
+import requests
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 QUERY_URL_TMPL = (
     "https://www.googleapis.com/customsearch/v1?key={key}&cx={engine}&q={query}"

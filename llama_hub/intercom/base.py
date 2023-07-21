@@ -1,6 +1,7 @@
 """Intercom reader."""
-from typing import List
 import json
+from typing import List
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 

@@ -1,18 +1,15 @@
-from llama_index import Document
+from typing import List, Tuple
+from unittest.mock import AsyncMock, MagicMock, call
+
 import httpx
 import pytest
-from unittest.mock import MagicMock, AsyncMock, call
-from typing import List, Tuple
-
-
-from llama_hub.github_repo.github_client import (
-    GithubClient,
-    GitBlobResponseModel,
-    GitTreeResponseModel,
-    GitBranchResponseModel,
-)
+from llama_index import Document
 
 from llama_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.github_client import (GitBlobResponseModel,
+                                                 GitBranchResponseModel,
+                                                 GithubClient,
+                                                 GitTreeResponseModel)
 
 ## Test GithubRepositoryReader's _recurse_tree method
 

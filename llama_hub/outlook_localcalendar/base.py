@@ -10,13 +10,10 @@ Created on Sun Apr 16 12:03:19 2023
 import datetime
 import importlib
 import platform
-
-
 from typing import List, Optional, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
 
 # Copyright 2023 Evslin Consulting
 #

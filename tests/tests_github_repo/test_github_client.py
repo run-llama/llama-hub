@@ -1,9 +1,13 @@
-import pytest
 import base64
 import os
-from unittest.mock import MagicMock
 import unittest
 from typing import List, Tuple
+from unittest.mock import MagicMock
+
+import pytest
+
+from llama_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.github_client import GithubClient
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(
@@ -12,11 +16,7 @@ from typing import List, Tuple
 # )
 
 
-from llama_hub.github_repo.github_client import (
-    GithubClient,
-)
 
-from llama_hub.github_repo.base import GithubRepositoryReader
 
 
 @pytest.fixture

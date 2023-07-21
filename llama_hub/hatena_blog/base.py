@@ -1,6 +1,7 @@
 """Hatena Blog reader."""
 
-from typing import List, Dict
+from typing import Dict, List
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -57,8 +58,8 @@ class HatenaBlogReader(BaseReader):
 
     def get_articles(self, url: str) -> Dict:
         import requests
-        from requests.auth import HTTPBasicAuth
         from bs4 import BeautifulSoup
+        from requests.auth import HTTPBasicAuth
 
         articles: List[Article] = []
         next_page = None

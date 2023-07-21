@@ -3,10 +3,10 @@
 A loader that fetches a file or iterates through a directory on AWS S3 or other compatible service.
 
 """
+import asyncio
 import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union, cast
-import asyncio
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader

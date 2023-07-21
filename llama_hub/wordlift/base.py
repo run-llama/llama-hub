@@ -1,21 +1,23 @@
-import requests
-from bs4 import BeautifulSoup
-from typing import List
-from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
 import logging
 import os
 import warnings
+from typing import List
 from urllib.parse import urlparse
 
-DATA_KEY = 'data'
-ERRORS_KEY = 'errors'
+import requests
+from bs4 import BeautifulSoup
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
+
+DATA_KEY = "data"
+ERRORS_KEY = "errors"
 DEFAULT_PAGE = 0
 DEFAULT_ROWS = 500
 
 
 class WordLiftLoaderError(Exception):
     """Base class for WordLiftLoader exceptions."""
+
     pass
 
 
@@ -77,16 +79,17 @@ class WordLiftLoader(BaseReader):
         """
         try:
             query = self.alter_query()
-            response = requests.post(self.endpoint, json={
-                "query": query}, headers=self.headers)
+            response = requests.post(
+                self.endpoint, json={"query": query}, headers=self.headers
+            )
             response.raise_for_status()
             data = response.json()
             if ERRORS_KEY in data:
                 raise APICallError(data[ERRORS_KEY])
             return data
         except requests.exceptions.RequestException as e:
-            logging.error('Error connecting to the API:', exc_info=True)
-            raise APICallError('Error connecting to the API') from e
+            logging.error("Error connecting to the API:", exc_info=True)
+            raise APICallError("Error connecting to the API") from e
 
     def transform_data(self, data: dict) -> List[Document]:
         """
@@ -104,8 +107,8 @@ class WordLiftLoader(BaseReader):
         try:
             data = data[DATA_KEY][self.fields]
             documents = []
-            text_fields = self.configure_options.get('text_fields', [])
-            metadata_fields = self.configure_options.get('metadata_fields', [])
+            text_fields = self.configure_options.get("text_fields", [])
+            metadata_fields = self.configure_options.get("metadata_fields", [])
 
             for item in data:
                 row = {}
@@ -116,17 +119,17 @@ class WordLiftLoader(BaseReader):
                         row[key] = clean_value(value)
 
                 text_parts = [
-                    get_separated_value(row, field.split('.'))
+                    get_separated_value(row, field.split("."))
                     for field in text_fields
-                    if get_separated_value(row, field.split('.')) is not None
+                    if get_separated_value(row, field.split(".")) is not None
                 ]
 
                 text_parts = flatten_list(text_parts)
-                text = ' '.join(text_parts)
+                text = " ".join(text_parts)
 
                 extra_info = {}
                 for field in metadata_fields:
-                    field_keys = field.split('.')
+                    field_keys = field.split(".")
                     value = get_separated_value(row, field_keys)
                     if isinstance(value, list) and len(value) != 0:
                         value = value[0]
@@ -140,8 +143,8 @@ class WordLiftLoader(BaseReader):
 
             return documents
         except Exception as e:
-            logging.error('Error transforming data:', exc_info=True)
-            raise DataTransformError('Error transforming data') from e
+            logging.error("Error transforming data:", exc_info=True)
+            raise DataTransformError("Error transforming data") from e
 
     def load_data(self) -> List[Document]:
         """
@@ -155,7 +158,7 @@ class WordLiftLoader(BaseReader):
             documents = self.transform_data(data)
             return documents
         except (APICallError, DataTransformError) as e:
-            logging.error('Error loading data:', exc_info=True)
+            logging.error("Error loading data:", exc_info=True)
             raise
 
     def alter_query(self):
@@ -166,7 +169,8 @@ class WordLiftLoader(BaseReader):
             str: The altered GraphQL query with pagination arguments.
         """
         from graphql import parse, print_ast
-        from graphql.language.ast import ArgumentNode, NameNode, IntValueNode
+        from graphql.language.ast import ArgumentNode, IntValueNode, NameNode
+
         query = self.query
         page = DEFAULT_PAGE
         rows = DEFAULT_ROWS
@@ -175,17 +179,14 @@ class WordLiftLoader(BaseReader):
 
         field_node = ast.definitions[0].selection_set.selections[0]
 
-        if not any(arg.name.value == 'page' for arg in field_node.arguments):
+        if not any(arg.name.value == "page" for arg in field_node.arguments):
             page_argument = ArgumentNode(
-                name=NameNode(value='page'),
-                value=IntValueNode(value=page)
+                name=NameNode(value="page"), value=IntValueNode(value=page)
             )
             rows_argument = ArgumentNode(
-                name=NameNode(value='rows'),
-                value=IntValueNode(value=rows)
+                name=NameNode(value="rows"), value=IntValueNode(value=rows)
             )
-            field_node.arguments = field_node.arguments + \
-                (page_argument, rows_argument)
+            field_node.arguments = field_node.arguments + (page_argument, rows_argument)
         altered_query = print_ast(ast)
         return altered_query
 
@@ -218,11 +219,11 @@ def is_valid_html(content: str) -> bool:
         response = requests.get(content)
         if response.status_code == 200:
             html_content = response.text
-            return BeautifulSoup(html_content, 'html.parser').find('html') is not None
+            return BeautifulSoup(html_content, "html.parser").find("html") is not None
         else:
             return False
 
-    return BeautifulSoup(content, 'html.parser').find('html') is not None
+    return BeautifulSoup(content, "html.parser").find("html") is not None
 
 
 @staticmethod
@@ -250,18 +251,18 @@ def clean_html(text: str) -> str:
             response = requests.get(text)
             if response.status_code == 200:
                 html_content = response.text
-                soup = BeautifulSoup(html_content, 'html.parser')
+                soup = BeautifulSoup(html_content, "html.parser")
                 cleaned_text = soup.get_text()
             else:
                 cleaned_text = text
         elif os.path.isfile(text):
-            with open(text, 'r') as file:
-                soup = BeautifulSoup(file, 'html.parser')
+            with open(text, "r") as file:
+                soup = BeautifulSoup(file, "html.parser")
                 cleaned_text = soup.get_text()
         else:
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=UserWarning)
-                soup = BeautifulSoup(text, 'html.parser')
+                soup = BeautifulSoup(text, "html.parser")
                 cleaned_text = soup.get_text()
         return cleaned_text
     return str(text)

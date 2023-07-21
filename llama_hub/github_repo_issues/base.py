@@ -29,14 +29,10 @@ from llama_index.readers.schema.base import Document
 
 if "pytest" in sys.modules:
     from llama_hub.github_repo_issues.github_client import (
-        BaseGitHubIssuesClient,
-        GitHubIssuesClient,
-    )
+        BaseGitHubIssuesClient, GitHubIssuesClient)
 else:
     from llama_hub.github_repo_issues.github_client import (
-        BaseGitHubIssuesClient,
-        GitHubIssuesClient,
-    )
+        BaseGitHubIssuesClient, GitHubIssuesClient)
 
 
 logger = logging.getLogger(__name__)

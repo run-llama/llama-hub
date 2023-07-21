@@ -1,5 +1,6 @@
-import pytest
 import os
+
+import pytest
 
 # tests changes to KalturaESearchReader.
 # Skip this test if the Kaltura env vars don't exist

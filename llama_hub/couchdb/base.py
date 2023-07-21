@@ -1,10 +1,11 @@
 """CouchDB client."""
 
+import json
+import logging
 from typing import Dict, List, Optional
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import logging
-import json
 
 
 class SimpleCouchDBReader(BaseReader):

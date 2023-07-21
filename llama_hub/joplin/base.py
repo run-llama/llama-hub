@@ -4,11 +4,11 @@ When Joplin is installed and running it will parse all markdown
 files into a List of Documents.
 
 """
-from datetime import datetime
 import json
 import os
-from typing import Iterator, List, Optional
 import urllib
+from datetime import datetime
+from typing import Iterator, List, Optional
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader

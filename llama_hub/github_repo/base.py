@@ -5,48 +5,39 @@ Retrieves the contents of a Github repository and returns a list of documents.
 The documents are either the contents of the files in the repository or
 the text extracted from the files using the parser.
 """
-import os
 import asyncio
 import base64
 import binascii
-import logging
-import pathlib
-import tempfile
 import enum
+import logging
+import os
+import pathlib
 import sys
+import tempfile
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 from llama_index.readers.schema.base import Document
 
-
 if "pytest" in sys.modules:
-    from llama_hub.github_repo.github_client import (
-        BaseGithubClient,
-        GitBranchResponseModel,
-        GitCommitResponseModel,
-        GithubClient,
-        GitTreeResponseModel,
-    )
-    from llama_hub.github_repo.utils import (
-        BufferedGitBlobDataIterator,
-        print_if_verbose,
-        get_file_extension,
-    )
+    from llama_hub.github_repo.github_client import (BaseGithubClient,
+                                                     GitBranchResponseModel,
+                                                     GitCommitResponseModel,
+                                                     GithubClient,
+                                                     GitTreeResponseModel)
+    from llama_hub.github_repo.utils import (BufferedGitBlobDataIterator,
+                                             get_file_extension,
+                                             print_if_verbose)
 else:
-    from llama_hub.github_repo.github_client import (
-        BaseGithubClient,
-        GithubClient,
-        GitBranchResponseModel,
-        GitCommitResponseModel,
-        GitTreeResponseModel,
-    )
-    from llama_hub.github_repo.utils import (
-        BufferedGitBlobDataIterator,
-        print_if_verbose,
-        get_file_extension,
-    )
+    from llama_hub.github_repo.github_client import (BaseGithubClient,
+                                                     GitBranchResponseModel,
+                                                     GitCommitResponseModel,
+                                                     GithubClient,
+                                                     GitTreeResponseModel)
+    from llama_hub.github_repo.utils import (BufferedGitBlobDataIterator,
+                                             get_file_extension,
+                                             print_if_verbose)
 
 logger = logging.getLogger(__name__)
 

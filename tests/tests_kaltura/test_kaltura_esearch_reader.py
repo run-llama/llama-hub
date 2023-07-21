@@ -1,5 +1,7 @@
-import pytest
 import os
+
+import pytest
+
 from llama_hub.kaltura.esearch.base import KalturaESearchReader
 
 # Kaltura credentials

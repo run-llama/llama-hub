@@ -1,11 +1,12 @@
 """Notion tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, List, Dict, Any
-from llama_index.readers.schema.base import Document
-import re
-import requests
 import os
+import re
+from typing import Any, Dict, List, Optional
+
+import requests
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 SEARCH_URL = "https://api.notion.com/v1/search"
 INTEGRATION_TOKEN_NAME = "NOTION_INTEGRATION_TOKEN"
