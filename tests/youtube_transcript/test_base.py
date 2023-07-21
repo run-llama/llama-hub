@@ -34,7 +34,7 @@ def test_is_youtube_video_helper() -> None:
         "Expected youtu.be with subdomain to be invalid"
     )
 try:
-    from youtube_transcript_api import YouTubeTranscriptApi
+    import youtube_transcript_api
     transcription_api_available = True
 except ImportError:
     transcription_api_available = False
