@@ -50,9 +50,8 @@ class YoutubeTranscriptReader(BaseReader):
             transcript_chunks = YouTubeTranscriptApi.get_transcript(
                 video_id, languages=languages
             )
-            transcript = ""
-            for chunk in transcript_chunks:
-                transcript = transcript + chunk["text"] + "\n"
+            chunk_text = [chunk["text"] for chunk in transcript_chunks]
+            transcript = "\n".join(chunk_text)
             results.append(Document(text=transcript, extra_info={"video_id": video_id}))
         return results
 
