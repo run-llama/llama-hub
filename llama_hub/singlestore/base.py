@@ -6,8 +6,6 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_index import download_loader, ListIndex
 
-import pymysql
-
 
 class SingleStoreReader(BaseReader):
     """SingleStore reader.
@@ -36,13 +34,18 @@ class SingleStoreReader(BaseReader):
         self.content_field = content_field
         self.vector_field = vector_field
 
-        pymysql.install_as_MySQLdb()
+        try:
+            import pymysql
+            pymysql.install_as_MySQLdb()
+        except ImportError:
+            pass
 
         try:
             from llama_hub.utils import import_loader
             self.DatabaseReader = import_loader('DatabaseReader')
         except:
             self.DatabaseReader = download_loader('DatabaseReader')
+        
         self.reader = self.DatabaseReader(
             scheme=self.scheme,
             host=self.host,
