@@ -31,15 +31,11 @@ def test_transcribing_a_remote_mp3() -> None:
     else:
         with load_remote_audio_sample() as filename:
             documents = AudioTranscriber().load_data(file=Path(filename))
-    print(documents)
+    
     # It technically gets the transcription incorrect, at least with
     # the base model. The final word is 'moor', not 'more'. (This
     # sample is from 'The Secret Garden'.) So skipping that word
-    # in the assertion.
-    #
-    # The correct transcription, describing the eyes of her crush, is:
-    # “I like them round,” said Mary. “And they are exactly the
-    # color of the sky over the moor.”
+    # in the assertion and matching on an easier fragment.
     assert "they are exactly the color of the sky" in documents[0].text
 
 
