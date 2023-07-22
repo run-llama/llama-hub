@@ -1,3 +1,14 @@
+## [v0.0.14] - 2023-07-22
+### New Feature Release
+- Adding Dalle2 text to image tool (#407)
+- Add SingleStoreReader (#404)
+
+### Smaller Features + Bug Fixes
+- Update GmailReader to return internalDate (#406)
+- Update ChromaReader to use 0.4.0 API (#394)
+- Update Zapier to expose a list of tools (#401)
+
+
 ## [v0.0.12] - 2023-07-17
 
 ### New Feature Release
