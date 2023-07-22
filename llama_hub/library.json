@@ -581,5 +581,14 @@
       "google keep",
       "google notes"
     ]
+  },
+  "SingleStoreReader": {
+    "id": "singlestore",
+    "author": "singlestore",
+    "keywords": [
+      "singlestore",
+      "memsql"
+    ]
   }
+
 }
