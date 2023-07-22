@@ -6,6 +6,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_hub.youtube_transcript.utils import YOUTUBE_URL_PATTERNS
 
+
 class YoutubeTranscriptReader(BaseReader):
     """Youtube Transcript reader."""
 
@@ -55,7 +56,6 @@ class YoutubeTranscriptReader(BaseReader):
             results.append(Document(text=transcript, extra_info={"video_id": video_id}))
         return results
 
-
     @staticmethod
     def _extract_video_id(yt_link) -> Optional[str]:
         for pattern in YOUTUBE_URL_PATTERNS:
@@ -65,4 +65,3 @@ class YoutubeTranscriptReader(BaseReader):
 
         # return None if no match is found
         return None
-
