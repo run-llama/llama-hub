@@ -19,7 +19,7 @@ The SEC Downloader expects 5 attributes
 * include_amends: To include amendments or not.
 
 ## Usage
-```
+```python
 from llama_index import download_loader
 
 SECFilingsLoader = download_loader('SECFilingsLoader')
@@ -29,7 +29,7 @@ loader.load_data()
 ```
 It will download the data in the following directories and sub-directories
 
-```
+```python
 - AAPL
   - 2018
     - 10-K.json
@@ -91,7 +91,7 @@ Here for each ticker we have separate folders with 10-K data inside respective y
 This loader is can be used with both Langchain and LlamaIndex.
 
 ### LlamaIndex
-```
+```python
 from llama_index import GPTVectorStoreIndex, download_loader
 from llama_index import SimpleDirectoryReader
 
@@ -108,7 +108,7 @@ index.query('What are the risk factors of Tesla for the year 2022?')
 
 ### Langchain
 
-```
+```python
 from llama_index import download_loader
 from langchain.llms import OpenAI
 from langchain.chains import RetrievalQA
