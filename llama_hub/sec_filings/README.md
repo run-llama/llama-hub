@@ -1,4 +1,7 @@
 # SEC DATA DOWNLOADER
+
+Please checkout this repo that I am building on SEC Question Answering Agent [SEC-QA](https://github.com/Athe-kunal/SEC-QA-Agent)
+
 This repository downloads all the texts from SEC documents (10-K and 10-Q). Currently, it is not supporting documents that are amended, but that will be added in the near futures.
 
 Install the required dependencies
