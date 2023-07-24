@@ -1,4 +1,8 @@
 {
+  "ChatGPTPluginToolSpec": {
+    "id": "tools/chatgpt_plugin",
+    "author": "ajhofmann"
+  },
   "CodeInterpreterToolSpec": {
     "id": "tools/code_interpreter",
     "author": "ajhofmann"
@@ -40,6 +44,10 @@
   "SlackToolSpec": {
     "id": "tools/slack",
     "author": "jerryjliu"
+  },
+  "TextToImageToolSpec": {
+    "id": "tools/text_to_image",
+    "author": "ajhofmann"
   },
   "VectorDBToolSpec": {
     "id": "tools/vector_db",
