@@ -24,16 +24,38 @@ class JiraReader(BaseReader):
     """Jira reader. Reads data from Jira issues from passed query.
 
     Args:
-        email (str): Jira email.
-        api_token (str): Jira API token.
+        username (str): Jira username, requires password to be provided.
+        password (str): Jira password, requires username to be provided.
+        personal_access_token (str): Jira personal access token (PAT) value.
         server_url (str): Jira server url.
     """
 
-    def __init__(self, email: str, api_token: str, server_url: str) -> None:
+    def __init__(
+            self,
+            username: str = None,
+            password: str = None,
+            personal_access_token: str = None,
+            server_url: str
+    ) -> None:
 
         from jira import JIRA
 
-        self.jira = JIRA(basic_auth=(email, api_token), server=f"https://{server_url}")
+        if server_url is None:
+            raise ValueError("Must provide `server_url`")
+
+        if personal_access_token is not None:
+            self.jira = JIRA(token_auth=personal_access_token, server=f"https://{server_url}")
+        else:
+            if username is None:
+                raise ValueError(
+                    "`username` is required in basic auth mode"
+                )
+            if password is None:
+                raise ValueError(
+                    "`password` is required in basic auth mode"
+                )
+            self.jira = JIRA(basic_auth=(username, password), server=f"https://{server_url}")
+
 
     def load_data(self, query: str) -> List[Document]:
         relevant_issues = self.jira.search_issues(query)
