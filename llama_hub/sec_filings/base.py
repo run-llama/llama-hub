@@ -1,4 +1,8 @@
-from sec_filings import SECExtractor
+try:
+  from llama_hub.sec_filings.sec_filings import SECExtractor
+except ImportError:
+  # relative import from file
+  from sec_filings import SECExtractor
 import time
 import json
 import concurrent.futures
