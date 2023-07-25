@@ -1,3 +1,8 @@
+## [v0.0.15] - 2023-07-25
+
+### New Feature Release
+- Adding ChatGPT plugin tool (#405)
+
 ## [v0.0.14] - 2023-07-22
 ### New Feature Release
 - Adding Dalle2 text to image tool (#407)
