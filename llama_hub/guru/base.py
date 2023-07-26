@@ -138,8 +138,7 @@ class GuruReader(BaseReader):
         
         return str(text)
     
-    @staticmethod
-    def _get_guru_link(card_id) -> str:
+    def _get_guru_link(self, card_id) -> str:
         """
         takes a guru "ExternalId" from meta data and returns the link to the guru card
         """
