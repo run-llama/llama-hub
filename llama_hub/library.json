@@ -589,6 +589,14 @@
       "singlestore",
       "memsql"
     ]
+  },
+  "GuruReader": {
+    "id": "guru",
+    "author": "mcclain-thiel",
+    "keywords": [
+      "guru",
+      "knowledge base",
+      "getguru"
+    ]
   }
-
 }
