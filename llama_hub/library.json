@@ -599,6 +599,14 @@
       "10-K",
       "10-Q"
     ]
+  },
+  "GuruReader": {
+    "id": "guru",
+    "author": "mcclain-thiel",
+    "keywords": [
+      "guru",
+      "knowledge base",
+      "getguru"
+    ]
   }
-
 }
