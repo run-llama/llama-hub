@@ -598,5 +598,14 @@
       "knowledge base",
       "getguru"
     ]
+  },
+  "MinioReader": {
+    "id": "minio",
+    "author": "semoal",
+    "keywords": [
+      "minio",
+      "bucket",
+      "storage"
+    ]
   }
 }
