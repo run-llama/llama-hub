@@ -26,26 +26,46 @@ from starlette.types import Send
 from base64 import b64encode
 from typing import Optional, Mapping, Iterator, Tuple
 import secrets
-from prepline_sec_filings.sections import (
-    section_string_to_enum,
-    validate_section_names,
-    SECSection,
-)
-from prepline_sec_filings.sec_document import (
-    SECDocument,
-    REPORT_TYPES,
-    VALID_FILING_TYPES,
-)
-from enum import Enum
-import re
-import signal
-from unstructured.staging.base import convert_to_isd
-from prepline_sec_filings.sections import (
+
+try:
+    from llama_hub.sec_filings.prepline_sec_filings.sections import (
+        section_string_to_enum,
+        validate_section_names,
+        SECSection,
+    )
+    from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
+        SECDocument,
+        REPORT_TYPES,
+        VALID_FILING_TYPES,
+    )
+    from llama_hub.sec_filings.prepline_sec_filings.sections import (
     ALL_SECTIONS,
     SECTIONS_10K,
     SECTIONS_10Q,
     SECTIONS_S1,
-)
+    )
+except:
+    from prepline_sec_filings.sections import (
+        section_string_to_enum,
+        validate_section_names,
+        SECSection,
+    )
+    from prepline_sec_filings.sec_document import (
+        SECDocument,
+        REPORT_TYPES,
+        VALID_FILING_TYPES,
+    )
+    from prepline_sec_filings.sections import (
+    ALL_SECTIONS,
+    SECTIONS_10K,
+    SECTIONS_10Q,
+    SECTIONS_S1,
+    )
+from enum import Enum
+import re
+import signal
+from unstructured.staging.base import convert_to_isd
+
 import csv
 from typing import Dict
 from unstructured.documents.elements import Text, NarrativeText, Title, ListItem
