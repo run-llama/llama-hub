@@ -1,26 +1,53 @@
 from typing import List
-import asyncio
-import aiohttp
-from collections import defaultdict
-from utils import get_filing_urls_to_download
-from prepline_sec_filings.sections import (
-    section_string_to_enum,
-    validate_section_names,
-    SECSection,
-)
-from prepline_sec_filings.sec_document import (
-    SECDocument,
-    REPORT_TYPES,
-    VALID_FILING_TYPES,
-)
 
-from prepline_sec_filings.fetch import (
-    get_form_by_ticker,
-    open_form_by_ticker,
-    get_filing,
-)
-import concurrent.futures
-import time
+try:
+    from llama_hub.sec_filings.utils import get_filing_urls_to_download
+    from llama_hub.sec_filings.prepline_sec_filings.sections import (
+        section_string_to_enum,
+        validate_section_names,
+        SECSection,
+    )
+    from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
+        SECDocument,
+        REPORT_TYPES,
+        VALID_FILING_TYPES,
+    )
+
+    from llama_hub.sec_filings.prepline_sec_filings.fetch import (
+        get_form_by_ticker,
+        open_form_by_ticker,
+        get_filing,
+    )
+    from llama_hub.sec_filings.prepline_sec_filings.sections import (
+        ALL_SECTIONS,
+        SECTIONS_10K,
+        SECTIONS_10Q,
+        SECTIONS_S1,
+    )
+except:
+    from utils import get_filing_urls_to_download
+    from prepline_sec_filings.sections import (
+        section_string_to_enum,
+        validate_section_names,
+        SECSection,
+    )
+    from prepline_sec_filings.sec_document import (
+        SECDocument,
+        REPORT_TYPES,
+        VALID_FILING_TYPES,
+    )
+
+    from prepline_sec_filings.fetch import (
+        get_form_by_ticker,
+        open_form_by_ticker,
+        get_filing,
+    )
+    from prepline_sec_filings.sections import (
+        ALL_SECTIONS,
+        SECTIONS_10K,
+        SECTIONS_10Q,
+        SECTIONS_S1,
+    )
 from datetime import date
 from enum import Enum
 import re
@@ -30,13 +57,6 @@ from typing import Union, Optional
 from ratelimit import limits, sleep_and_retry
 import os
 from unstructured.staging.base import convert_to_isd
-from prepline_sec_filings.sections import (
-    ALL_SECTIONS,
-    SECTIONS_10K,
-    SECTIONS_10Q,
-    SECTIONS_S1,
-)
-import json
 
 DATE_FORMAT_TOKENS = "%Y-%m-%d"
 DEFAULT_BEFORE_DATE = date.today().strftime(DATE_FORMAT_TOKENS)
@@ -95,7 +115,7 @@ class SECExtractor:
         start_date: str = DEFAULT_AFTER_DATE,
         end_date: str = DEFAULT_BEFORE_DATE,
         sections: List[str] = ["_ALL"],
-        include_amends:bool=True
+        include_amends: bool = True,
     ):
         """_summary_
 
@@ -114,6 +134,7 @@ class SECExtractor:
         self.end_date = end_date
         self.sections = sections
         self.include_amends = include_amends
+
     def get_accession_numbers(self, tic: str) -> dict:
         """Get accession numbers and download URL for the SEC filing
 
@@ -137,13 +158,13 @@ class SECExtractor:
             [
                 self.get_year(fm.filing_details_url),
                 fm.accession_number.replace("-", ""),
-                fm.full_submission_url
+                fm.full_submission_url,
             ]
             for fm in filing_metadata
         ]
-        for idx,fm in enumerate(acc_nums_yrs[:-1]):
-            if fm[0]==None:
-                fm[0]=acc_nums_yrs[idx+1][0]
+        for idx, fm in enumerate(acc_nums_yrs[:-1]):
+            if fm[0] == None:
+                fm[0] = acc_nums_yrs[idx + 1][0]
         for acy in acc_nums_yrs:
             if tic not in final_dict:
                 final_dict.update({tic: []})
