@@ -1,6 +1,6 @@
 from airbyte_embed_cdk.tools import parse_json
 
-from base import AirbytePokeApiReader, AirbytePokeApiContainerReader
+from llama_hub.airbyte_pokeapi import AirbytePokeApiReader, AirbytePokeApiContainerReader
 
 
 def main():

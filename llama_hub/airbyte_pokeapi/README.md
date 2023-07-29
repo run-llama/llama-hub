@@ -28,5 +28,5 @@ pip install -r requirements.txt
 
 ```
 # To run poc:
-python poc.py
+ PYTHONPATH=../.. python poc.py
 ```
