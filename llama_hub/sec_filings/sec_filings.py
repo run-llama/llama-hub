@@ -25,29 +25,30 @@ try:
         SECTIONS_S1,
     )
 except:
-    from utils import get_filing_urls_to_download
-    from prepline_sec_filings.sections import (
-        section_string_to_enum,
-        validate_section_names,
-        SECSection,
-    )
-    from prepline_sec_filings.sec_document import (
-        SECDocument,
-        REPORT_TYPES,
-        VALID_FILING_TYPES,
-    )
+    exit()
+    # from utils import get_filing_urls_to_download
+    # from prepline_sec_filings.sections import (
+    #     section_string_to_enum,
+    #     validate_section_names,
+    #     SECSection,
+    # )
+    # from prepline_sec_filings.sec_document import (
+    #     SECDocument,
+    #     REPORT_TYPES,
+    #     VALID_FILING_TYPES,
+    # )
 
-    from prepline_sec_filings.fetch import (
-        get_form_by_ticker,
-        open_form_by_ticker,
-        get_filing,
-    )
-    from prepline_sec_filings.sections import (
-        ALL_SECTIONS,
-        SECTIONS_10K,
-        SECTIONS_10Q,
-        SECTIONS_S1,
-    )
+    # from prepline_sec_filings.fetch import (
+    #     get_form_by_ticker,
+    #     open_form_by_ticker,
+    #     get_filing,
+    # )
+    # from prepline_sec_filings.sections import (
+    #     ALL_SECTIONS,
+    #     SECTIONS_10K,
+    #     SECTIONS_10Q,
+    #     SECTIONS_S1,
+    # )
 from datetime import date
 from enum import Enum
 import re
