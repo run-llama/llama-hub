@@ -590,6 +590,16 @@
       "memsql"
     ]
   },
+  "SECFilingsLoader":{
+    "id":"sec_filings",
+    "author":"Athe-kunal",
+    "keywords":[
+      "finance",
+      "SEC Filings",
+      "10-K",
+      "10-Q"
+    ]
+  },
   "GuruReader": {
     "id": "guru",
     "author": "mcclain-thiel",
