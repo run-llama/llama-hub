@@ -10,19 +10,22 @@ else:
 
 import numpy as np
 import numpy.typing as npt
-from sklearn.cluster import DBSCAN
 from collections import defaultdict
+try:
+    from sklearn.cluster import DBSCAN
 
-from unstructured.cleaners.core import clean
-from unstructured.documents.elements import (
-    Text,
-    ListItem,
-    NarrativeText,
-    Title,
-    Element,
-)
-from unstructured.documents.html import HTMLDocument
-from unstructured.nlp.partition import is_possible_title
+    from unstructured.cleaners.core import clean
+    from unstructured.documents.elements import (
+        Text,
+        ListItem,
+        NarrativeText,
+        Title,
+        Element,
+    )
+    from unstructured.documents.html import HTMLDocument
+    from unstructured.nlp.partition import is_possible_title
+finally:
+    pass
 try:
     from llama_hub.sec_filings.prepline_sec_filings.sections import SECSection
 except:

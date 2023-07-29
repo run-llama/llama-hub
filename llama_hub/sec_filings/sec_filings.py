@@ -24,8 +24,8 @@ try:
         SECTIONS_10Q,
         SECTIONS_S1,
     )
-except:
-    exit()
+finally:
+    pass
     # from utils import get_filing_urls_to_download
     # from prepline_sec_filings.sections import (
     #     section_string_to_enum,
