@@ -10,8 +10,15 @@ def main():
     reader = AirbytePokeApiReader(config=config)
     print(reader.load_data('pokemon'))
 
+    # show all available streams
+    print(reader.available_streams())
+
     # using image
     reader = AirbytePokeApiContainerReader(config=config)
+    print(reader.load_data('pokemon'))
+
+    # use specific image version
+    reader = AirbytePokeApiContainerReader(config=config, version="0.1.5-dev.819dd97d48")
     print(reader.load_data('pokemon'))
 
 
