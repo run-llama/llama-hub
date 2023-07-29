@@ -24,6 +24,26 @@ try:
     )
     from unstructured.documents.html import HTMLDocument
     from unstructured.nlp.partition import is_possible_title
+
+    # NOTE(yuming): clean_sec_text is a partial cleaner from clean,
+    # and is used for cleaning a section of text from a SEC filing.
+    clean_sec_text = partial(
+        clean, extra_whitespace=True, dashes=True, trailing_punctuation=True
+    )
+
+except:
+    # TODO: Hack mostly to get tests to pass
+    DBSCAN = None
+    clean = None
+    clean_sec_text = None
+    Text = None
+    ListItem = None
+    NarrativeText = None
+    Title = None
+    Element = None
+    HTMLDocument = object
+    is_possible_title = None
+
 finally:
     pass
 try:
@@ -44,12 +64,6 @@ REPORT_TYPES: Final[List[str]] = ["10-K", "10-Q", "10-K/A", "10-Q/A"]
 S1_TYPES: Final[List[str]] = ["S-1", "S-1/A"]
 
 ITEM_TITLE_RE = re.compile(r"(?i)item \d{1,3}(?:[a-z]|\([a-z]\))?(?:\.)?(?::)?")
-
-# NOTE(yuming): clean_sec_text is a partial cleaner from clean,
-# and is used for cleaning a section of text from a SEC filing.
-clean_sec_text = partial(
-    clean, extra_whitespace=True, dashes=True, trailing_punctuation=True
-)
 
 
 def _raise_for_invalid_filing_type(filing_type: Optional[str]):

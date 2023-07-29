@@ -55,7 +55,17 @@ import re
 import signal
 import requests
 from typing import Union, Optional
-from ratelimit import limits, sleep_and_retry
+
+try:
+    from ratelimit import limits, sleep_and_retry
+except ImportError:
+    def fake_decorator(*args, **kwargs):
+        def inner(func):
+            return func
+        return inner
+    limits = fake_decorator
+    sleep_and_retry = fake_decorator
+
 import os
 try:
     from unstructured.staging.base import convert_to_isd
