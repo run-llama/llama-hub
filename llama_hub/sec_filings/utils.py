@@ -9,9 +9,10 @@ from datetime import date
 
 try:
     from faker import Faker
+    fake = Faker()
 except:
     fake = None
-    
+
 MAX_RETRIES = 10
 SEC_EDGAR_RATE_LIMIT_SLEEP_INTERVAL = 0.1
 FILING_DETAILS_FILENAME_STEM = "filing-details"
@@ -100,9 +101,6 @@ def build_filing_metadata_from_hit(hit: dict) -> FilingMetadata:
         filing_details_url=filing_details_url,
         filing_details_filename=filing_details_filename,
     )
-
-
-fake = Faker()
 
 
 def generate_random_user_agent() -> str:
