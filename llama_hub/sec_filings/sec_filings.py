@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Any
 
 try:
     from llama_hub.sec_filings.utils import get_filing_urls_to_download
@@ -56,7 +56,19 @@ import requests
 from typing import Union, Optional
 from ratelimit import limits, sleep_and_retry
 import os
-from unstructured.staging.base import convert_to_isd
+try:
+    from unstructured.staging.base import convert_to_isd
+except:
+    class Element:
+        pass
+    
+    def convert_to_isd(elements: List[Element]) -> List[Dict[str, Any]]:
+        """Represents the document elements as an Initial Structured Document (ISD)."""
+        isd: List[Dict[str, str]] = []
+        for element in elements:
+            section = element.to_dict()
+            isd.append(section)
+        return isd
 
 DATE_FORMAT_TOKENS = "%Y-%m-%d"
 DEFAULT_BEFORE_DATE = date.today().strftime(DATE_FORMAT_TOKENS)

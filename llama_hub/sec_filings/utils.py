@@ -3,11 +3,15 @@ from collections import namedtuple
 from typing import List
 from urllib3.util.retry import Retry
 from pathlib import Path
-from faker import Faker
 import time
 import requests
 from datetime import date
 
+try:
+    from faker import Faker
+except:
+    fake = None
+    
 MAX_RETRIES = 10
 SEC_EDGAR_RATE_LIMIT_SLEEP_INTERVAL = 0.1
 FILING_DETAILS_FILENAME_STEM = "filing-details"
