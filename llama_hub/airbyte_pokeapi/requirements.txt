@@ -1,0 +1,6 @@
+#airbyte-cdk
+#airbyte-protocol-models
+source_pokeapi@git+https://github.com/airbytehq/airbyte.git@master#subdirectory=airbyte-integrations/connectors/source-pokeapi
+
+# -e ../../../airbed
+airbyte-embed-cdk[llama-index]@git+https://github.com/michel-tricot/airbed.git@master
