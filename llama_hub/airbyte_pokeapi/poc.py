@@ -1,4 +1,5 @@
 from airbyte_embed_cdk.tools import parse_json
+from config import PokeApiConfig
 
 from llama_hub.airbyte_pokeapi import AirbytePokeApiReader, AirbytePokeApiContainerReader
 
@@ -10,10 +11,20 @@ def main():
     reader = AirbytePokeApiReader(config=config)
     print(reader.load_data('pokemon'))
 
+    # using package & config object
+    config = PokeApiConfig(pokemon_name="ditto")
+    reader = AirbytePokeApiReader(config=config)
+    print(reader.load_data('pokemon'))
+
     # show all available streams
     print(reader.available_streams())
 
     # using image
+    reader = AirbytePokeApiContainerReader(config=config)
+    print(reader.load_data('pokemon'))
+
+    # using image & config object
+    config = PokeApiConfig(pokemon_name="ditto")
     reader = AirbytePokeApiContainerReader(config=config)
     print(reader.load_data('pokemon'))
 
