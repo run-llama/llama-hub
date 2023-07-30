@@ -1,3 +1,17 @@
+## [v0.0.16] - 2023-07-30
+
+### New Feature Release
+- Gurureader (#427)
+- feat: minio loader (#430)
+- Adding SEC Filings Loader (#415)
+- Adding some tags for llama hub searches (#422)
+
+### Smaller Features + Bug Fixes 
+- Update unstructured loader README (#418)
+- synced with llama_index/readers/file/markdown_reader.py (#388)
+- YoutubeTranscriptReader tests (#412)
+- fix some bugs in WordLift loader (#421)
+
 ## [v0.0.15] - 2023-07-25
 
 ### New Feature Release
