@@ -74,15 +74,18 @@
   },
   "SimpleCSVReader": {
     "id": "file/simple_csv",
-    "author": "vguillet"
+    "author": "vguillet",
+    "keywords": ["spreadsheet"]
   },
   "PagedCSVReader": {
     "id": "file/paged_csv",
-    "author": "thejessezhang"
+    "author": "thejessezhang",
+    "keywords": ["spreadsheet"]
   },
   "PandasCSVReader": {
     "id": "file/pandas_csv",
-    "author": "ephe-meral"
+    "author": "ephe-meral",
+    "keywords": ["spreadsheet"]
   },
   "SimpleWebPageReader": {
     "id": "web/simple_web",
@@ -306,7 +309,8 @@
   },
   "PandasExcelReader": {
     "id": "file/pandas_excel",
-    "author": "maccarini"
+    "author": "maccarini",
+    "keywords": ["spreadsheet"]
   },
   "ZendeskReader": {
     "id": "zendesk",

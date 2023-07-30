@@ -59,7 +59,8 @@
   },
   "WolframAlphaToolSpec": {
     "id": "tools/wolfram_alpha",
-    "author": "ajhofmann"
+    "author": "ajhofmann",
+    "keywords": ["math"]
   },
   "YelpToolSpec": {
     "id": "tools/yelp",
