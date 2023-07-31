@@ -208,7 +208,8 @@
   },
   "YoutubeTranscriptReader": {
     "id": "youtube_transcript",
-    "author": "ravi03071991"
+    "author": "ravi03071991",
+    "keywords": ["video"]
   },
   "MakeWrapper": {
     "id": "make_com"
@@ -228,7 +229,7 @@
   "UnstructuredReader": {
     "id": "file/unstructured",
     "author": "thejessezhang",
-    "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io"]
+    "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io", "yaml", "yml"]
   },
   "KnowledgeBaseWebReader": {
     "id": "web/knowledge_base",
