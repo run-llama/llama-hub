@@ -6,6 +6,8 @@ This tool allows Agents to use the OpenAI Image endpoint to generate and create 
 
 This tool has more extensive example usage documented in a Jupyter notebook [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks/text_to_image.ipynb)
 
+Another example showcases retrieval augmentation over a knowledge corpus with text-to-image. [Notebook](https://github.com/emptycrown/llama-hub/blob/main/llama_hub/tools/notebooks/text_to_image-pg.ipynb).
+
 ```python
 from llama_hub.tools.text_to_image.base import TextToImageToolSpec
 from llama_index.agent import OpenAIAgent
