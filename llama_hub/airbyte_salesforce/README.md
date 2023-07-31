@@ -5,9 +5,7 @@ The Airbyte Salesforce Loader allows you to access different Salesforce objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install depenendies of Salesforce loader: `curl -s https://raw.githubusercontent.com/emptycrown/llama-hub/main/llama_hub/airbyte/salesforce/requirements.txt | pip install -r /dev/stdin`
-
-Alternatively, you can install the loader directly from github: `pip install git+https://github.com/airbytehq/airbyte.git@master#egg=source_salesforce&subdirectory=airbyte-integrations/connectors/source-salesforce`
+* Install the salesforce source: `pip install airbyte_source_salesforce`
 
 ## Usage
 
@@ -15,10 +13,12 @@ Here's an example usage of the AirbyteSalesforceReader.
 
 ```python
 from llama_index import download_loader
-from llama_hub.airbyte.salesforce.base import AirbyteSalesforceReader
+from llama_hub.airbyte_salesforce.base import AirbyteSalesforceReader
 
-
-reader = AirbyteSalesforceReader(...so many things...)
+salesforce_config = {
+    # ...
+}
+reader = AirbyteSalesforceReader(config=salesforce_config)
 documents = reader.load_data(stream="Asset")
 ```
 
