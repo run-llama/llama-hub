@@ -1,1 +1,1 @@
-airbyte_source_typeform
+source_typeform

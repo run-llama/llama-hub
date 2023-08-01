@@ -23,6 +23,6 @@ class AirbyteSalesforceReader(AirbyteCDKReader):
         config: Mapping[str, Any],
     ) -> None:
         """Initialize with parameters."""
-        import airbyte_source_salesforce
+        import source_salesforce
 
-        super().__init__(source_class=airbyte_source_salesforce.SourceSalesforce, config=config)
+        super().__init__(source_class=source_salesforce.SourceSalesforce, config=config)

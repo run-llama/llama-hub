@@ -5,7 +5,7 @@ The Airbyte Salesforce Loader allows you to access different Salesforce objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the salesforce source: `pip install airbyte_source_salesforce`
+* Install the salesforce source: `pip install source_salesforce`
 
 ## Usage
 

@@ -7,6 +7,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from airbyte_protocol.models.airbyte_protocol import AirbyteRecordMessage
 from airbyte_cdk.sources.embedded.base_integration import BaseEmbeddedIntegration
+from airbyte_cdk.sources.embedded.runner import CDKRunner
 
 
 class AirbyteCDKReader(BaseReader, BaseEmbeddedIntegration):
@@ -26,7 +27,10 @@ class AirbyteCDKReader(BaseReader, BaseEmbeddedIntegration):
     ) -> None:
         """Initialize with parameters."""
 
-        super().__init__(config=config, source=source_class())
+        super().__init__(config=config, runner=CDKRunner(source=source_class(), name=source_class.__name__))
     
     def _handle_record(self, record: AirbyteRecordMessage, id: Optional[str]) -> Document:
         return Document(doc_id=id,text="", extra_info=record.data)
+
+    def load_data(self, *args: Any, **load_kwargs: Any) -> List[Document]:
+        return list(self._load_data(**load_kwargs))

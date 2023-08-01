@@ -23,6 +23,6 @@ class AirbyteHubspotReader(AirbyteCDKReader):
         config: Mapping[str, Any],
     ) -> None:
         """Initialize with parameters."""
-        import airbyte_source_hubspot
+        import source_hubspot
 
-        super().__init__(source_class=airbyte_source_hubspot.SourceHubspot, config=config)
+        super().__init__(source_class=source_hubspot.SourceHubspot, config=config)

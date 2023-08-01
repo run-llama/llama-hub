@@ -23,6 +23,6 @@ class AirbyteTypeformReader(AirbyteCDKReader):
         config: Mapping[str, Any],
     ) -> None:
         """Initialize with parameters."""
-        import airbyte_source_typeform
+        import source_typeform
 
-        super().__init__(source_class=airbyte_source_typeform.SourceTypeform, config=config)
+        super().__init__(source_class=source_typeform.SourceTypeform, config=config)

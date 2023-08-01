@@ -23,6 +23,6 @@ class AirbyteZendeskSupportReader(AirbyteCDKReader):
         config: Mapping[str, Any],
     ) -> None:
         """Initialize with parameters."""
-        import airbyte_source_zendesk_support
+        import source_zendesk_support
 
-        super().__init__(source_class=airbyte_source_zendesk_support.SourceZendeskSupport, config=config)
+        super().__init__(source_class=source_zendesk_support.SourceZendeskSupport, config=config)

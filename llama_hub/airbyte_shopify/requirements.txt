@@ -1,1 +1,1 @@
-airbyte_source_shopify
+source_shopify

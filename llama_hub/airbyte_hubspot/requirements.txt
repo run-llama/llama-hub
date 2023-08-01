@@ -1,1 +1,1 @@
-airbyte_source_hubspot
+source_hubspot

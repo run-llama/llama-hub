@@ -5,7 +5,7 @@ The Airbyte Stripe Loader allows you to access different Stripe objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the stripe source: `pip install airbyte_source_stripe`
+* Install the stripe source: `pip install source_stripe`
 
 ## Usage
 
@@ -19,7 +19,7 @@ stripe_config = {
     # ...
 }
 reader = AirbyteStripeReader(config=stripe_config)
-documents = reader.load_data(stream="Asset")
+documents = reader.load_data(stream="invoices")
 ```
 
 ## Configuration
@@ -43,10 +43,10 @@ This loader supports loading data incrementally (only returning documents that w
 ```python
 
 reader = AirbyteStripeReader(...so many things...)
-documents = reader.load_data(stream="Invoices")
+documents = reader.load_data(stream="invoices")
 current_state = reader.last_state # can be pickled away or stored otherwise
 
-updated_documents = reader.load_data(stream="Invoices", state=current_state) # only loads documents that were updated since last time
+updated_documents = reader.load_data(stream="invoices", state=current_state) # only loads documents that were updated since last time
 ```
 
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

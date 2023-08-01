@@ -23,6 +23,6 @@ class AirbyteShopifyReader(AirbyteCDKReader):
         config: Mapping[str, Any],
     ) -> None:
         """Initialize with parameters."""
-        import airbyte_source_shopify
+        import source_shopify
 
-        super().__init__(source_class=airbyte_source_shopify.SourceShopify, config=config)
+        super().__init__(source_class=source_shopify.SourceShopify, config=config)
