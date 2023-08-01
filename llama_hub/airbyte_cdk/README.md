@@ -22,7 +22,7 @@ github_config = {
     # ...
 }
 reader = AirbyteCDKReader(source_class=SourceGithub,config=github_config)
-documents = reader.load_data(stream="Issues")
+documents = reader.load_data(stream_name="issues")
 ```
 
 ## Incremental loads
@@ -31,10 +31,10 @@ If a stream supports it, this loader can be used to load data incrementally (onl
 ```python
 
 reader = AirbyteCDKReader(source_class=SourceGithub,config=github_config)
-documents = reader.load_data(stream="Issues")
-current_state = reader.state # can be pickled away or stored otherwise
+documents = reader.load_data(stream_name="issues")
+current_state = reader.last_state # can be pickled away or stored otherwise
 
-updated_documents = reader.load_data(stream="Issues", state=current_state) # only loads documents that were updated since last time
+updated_documents = reader.load_data(stream_name="issues", state=current_state) # only loads documents that were updated since last time
 ```
 
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

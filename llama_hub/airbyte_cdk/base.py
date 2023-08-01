@@ -33,4 +33,4 @@ class AirbyteCDKReader(BaseReader, BaseEmbeddedIntegration):
         return Document(doc_id=id,text="", extra_info=record.data)
 
     def load_data(self, *args: Any, **load_kwargs: Any) -> List[Document]:
-        return list(self._load_data(**load_kwargs))
+        return list(self._load_data(*args, **load_kwargs))
