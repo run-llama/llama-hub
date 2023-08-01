@@ -3,6 +3,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from semanticscholar import SemanticScholar
 import requests
+from typing import List
 
 
 class SemanticscholarReader(BaseReader):
