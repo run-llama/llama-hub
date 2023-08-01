@@ -2,6 +2,8 @@
 
 This tool provides the agent the ability to make HTTP requests. It can be combined with the OpenAPIToolSpec to interface with an OpenAPI server.
 
+For security reasons, you must specify the hostname for the headers that you wish to provide. See [here for an example](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks/openapi_and_requests.ipynb) 
+
 
 ## Usage
 
@@ -13,7 +15,14 @@ Here's an example usage of the RequestsToolSpec.
 from llama_hub.tools.requests.base import RequestsToolSpec
 from llama_index.agent import OpenAIAgent
 
-tool_spec = RequestsToolSpec(headers=headers)
+domain_headers = {
+    'api.openai.com': {
+        "Authorization": "Bearer sk-your-key",
+        "Content-Type": "application/json",
+    }
+}
+
+tool_spec = RequestsToolSpec(domain_headers=domain_headers)
 
 agent = OpenAIAgent.from_tools(tool_spec.to_tool_list())
 
