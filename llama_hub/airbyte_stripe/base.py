@@ -9,13 +9,13 @@ from llama_index.readers.schema.base import Document
 from llama_hub.airbyte_cdk.base import AirbyteCDKReader
 
 
-class AirbyteSalesforceReader(AirbyteCDKReader):
-    """AirbyteSalesforceReader reader.
+class AirbyteStripeReader(AirbyteCDKReader):
+    """AirbyteStripeReader reader.
 
-    Retrieve documents from Salesforce 
+    Retrieve documents from Stripe 
 
     Args:
-        config: The config object for the salesforce source.
+        config: The config object for the stripe source.
     """
 
     def __init__(
@@ -23,6 +23,6 @@ class AirbyteSalesforceReader(AirbyteCDKReader):
         config: Mapping[str, Any],
     ) -> None:
         """Initialize with parameters."""
-        import airbyte_source_salesforce
+        import airbyte_source_stripe
 
-        super().__init__(source_class=airbyte_source_salesforce.SourceSalesforce, config=config)
+        super().__init__(source_class=airbyte_source_stripe.SourceStripe, config=config)

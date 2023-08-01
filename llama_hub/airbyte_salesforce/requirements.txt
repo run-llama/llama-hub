@@ -1,4 +1,1 @@
-airbyte-cdk
-airbyte-protocol-models
-dpath
-git+https://github.com/airbytehq/airbyte.git@master#egg=source_salesforce&subdirectory=airbyte-integrations/connectors/source-salesforce
+airbyte_source_salesforce

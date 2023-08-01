@@ -9,13 +9,13 @@ from llama_index.readers.schema.base import Document
 from llama_hub.airbyte_cdk.base import AirbyteCDKReader
 
 
-class AirbyteSalesforceReader(AirbyteCDKReader):
-    """AirbyteSalesforceReader reader.
+class AirbyteTypeformReader(AirbyteCDKReader):
+    """AirbyteTypeformReader reader.
 
-    Retrieve documents from Salesforce 
+    Retrieve documents from Typeform 
 
     Args:
-        config: The config object for the salesforce source.
+        config: The config object for the typeform source.
     """
 
     def __init__(
@@ -23,6 +23,6 @@ class AirbyteSalesforceReader(AirbyteCDKReader):
         config: Mapping[str, Any],
     ) -> None:
         """Initialize with parameters."""
-        import airbyte_source_salesforce
+        import airbyte_source_typeform
 
-        super().__init__(source_class=airbyte_source_salesforce.SourceSalesforce, config=config)
+        super().__init__(source_class=airbyte_source_typeform.SourceTypeform, config=config)
