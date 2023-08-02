@@ -1,9 +1,12 @@
 # Semantic Scholar Loader
 
-For any research topic you are interested in. This loader reads relevant papers from a search result in Semantic Scholar into `Documents`. 
+Welcome to Semantic Scholar Loader. This module serves as a crucial utility for researchers and professionals looking to extract scholarly articles and publications from the Semantic Scholar database.
 
+For any research topic you are interested in, this loader reads relevant papers from a search result in Semantic Scholar into `Documents`. 
 
 ## Usage
+
+Here is an example of how to use this loader in `llama_index` and get citations for a given query.
 
 ### LlamaIndex
 
@@ -13,8 +16,6 @@ from llama_index.llms import OpenAI
 from llama_index.query_engine import CitationQueryEngine
 from llama_index import (
     VectorStoreIndex,
-    StorageContext,
-    load_index_from_storage,
     ServiceContext,
 )
 
@@ -24,6 +25,9 @@ query_space = "large language models"
 
 documents = s2reader.load_data(query=query_space, limit=10)
 
+service_context = ServiceContext.from_defaults(
+    llm=OpenAI(model="gpt-3.5-turbo", temperature=0)
+)
 index = VectorStoreIndex.from_documents(documents, service_context=service_context)
 
 query_engine = CitationQueryEngine.from_args(
@@ -33,7 +37,8 @@ query_engine = CitationQueryEngine.from_args(
 )
 
 response = query_engine.query("limitations of using large language models")
-print(response)
+print("Answer: ", response)
+print("Source nodes: ")
 for node in response.source_nodes:
     print(node.node.metadata)
 ```
