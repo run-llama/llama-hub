@@ -25,6 +25,8 @@ reader = AirbyteCDKReader(source_class=SourceGithub,config=github_config)
 documents = reader.load_data(stream_name="issues")
 ```
 
+By default all fields are stored as metadata in the documents and the text is set to an empty string. Construct the text of the document by transforming the documents returned by the reader.
+
 ## Incremental loads
 
 If a stream supports it, this loader can be used to load data incrementally (only returning documents that weren't loaded last time or got updated in the meantime):

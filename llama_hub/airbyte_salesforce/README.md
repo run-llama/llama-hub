@@ -43,6 +43,8 @@ The general shape looks like this:
 }
 ```
 
+By default all fields are stored as metadata in the documents and the text is set to an empty string. Construct the text of the document by transforming the documents returned by the reader.
+
 ## Incremental loads
 
 This loader supports loading data incrementally (only returning documents that weren't loaded last time or got updated in the meantime):
