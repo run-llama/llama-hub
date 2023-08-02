@@ -90,13 +90,13 @@ class SemanticscholarReader(BaseReader):
                 text = title
 
             metadata = {
+                "title": title,
                 "venue": getattr(item, "venue", None),
                 "year": getattr(item, "year", None),
                 "paperId": getattr(item, "paperId", None),
                 "citationCount": getattr(item, "citationCount", None),
                 "openAccessPdf": openaccesspdf.get("url") if openaccesspdf else None,
                 "authors": [author["name"] for author in getattr(item, "authors", [])],
-                "title": title,
             }
             documents.append(Document(text=text, extra_info=metadata))
 
