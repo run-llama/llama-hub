@@ -1,6 +1,6 @@
 # Semantic Scholar Loader
 
-Welcome to Semantic Scholar Loader. This module serves as a crucial utility for researchers and professionals looking to extract scholarly articles and publications from the Semantic Scholar database.
+Welcome to Semantic Scholar Loader. This module serves as a crucial utility for researchers and professionals looking to get scholarly articles and publications from the Semantic Scholar database.
 
 For any research topic you are interested in, this loader reads relevant papers from a search result in Semantic Scholar into `Documents`. 
 
