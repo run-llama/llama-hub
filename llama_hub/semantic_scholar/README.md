@@ -19,7 +19,7 @@ from llama_index import (
     ServiceContext,
 )
 
-s2reader = download_loader('SemanticscholarReader')
+s2reader = download_loader('SemanticScholarReader')
 
 # narrow down the search space
 query_space = "large language models"

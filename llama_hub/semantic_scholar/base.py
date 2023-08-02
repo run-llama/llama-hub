@@ -6,7 +6,7 @@ import requests
 from typing import List
 
 
-class SemanticscholarReader(BaseReader):
+class SemanticScholarReader(BaseReader):
     """
     A class to read and process data from Semantic Scholar API
     ...
