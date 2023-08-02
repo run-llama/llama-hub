@@ -1,11 +1,4 @@
-"""Chroma Reader."""
-
-import logging
-from typing import Any, Dict, List, Mapping, Optional
-
-from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
-
+from typing import Any, Mapping
 from llama_hub.airbyte_cdk.base import AirbyteCDKReader
 
 
