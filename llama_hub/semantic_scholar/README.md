@@ -21,8 +21,10 @@ from llama_index import (
 
 s2reader = download_loader('SemanticscholarReader')
 
+# narrow down the search space
 query_space = "large language models"
 
+# increase limit to get more documents
 documents = s2reader.load_data(query=query_space, limit=10)
 
 service_context = ServiceContext.from_defaults(
@@ -36,6 +38,7 @@ query_engine = CitationQueryEngine.from_args(
     citation_chunk_size=512,
 )
 
+# query the index
 response = query_engine.query("limitations of using large language models")
 print("Answer: ", response)
 print("Source nodes: ")
