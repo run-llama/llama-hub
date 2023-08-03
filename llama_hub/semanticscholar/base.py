@@ -1,7 +1,6 @@
 import logging
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from semanticscholar import SemanticScholar
 import requests
 from typing import List
 
@@ -25,6 +24,8 @@ class SemanticScholarReader(BaseReader):
         """
         Instantiate the SemanticScholar object
         """
+        from semanticscholar import SemanticScholar
+
         self.s2 = SemanticScholar()
 
     def load_data(
