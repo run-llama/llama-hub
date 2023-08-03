@@ -12,7 +12,6 @@ The Airbyte Salesforce Loader allows you to access different Salesforce objects.
 Here's an example usage of the AirbyteSalesforceReader.
 
 ```python
-from llama_index import download_loader
 from llama_hub.airbyte_salesforce.base import AirbyteSalesforceReader
 
 salesforce_config = {

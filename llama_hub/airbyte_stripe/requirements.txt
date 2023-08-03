@@ -1,1 +1,1 @@
-source_stripe
+airbyte-source-stripe

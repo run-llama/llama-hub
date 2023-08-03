@@ -1,1 +1,1 @@
-source_salesforce
+airbyte-source-salesforce
