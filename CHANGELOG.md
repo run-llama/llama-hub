@@ -1,3 +1,16 @@
+## [v0.0.17] - 2023-08-02
+
+### New Feature Release
+- Auto-Tool creation notebook (#424)
+
+### Smaller Features + Bug Fixes
+- Security warning for Code Interpreter and lock requests headers to a domain (#438)
+- A few more tags based on GA (#437)
+- Add publish release workflow (#436)
+- add retrieval augmented text-to-image example (#434)
+- hatena blog reader add url (#425)
+- adding more functions to DeepDoctectionReader and docs (#431)
+
 ## [v0.0.16] - 2023-07-30
 
 ### New Feature Release
