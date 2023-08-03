@@ -18,6 +18,7 @@ from llama_index import (
     VectorStoreIndex,
     ServiceContext,
 )
+from llama_index import download_loader
 
 s2reader = download_loader('SemanticScholarReader')
 
