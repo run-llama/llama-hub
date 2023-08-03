@@ -622,5 +622,15 @@
       "bucket",
       "storage"
     ]
+  },
+  "SemanticScholarReader": {
+    "id": "semanticscholar",
+    "author": "shauryr",
+    "keywords": [
+      "semantic",
+      "scholar",
+      "research",
+      "paper"
+    ]
   }
 }
