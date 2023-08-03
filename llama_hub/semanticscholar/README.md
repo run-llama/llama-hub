@@ -18,9 +18,9 @@ from llama_index import (
     VectorStoreIndex,
     ServiceContext,
 )
-from llama_index import download_loader
+from llama_hub.semanticscholar.base import SemanticScholarReader
 
-s2reader = download_loader('SemanticScholarReader')
+s2reader = SemanticScholarReader()
 
 # narrow down the search space
 query_space = "large language models"
