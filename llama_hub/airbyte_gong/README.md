@@ -5,7 +5,7 @@ The Airbyte Gong Loader allows you to access different Gong objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the gong source: `pip install source_gong`
+* Install the gong source: `pip install airbyte-source-gong`
 
 ## Usage
 

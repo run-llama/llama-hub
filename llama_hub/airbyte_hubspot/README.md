@@ -5,7 +5,7 @@ The Airbyte Hubspot Loader allows you to access different Hubspot objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the hubspot source: `pip install source_hubspot`
+* Install the hubspot source: `pip install airbyte-source-hubspot`
 
 ## Usage
 

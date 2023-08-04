@@ -5,7 +5,7 @@ The Airbyte Stripe Loader allows you to access different Stripe objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the stripe source: `pip install source_stripe`
+* Install the stripe source: `pip install airbyte-source-stripe`
 
 ## Usage
 

@@ -5,7 +5,7 @@ The Airbyte ZendeskSupport Loader allows you to access different ZendeskSupport 
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the zendesk_support source: `pip install source_zendesk_support`
+* Install the zendesk_support source: `pip install airbyte-source-zendesk-support`
 
 ## Usage
 

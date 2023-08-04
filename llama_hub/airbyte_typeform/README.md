@@ -5,7 +5,7 @@ The Airbyte Typeform Loader allows you to access different Typeform objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the typeform source: `pip install source_typeform`
+* Install the typeform source: `pip install airbyte-source-typeform`
 
 ## Usage
 

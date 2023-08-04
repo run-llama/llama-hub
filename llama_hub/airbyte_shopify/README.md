@@ -5,7 +5,7 @@ The Airbyte Shopify Loader allows you to access different Shopify objects.
 ## Installation
 
 * Install llama_hub: `pip install llama_hub`
-* Install the shopify source: `pip install source_shopify`
+* Install the shopify source: `pip install airbyte-source-shopify`
 
 ## Usage
 
