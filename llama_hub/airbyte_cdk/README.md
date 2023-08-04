@@ -1,6 +1,6 @@
 # Airbyte CDK Loader
 
-The Airbyte CDK Loader is a shim for sources creating using the [Airbyte Python CDK](https://docs.airbyte.com/connector-development/cdk-python/). It allows you to load data from any Airbyte source into LlamaIndex.
+The Airbyte CDK Loader is a shim for sources created using the [Airbyte Python CDK](https://docs.airbyte.com/connector-development/cdk-python/). It allows you to load data from any Airbyte source into LlamaIndex.
 
 ## Installation
 
@@ -25,7 +25,11 @@ reader = AirbyteCDKReader(source_class=SourceGithub,config=github_config)
 documents = reader.load_data(stream_name="issues")
 ```
 
-By default all fields are stored as metadata in the documents and the text is set to an empty string. Construct the text of the document by transforming the documents returned by the reader.
+By default all fields are stored as metadata in the documents and the text is set to an empty string. Construct the text of the document by transforming the documents returned by the reader:
+```python
+for doc in documents:
+  doc.text = doc.extra_info["title"]
+```
 
 ## Incremental loads
 

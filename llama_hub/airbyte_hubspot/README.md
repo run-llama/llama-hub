@@ -37,7 +37,11 @@ The general shape looks like this:
 }
 ```
 
-By default all fields are stored as metadata in the documents and the text is set to an empty string. Construct the text of the document by transforming the documents returned by the reader.
+By default all fields are stored as metadata in the documents and the text is set to an empty string. Construct the text of the document by transforming the documents returned by the reader:
+```python
+for doc in documents:
+  doc.text = doc.extra_info["title"]
+```
 
 ## Incremental loads
 
