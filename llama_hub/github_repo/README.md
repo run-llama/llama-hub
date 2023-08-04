@@ -1,6 +1,6 @@
 # Github Repository Loader
 
-This loader takes in `owner`, `repo`, `branch`, `commit_sha` and other optional parameters such as for filtering dicrectories or only allowing some files with given extensions etc. It then fetches all the contents of the GitHub repository.
+This loader takes in `owner`, `repo`, `branch`, `commit_sha` and other optional parameters such as for filtering directories or only allowing some files with given extensions etc. It then fetches all the contents of the GitHub repository.
 
 As a prerequisite, you will need to generate a "classic" personal access token with the `repo` and `read:org` scopes. See [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for instructions.
 
