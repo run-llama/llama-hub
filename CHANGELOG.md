@@ -1,3 +1,12 @@
+## [v0.0.18] - 2023-08-04
+
+### New Feature Release
+- Added Semantic scholar reader (#439)
+
+### Smaller Features + Bug Fixes
+- Update docugami loader notebook (#445)
+- Remove release workflow in favor of using tags (#443)
+
 ## [v0.0.17] - 2023-08-02
 
 ### New Feature Release
