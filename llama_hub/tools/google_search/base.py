@@ -4,6 +4,8 @@ from llama_index.tools.tool_spec.base import BaseToolSpec
 from llama_index.readers.schema.base import Document
 import requests
 import urllib.parse
+from typing import Optional
+
 
 QUERY_URL_TMPL = (
     "https://www.googleapis.com/customsearch/v1?key={key}&cx={engine}&q={query}"
@@ -15,22 +17,32 @@ class GoogleSearchToolSpec(BaseToolSpec):
 
     spec_functions = ["google_search"]
 
-    def __init__(self, key: str, engine: str) -> Document:
+    def __init__(self, key: str, engine: str) -> None:
         """Initialize with parameters."""
         self.key = key
         self.engine = engine
 
-    def google_search(self, query: str):
+    def google_search(self, query: str, num: Optional[int] = None):
         """
-        Make a query the google search engine to receive a list of results.
+        Make a query to the Google search engine to receive a list of results.
 
         Args:
-            query (str): The query to be passed to google search.
+            query (str): The query to be passed to Google search.
+            num (int, optional): The number of search results to return. Defaults to None.
 
+        Raises:
+            ValueError: If the 'num' is not an integer between 1 and 10.
         """
-        response = requests.get(
-            QUERY_URL_TMPL.format(
-                key=self.key, engine=self.engine, query=urllib.parse.quote_plus(query)
-            )
+        url = QUERY_URL_TMPL.format(
+                key=self.key,
+                engine=self.engine,
+                query=urllib.parse.quote_plus(query)
         )
+
+        if num is not None:
+            if not 1 <= num <= 10:
+                raise ValueError("num should be an integer between 1 and 10, inclusive")
+            url += f"&num={num}"
+
+        response = requests.get(url)
         return [Document(text=response.text)]
