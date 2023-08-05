@@ -4,6 +4,8 @@ from llama_index.tools.tool_spec.base import BaseToolSpec
 from llama_index.readers.schema.base import Document
 import requests
 import urllib.parse
+from typing import Optional
+
 
 QUERY_URL_TMPL = (
     "https://www.googleapis.com/customsearch/v1?key={key}&cx={engine}&q={query}"
@@ -20,7 +22,7 @@ class GoogleSearchToolSpec(BaseToolSpec):
         self.key = key
         self.engine = engine
 
-    def google_search(self, query: str, num: int=None):
+    def google_search(self, query: str, num: Optional[int] = None):
         """
         Make a query to the Google search engine to receive a list of results.
 
