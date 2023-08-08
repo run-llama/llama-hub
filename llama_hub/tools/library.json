@@ -25,6 +25,10 @@
     "id": "tools/google_search",
     "author": "ajhofmann"
   },
+  "GraphQLToolSpec": {
+    "id": "tools/graphql",
+    "author": "ajhofmann"
+  },
   "NotionToolSpec": {
     "id": "tools/notion",
     "author": "jerryjliu"
