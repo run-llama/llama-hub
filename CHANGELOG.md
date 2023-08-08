@@ -1,3 +1,8 @@
+## [v0.0.19] - 2023-08-07
+
+### Smaller Features + Bug Fixes
+- added a num parameter to the google_search (#446)
+
 ## [v0.0.18] - 2023-08-04
 
 ### New Feature Release
