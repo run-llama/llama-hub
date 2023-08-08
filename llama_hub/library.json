@@ -632,5 +632,10 @@
       "research",
       "paper"
     ]
+  },
+    "ZepReader": {
+    "id": "zep",
+    "author": "zep",
+    "keywords": ["zep", "retriever", "memory", "storage"]
   }
 }
