@@ -41,6 +41,10 @@
     "id": "tools/requests",
     "author": "ajhofmann"
   },
+  "ShopifyToolSpec": {
+    "id": "tools/shopify",
+    "author": "ajhofmann"
+  },
   "SlackToolSpec": {
     "id": "tools/slack",
     "author": "jerryjliu"
