@@ -1,6 +1,6 @@
-# Zep Loader
+# Zep Reader
 
-The Zep Loader returns a set of texts corresponding to a text query or embeddings retrieved from a Zep Collection.
+The Zep Reader returns a set of texts corresponding to a text query or embeddings retrieved from a Zep Collection.
 The Reader is initialized with a Zep API URL and optionally an API key. The Reader can then be used to load data 
 from a Zep Document Collection.
 
