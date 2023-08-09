@@ -1,4 +1,9 @@
 {
+  "AzureCVToolSpec": {
+    "id": "tools/azure_cv",
+    "author": "ajhofmann",
+    "keywords": ["image", "vision", "cv"]
+  },
   "BingSearchToolSpec": {
     "id": "tools/bing_search",
     "author": "ajhofmann"
