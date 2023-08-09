@@ -622,5 +622,23 @@
       "bucket",
       "storage"
     ]
+  },
+  "NewsArticleReader": {
+    "id": "news",
+    "author": "ruze00",
+    "keywords": [
+      "news",
+      "article"
+    ]
+  },
+  "RssNewsReader": {
+    "id": "rss_news",
+    "author": "ruze00",
+    "keywords": [
+      "news",
+      "article",
+      "rss",
+      "feed"
+    ]
   }
 }
