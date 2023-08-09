@@ -9,7 +9,7 @@ pip install newspaper3k
 ```
 Pass in an array of individual page URLs:
 ```python
-from llama_index import download_loader
+from llama_hub.web.news import NewsArticleReader
 
 NewsArticleReader = download_loader("NewsArticleReader")
 

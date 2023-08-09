@@ -8,7 +8,7 @@ to fetch the feed and the `NewsArticleReader` to load each article.
 To use this loader, pass in an array of URLs of RSS feeds. It will download the pages referenced in each feed and 
 combine them:
 ```python
-from llama_index import download_loader
+from llama_hub.web.rss_news import RSSNewsReader
 
 urls = [
     "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
