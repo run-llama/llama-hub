@@ -1,3 +1,11 @@
+## [v0.0.20] - 2023-08-09
+
+### New Feature Release
+- Adding Shopify GraphQL Tool Spec and Demo (#442)
+
+### Smaller Features + Bug Fixes
+- changed num to init for better declaration in google search tool (#449)
+
 ## [v0.0.19] - 2023-08-07
 
 ### Smaller Features + Bug Fixes
