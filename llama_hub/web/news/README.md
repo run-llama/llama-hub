@@ -11,8 +11,6 @@ Pass in an array of individual page URLs:
 ```python
 from llama_hub.web.news import NewsArticleReader
 
-NewsArticleReader = download_loader("NewsArticleReader")
-
 reader = NewsArticleReader()
 documents = reader.load_data([
     'https://www.cnbc.com/2023/08/03/amazon-amzn-q2-earnings-report-2023.html',
