@@ -1,3 +1,12 @@
+## [v0.0.21] - 2023-08-10
+
+### New Feature Releases
+- ZepReader (#452)
+- GraphQL Tool Spec (#455)
+- Adding PythonFileToolSpec (#453)
+- Adding bing search tools (#457)
+- RSS Feed / OPML reader and article parser (#444)
+
 ## [v0.0.20] - 2023-08-09
 
 ### New Feature Release
