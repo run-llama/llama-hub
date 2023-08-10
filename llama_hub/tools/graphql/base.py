@@ -14,25 +14,25 @@ class GraphQLToolSpec(BaseToolSpec):
         self.headers = headers
         self.url = url
 
-    def graphql_request(self, query: str, variables: str, operationName: str):
+    def graphql_request(self, query: str, variables: str, operation_name: str):
         """
         Use this tool to make a GraphQL query against the server.
 
         Args:
             query (str): The GraphQL query to execute
             variables (str): The variable values for the query
-            operationName (str): The name for the query
+            operation_name (str): The name for the query
 
         example input:
             "query":"query Ships {\n  ships {\n    id\n    model\n    name\n    type\n    status\n  }\n}",
             "variables":{},
-            "operationName":"Ships"
+            "operation_name":"Ships"
 
         """
         res = requests.post(self.url, headers=self.headers, json={
             'query': query,
             'variables': variables,
-            'operationName': operationName
+            'operationName': operation_name
         })
         return res.text
 
