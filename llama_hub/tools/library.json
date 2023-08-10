@@ -41,6 +41,10 @@
     "id": "tools/weather",
     "author": "logan-markewich"
   },
+  "PythonFileToolSpec": {
+    "id": "tools/python_file",
+    "author": "ajhofmann"
+  },
   "RequestsToolSpec": {
     "id": "tools/requests",
     "author": "ajhofmann"
