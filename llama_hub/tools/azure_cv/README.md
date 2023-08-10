@@ -6,12 +6,12 @@ You will need to set up an api key and computer vision instance using Azure, lea
 
 ## Usage
 
-This tool has more extensive example usage documented in a Jupyter notebook [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks/azure_vision.ipynb)
+This tool has a more extensive example usage documented in a Jupyter notebook [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks/azure_vision.ipynb)
 
 Here's an example usage of the AzureCVToolSpec.
 
 ```python
-from llama_hub.tools.google_search.base import AzureCVToolSpec
+from llama_hub.tools.azure_cv.base import AzureCVToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = AzureCVToolSpec(api_key='your-key', resource='your-resource')

@@ -8,7 +8,7 @@ import urllib.parse
 CV_URL_TMPL = "https://{resource}.cognitiveservices.azure.com/computervision/imageanalysis:analyze"
 
 class AzureCVToolSpec(BaseToolSpec):
-    """Wolfram Alpha tool spec."""
+    """Azure Cognitive Vision tool spec."""
 
     spec_functions = ["process_image"]
 
