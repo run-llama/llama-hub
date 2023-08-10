@@ -624,7 +624,7 @@
     ]
   },
   "NewsArticleReader": {
-    "id": "news",
+    "id": "web/news",
     "author": "ruze00",
     "keywords": [
       "news",
@@ -632,7 +632,7 @@
     ]
   },
   "RssNewsReader": {
-    "id": "rss_news",
+    "id": "web/rss_news",
     "author": "ruze00",
     "keywords": [
       "news",
@@ -651,7 +651,7 @@
       "paper"
     ]
   },
-    "ZepReader": {
+  "ZepReader": {
     "id": "zep",
     "author": "zep",
     "keywords": ["zep", "retriever", "memory", "storage"]
