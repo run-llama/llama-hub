@@ -640,5 +640,20 @@
       "rss",
       "feed"
     ]
+  },
+  "SemanticScholarReader": {
+    "id": "semanticscholar",
+    "author": "shauryr",
+    "keywords": [
+      "semantic",
+      "scholar",
+      "research",
+      "paper"
+    ]
+  },
+    "ZepReader": {
+    "id": "zep",
+    "author": "zep",
+    "keywords": ["zep", "retriever", "memory", "storage"]
   }
 }

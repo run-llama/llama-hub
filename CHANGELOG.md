@@ -1,3 +1,25 @@
+## [v0.0.20] - 2023-08-09
+
+### New Feature Release
+- Adding Shopify GraphQL Tool Spec and Demo (#442)
+
+### Smaller Features + Bug Fixes
+- changed num to init for better declaration in google search tool (#449)
+
+## [v0.0.19] - 2023-08-07
+
+### Smaller Features + Bug Fixes
+- added a num parameter to the google_search (#446)
+
+## [v0.0.18] - 2023-08-04
+
+### New Feature Release
+- Added Semantic scholar reader (#439)
+
+### Smaller Features + Bug Fixes
+- Update docugami loader notebook (#445)
+- Remove release workflow in favor of using tags (#443)
+
 ## [v0.0.17] - 2023-08-02
 
 ### New Feature Release

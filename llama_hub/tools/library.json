@@ -1,4 +1,8 @@
 {
+  "BingSearchToolSpec": {
+    "id": "tools/bing_search",
+    "author": "ajhofmann"
+  },
   "ChatGPTPluginToolSpec": {
     "id": "tools/chatgpt_plugin",
     "author": "ajhofmann"
@@ -25,6 +29,10 @@
     "id": "tools/google_search",
     "author": "ajhofmann"
   },
+  "GraphQLToolSpec": {
+    "id": "tools/graphql",
+    "author": "ajhofmann"
+  },
   "NotionToolSpec": {
     "id": "tools/notion",
     "author": "jerryjliu"
@@ -37,8 +45,16 @@
     "id": "tools/weather",
     "author": "logan-markewich"
   },
+  "PythonFileToolSpec": {
+    "id": "tools/python_file",
+    "author": "ajhofmann"
+  },
   "RequestsToolSpec": {
     "id": "tools/requests",
+    "author": "ajhofmann"
+  },
+  "ShopifyToolSpec": {
+    "id": "tools/shopify",
     "author": "ajhofmann"
   },
   "SlackToolSpec": {
