@@ -623,6 +623,24 @@
       "storage"
     ]
   },
+  "NewsArticleReader": {
+    "id": "web/news",
+    "author": "ruze00",
+    "keywords": [
+      "news",
+      "article"
+    ]
+  },
+  "RssNewsReader": {
+    "id": "web/rss_news",
+    "author": "ruze00",
+    "keywords": [
+      "news",
+      "article",
+      "rss",
+      "feed"
+    ]
+  },
   "SemanticScholarReader": {
     "id": "semanticscholar",
     "author": "shauryr",
@@ -633,7 +651,7 @@
       "paper"
     ]
   },
-    "ZepReader": {
+  "ZepReader": {
     "id": "zep",
     "author": "zep",
     "keywords": ["zep", "retriever", "memory", "storage"]
