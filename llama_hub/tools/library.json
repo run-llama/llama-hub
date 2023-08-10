@@ -1,4 +1,8 @@
 {
+  "BingSearchToolSpec": {
+    "id": "tools/bing_search",
+    "author": "ajhofmann"
+  },
   "ChatGPTPluginToolSpec": {
     "id": "tools/chatgpt_plugin",
     "author": "ajhofmann"
