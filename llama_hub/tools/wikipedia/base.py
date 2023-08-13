@@ -44,6 +44,7 @@ class WikipediaToolSpec(BaseToolSpec):
         Args:
             query (str): the string to search for
         """
+        import wikipedia
         pages = wikipedia.search(query)
         if len(pages) == 0:
             return "Unable to find any details on this search"
