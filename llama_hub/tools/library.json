@@ -1,4 +1,9 @@
 {
+  "ArxivToolSpec": {
+    "id": "tools/arxiv",
+    "author": "ajhofmann",
+    "keywords": ["math", "science", "research"]
+  },
   "AzureCVToolSpec": {
     "id": "tools/azure_cv",
     "author": "ajhofmann",
