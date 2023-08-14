@@ -87,6 +87,11 @@
     "author": "ephe-meral",
     "keywords": ["spreadsheet"]
   },
+  "SDLReader": {
+    "id": "file/sdl",
+    "author": "ajhofmann",
+    "keywords": ["graphql", "schema"]
+  },
   "SimpleWebPageReader": {
     "id": "web/simple_web",
     "author": "thejessezhang"
