@@ -1,3 +1,13 @@
+## [v0.0.22] - 2023-08-15
+
+### New Feature Releases
+-  Adding Azure speech, translate and CV tools (#459)
+- SDLReader for Graphql (#461)
+
+### Smaller Features + Bug Fixes
+- missing import added for wikipedia (#463)
+- patch document in wordpress (#462)
+
 ## [v0.0.21] - 2023-08-10
 
 ### New Feature Releases
