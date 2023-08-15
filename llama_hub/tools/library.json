@@ -1,4 +1,17 @@
 {
+  "AzureCVToolSpec": {
+    "id": "tools/azure_cv",
+    "author": "ajhofmann",
+    "keywords": ["image", "vision", "cv"]
+  },
+  "AzureSpeechToolSpec": {
+    "id": "tools/azure_speech",
+    "author": "ajhofmann"
+  },
+  "AzureTranslateToolSpec": {
+    "id": "tools/azure_translate",
+    "author": "ajhofmann" 
+  },
   "BingSearchToolSpec": {
     "id": "tools/bing_search",
     "author": "ajhofmann"
