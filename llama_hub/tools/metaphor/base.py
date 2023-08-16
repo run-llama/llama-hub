@@ -7,14 +7,21 @@ import requests
 import urllib.parse
 import datetime
 
+
 class MetaphorToolSpec(BaseToolSpec):
     """Metaphor tool spec."""
 
-    spec_functions = ["metaphor_search", "retrieve_documents", "current_date", "find_similar"]
+    spec_functions = [
+        "metaphor_search",
+        "retrieve_documents",
+        "current_date",
+        "find_similar",
+    ]
 
     def __init__(self, api_key: str) -> None:
         """Initialize with parameters."""
         from metaphor_python import Metaphor
+
         self.client = Metaphor(api_key=api_key)
 
     def metaphor_search(
@@ -24,31 +31,30 @@ class MetaphorToolSpec(BaseToolSpec):
         include_domains: Optional[List[str]] = None,
         exclude_domains: Optional[List[str]] = None,
         start_published_date: Optional[str] = None,
-        end_published_date: Optional[str] = None
+        end_published_date: Optional[str] = None,
     ) -> str:
         """
         Metaphor allows you to use a natural language query to search the internet
 
         Args:
-            query (str): A natural language query phrased as an answer for what the link provides, ie: "This is the latest news about space"
+            query (str): A natural language query phrased as an answer for what the link provides, ie: "This is the latest news about space:"
             num_results (Optional[int]): Number of results to return. Default 3.
             include_domains (Optional[List(str)]): A list of top level domains like ["wsj.com"] to limit the search to specfic sites.
             exclude_domains (Optional[List(str)]): Top level domains to exclude.
             start_published_date (Optional[str]): A date string like "2020-06-15". Get the date from `current_date`
             end_published_date (Optional[str]): End date string
         """
-        response = self.client.search(query,
+        response = self.client.search(
+            query,
             num_results=num_results,
             include_domains=include_domains,
             exclude_domains=exclude_domains,
             start_published_date=start_published_date,
             end_published_date=end_published_date,
         )
-        return [{
-                'title': result.title,
-                'url': result.url,
-                'id': result.id
-            } for result in response.results
+        return [
+            {"title": result.title, "url": result.url, "id": result.id}
+            for result in response.results
         ]
 
     def retrieve_documents(self, ids: List[str]) -> List[Document]:
@@ -67,7 +73,7 @@ class MetaphorToolSpec(BaseToolSpec):
         url: str,
         num_results: Optional[int] = 3,
         start_published_date: Optional[str] = None,
-        end_published_date: Optional[str] = None
+        end_published_date: Optional[str] = None,
     ) -> str:
         """
         Retrieve a list of similar documents to a given url
@@ -82,15 +88,12 @@ class MetaphorToolSpec(BaseToolSpec):
             url,
             num_results=num_results,
             start_published_date=start_published_date,
-            end_published_date=end_published_date
+            end_published_date=end_published_date,
         )
-        return [{
-                'title': result.title,
-                'url': result.url,
-                'id': result.id
-            } for result in response.results
+        return [
+            {"title": result.title, "url": result.url, "id": result.id}
+            for result in response.results
         ]
-
 
     def current_date(self):
         """
