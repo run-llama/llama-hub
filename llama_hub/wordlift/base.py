@@ -215,11 +215,15 @@ def is_valid_html(content: str) -> bool:
         return False
 
     if is_url(content):
-        response = requests.get(content)
-        if response.status_code == 200:
-            html_content = response.text
-            return BeautifulSoup(html_content, 'html.parser').find('html') is not None
-        else:
+        try:
+            response = requests.get(content)
+            if response.status_code == 200:
+                html_content = response.text
+                return BeautifulSoup(html_content, 'html.parser').find('html') is not None
+            else:
+                return False
+        except (requests.exceptions.RequestException, requests.exceptions.ConnectionError):
+            # If there is a connection error or the URL doesn't resolve, skip it
             return False
 
     return BeautifulSoup(content, 'html.parser').find('html') is not None
@@ -246,24 +250,29 @@ def clean_html(text: str) -> str:
     if isinstance(text, dict):
         return str(text)
     if isinstance(text, str):
-        if is_url(text):
-            response = requests.get(text)
-            if response.status_code == 200:
-                html_content = response.text
-                soup = BeautifulSoup(html_content, 'html.parser')
-                cleaned_text = soup.get_text()
+        try:
+            if is_url(text):
+                response = requests.get(text)
+                if response.status_code == 200:
+                    html_content = response.text
+                    soup = BeautifulSoup(html_content, 'html.parser')
+                    cleaned_text = soup.get_text()
+                else:
+                    cleaned_text = ""
+            elif os.path.isfile(text):
+                with open(text, 'r') as file:
+                    soup = BeautifulSoup(file, 'html.parser')
+                    cleaned_text = soup.get_text()
             else:
-                cleaned_text = text
-        elif os.path.isfile(text):
-            with open(text, 'r') as file:
-                soup = BeautifulSoup(file, 'html.parser')
-                cleaned_text = soup.get_text()
-        else:
-            with warnings.catch_warnings():
-                warnings.filterwarnings("ignore", category=UserWarning)
-                soup = BeautifulSoup(text, 'html.parser')
-                cleaned_text = soup.get_text()
-        return cleaned_text
+                with warnings.catch_warnings():
+                    warnings.filterwarnings("ignore", category=UserWarning)
+                    soup = BeautifulSoup(text, 'html.parser')
+                    cleaned_text = soup.get_text()
+            return cleaned_text
+        except (requests.exceptions.RequestException, requests.exceptions.ConnectionError):
+            # If there is a connection error or the URL doesn't resolve, skip it
+            return ""
+
     return str(text)
 
 

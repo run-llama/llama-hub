@@ -74,15 +74,23 @@
   },
   "SimpleCSVReader": {
     "id": "file/simple_csv",
-    "author": "vguillet"
+    "author": "vguillet",
+    "keywords": ["spreadsheet"]
   },
   "PagedCSVReader": {
     "id": "file/paged_csv",
-    "author": "thejessezhang"
+    "author": "thejessezhang",
+    "keywords": ["spreadsheet"]
   },
   "PandasCSVReader": {
     "id": "file/pandas_csv",
-    "author": "ephe-meral"
+    "author": "ephe-meral",
+    "keywords": ["spreadsheet"]
+  },
+  "SDLReader": {
+    "id": "file/sdl",
+    "author": "ajhofmann",
+    "keywords": ["graphql", "schema"]
   },
   "SimpleWebPageReader": {
     "id": "web/simple_web",
@@ -205,7 +213,8 @@
   },
   "YoutubeTranscriptReader": {
     "id": "youtube_transcript",
-    "author": "ravi03071991"
+    "author": "ravi03071991",
+    "keywords": ["video"]
   },
   "MakeWrapper": {
     "id": "make_com"
@@ -225,7 +234,7 @@
   "UnstructuredReader": {
     "id": "file/unstructured",
     "author": "thejessezhang",
-    "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io"]
+    "keywords": ["sec", "html", "eml", "10k", "10q", "unstructured.io", "yaml", "yml"]
   },
   "KnowledgeBaseWebReader": {
     "id": "web/knowledge_base",
@@ -306,7 +315,8 @@
   },
   "PandasExcelReader": {
     "id": "file/pandas_excel",
-    "author": "maccarini"
+    "author": "maccarini",
+    "keywords": ["spreadsheet"]
   },
   "ZendeskReader": {
     "id": "zendesk",
@@ -589,6 +599,66 @@
       "singlestore",
       "memsql"
     ]
+  },
+  "SECFilingsLoader":{
+    "id":"sec_filings",
+    "author":"Athe-kunal",
+    "keywords":[
+      "finance",
+      "SEC Filings",
+      "10-K",
+      "10-Q"
+    ]
+  },
+  "GuruReader": {
+    "id": "guru",
+    "author": "mcclain-thiel",
+    "keywords": [
+      "guru",
+      "knowledge base",
+      "getguru"
+    ]
+  },
+  "MinioReader": {
+    "id": "minio",
+    "author": "semoal",
+    "keywords": [
+      "minio",
+      "bucket",
+      "storage"
+    ]
+  },
+  "NewsArticleReader": {
+    "id": "web/news",
+    "author": "ruze00",
+    "keywords": [
+      "news",
+      "article"
+    ]
+  },
+  "RssNewsReader": {
+    "id": "web/rss_news",
+    "author": "ruze00",
+    "keywords": [
+      "news",
+      "article",
+      "rss",
+      "feed"
+    ]
+  },
+  "SemanticScholarReader": {
+    "id": "semanticscholar",
+    "author": "shauryr",
+    "keywords": [
+      "semantic",
+      "scholar",
+      "research",
+      "paper"
+    ]
+  },
+  "ZepReader": {
+    "id": "zep",
+    "author": "zep",
+    "keywords": ["zep", "retriever", "memory", "storage"]
   }
-
 }

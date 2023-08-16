@@ -2,6 +2,11 @@
 
 This tool can be used to run python scripts and capture the results of stdout and stderr
 
+WARNING: This tool provides the Agent access to the `subprocess.run` command.
+Arbitrary code execution is possible on the machine running this tool.
+This tool is not recommended to be used in a production setting, and would require heavy sandboxing or virtual machines
+
+
 ## Usage
 
 Here's an example usage of the CodeInterpreterToolSpec.
