@@ -1,4 +1,5 @@
-from typing import Any, List, Mapping, Optional
+import json
+from typing import Any, Callable, Iterator, List, Mapping, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -6,8 +7,10 @@ from airbyte_protocol.models.airbyte_protocol import AirbyteRecordMessage
 from airbyte_cdk.sources.embedded.base_integration import BaseEmbeddedIntegration
 from airbyte_cdk.sources.embedded.runner import CDKRunner
 
+RecordHandler = Callable[[AirbyteRecordMessage, Optional[str]], Document]
 
-class AirbyteCDKReader(BaseReader, BaseEmbeddedIntegration):
+
+class AirbyteCDKReader(BaseReader):
     """AirbyteCDKReader reader.
 
     Retrieve documents from an Airbyte source implemented using the CDK.
@@ -21,13 +24,31 @@ class AirbyteCDKReader(BaseReader, BaseEmbeddedIntegration):
         self,
         source_class: Any,
         config: Mapping[str, Any],
+        record_handler: Optional[RecordHandler] = None,
     ) -> None:
         """Initialize with parameters."""
 
-        super().__init__(config=config, runner=CDKRunner(source=source_class(), name=source_class.__name__))
-    
-    def _handle_record(self, record: AirbyteRecordMessage, id: Optional[str]) -> Document:
-        return Document(doc_id=id,text="", extra_info=record.data)
+        class CDKIntegration(BaseEmbeddedIntegration):
+            def _handle_record(
+                self, record: AirbyteRecordMessage, id: Optional[str]
+            ) -> Document:
+                if record_handler:
+                    return record_handler(record, id)
+                return Document(
+                    doc_id=id, text=json.dumps(record.data), extra_info=record.data
+                )
 
-    def load_data(self, *args: Any, **load_kwargs: Any) -> List[Document]:
-        return list(self._load_data(*args, **load_kwargs))
+        self._integration = CDKIntegration(
+            config=config,
+            runner=CDKRunner(source=source_class(), name=source_class.__name__),
+        )
+
+    def load_data(self, *args: Any, **kwargs: Any) -> List[Document]:
+        return list(self.lazy_load_data(*args, **kwargs))
+
+    def lazy_load_data(self, *args: Any, **kwargs: Any) -> Iterator[Document]:
+        return self._integration._load_data(*args, **kwargs)
+
+    @property
+    def last_state(self):
+        return self._integration.last_state

@@ -42,18 +42,24 @@ The general shape looks like this:
 }
 ```
 
-By default all fields are stored as metadata in the documents and the text is set to an empty string. Construct the text of the document by transforming the documents returned by the reader:
+By default all fields are stored as metadata in the documents and the text is set to the JSON representation of all the fields. Construct the text of the document by passing a `record_handler` to the reader:
 ```python
-for doc in documents:
-  doc.text = doc.extra_info["title"]
+def handle_record(record, id):
+    return Document(doc_id=id, text=record.data["title"], extra_info=record.data)
+
+reader = AirbyteSalesforceReader(config=salesforce_config, record_handler=handle_record)
 ```
+
+## Lazy loads
+
+The `reader.load_data` endpoint will collect all documents and return them as a list. If there are a large number of documents, this can cause issues. By using `reader.lazy_load_data` instead, an iterator is returned which can be consumed document by document without the need to keep all documents in memory.
 
 ## Incremental loads
 
 This loader supports loading data incrementally (only returning documents that weren't loaded last time or got updated in the meantime):
 ```python
 
-reader = AirbyteSalesforceReader(...so many things...)
+reader = AirbyteSalesforceReader(config={...})
 documents = reader.load_data(stream_name="asset")
 current_state = reader.last_state # can be pickled away or stored otherwise
 
