@@ -1,8 +1,9 @@
 # Metaphor Tool
 
-This tool connects to [Metaphor](https://metaphor.systems/) to allow easily retriving articles from the web on current topics. The articles can then be retrieved and processed by an agent.
+This tool connects to [Metaphor](https://metaphor.systems/) to easily enable
+your agent to search and get HTML content from the Internet.
 
-As a prerequisite, you will need to register with Metaphor and [generate an API key](https://dashboard.metaphor.systems/overview)
+To begin, you need to obtain an API key on the [Metaphor developer dashboard](https://dashboard.metaphor.systems).
 
 ## Usage
 
@@ -28,4 +29,3 @@ agent.chat('Can you summarize the news published in the last month on supercondu
 `current_date`: Utility for the Agent to get todays date
 
 This loader is designed to be used as a way to load data as a Tool in a Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
-
