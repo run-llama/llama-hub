@@ -12,7 +12,7 @@ class MetaphorToolSpec(BaseToolSpec):
     """Metaphor tool spec."""
 
     spec_functions = [
-        "metaphor_search",
+        "search",
         "retrieve_documents",
         "current_date",
         "find_similar",
@@ -24,10 +24,10 @@ class MetaphorToolSpec(BaseToolSpec):
 
         self.client = Metaphor(api_key=api_key)
 
-    def metaphor_search(
+    def search(
         self,
         query: str,
-        num_results: Optional[int] = 3,
+        num_results: Optional[int] = 10,
         include_domains: Optional[List[str]] = None,
         exclude_domains: Optional[List[str]] = None,
         start_published_date: Optional[str] = None,
@@ -38,7 +38,7 @@ class MetaphorToolSpec(BaseToolSpec):
 
         Args:
             query (str): A natural language query phrased as an answer for what the link provides, ie: "This is the latest news about space:"
-            num_results (Optional[int]): Number of results to return. Default 3.
+            num_results (Optional[int]): Number of results to return. Defaults to 10.
             include_domains (Optional[List(str)]): A list of top level domains like ["wsj.com"] to limit the search to specfic sites.
             exclude_domains (Optional[List(str)]): Top level domains to exclude.
             start_published_date (Optional[str]): A date string like "2020-06-15". Get the date from `current_date`
@@ -51,6 +51,7 @@ class MetaphorToolSpec(BaseToolSpec):
             exclude_domains=exclude_domains,
             start_published_date=start_published_date,
             end_published_date=end_published_date,
+            use_autoprompt=True
         )
         return [
             {"title": result.title, "url": result.url, "id": result.id}
@@ -79,7 +80,7 @@ class MetaphorToolSpec(BaseToolSpec):
         Retrieve a list of similar documents to a given url
 
         Args:
-            url (str): The article to find similar articles to
+            url (str): The web page to find similar results of
             num_results (Optional[int]): Number of results to return. Default 3.
             start_published_date (Optional[str]): A date string like "2020-06-15"
             end_published_date (Optional[str]): End date string
