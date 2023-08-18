@@ -23,8 +23,9 @@ agent = OpenAIAgent.from_tools(metaphor_tool.to_tool_list())
 agent.chat('Can you summarize the news published in the last month on superconductors')
 ```
 
-`metaphor_search`: Search for a list of articles relating to a natural language query
+`search`: Search for a list of articles relating to a natural language query
 `retrieve_documents`: Retrieve a list of documents returned from `metaphor_search`.
+`search_and_retrieve_documents`: Combines search and retrieve_documents to directly return a list of documents related to a search
 `find_similar`: Find similar documents to a given URL.
 `current_date`: Utility for the Agent to get todays date
 
