@@ -51,6 +51,10 @@
     "id": "tools/graphql",
     "author": "ajhofmann"
   },
+  "MetaphorToolSpec": {
+    "id": "tools/metaphor",
+    "author": "ajhofmann"
+  },
   "NotionToolSpec": {
     "id": "tools/notion",
     "author": "jerryjliu"
