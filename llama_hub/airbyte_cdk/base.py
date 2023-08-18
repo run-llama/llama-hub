@@ -3,11 +3,8 @@ from typing import Any, Callable, Iterator, List, Mapping, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from airbyte_protocol.models.airbyte_protocol import AirbyteRecordMessage
-from airbyte_cdk.sources.embedded.base_integration import BaseEmbeddedIntegration
-from airbyte_cdk.sources.embedded.runner import CDKRunner
 
-RecordHandler = Callable[[AirbyteRecordMessage, Optional[str]], Document]
+RecordHandler = Callable[[Any, Optional[str]], Document]
 
 
 class AirbyteCDKReader(BaseReader):
@@ -27,6 +24,10 @@ class AirbyteCDKReader(BaseReader):
         record_handler: Optional[RecordHandler] = None,
     ) -> None:
         """Initialize with parameters."""
+
+        from airbyte_cdk.sources.embedded.base_integration import BaseEmbeddedIntegration
+        from airbyte_cdk.sources.embedded.runner import CDKRunner
+        from airbyte_cdk.models.airbyte_protocol import AirbyteRecordMessage
 
         class CDKIntegration(BaseEmbeddedIntegration):
             def _handle_record(
