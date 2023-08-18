@@ -1,3 +1,8 @@
+## [v0.0.23] - 2023-08-17
+
+### New Feature Release
+- Adding ArXiv tool spec (#464)
+
 ## [v0.0.22] - 2023-08-15
 
 ### New Feature Releases
