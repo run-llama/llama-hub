@@ -14,8 +14,9 @@ class MetaphorToolSpec(BaseToolSpec):
     spec_functions = [
         "search",
         "retrieve_documents",
-        "current_date",
+        "search_and_retrieve_documents",
         "find_similar",
+        "current_date"
     ]
 
     def __init__(self, api_key: str) -> None:
@@ -95,6 +96,40 @@ class MetaphorToolSpec(BaseToolSpec):
             {"title": result.title, "url": result.url, "id": result.id}
             for result in response.results
         ]
+
+    def search_and_retrieve_documents(
+        self,
+        query: str,
+        num_results: Optional[int] = 10,
+        include_domains: Optional[List[str]] = None,
+        exclude_domains: Optional[List[str]] = None,
+        start_published_date: Optional[str] = None,
+        end_published_date: Optional[str] = None,
+    ) -> str:
+        """
+        Combines the functionality of `search` and `retrieve_documents`
+
+        Args:
+            query (str): the natural language query
+            num_results (Optional[int]): Number of results. Defaults to 10.
+            include_domains (Optional[List(str)]): A list of top level domains to search, like ["wsj.com"]
+            exclude_domains (Optional[List(str)]): Top level domains to exclude.
+            start_published_date (Optional[str]): A date string like "2020-06-15".
+            end_published_date (Optional[str]): End date string
+        """
+        response = self.client.search(
+            query,
+            num_results=num_results,
+            include_domains=include_domains,
+            exclude_domains=exclude_domains,
+            start_published_date=start_published_date,
+            end_published_date=end_published_date,
+            use_autoprompt=True
+        )
+        ids = [result.id for result in response.results]
+        documents = self.client.get_contents(ids)
+        return [Document(text=document.extract) for document in documents.contents]
+
 
     def current_date(self):
         """
