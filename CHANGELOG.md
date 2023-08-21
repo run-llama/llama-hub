@@ -1,3 +1,8 @@
+## [v0.0.24] - 2023-08-20
+
+### New Feature Release
+- Adding Metaphor tool and notebook (#466)
+
 ## [v0.0.23] - 2023-08-17
 
 ### New Feature Release
