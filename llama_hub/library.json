@@ -1,4 +1,36 @@
 {
+  "AirbyteCDKReader": {
+    "id": "airbyte_cdk",
+    "author": "flash1293"
+  },
+  "AirbyteGongReader": {
+    "id": "airbyte_gong",
+    "author": "flash1293"
+  },
+  "AirbyteHubspotReader": {
+    "id": "airbyte_hubspot",
+    "author": "flash1293"
+  },
+  "AirbyteSalesforceReader": {
+    "id": "airbyte_salesforce",
+    "author": "flash1293"
+  },
+  "AirbyteShopifyReader": {
+    "id": "airbyte_shopify",
+    "author": "flash1293"
+  },
+  "AirbyteStripeReader": {
+    "id": "airbyte_stripe",
+    "author": "flash1293"
+  },
+  "AirbyteTypeformReader": {
+    "id": "airbyte_typeform",
+    "author": "flash1293"
+  },
+  "AirbyteZendeskSupportReader": {
+    "id": "airbyte_zendesk_support",
+    "author": "flash1293"
+  },
   "AsanaReader": {
     "id": "asana",
     "author": "daveey"
