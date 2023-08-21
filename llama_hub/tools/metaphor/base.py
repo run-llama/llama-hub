@@ -19,11 +19,12 @@ class MetaphorToolSpec(BaseToolSpec):
         "current_date"
     ]
 
-    def __init__(self, api_key: str) -> None:
+    def __init__(self, api_key: str, verbose: bool = True) -> None:
         """Initialize with parameters."""
         from metaphor_python import Metaphor
 
         self.client = Metaphor(api_key=api_key)
+        self._verbose = verbose
 
     def search(
         self,
@@ -54,6 +55,8 @@ class MetaphorToolSpec(BaseToolSpec):
             end_published_date=end_published_date,
             use_autoprompt=True
         )
+        if self._verbose:
+            print(f"[Metaphor Tool] Autoprompt: {response.autoprompt_string}")
         return [
             {"title": result.title, "url": result.url, "id": result.id}
             for result in response.results
@@ -126,6 +129,8 @@ class MetaphorToolSpec(BaseToolSpec):
             end_published_date=end_published_date,
             use_autoprompt=True
         )
+        if self._verbose:
+            print(f"[Metaphor Tool] Autoprompt: {response.autoprompt_string}")
         ids = [result.id for result in response.results]
         documents = self.client.get_contents(ids)
         return [Document(text=document.extract) for document in documents.contents]
