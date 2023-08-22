@@ -692,5 +692,12 @@
     "id": "zep",
     "author": "zep",
     "keywords": ["zep", "retriever", "memory", "storage"]
+  },
+  {
+    "BagelReader":{
+      "id":"bagel",
+      "author":"asif",
+      "keywords":["vector", "database", "bagelDB", "storage"]
+    }
   }
 }
