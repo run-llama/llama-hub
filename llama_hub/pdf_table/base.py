@@ -8,7 +8,12 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 class PDFTableReader(BaseReader):
-    """PDF Table Reader. Reads table from PDF."""
+    """PDF Table Reader. Reads table from PDF.
+
+    Args:
+        row_separator (str): Row separator used to join rows of a DataFrame.
+        col_separator (str): Col separator used to join columns of a DataFrame.
+    """
 
     def __init__(
         self,
@@ -31,6 +36,7 @@ class PDFTableReader(BaseReader):
 
         Args:
             file (Path): Path for the PDF file.
+            pages (str): Pages to read tables from.
             extra_info (Optional[Dict]): Extra informations.
         
         Returns:
