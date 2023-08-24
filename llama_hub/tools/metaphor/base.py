@@ -23,7 +23,7 @@ class MetaphorToolSpec(BaseToolSpec):
         """Initialize with parameters."""
         from metaphor_python import Metaphor
 
-        self.client = Metaphor(api_key=api_key)
+        self.client = Metaphor(api_key=api_key, user_agent="llama-index")
         self._verbose = verbose
 
     def search(
