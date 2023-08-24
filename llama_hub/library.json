@@ -923,5 +923,14 @@
       "bagelDB",
       "storage"
     ]
+  },
+  "PDFTableReader": {
+    "id": "pdf_table",
+    "author": "yy0867",
+    "keywords": [
+      "table",
+      "pdf",
+      "pdf table"
+    ]
   }
 }
