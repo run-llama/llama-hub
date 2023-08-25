@@ -70,7 +70,7 @@ class SemanticScholarReader(BaseReader):
             logger.info(f"Downloaded pdf from {url}")
             return file_path
         else:
-            logger.warning(f"{url}  did not point to a pdf file")
+            logger.warning(f"{url} was not downloaded: protected")
             return None
 
     def _get_full_text_docs(self, documents: List[Document]) -> List[Document]:
