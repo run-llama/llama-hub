@@ -20,11 +20,21 @@ service_context = ServiceContext.from_defaults(
 )
 
 query_space = "large language models"
-persist_dir = "./citation_" + query_space
+query_string = "limitations of using large language models"
+full_text = True
+# be careful with the total_papers when full_text = True
+# it can take a long time to download
+total_papers = 50
+
+persist_dir = (
+    "./citation_" + query_space + "_" + str(total_papers) + "_" + str(full_text)
+)
+
+
 
 if not os.path.exists(persist_dir):
     # Load data from Semantic Scholar
-    documents = s2reader.load_data(query=query_space, limit=10)
+    documents = s2reader.load_data(query_space, total_papers, full_text=full_text)
     index = VectorStoreIndex.from_documents(documents, service_context=service_context)
     index.storage_context.persist(persist_dir=persist_dir)
 else:
@@ -40,7 +50,7 @@ query_engine = CitationQueryEngine.from_args(
 )
 
 # query the citation query engine
-response = query_engine.query("limitations of using large language models")
+response = query_engine.query(query_string)
 print("Answer: ", response)
 print("Source nodes: ")
 for node in response.source_nodes:
