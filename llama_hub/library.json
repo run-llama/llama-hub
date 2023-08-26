@@ -913,11 +913,7 @@
   	"id": "MacrometaGDNLoader",
   	"author": "Dain Im",
     "keywords": [
-      "macrometa",
-      "zep",
-      "retriever",
-      "memory",
-      "storage"
+      "macrometa"
     ]
   },
   "BagelReader": {
