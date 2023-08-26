@@ -14,7 +14,7 @@ class MagrometaGDNReader(BaseReader):
 
     """
 
-    def __init__(self, url, apikey):
+    def __init__(self, url: str, apikey: str):
         self.url = url
         self.apikey = apikey
 
