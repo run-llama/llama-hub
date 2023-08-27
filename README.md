@@ -93,7 +93,7 @@ index.query('Where did the author go to school?')
 
 ## How to add a loader or tool
 
-Adding a loader or tool simply requires forking this repo and making a Pull Request. The Llama Hub website will update automatically. However, please keep in the mind the following guidelines when making your PR.
+Adding a loader or tool simply requires forking this repo and making a Pull Request. The Llama Hub website will update automatically. However, please keep in mind the following guidelines when making your PR.
 
 ### Step 0: Setup virtual environment, install Poetry and dependencies
 
