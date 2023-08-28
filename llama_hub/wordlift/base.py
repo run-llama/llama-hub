@@ -108,6 +108,10 @@ class WordLiftLoader(BaseReader):
             metadata_fields = self.configure_options.get('metadata_fields', [])
 
             for item in data:
+                if not all(key in item for key in text_fields):
+                    logging.warning(
+                        f"Skipping document due to missing text fields: {item}")
+                    continue
                 row = {}
                 for key, value in item.items():
                     if key in text_fields or key in metadata_fields:
