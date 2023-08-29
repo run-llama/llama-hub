@@ -44,15 +44,7 @@ class GmailToolSpec(BaseToolSpec):
         """Load emails from the user's account"""
         self._cache_service()
 
-        messsages = self.search_messages()
-
-        results = []
-        for message in messsages:
-            text = message.pop("body")
-            extra_info = message
-            results.append(Document(text=text, extra_info=extra_info))
-
-        return results
+        return self.search_messages()
 
     def _get_credentials(self) -> Any:
         """Get valid user credentials from storage.
@@ -87,10 +79,9 @@ class GmailToolSpec(BaseToolSpec):
 
         return creds
 
-    def search_messages(self):
-        query = self.query
-
-        max_results = self.max_results
+    def search_messages(self, query: str, max_results: Optional[int] = None):
+        if not max_results:
+            max_results = self.max_results
 
         self._cache_service()
 
@@ -102,17 +93,17 @@ class GmailToolSpec(BaseToolSpec):
             .get("messages", [])
         )
 
-        result = []
+        results = []
         try:
             for message in messages:
                 message_data = self.get_message_data(message)
-                if not message_data:
-                    continue
-                result.append(message_data)
+                text = message_data.pop("body")
+                extra_info = message_data
+                results.append(Document(text=text, extra_info=extra_info))
         except Exception as e:
             raise Exception("Can't get message data" + str(e))
 
-        return result
+        return results
 
     def get_message_data(self, message):
         message_id = message["id"]
