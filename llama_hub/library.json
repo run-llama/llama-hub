@@ -932,5 +932,12 @@
       "pdf",
       "pdf table"
     ]
+  },
+  "LinearReader": {
+    "id": "linear",
+    "author": "Sushmithamallesh",
+    "keywords": [
+      "linear"
+    ]
   }
 }
