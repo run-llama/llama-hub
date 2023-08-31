@@ -37,7 +37,7 @@ class FirestoreReader(BaseReader):
             raise ImportError(IMPORT_ERROR_MSG)
 
         self.db = firestore.Client(project=project_id,
-                                   database_id=database_id,
+                                   database=database_id,
                                    client_info=CLIENT_INFO)
 
     def load_data(self, collection: str) -> List[Document]:
