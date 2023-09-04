@@ -4,7 +4,7 @@ A parser for tabular data files.
 
 """
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -14,7 +14,18 @@ class PagedCSVReader(BaseReader):
     """Paged CSV parser.
 
     Displayed each row in an LLM-friendly format on a separate document.
+
+    Args:
+        encoding (str): Encoding used to open the file.  
+            utf-8 by default.
     """
+
+    def __init__(
+        self, *args: Any, encoding: str = "utf-8", **kwargs: Any
+    ) -> None:
+        """Init params."""
+        super().__init__(*args, **kwargs)
+        self._encoding = encoding
 
     def load_data(
         self, file: Path, extra_info: Optional[Dict] = None
@@ -23,7 +34,7 @@ class PagedCSVReader(BaseReader):
         import csv
 
         docs = []
-        with open(file, "r") as fp:
+        with open(file, "r", encoding=self._encoding) as fp:
             csv_reader = csv.DictReader(fp)  # type: ignore
             for row in csv_reader:
                 docs.append(

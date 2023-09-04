@@ -169,6 +169,7 @@ class GoogleDriveReader(BaseReader):
                                 item["id"],
                                 author,
                                 item["name"],
+                                item["mimeType"],
                                 item["createdTime"],
                                 item["modifiedTime"],
                             )
@@ -195,6 +196,7 @@ class GoogleDriveReader(BaseReader):
                         file["id"],
                         author,
                         file["name"],
+                        file["mimeType"],
                         file["createdTime"],
                         file["modifiedTime"],
                     )
@@ -282,8 +284,9 @@ class GoogleDriveReader(BaseReader):
                         "file id": fileid_meta[0],
                         "author": fileid_meta[1],
                         "file name": fileid_meta[2],
-                        "created at": fileid_meta[3],
-                        "modified at": fileid_meta[4],
+                        "mime type": fileid_meta[3],
+                        "created at": fileid_meta[4],
+                        "modified at": fileid_meta[5],
                     }
                 try:
                     from llama_hub.utils import import_loader
