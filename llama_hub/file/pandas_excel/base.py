@@ -93,3 +93,4 @@ class PandasExcelReader(BaseReader):
             return [
                 Document(text=text, extra_info=extra_info or {}) for text in text_list
             ]
+
