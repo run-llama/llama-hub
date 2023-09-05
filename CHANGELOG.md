@@ -1,3 +1,21 @@
+
+## [v0.0.26] - 2023-08-31
+
+(includes v0.0.25)
+
+### New Feature Releases
+- Add Linear loader (#490)
+- Add PDF Table Reader (#476)
+- Bagel loader Added (#479)
+
+### Smaller Features + Bug Fixes
+- Database arg fix in Firestore client (#483)
+- Some update to prevent errors when transforming data in wordlift loader (#489)
+- UTF-8 encode and decode for gmail (#491)
+- iterate json data to Document object in unstructured loader (#485)
+- add custom user agent for metaphor llama index initialization (#480)
+- Fix Syntax in Docs (#478)
+
 ## [v0.0.24] - 2023-08-20
 
 ### New Feature Release
