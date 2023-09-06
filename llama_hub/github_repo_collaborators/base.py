@@ -156,11 +156,11 @@ class GitHubRepositoryCollaboratorsReader(BaseReader):
                         "site_admin": collab["site_admin"],
                         "role_name": collab["role_name"]                      
                     }
-                if collab["name"] is not None:
+                if collab.get("name") is not None:
                     extra_info["name"] = collab["name"]
-                if collab["email"] is not None:
+                if collab.get("email") is not None:
                     extra_info["email"] = collab["email"]
-                if collab["permissions"] is not None:
+                if collab.get("permissions") is not None:
                     extra_info["permissions"] = collab["permissions"]
                 document = Document(
                     doc_id=str(collab["login"]),
