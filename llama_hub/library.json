@@ -939,5 +939,12 @@
     "keywords": [
       "linear"
     ]
+  },
+  "HWPReader": {
+    "id": "hwp",
+    "author": "sangwongenip",
+    "keywords": [
+      "hwp"
+    ]
   }
 }
