@@ -1,4 +1,15 @@
 
+## [v0.0.27] - 2023-09-07
+
+### New Feature Releases
+
+- add hanguel / hwp readers (#493)
+- Enhancement to Semantic Scholar Loader - full text reader (#482)
+- Adding hierarchical agent example and comparison (#495)
+
+### Smaller Features + Bug Fixes
+- fix transforming error in wordlift reader (#501)
+
 ## [v0.0.26] - 2023-08-31
 
 (includes v0.0.25)
