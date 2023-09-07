@@ -41,7 +41,7 @@ class PandasExcelReader(BaseReader):
     def load_data(
             self,
             file: Path,
-            include_sheet_name: bool = False,
+            include_sheetname: bool = False,
             sheet_name: Optional[Union[str, int, list]] = None,
             extra_info: Optional[Dict] = None,
     ) -> List[Document]:
@@ -71,7 +71,7 @@ class PandasExcelReader(BaseReader):
 
         for key in sheet_names:
             sheet = []
-            if include_sheet_name:
+            if include_sheetname:
                 sheet.append([key])
             sheet.extend(dfs[key].values.astype(str).tolist())
             df_sheets.append(sheet)
@@ -93,4 +93,3 @@ class PandasExcelReader(BaseReader):
             return [
                 Document(text=text, extra_info=extra_info or {}) for text in text_list
             ]
-
