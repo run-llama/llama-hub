@@ -11,6 +11,8 @@ typing_extensions==4.5.0
 llama-index>=0.6.9
 atlassian-python-api
 html2text
+olefile
+
 # hotfix
 psutil
 
