@@ -49,7 +49,7 @@ class PandasExcelReader(BaseReader):
 
         Args:
             file (Path): The path to the Excel file to read.
-            include_sheet_name (bool): Whether to include the sheet name in the output.
+            include_sheetname (bool): Whether to include the sheet name in the output.
             sheet_name (Union[str, int, None]): The specific sheet to read from, default is None which reads all sheets.
             extra_info (Dict): Additional information to be added to the Document object.
 
