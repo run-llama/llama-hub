@@ -1,3 +1,8 @@
+## [v0.0.29] - 2023-09-08
+
+### New Features
+- Adding MultiOn browsing tool (#481)
+
 ## [v0.0.28] - 2023-09-08
 
 ### Smaller Features + Bug Fixes
