@@ -25,7 +25,7 @@ class MultionToolSpec(BaseToolSpec):
         Multion gives the ability for LLMs to control web browsers using natural language instructions
 
         You may have to repeat the instruction through multiple steps or update your instruction to get to
-        the final desired state
+        the final desired state. If the status is 'CONTINUE', reissue the same instruction to continue execution
 
         args:
             instruction (str): The detailed and specific natural language instructrion for web browsing
