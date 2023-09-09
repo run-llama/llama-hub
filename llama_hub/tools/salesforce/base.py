@@ -9,7 +9,7 @@ class SalesforceToolSpec(BaseToolSpec):
     """
 
     sf: Salesforce = None
-    spec_functions = ["execute_SOSL", "execute_SOQL", "lookUpsObjectFields"]
+    spec_functions = ["execute_SOSL", "execute_SOQL"]
 
     def __init__(self, **kargs) -> None:
         """Initialize with parameters for Salesforce connection."""
