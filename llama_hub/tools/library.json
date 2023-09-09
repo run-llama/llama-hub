@@ -79,6 +79,11 @@
     "id": "tools/requests",
     "author": "ajhofmann"
   },
+  "SalesforceToolSpec": {
+    "id": "tools/salesforce",
+    "author": "chrispangg",
+    "keywords": ["salesforce"]
+  },
   "ShopifyToolSpec": {
     "id": "tools/shopify",
     "author": "ajhofmann"
