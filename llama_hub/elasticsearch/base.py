@@ -37,6 +37,7 @@ class ElasticsearchReader(BaseReader):
             field: str,
             query: Optional[dict] = None,
             embedding_field: Optional[str] = None,
+            size: Optional[int] = 10
     ) -> List[Document]:
         """Read data from the Elasticsearch index.
 
@@ -48,12 +49,13 @@ class ElasticsearchReader(BaseReader):
             embedding_field (Optional[str]): If there are embeddings stored in
                 this index, this field can be used
                 to set the embedding field on the returned Document list.
+            size (Optional[int]): The size of document to retrieve from elastic
         Returns:
             List[Document]: A list of documents.
 
         """
         query = query['query'] if query is not None else None  # To remain backward compatible
-        res = self._es_client.search(index=self._index, query=query)
+        res = self._es_client.search(index=self._index, query=query, size=size)
         documents = []
         for hit in res["hits"]["hits"]:
             value = hit["_source"][field]
