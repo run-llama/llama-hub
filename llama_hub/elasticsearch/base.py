@@ -8,7 +8,7 @@ from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from elasticsearch import Elasticsearch
+
 
 
 class ElasticsearchReader(BaseReader):
@@ -26,7 +26,9 @@ class ElasticsearchReader(BaseReader):
     def __init__(
             self, endpoint: str, index: str, basic_auth: Optional[set] = None
     ):
+
         """Initialize with parameters."""
+        from elasticsearch import Elasticsearch
 
         self._es_client = Elasticsearch(endpoint, basic_auth=basic_auth)
         self._index = index
