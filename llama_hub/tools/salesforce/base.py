@@ -1,5 +1,4 @@
 from llama_index.tools.tool_spec.base import BaseToolSpec
-from simple_salesforce import Salesforce, SalesforceError
 
 class SalesforceToolSpec(BaseToolSpec):
     """Salesforce tool spec.
@@ -8,27 +7,28 @@ class SalesforceToolSpec(BaseToolSpec):
 
     """
 
-    sf: Salesforce = None
-    spec_functions = ["execute_SOSL", "execute_SOQL"]
+    spec_functions = ["execute_sosl", "execute_soql"]
 
     def __init__(self, **kargs) -> None:
         """Initialize with parameters for Salesforce connection."""
+        from simple_salesforce import Salesforce
         self.sf = Salesforce(**kargs)
 
-    def execute_SOSL(self, search: str) -> str:
+    def execute_sosl(self, search: str) -> str:
         """Returns the result of a Salesforce search as a dict decoded from
         the Salesforce response JSON payload.
         Arguments:
         * search -- the fully formatted SOSL search string, e.g.
                     `FIND {Waldo}`
         """
+        from simple_salesforce import SalesforceError
         try:
             res = self.sf.search(search)
         except SalesforceError as err:
             return f"Error running SOSL query: {err}"
         return res
 
-    def execute_SOQL(self, query: str) -> str:
+    def execute_soql(self, query: str) -> str:
         """Returns the full set of results for the `query`. This is a
         convenience wrapper around `query(...)` and `query_more(...)`.
         The returned dict is the decoded JSON payload from the final call to
@@ -39,6 +39,7 @@ class SalesforceToolSpec(BaseToolSpec):
         * query -- the SOQL query to send to Salesforce, e.g.
                    SELECT Id FROM Lead WHERE Email = "waldo@somewhere.com"
         """
+        from simple_salesforce import SalesforceError
         try:
             res = self.sf.query_all(query)
         except SalesforceError as err:
