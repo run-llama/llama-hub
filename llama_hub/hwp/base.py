@@ -8,7 +8,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 class HWPReader(BaseReader):
-    """Hangeul Reader. Reads contents from Hangeul file.
+    """Hwp Reader. Reads contents from Hwp file.
     Args: None
     """
     def __init__(
@@ -26,14 +26,13 @@ class HWPReader(BaseReader):
     def load_data(
             self,
             file: Path,
+            extra_info: Optional[Dict] = None
     ) -> Document:
-        """Load data and extract table from PDF file.
-
+        """Load data and extract table from Hwp file.
         Args:
-            file (Path): Path for the PDF file.
-
+            file (Path): Path for the Hwp file.
         Returns:
-            List[Document]: List of documents.
+            Document
         """
         import olefile
 
@@ -44,7 +43,7 @@ class HWPReader(BaseReader):
             raise Exception("Not Valid HwpFile")
 
         result_text = self._get_text(load_file, file_dir)
-        result = self._text_to_document(text=result_text)
+        result = self._text_to_document(text=result_text, extra_info=extra_info)
         return result
 
     def is_valid(self, dirs):
