@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 from typing import List
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -10,8 +11,6 @@ from urllib.parse import urlparse
 
 DATA_KEY = 'data'
 ERRORS_KEY = 'errors'
-DEFAULT_PAGE = 0
-DEFAULT_ROWS = 500
 
 
 class WordLiftLoaderError(Exception):
@@ -132,14 +131,21 @@ class WordLiftLoader(BaseReader):
                 for field in metadata_fields:
                     field_keys = field.split('.')
                     value = get_separated_value(row, field_keys)
+                    if value is None:
+                        logging.warning(f"Using default value for {field}")
+                        value = 'n.a'
                     if isinstance(value, list) and len(value) != 0:
                         value = value[0]
                     if is_url(value) and is_valid_html(value):
+                        value = value.replace('\n', '')
                         extra_info[field] = value
                     else:
-                        extra_info[field] = clean_value(value)
-
-                document = Document(text=text, extra_info=extra_info)
+                        cleaned_value = clean_value(value)
+                        cleaned_value = cleaned_value.replace('\n', '')
+                        extra_info[field] = cleaned_value
+                text = text.replace('\n', '')
+                plain_text = re.sub('<.*?>', '', text)
+                document = Document(text=plain_text, extra_info=extra_info)
                 documents.append(document)
 
             return documents
@@ -171,6 +177,9 @@ class WordLiftLoader(BaseReader):
         """
         from graphql import parse, print_ast
         from graphql.language.ast import ArgumentNode, NameNode, IntValueNode
+        DEFAULT_PAGE = 0
+        DEFAULT_ROWS = 500
+
         query = self.query
         page = DEFAULT_PAGE
         rows = DEFAULT_ROWS
@@ -259,18 +268,18 @@ def clean_html(text: str) -> str:
                 response = requests.get(text)
                 if response.status_code == 200:
                     html_content = response.text
-                    soup = BeautifulSoup(html_content, 'html.parser')
+                    soup = BeautifulSoup(html_content, 'lxml')
                     cleaned_text = soup.get_text()
                 else:
                     cleaned_text = ""
             elif os.path.isfile(text):
                 with open(text, 'r') as file:
-                    soup = BeautifulSoup(file, 'html.parser')
+                    soup = BeautifulSoup(file, 'lxml')
                     cleaned_text = soup.get_text()
             else:
                 with warnings.catch_warnings():
                     warnings.filterwarnings("ignore", category=UserWarning)
-                    soup = BeautifulSoup(text, 'html.parser')
+                    soup = BeautifulSoup(text, 'lxml')
                     cleaned_text = soup.get_text()
             return cleaned_text
         except (requests.exceptions.RequestException, requests.exceptions.ConnectionError):

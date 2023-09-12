@@ -192,6 +192,8 @@ class GitHubRepositoryIssuesReader(BaseReader):
                     extra_info["closed_at"] = issue["closed_at"]
                 if issue["assignee"] is not None:
                     extra_info["assignee"] = issue["assignee"]["login"]
+                if issue["labels"] is not None:
+                    extra_info["labels"] = [label["name"] for label in issue["labels"]]
                 document.extra_info = extra_info
                 documents.append(document)
 

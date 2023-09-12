@@ -4,6 +4,23 @@ Welcome to Semantic Scholar Loader. This module serves as a crucial utility for 
 
 For any research topic you are interested in, this loader reads relevant papers from a search result in Semantic Scholar into `Documents`. 
 
+Please go through [demo_s2.ipynb](demo_s2.ipynb)
+
+## Some preliminaries -
+
+- `query_space` : broad area of research
+- `query_string` : a specific question to the documents in the query space
+
+**UPDATE** :
+
+To download the open access pdfs and extract text from them, simply mark the `full_text` flag as `True` :
+
+
+```python
+s2reader = SemanticScholarReader()
+documents = s2reader.load_data(query_space, total_papers, full_text=True)
+```
+
 ## Usage
 
 Here is an example of how to use this loader in `llama_index` and get citations for a given query.
