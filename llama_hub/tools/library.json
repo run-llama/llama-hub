@@ -55,6 +55,10 @@
     "id": "tools/metaphor",
     "author": "ajhofmann"
   },
+  "MultionToolSpec": {
+    "id": "tools/multion",
+    "author": "ajhofmann"
+  },
   "NotionToolSpec": {
     "id": "tools/notion",
     "author": "jerryjliu"
