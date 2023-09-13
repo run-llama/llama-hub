@@ -5,18 +5,26 @@ from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+from typing import Union, IO
 
 
 class PDFReader(BaseReader):
     """PDF reader."""
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+            self, file: Union[IO[bytes], str, Path], extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
         import pypdf
 
-        with open(file, "rb") as fp:
+        # Check if the file is already a Path object, if not, create a Path object from the string
+        if not isinstance(file, Path) and isinstance(file, str):
+            file = Path(file)
+
+        # Open the file if it's not already open, else use it as it is
+        context = open(file, "rb") if isinstance(file, Path) else file
+
+        with context as fp:
             # Create a PDF object
             pdf = pypdf.PdfReader(fp)
 
@@ -29,7 +37,7 @@ class PDFReader(BaseReader):
                 # Extract the text from the page
                 page_text = pdf.pages[page].extract_text()
                 page_label = pdf.page_labels[page]
-                metadata = {"page_label": page_label, "file_name": file.name}
+                metadata = {"page_label": page_label, "file_name": file.name if isinstance(file, Path) else file.name}
 
                 if extra_info is not None:
                     metadata.update(extra_info)
