@@ -63,6 +63,7 @@ class GoogleDriveReader(BaseReader):
         """
         from google.auth.transport.requests import Request
         from google.oauth2.credentials import Credentials
+        from google.oauth2 import service_account
         from google_auth_oauthlib.flow import InstalledAppFlow
         from pydrive.auth import GoogleAuth
         from pydrive.drive import GoogleDrive
@@ -71,6 +72,14 @@ class GoogleDriveReader(BaseReader):
         creds = None
         if os.path.exists(self.token_path):
             creds = Credentials.from_authorized_user_file(self.token_path, SCOPES)
+        elif os.path.exists(self.service_account_path):
+            creds = service_account.Credentials.from_service_account_file(
+                self.service_account_path, scopes=SCOPES
+            )
+            gauth = GoogleAuth()
+            gauth.credentials = creds
+            drive = GoogleDrive(gauth)
+            return creds, drive
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
