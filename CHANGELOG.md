@@ -1,3 +1,33 @@
+## [v0.0.30] - 2023-09-12
+
+### New Features
+- Elastic data reader (#508)
+- Salesforce Tool (#507)
+
+### Smaller Features + Bug Fixes
+- add HWPReader to JSON (#500)
+- Add issue labels to `extra_info` saved by GithubRepositoryIssuesReader (#502)
+
+## [v0.0.29] - 2023-09-08
+
+### New Features
+- Adding MultiOn browsing tool (#481)
+
+## [v0.0.28] - 2023-09-08
+
+### Smaller Features + Bug Fixes
+- fix olefile import 
+
+## [v0.0.27] - 2023-09-07
+
+### New Feature Releases
+
+- add hanguel / hwp readers (#493)
+- Enhancement to Semantic Scholar Loader - full text reader (#482)
+- Adding hierarchical agent example and comparison (#495)
+
+### Smaller Features + Bug Fixes
+- fix transforming error in wordlift reader (#501)
 
 ## [v0.0.26] - 2023-08-31
 
