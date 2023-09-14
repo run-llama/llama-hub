@@ -3,7 +3,7 @@
 
 # Neo4j Schema Query Builder
 
-The `Neo4jSchemaQueryBuilder` class provides a way to query a Neo4j graph database based on a provided schema definition. The class uses a language model to generate Cypher queries from user questions and has the capability to recover from Cypher syntax errors through a self-healing mechanism.
+The `Neo4jQueryToolSpec` class provides a way to query a Neo4j graph database based on a provided schema definition. The class uses a language model to generate Cypher queries from user questions and has the capability to recover from Cypher syntax errors through a self-healing mechanism.
 
 ## Table of Contents
 
@@ -16,10 +16,11 @@ The `Neo4jSchemaQueryBuilder` class provides a way to query a Neo4j graph databa
 
 ### Initialization
 
-Initialize the `Neo4jSchemaQueryBuilder` class with:
+Initialize the `Neo4jQueryToolSpec` class with:
 
 ```python
-from Neo4jSchemaQueryBuilder import Neo4jSchemaQueryBuilder
+from llama_hub.tools.neo4j_db.base import Neo4jQueryToolSpec
+from langchain.chat_models import ChatOpenAI
 
 llm = ChatOpenAI(
     openai_api_key="XXXX-XXXX",
@@ -27,7 +28,7 @@ llm = ChatOpenAI(
     model='gpt-4',
 )
 
-query_builder = Neo4jSchemaQueryBuilder(url, user, password, llm)
+query_builder = Neo4jQueryToolSpec('url', 'user', 'password', llm)
 ```
 
 Where:
