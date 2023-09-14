@@ -5,7 +5,7 @@ The user initializes the loader with an Elasticsearch index. They then pass in a
 
 ## Usage
 
-Here's an example usage of the ElasticsearchReader.
+Here's an example usage of the ElasticsearchReader to load 100 documents.
 
 ```python
 from llama_index import download_loader
@@ -20,7 +20,7 @@ reader = ElasticsearchReader(
 
 query_dict = {"query": {"match": {"message": {"query": "this is a test"}}}}
 documents = reader.load_data(
-    "<field_name>", query=query_dict, embedding_field="field_name"
+    "<field_name>", query=query_dict, embedding_field="field_name", size=100
 )
 ```
 

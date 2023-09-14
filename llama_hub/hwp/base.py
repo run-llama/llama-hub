@@ -1,4 +1,3 @@
-import olefile
 import zlib
 import struct
 
@@ -35,6 +34,7 @@ class HWPReader(BaseReader):
         Returns:
             Document
         """
+        import olefile
         load_file = olefile.OleFileIO(file)
         file_dir = load_file.listdir()
 
