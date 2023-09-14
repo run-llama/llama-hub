@@ -32,7 +32,7 @@ class HWPReader(BaseReader):
         Args:
             file (Path): Path for the Hwp file.
         Returns:
-            Document
+            List[Document]
         """
         import olefile
         load_file = olefile.OleFileIO(file)
@@ -43,7 +43,7 @@ class HWPReader(BaseReader):
 
         result_text = self._get_text(load_file, file_dir)
         result = self._text_to_document(text=result_text, extra_info=extra_info)
-        return result
+        return [result]
 
     def is_valid(self, dirs):
         if [self.FILE_HEADER_SECTION] not in dirs:
