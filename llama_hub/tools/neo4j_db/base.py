@@ -4,8 +4,6 @@ from langchain.schema import (
     AIMessage
 )
 from llama_index import Document
-from neo4j import GraphDatabase
-from neo4j.exceptions import CypherSyntaxError
 
 node_properties_query = """
 CALL apoc.meta.data()
@@ -60,6 +58,14 @@ class Neo4jQueryToolSpec:
             password (str): Password for the Neo4j database.
             llm (obj): A language model for generating Cypher queries.
         """
+        try:
+            from neo4j import GraphDatabase
+
+        except ImportError:
+            raise ImportError(
+                "`neo4j` package not found, please run `pip install neo4j`"
+            )
+
         self.driver = GraphDatabase.driver(url, auth=(user, password))
         # construct schema
         self.schema = self.generate_schema()
@@ -170,6 +176,8 @@ class Neo4jQueryToolSpec:
         Returns:
             list/str: The query results or an error message.
         """
+        from neo4j.exceptions import CypherSyntaxError
+
         # Construct Cypher statement
         cypher = self.construct_cypher_query(question, history)
         print(cypher)
