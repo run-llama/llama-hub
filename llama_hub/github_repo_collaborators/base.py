@@ -27,16 +27,10 @@ from typing import Dict, List, Optional, Tuple
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-if "pytest" in sys.modules:
-    from llama_hub.github_repo_collaborators.github_client import (
-        BaseGitHubCollaboratorsClient,
-        GitHubCollaboratorsClient,
-    )
-else:
-    from llama_hub.github_repo_collaborators.github_client import (
-        BaseGitHubCollaboratorsClient,
-        GitHubCollaboratorsClient,
-    )
+from llama_hub.github_repo_collaborators.github_client import (
+    BaseGitHubCollaboratorsClient,
+    GitHubCollaboratorsClient,
+)
 
 
 logger = logging.getLogger(__name__)
