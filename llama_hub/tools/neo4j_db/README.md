@@ -1,6 +1,3 @@
-
----
-
 # Neo4j Schema Query Builder
 
 The `Neo4jQueryToolSpec` class provides a way to query a Neo4j graph database based on a provided schema definition. The class uses a language model to generate Cypher queries from user questions and has the capability to recover from Cypher syntax errors through a self-healing mechanism.
@@ -20,15 +17,14 @@ Initialize the `Neo4jQueryToolSpec` class with:
 
 ```python
 from llama_hub.tools.neo4j_db.base import Neo4jQueryToolSpec
-from langchain.chat_models import ChatOpenAI
+from llama_index.llms import OpenAI
 
-llm = ChatOpenAI(
-    openai_api_key="XXXX-XXXX",
-    temperature=0,
-    model='gpt-4',
-)
+llm = OpenAI(model="gpt-4",
+             openai_api_key="XXXX-XXXX",
+             temperature=0
+             )
 
-query_builder = Neo4jQueryToolSpec('url', 'user', 'password', llm)
+query_builder = Neo4jQueryToolSpec('url', 'user', 'password', llm=llm, database='db-name')
 ```
 
 Where:
@@ -37,6 +33,7 @@ Where:
 - `user`: Username for the Neo4j database.
 - `password`: Password for the Neo4j database.
 - `llm`: A language model for generating Cypher queries (any type of LLM).
+- `database`: The database name.
 
 ### Running a Query
 
