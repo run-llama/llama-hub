@@ -2,30 +2,6 @@ from llama_index import Document
 from llama_index.graph_stores import Neo4jGraphStore
 from llama_index.llms.base import LLM, ChatMessage
 
-node_properties_query = """
-CALL apoc.meta.data()
-YIELD label, other, elementType, type, property
-WHERE NOT type = "RELATIONSHIP" AND elementType = "node"
-WITH label AS nodeLabels, collect(property) AS properties
-RETURN {labels: nodeLabels, properties: properties} AS output
-
-"""
-
-rel_properties_query = """
-CALL apoc.meta.data()
-YIELD label, other, elementType, type, property
-WHERE NOT type = "RELATIONSHIP" AND elementType = "relationship"
-WITH label AS nodeLabels, collect(property) AS properties
-RETURN {type: nodeLabels, properties: properties} AS output
-"""
-
-rel_query = """
-CALL apoc.meta.data()
-YIELD label, other, elementType, type, property
-WHERE type = "RELATIONSHIP" AND elementType = "node"
-RETURN {source: label, relationship: property, target: other} AS output
-"""
-
 
 def schema_text(node_props, rel_props, rels):
     return f"""
@@ -65,18 +41,6 @@ class Neo4jQueryToolSpec:
 
         self.graph_store = Neo4jGraphStore(url=url, username=user, password=password, database=database)
         self.llm = llm
-
-    def generate_schema(self):
-        """
-        Generates a schema based on the Neo4j database.
-
-        Returns:
-            str: The generated schema.
-        """
-        node_props = self.query_graph_db(node_properties_query)
-        rel_props = self.query_graph_db(rel_properties_query)
-        rels = self.query_graph_db(rel_query)
-        return schema_text(node_props, rel_props, rels)
 
     def get_system_message(self):
         """
