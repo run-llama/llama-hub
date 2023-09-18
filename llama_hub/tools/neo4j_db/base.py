@@ -3,19 +3,6 @@ from llama_index.graph_stores import Neo4jGraphStore
 from llama_index.llms.base import LLM, ChatMessage
 
 
-def schema_text(node_props, rel_props, rels):
-    return f"""
-  This is the schema representation of the Neo4j database.
-  Node properties are the following:
-  {node_props}
-  Relationship properties are the following:
-  {rel_props}
-  Relationship point from source to target nodes
-  {rels}
-  Make sure to respect relationship types and directions
-  """
-
-
 class Neo4jQueryToolSpec:
     """
     This class is responsible for querying a Neo4j graph database based on a provided schema definition.
