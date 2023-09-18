@@ -1,9 +1,10 @@
 from llama_index import Document
 from llama_index.graph_stores import Neo4jGraphStore
+from llama_index.tools.tool_spec.base import BaseToolSpec
 from llama_index.llms.base import LLM, ChatMessage
 
 
-class Neo4jQueryToolSpec:
+class Neo4jQueryToolSpec(BaseToolSpec):
     """
     This class is responsible for querying a Neo4j graph database based on a provided schema definition.
     """
