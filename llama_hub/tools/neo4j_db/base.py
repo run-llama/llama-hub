@@ -1,9 +1,6 @@
-from langchain.schema import (
-    SystemMessage,
-    HumanMessage,
-    AIMessage
-)
 from llama_index import Document
+from llama_index.graph_stores import Neo4jGraphStore
+from llama_index.llms.base import LLM, ChatMessage
 
 node_properties_query = """
 CALL apoc.meta.data()
@@ -48,7 +45,7 @@ class Neo4jQueryToolSpec:
     This class is responsible for querying a Neo4j graph database based on a provided schema definition.
     """
 
-    def __init__(self, url, user, password, llm):
+    def __init__(self, url, user, password, database, llm: LLM):
         """
         Initializes the Neo4jSchemaWiseQuery object.
 
@@ -66,7 +63,7 @@ class Neo4jQueryToolSpec:
                 "`neo4j` package not found, please run `pip install neo4j`"
             )
 
-        self.driver = GraphDatabase.driver(url, auth=(user, password))
+        self.graph_store = Neo4jGraphStore(url=url, username=user, password=password, database=database)
         # construct schema
         self.schema = self.generate_schema()
         self.llm = llm
@@ -118,7 +115,7 @@ class Neo4jQueryToolSpec:
         """
         if params is None:
             params = {}
-        with self.driver.session() as session:
+        with self.graph_store.client.session() as session:
             result = session.run(neo4j_query, params)
             output = [r.values() for r in result]
             output.insert(0, list(result.keys()))
@@ -137,7 +134,7 @@ class Neo4jQueryToolSpec:
         """
         if params is None:
             params = {}
-        with self.driver.session() as session:
+        with self.graph_store.client.session() as session:
             result = session.run(neo4j_query, params)
             output = [Document(text="\n".join([f"{key}:{val}" for key, val in zip(r.keys(), r.values())])) for r in result]
             return output
@@ -154,15 +151,15 @@ class Neo4jQueryToolSpec:
             str: The constructed Cypher query.
         """
         messages = [
-            SystemMessage(content=self.get_system_message()),
-            HumanMessage(content=question),
+            ChatMessage(role='system', content=self.get_system_message()),
+            ChatMessage(role='user', content=question),
         ]
         # Used for Cypher healing flows
         if history:
             messages.extend(history)
 
-        completions = self.llm(messages)
-        return completions.content
+        completions = self.llm.chat(messages)
+        return completions.message.content
 
     def run(self, question, history=None, retry=True):
         """
@@ -194,8 +191,8 @@ class Neo4jQueryToolSpec:
             return self.run(
                 question,
                 [
-                    AIMessage(content=cypher),
-                    SystemMessage(conent=f"""This query returns an error: {str(e)} 
+                    ChatMessage(role='assistant', content=cypher),
+                    ChatMessage(role='system', conent=f"""This query returns an error: {str(e)} 
                         Give me a improved query that works without any explanations or apologies"""),
                 ],
                 retry=False
