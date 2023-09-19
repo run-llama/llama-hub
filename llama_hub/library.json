@@ -946,5 +946,14 @@
     "keywords": [
       "hwp"
     ]
+  },
+  "GitHubRepositoryCollaboratorsReader": {
+    "id": "github_repo_collaborators",
+    "author": "rwood-97",
+    "keywords": [
+      "github",
+      "repository",
+      "collaborators"
+    ]
   }
 }
