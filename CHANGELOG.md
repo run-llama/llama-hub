@@ -1,3 +1,15 @@
+## [v0.0.31] - 2023-09-18
+
+### New Features
+- Add reader for GitHub collaborators (#512)
+- HWPReader (#517)
+
+### Smaller Features + Bug Fixes
+- fixed typos in the readme.md of salesforce tool (#515)
+- Service account support for google drive loader (#513)
+- Enhance PDFReader to accept File object as well, in addition to a path string (#514)
+- add urls to metadata saved by github repo reader (#522)
+
 ## [v0.0.30] - 2023-09-12
 
 ### New Features
