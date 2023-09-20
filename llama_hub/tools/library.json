@@ -71,6 +71,11 @@
     "id": "tools/weather",
     "author": "logan-markewich"
   },
+  "PlaygroundsSubgraphConnectorToolSpec": {
+    "id": "tools/playgrounds_subgraph_connector",
+    "author": "tachi",
+    "keywords": ["subgraph", "blockchain", "playgroundsapi", "graphql", "decentralized", "thegraph"]
+  },
   "PythonFileToolSpec": {
     "id": "tools/python_file",
     "author": "ajhofmann"
