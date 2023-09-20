@@ -60,7 +60,6 @@ async def test_github_client(github_client):
         == f"https://api.github.com/repos/{owner}/{repo}/git/trees/{commit_data.commit.tree.sha}"
     ), "Tree url is incorrect"
     assert tree_data.sha == commit_data.commit.tree.sha, "Tree sha is incorrect"
-    print(tree_data.tree[0].sha)
     assert 1 == 1
 
     # test get_blob
@@ -74,7 +73,6 @@ async def test_github_client(github_client):
         (".github", "tree"),
     ]
     # check if the first depth of the tree has the expected files. All the expected files should be in the first depth of the tree and vice versa
-    print(tree_data.tree)
     assert len(tree_data.tree) == len(
         expected_files_in_first_depth_of_the_tree
     ), "The number of files in the first depth of the tree is incorrect"
