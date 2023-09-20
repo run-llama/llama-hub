@@ -21,32 +21,18 @@ from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 from llama_index.readers.schema.base import Document
 
 
-if "pytest" in sys.modules:
-    from llama_hub.github_repo.github_client import (
-        BaseGithubClient,
-        GitBranchResponseModel,
-        GitCommitResponseModel,
-        GithubClient,
-        GitTreeResponseModel,
-    )
-    from llama_hub.github_repo.utils import (
-        BufferedGitBlobDataIterator,
-        print_if_verbose,
-        get_file_extension,
-    )
-else:
-    from llama_hub.github_repo.github_client import (
-        BaseGithubClient,
-        GithubClient,
-        GitBranchResponseModel,
-        GitCommitResponseModel,
-        GitTreeResponseModel,
-    )
-    from llama_hub.github_repo.utils import (
-        BufferedGitBlobDataIterator,
-        print_if_verbose,
-        get_file_extension,
-    )
+from llama_hub.github_repo.github_client import (
+    BaseGithubClient,
+    GitBranchResponseModel,
+    GitCommitResponseModel,
+    GithubClient,
+    GitTreeResponseModel,
+)
+from llama_hub.github_repo.utils import (
+    BufferedGitBlobDataIterator,
+    print_if_verbose,
+    get_file_extension,
+)
 
 logger = logging.getLogger(__name__)
 
