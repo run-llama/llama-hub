@@ -70,10 +70,11 @@ async def test_github_client(github_client):
         ("Makefile", "blob"),
         (".gitignore", "blob"),
         ("tests", "tree"),
-        ("llama_hub", "tree"),
+        ("loader_hub", "tree"),
         (".github", "tree"),
     ]
     # check if the first depth of the tree has the expected files. All the expected files should be in the first depth of the tree and vice versa
+    print(tree_data.tree)
     assert len(tree_data.tree) == len(
         expected_files_in_first_depth_of_the_tree
     ), "The number of files in the first depth of the tree is incorrect"
@@ -133,6 +134,25 @@ isort==5.11.4
     ):
         assert dbc[0] == dbc[1], f"{dbc[0]} is not equal to {dbc[1]}"
 
+@pytest.mark.asyncio
+async def test_github_client_get_branch_parameter_exception(github_client):
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch="main",
+    )
+    assert branch_data.name == "main"
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch_name="main",
+    )
+    assert branch_data.name == "main"
+    with pytest.raises(ValueError):
+        await github_client.get_branch(
+            owner="emptycrown",
+            repo="llama-hub",
+        )
 
 class TestGithubRepositoryReader(unittest.TestCase):
     def setUp(self):

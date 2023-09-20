@@ -383,7 +383,7 @@ async def test__generate_documents():
 
     github_client.get_blob = AsyncMock(side_effect=get_blob_side_effect)
 
-    documents = await reader._generate_documents(blobs_and_paths)
+    documents = await reader._generate_documents(blobs_and_paths, id="1234")
 
     assert (
         github_client.get_blob.await_count == 5
@@ -409,6 +409,7 @@ async def test__generate_documents():
             extra_info={
                 "file_path": "file1.py",
                 "file_name": "file1.py",
+                "url": "https://github.com/owner/repo/blob/1234/file1.py",
             },
         ),
         Document(
@@ -416,6 +417,7 @@ async def test__generate_documents():
             extra_info={
                 "file_path": "folder1/file2.ts",
                 "file_name": "file2.ts",
+                "url": "https://github.com/owner/repo/blob/1234/folder1/file2.ts",
             },
         ),
         Document(
@@ -423,6 +425,7 @@ async def test__generate_documents():
             extra_info={
                 "file_path": "folder1/folder2/file3.rs",
                 "file_name": "file3.rs",
+                "url": "https://github.com/owner/repo/blob/1234/folder1/folder2/file3.rs",
             },
         ),
         Document(
@@ -430,6 +433,7 @@ async def test__generate_documents():
             extra_info={
                 "file_path": "folder1/folder2/folder3/file4.cc",
                 "file_name": "file4.cc",
+                "url": "https://github.com/owner/repo/blob/1234/folder1/folder2/folder3/file4.cc",
             },
         ),
     ]
