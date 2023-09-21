@@ -25,12 +25,12 @@ class PandasExcelReader(BaseReader):
     """
 
     def __init__(
-        self,
-        *args: Any,
-        pandas_config: Optional[dict] = None,
-        concat_rows: bool = True,
-        row_joiner: str = "\n",
-        **kwargs: Any
+            self,
+            *args: Any,
+            pandas_config: Optional[dict] = None,
+            concat_rows: bool = True,
+            row_joiner: str = "\n",
+            **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
@@ -39,17 +39,20 @@ class PandasExcelReader(BaseReader):
         self._row_joiner = row_joiner if row_joiner else "\n"
 
     def load_data(
-        self,
-        file: Path,
-        include_sheetname: bool = False,
-        sheet_name: Optional[Union[str, int]] = None,
-        extra_info: Optional[Dict] = None,
+            self,
+            file: Path,
+            include_sheetname: bool = False,
+            sheet_name: Optional[Union[str, int, list]] = None,
+            extra_info: Optional[Dict] = None,
     ) -> List[Document]:
         """Parse file and extract values from a specific column.
 
         Args:
             file (Path): The path to the Excel file to read.
-            column_name (str): The name of the column to use when creating the Document objects.
+            include_sheetname (bool): Whether to include the sheet name in the output.
+            sheet_name (Union[str, int, None]): The specific sheet to read from, default is None which reads all sheets.
+            extra_info (Dict): Additional information to be added to the Document object.
+
         Returns:
             List[Document]: A list of`Document objects containing the values from the specified column in the Excel file.
         """
@@ -57,17 +60,20 @@ class PandasExcelReader(BaseReader):
 
         import pandas as pd
 
-        df = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
+        if sheet_name is not None:
+            sheet_name = [sheet_name] if not isinstance(sheet_name, list) else sheet_name
 
-        keys = df.keys()
+        dfs = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
+
+        sheet_names = dfs.keys()
 
         df_sheets = []
 
-        for key in keys:
+        for key in sheet_names:
             sheet = []
             if include_sheetname:
                 sheet.append([key])
-            sheet.extend(df[key].values.astype(str).tolist())
+            sheet.extend(dfs[key].values.astype(str).tolist())
             df_sheets.append(sheet)
 
         text_list = list(
@@ -77,7 +83,7 @@ class PandasExcelReader(BaseReader):
         if self._concat_rows:
             return [
                 Document(
-                    text=(self._row_joiner).join(
+                    text=self._row_joiner.join(
                         self._row_joiner.join(sublist) for sublist in text_list
                     ),
                     extra_info=extra_info or {},
