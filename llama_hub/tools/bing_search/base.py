@@ -1,17 +1,21 @@
 """Bing Search tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, List
-import requests
+from typing import List, Optional
 
-ENDPOINT_BASE_URL = 'https://api.bing.microsoft.com/v7.0/'
+import requests
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
+ENDPOINT_BASE_URL = "https://api.bing.microsoft.com/v7.0/"
+
 
 class BingSearchToolSpec(BaseToolSpec):
     """Bing Search tool spec."""
 
     spec_functions = ["bing_news_search", "bing_image_search", "bing_video_search"]
 
-    def __init__(self, api_key: str, lang: Optional[str] = 'en-US', results: Optional[int] = 3) -> None:
+    def __init__(
+        self, api_key: str, lang: Optional[str] = "en-US", results: Optional[int] = 3
+    ) -> None:
         """Initialize with parameters."""
         self.api_key = api_key
         self.lang = lang
@@ -20,12 +24,11 @@ class BingSearchToolSpec(BaseToolSpec):
     def _bing_request(self, endpoint: str, query: str, keys: List[str]):
         response = requests.get(
             ENDPOINT_BASE_URL + endpoint,
-            headers={ 'Ocp-Apim-Subscription-Key': self.api_key },
-            params={ 'q': query, 'mkt': self.lang, 'count': self.results }
+            headers={"Ocp-Apim-Subscription-Key": self.api_key},
+            params={"q": query, "mkt": self.lang, "count": self.results},
         )
         response_json = response.json()
-        return [[result[key] for key in keys] for result in response_json['value']]
-
+        return [[result[key] for key in keys] for result in response_json["value"]]
 
     def bing_news_search(self, query: str):
         """
@@ -35,8 +38,7 @@ class BingSearchToolSpec(BaseToolSpec):
             query (str): The query to be passed to bing.
 
         """
-        return self._bing_request('news/search', query, ['name', 'description', 'url'])
-
+        return self._bing_request("news/search", query, ["name", "description", "url"])
 
     def bing_image_search(self, query: str):
         """
@@ -48,9 +50,7 @@ class BingSearchToolSpec(BaseToolSpec):
         returns a url of the images found
         """
 
-        return self._bing_request('images/search', query, ['name', 'contentUrl'])
-
-
+        return self._bing_request("images/search", query, ["name", "contentUrl"])
 
     def bing_video_search(self, query: str):
         """
@@ -61,6 +61,4 @@ class BingSearchToolSpec(BaseToolSpec):
 
         """
 
-        return self._bing_request('videos/search', query, ['name', 'contentUrl'])
-
-
+        return self._bing_request("videos/search", query, ["name", "contentUrl"])

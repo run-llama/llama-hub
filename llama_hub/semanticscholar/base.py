@@ -1,10 +1,10 @@
 import logging
+import os
+from typing import List
+
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import requests
-from typing import List
-import os
-
 
 
 class SemanticScholarReader(BaseReader):
@@ -21,15 +21,13 @@ class SemanticScholarReader(BaseReader):
         Loads data from Semantic Scholar based on the query and returned_fields
 
     """
-    
 
     def __init__(self, timeout=10, api_key=None, base_dir="pdfs"):
         """
         Instantiate the SemanticScholar object
         """
-        from semanticscholar import SemanticScholar
         import arxiv
-        
+        from semanticscholar import SemanticScholar
 
         self.arxiv = arxiv
         self.base_dir = base_dir
@@ -107,7 +105,12 @@ class SemanticScholarReader(BaseReader):
                 # Download the document first
                 file_path = self._download_pdf(metadata["paperId"], url, persist_dir)
 
-            if not url and externalIds and "ArXiv" in externalIds and not os.path.exists(persist_dir):
+            if (
+                not url
+                and externalIds
+                and "ArXiv" in externalIds
+                and not os.path.exists(persist_dir)
+            ):
                 # download the pdf from arxiv
                 file_path = self._download_pdf_from_arxiv(
                     paper_id, externalIds["ArXiv"]
@@ -210,7 +213,6 @@ class SemanticScholarReader(BaseReader):
                 "externalIds": getattr(item, "externalIds", None),
             }
             documents.append(Document(text=text, extra_info=metadata))
-
 
         if full_text:
             full_text_documents = self._get_full_text_docs(documents)

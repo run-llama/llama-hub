@@ -1,9 +1,10 @@
 """Simple reader that reads OSMmap data from overpass API"""
 
-from typing import List, Optional
 import random
 import string
 import warnings
+from typing import List, Optional
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -59,7 +60,6 @@ class OpenMap(BaseReader):
         tag_values: Optional[List] = [""],
         local_area_buffer: Optional[int] = 2000,
     ) -> List[Document]:
-
         """
         This loader will bring you the all the node values from the open street maps for the given location
 
@@ -77,7 +77,7 @@ class OpenMap(BaseReader):
         local_area_buffer(int) - range that you wish to cover (Default 2000(2km))
         """
         try:
-            from osmxtract import overpass, location
+            from osmxtract import location, overpass
             from osmxtract.errors import OverpassBadRequest
         except:
             raise ImportError("install osmxtract using `pip3 install osmxtract`")

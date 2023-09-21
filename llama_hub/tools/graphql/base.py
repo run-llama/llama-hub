@@ -2,8 +2,9 @@
 
 from typing import Optional
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
 import requests
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
 
 class GraphQLToolSpec(BaseToolSpec):
     """Requests Tool"""
@@ -29,10 +30,13 @@ class GraphQLToolSpec(BaseToolSpec):
             "operation_name":"Ships"
 
         """
-        res = requests.post(self.url, headers=self.headers, json={
-            'query': query,
-            'variables': variables,
-            'operationName': operation_name
-        })
+        res = requests.post(
+            self.url,
+            headers=self.headers,
+            json={
+                "query": query,
+                "variables": variables,
+                "operationName": operation_name,
+            },
+        )
         return res.text
-

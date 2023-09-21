@@ -1,11 +1,10 @@
 """Reader that pulls in a BoardDocs site."""
+import json
 from typing import Any, List, Optional
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
-import json
-import requests
 
 
 class BoardDocsReader(BaseReader):

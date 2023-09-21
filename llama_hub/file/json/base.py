@@ -2,8 +2,8 @@
 
 import json
 import re
-from typing import Dict, Generator, List, Optional
 from pathlib import Path
+from typing import Dict, Generator, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document

@@ -4,12 +4,11 @@ A loader that fetches a file or iterates through a directory from Azure Storage 
 
 """
 import logging
+import math
 import tempfile
 import time
-import math
 from pathlib import Path
-from typing import Any, List, Optional, Union, Dict
-
+from typing import Any, Dict, List, Optional, Union
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader

@@ -1,27 +1,23 @@
-from functools import partial
 import re
-from typing import List, Optional, Iterable, Iterator, Any, Tuple
 import sys
+from functools import partial
+from typing import Any, Iterable, Iterator, List, Optional, Tuple
 
 if sys.version_info < (3, 8):
     from typing_extensions import Final
 else:
     from typing import Final
 
+from collections import defaultdict
+
 import numpy as np
 import numpy.typing as npt
-from collections import defaultdict
+
 try:
     from sklearn.cluster import DBSCAN
-
     from unstructured.cleaners.core import clean
-    from unstructured.documents.elements import (
-        Text,
-        ListItem,
-        NarrativeText,
-        Title,
-        Element,
-    )
+    from unstructured.documents.elements import (Element, ListItem,
+                                                 NarrativeText, Text, Title)
     from unstructured.documents.html import HTMLDocument
     from unstructured.nlp.partition import is_possible_title
 

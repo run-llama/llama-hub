@@ -1,5 +1,6 @@
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
+
 class SalesforceToolSpec(BaseToolSpec):
     """Salesforce tool spec.
 
@@ -12,6 +13,7 @@ class SalesforceToolSpec(BaseToolSpec):
     def __init__(self, **kargs) -> None:
         """Initialize with parameters for Salesforce connection."""
         from simple_salesforce import Salesforce
+
         self.sf = Salesforce(**kargs)
 
     def execute_sosl(self, search: str) -> str:
@@ -22,6 +24,7 @@ class SalesforceToolSpec(BaseToolSpec):
                     `FIND {Waldo}`
         """
         from simple_salesforce import SalesforceError
+
         try:
             res = self.sf.search(search)
         except SalesforceError as err:
@@ -40,6 +43,7 @@ class SalesforceToolSpec(BaseToolSpec):
                    SELECT Id FROM Lead WHERE Email = "waldo@somewhere.com"
         """
         from simple_salesforce import SalesforceError
+
         try:
             res = self.sf.query_all(query)
         except SalesforceError as err:

@@ -1,11 +1,12 @@
 """Metaphor tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, List
-from llama_index.readers.schema.base import Document
-import requests
-import urllib.parse
 import datetime
+import urllib.parse
+from typing import List, Optional
+
+import requests
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 
 class MetaphorToolSpec(BaseToolSpec):
@@ -16,7 +17,7 @@ class MetaphorToolSpec(BaseToolSpec):
         "retrieve_documents",
         "search_and_retrieve_documents",
         "find_similar",
-        "current_date"
+        "current_date",
     ]
 
     def __init__(self, api_key: str, verbose: bool = True) -> None:
@@ -53,7 +54,7 @@ class MetaphorToolSpec(BaseToolSpec):
             exclude_domains=exclude_domains,
             start_published_date=start_published_date,
             end_published_date=end_published_date,
-            use_autoprompt=True
+            use_autoprompt=True,
         )
         if self._verbose:
             print(f"[Metaphor Tool] Autoprompt: {response.autoprompt_string}")
@@ -127,14 +128,13 @@ class MetaphorToolSpec(BaseToolSpec):
             exclude_domains=exclude_domains,
             start_published_date=start_published_date,
             end_published_date=end_published_date,
-            use_autoprompt=True
+            use_autoprompt=True,
         )
         if self._verbose:
             print(f"[Metaphor Tool] Autoprompt: {response.autoprompt_string}")
         ids = [result.id for result in response.results]
         documents = self.client.get_contents(ids)
         return [Document(text=document.extract) for document in documents.contents]
-
 
     def current_date(self):
         """

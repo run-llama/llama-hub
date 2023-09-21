@@ -26,8 +26,8 @@ class PubmedReader(BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
-        from datetime import datetime
         import xml.etree.ElementTree as xml
+        from datetime import datetime
 
         import requests
 

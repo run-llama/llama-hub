@@ -1,9 +1,13 @@
-import pytest
 import base64
 import os
-from unittest.mock import MagicMock
 import unittest
 from typing import List, Tuple
+from unittest.mock import MagicMock
+
+import pytest
+
+from llama_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.github_client import GithubClient
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(
@@ -12,11 +16,7 @@ from typing import List, Tuple
 # )
 
 
-from llama_hub.github_repo.github_client import (
-    GithubClient,
-)
 
-from llama_hub.github_repo.base import GithubRepositoryReader
 
 
 @pytest.fixture
@@ -132,6 +132,7 @@ isort==5.11.4
     ):
         assert dbc[0] == dbc[1], f"{dbc[0]} is not equal to {dbc[1]}"
 
+
 @pytest.mark.asyncio
 async def test_github_client_get_branch_parameter_exception(github_client):
     branch_data = await github_client.get_branch(
@@ -151,6 +152,7 @@ async def test_github_client_get_branch_parameter_exception(github_client):
             owner="emptycrown",
             repo="llama-hub",
         )
+
 
 class TestGithubRepositoryReader(unittest.TestCase):
     def setUp(self):

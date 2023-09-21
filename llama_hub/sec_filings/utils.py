@@ -1,14 +1,16 @@
-from requests.adapters import HTTPAdapter
-from collections import namedtuple
-from typing import List
-from urllib3.util.retry import Retry
-from pathlib import Path
 import time
-import requests
+from collections import namedtuple
 from datetime import date
+from pathlib import Path
+from typing import List
+
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 try:
     from faker import Faker
+
     fake = Faker()
 except:
     fake = None

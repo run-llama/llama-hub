@@ -4,8 +4,8 @@ import logging
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Union
 
-from llama_index.readers.download import download_loader
 from llama_index.readers.base import BaseReader
+from llama_index.readers.download import download_loader
 from llama_index.readers.schema.base import Document
 
 DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {

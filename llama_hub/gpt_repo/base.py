@@ -30,9 +30,10 @@ SOFTWARE.
 
 #!/usr/bin/env python3
 
-import os
 import fnmatch
+import os
 from typing import List, Optional
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 

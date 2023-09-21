@@ -25,10 +25,8 @@ class ImageTabularChartReader(BaseReader):
             try:
                 import torch  # noqa: F401
                 from PIL import Image  # noqa: F401
-                from transformers import (
-                    Pix2StructForConditionalGeneration,
-                    Pix2StructProcessor,
-                )
+                from transformers import (Pix2StructForConditionalGeneration,
+                                          Pix2StructProcessor)
             except ImportError:
                 raise ImportError(
                     "Please install extra dependencies that are required for "
@@ -58,9 +56,8 @@ class ImageTabularChartReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        from PIL import Image
-
         from llama_index.img_utils import img_2_b64
+        from PIL import Image
 
         # load document image
         image = Image.open(file)
