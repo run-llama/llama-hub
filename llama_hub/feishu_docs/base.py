@@ -1,6 +1,7 @@
 """Feishu docs reader."""
 import json
 import time
+import os
 
 import requests
 from typing import List
@@ -103,9 +104,9 @@ class FeishuDocsReader(BaseReader):
 
 
 if __name__ == "__main__":
-    app_id = "cli_a4d536f6a738d00b"
-    app_secret = "HL29tOCwRHw390Cr6jQBBdFjmYlTJt1e"
+    app_id = os.environ.get("FEISHU_APP_ID")
+    app_secret = os.environ.get("FEISHU_APP_SECRET")
     reader = FeishuDocsReader(app_id, app_secret)
     print(
-        reader.load_data(document_ids=['HIH2dHv21ox9kVxjRuwc1W0jnkf'])
+        reader.load_data(document_ids=[os.environ.get("FEISHU_DOC_ID")])
     )
