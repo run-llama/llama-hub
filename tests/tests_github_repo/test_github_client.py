@@ -60,7 +60,6 @@ async def test_github_client(github_client):
         == f"https://api.github.com/repos/{owner}/{repo}/git/trees/{commit_data.commit.tree.sha}"
     ), "Tree url is incorrect"
     assert tree_data.sha == commit_data.commit.tree.sha, "Tree sha is incorrect"
-    print(tree_data.tree[0].sha)
     assert 1 == 1
 
     # test get_blob
@@ -70,7 +69,7 @@ async def test_github_client(github_client):
         ("Makefile", "blob"),
         (".gitignore", "blob"),
         ("tests", "tree"),
-        ("llama_hub", "tree"),
+        ("loader_hub", "tree"),
         (".github", "tree"),
     ]
     # check if the first depth of the tree has the expected files. All the expected files should be in the first depth of the tree and vice versa
@@ -133,6 +132,25 @@ isort==5.11.4
     ):
         assert dbc[0] == dbc[1], f"{dbc[0]} is not equal to {dbc[1]}"
 
+@pytest.mark.asyncio
+async def test_github_client_get_branch_parameter_exception(github_client):
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch="main",
+    )
+    assert branch_data.name == "main"
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch_name="main",
+    )
+    assert branch_data.name == "main"
+    with pytest.raises(ValueError):
+        await github_client.get_branch(
+            owner="emptycrown",
+            repo="llama-hub",
+        )
 
 class TestGithubRepositoryReader(unittest.TestCase):
     def setUp(self):

@@ -369,7 +369,7 @@ class GithubRepositoryReader(BaseReader):
     async def _generate_documents(
         self,
         blobs_and_paths: List[Tuple[GitTreeResponseModel.GitTreeObject, str]],
-        id: Optional[str],
+        id: str = "",
     ) -> List[Document]:
         """
         Generate documents from a list of blobs and their full paths.
