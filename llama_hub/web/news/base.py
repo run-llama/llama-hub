@@ -1,9 +1,9 @@
 """News article reader using Newspaper."""
 import logging
-import requests
+from typing import Any, List
+
 from llama_index.readers.base import BaseReader
 from llama_index.schema import Document
-from typing import Any, Callable, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -20,11 +20,9 @@ class NewsArticleReader(BaseReader):
             https://newspaper.readthedocs.io/en/latest/user_guide/quickstart.html#article
     """
 
-    def __init__(self,
-                 text_mode: bool = True,
-                 use_nlp: bool = True,
-                 **newspaper_kwargs: Any
-                 ) -> None:
+    def __init__(
+        self, text_mode: bool = True, use_nlp: bool = True, **newspaper_kwargs: Any
+    ) -> None:
         """Initialize with parameters."""
         try:
             import newspaper
@@ -51,6 +49,7 @@ class NewsArticleReader(BaseReader):
         documents = []
         for url in urls:
             from newspaper import Article
+
             try:
                 article = Article(url, **self.newspaper_kwargs)
                 article.download()

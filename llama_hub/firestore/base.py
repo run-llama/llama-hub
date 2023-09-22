@@ -37,9 +37,9 @@ class FirestoreReader(BaseReader):
         except ImportError:
             raise ImportError(IMPORT_ERROR_MSG)
 
-        self.db = firestore.Client(project=project_id,
-                                   database=database_id,
-                                   client_info=CLIENT_INFO)
+        self.db = firestore.Client(
+            project=project_id, database=database_id, client_info=CLIENT_INFO
+        )
 
     def load_data(self, collection: str) -> List[Document]:
         """Load data from a Firestore collection, returning a list of Documents.

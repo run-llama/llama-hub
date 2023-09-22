@@ -3,7 +3,6 @@
 import urllib.parse
 from typing import Optional
 
-
 import requests
 from llama_index.readers.schema.base import Document
 from llama_index.tools.tool_spec.base import BaseToolSpec
@@ -36,9 +35,7 @@ class GoogleSearchToolSpec(BaseToolSpec):
             ValueError: If the 'num' is not an integer between 1 and 10.
         """
         url = QUERY_URL_TMPL.format(
-                key=self.key,
-                engine=self.engine,
-                query=urllib.parse.quote_plus(query)
+            key=self.key, engine=self.engine, query=urllib.parse.quote_plus(query)
         )
 
         if self.num is not None:

@@ -129,6 +129,7 @@ isort==5.11.4
     ):
         assert dbc[0] == dbc[1], f"{dbc[0]} is not equal to {dbc[1]}"
 
+
 @pytest.mark.asyncio
 async def test_github_client_get_branch_parameter_exception(github_client):
     branch_data = await github_client.get_branch(
@@ -148,6 +149,7 @@ async def test_github_client_get_branch_parameter_exception(github_client):
             owner="emptycrown",
             repo="llama-hub",
         )
+
 
 class TestGithubRepositoryReader(unittest.TestCase):
     def setUp(self):

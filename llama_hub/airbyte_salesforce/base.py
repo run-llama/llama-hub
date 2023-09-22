@@ -1,11 +1,12 @@
 from typing import Any, Mapping, Optional
+
 from llama_hub.airbyte_cdk.base import AirbyteCDKReader, RecordHandler
 
 
 class AirbyteSalesforceReader(AirbyteCDKReader):
     """AirbyteSalesforceReader reader.
 
-    Retrieve documents from Salesforce 
+    Retrieve documents from Salesforce
 
     Args:
         config: The config object for the salesforce source.
@@ -19,4 +20,8 @@ class AirbyteSalesforceReader(AirbyteCDKReader):
         """Initialize with parameters."""
         import source_salesforce
 
-        super().__init__(source_class=source_salesforce.SourceSalesforce, config=config, record_handler=record_handler)
+        super().__init__(
+            source_class=source_salesforce.SourceSalesforce,
+            config=config,
+            record_handler=record_handler,
+        )

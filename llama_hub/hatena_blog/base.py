@@ -38,7 +38,11 @@ class HatenaBlogReader(BaseReader):
             results.append(
                 Document(
                     text=a.content,
-                    extra_info={"title": a.title, "published": a.published, "url": a.url},
+                    extra_info={
+                        "title": a.title,
+                        "published": a.published,
+                        "url": a.url,
+                    },
                 )
             )
 

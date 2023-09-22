@@ -1,6 +1,9 @@
+from unittest.mock import patch
+
 import pytest
-from unittest.mock import patch, MagicMock
-from llama_hub.youtube_transcript import YoutubeTranscriptReader, is_youtube_video
+
+from llama_hub.youtube_transcript import (YoutubeTranscriptReader,
+                                          is_youtube_video)
 
 
 def test_is_youtube_video_helper() -> None:

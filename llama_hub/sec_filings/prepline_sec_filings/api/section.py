@@ -3,52 +3,31 @@
 # DO NOT MODIFY DIRECTLY
 #####################################################################
 
-import io
-import os
 import gzip
-import mimetypes
-from typing import List, Union
-from fastapi import (
-    status,
-    FastAPI,
-    File,
-    Form,
-    Request,
-    UploadFile,
-    APIRouter,
-    HTTPException,
-)
-from fastapi.responses import PlainTextResponse
+import io
 import json
+import mimetypes
+import os
+import secrets
+from base64 import b64encode
+from typing import List, Mapping, Optional, Union
+
+from fastapi import (APIRouter, FastAPI, File, Form, HTTPException, Request,
+                     UploadFile, status)
 from fastapi.responses import StreamingResponse
 from starlette.datastructures import Headers
 from starlette.types import Send
-from base64 import b64encode
-from typing import Optional, Mapping, Iterator, Tuple
-import secrets
 
 try:
-    from llama_hub.sec_filings.prepline_sec_filings.sections import (
-        section_string_to_enum,
-        validate_section_names,
-        SECSection,
-    )
     from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
-        SECDocument,
-        REPORT_TYPES,
-        VALID_FILING_TYPES,
-    )
+        REPORT_TYPES, VALID_FILING_TYPES, SECDocument)
     from llama_hub.sec_filings.prepline_sec_filings.sections import (
-    ALL_SECTIONS,
-    SECTIONS_10K,
-    SECTIONS_10Q,
-    SECTIONS_S1,
-    )
+        ALL_SECTIONS, SECTIONS_10K, SECTIONS_10Q, SECTIONS_S1,
+        section_string_to_enum, validate_section_names)
 except:
     from prepline_sec_filings.sections import (
         section_string_to_enum,
         validate_section_names,
-        SECSection,
     )
     from prepline_sec_filings.sec_document import (
         SECDocument,
@@ -56,21 +35,20 @@ except:
         VALID_FILING_TYPES,
     )
     from prepline_sec_filings.sections import (
-    ALL_SECTIONS,
-    SECTIONS_10K,
-    SECTIONS_10Q,
-    SECTIONS_S1,
+        ALL_SECTIONS,
+        SECTIONS_10K,
+        SECTIONS_10Q,
+        SECTIONS_S1,
     )
-from enum import Enum
-import re
-import signal
-from unstructured.staging.base import convert_to_isd
 
 import csv
+import re
+import signal
+from enum import Enum
 from typing import Dict
-from unstructured.documents.elements import Text, NarrativeText, Title, ListItem
-from unstructured.staging.label_studio import stage_for_label_studio
 
+from unstructured.staging.base import convert_to_isd
+from unstructured.staging.label_studio import stage_for_label_studio
 
 app = FastAPI()
 router = APIRouter()

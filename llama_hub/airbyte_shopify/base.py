@@ -1,11 +1,12 @@
 from typing import Any, Mapping, Optional
+
 from llama_hub.airbyte_cdk.base import AirbyteCDKReader, RecordHandler
 
 
 class AirbyteShopifyReader(AirbyteCDKReader):
     """AirbyteShopifyReader reader.
 
-    Retrieve documents from Shopify 
+    Retrieve documents from Shopify
 
     Args:
         config: The config object for the shopify source.
@@ -19,4 +20,8 @@ class AirbyteShopifyReader(AirbyteCDKReader):
         """Initialize with parameters."""
         import source_shopify
 
-        super().__init__(source_class=source_shopify.SourceShopify, config=config, record_handler=record_handler)
+        super().__init__(
+            source_class=source_shopify.SourceShopify,
+            config=config,
+            record_handler=record_handler,
+        )

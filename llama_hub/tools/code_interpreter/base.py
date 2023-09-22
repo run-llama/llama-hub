@@ -2,12 +2,7 @@
 
 import subprocess
 import sys
-import urllib.parse
-from typing import List, Optional
 
-import requests
-from llama_index.llms.base import LLM, ChatMessage, MessageRole
-from llama_index.llms.openai import OpenAI
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
 

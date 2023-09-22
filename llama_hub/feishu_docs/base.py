@@ -1,8 +1,7 @@
 """Feishu docs reader."""
 import json
-import time
 import os
-
+import time
 from typing import List
 
 import requests
@@ -103,6 +102,4 @@ if __name__ == "__main__":
     app_id = os.environ.get("FEISHU_APP_ID")
     app_secret = os.environ.get("FEISHU_APP_SECRET")
     reader = FeishuDocsReader(app_id, app_secret)
-    print(
-        reader.load_data(document_ids=[os.environ.get("FEISHU_DOC_ID")])
-    )
+    print(reader.load_data(document_ids=[os.environ.get("FEISHU_DOC_ID")]))

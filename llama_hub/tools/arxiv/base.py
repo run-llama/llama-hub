@@ -1,8 +1,10 @@
 """arXiv tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
 from typing import Optional
+
 from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
 
 class ArxivToolSpec(BaseToolSpec):
     """arXiv tool spec."""
@@ -24,11 +26,14 @@ class ArxivToolSpec(BaseToolSpec):
 
         """
         import arxiv
+
         sort = arxiv.SortCriterion.Relevance
-        if sort_by == 'recent':
+        if sort_by == "recent":
             sort = arxiv.SortCriterion.SubmittedDate
-        search =  arxiv.Search(query, max_results=self.max_results, sort_by=sort)
+        search = arxiv.Search(query, max_results=self.max_results, sort_by=sort)
         results = []
         for result in search.results():
-            results.append(Document(text=f"{result.pdf_url}: {result.title}\n{result.summary}"))
+            results.append(
+                Document(text=f"{result.pdf_url}: {result.title}\n{result.summary}")
+            )
         return results

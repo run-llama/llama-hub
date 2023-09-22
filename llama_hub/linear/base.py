@@ -1,8 +1,9 @@
 from typing import List
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import requests
+
 
 class LinearReader(BaseReader):
     """Linear reader. Reads data from Linear issues for the passed query
@@ -10,10 +11,10 @@ class LinearReader(BaseReader):
     Args:
         api_key (str): Personal API token.
     """
-    
+
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
-        
+
     def load_data(self, query: str) -> List[Document]:
         # Define the GraphQL query
         graphql_endpoint = "https://api.linear.app/graphql"
@@ -21,9 +22,7 @@ class LinearReader(BaseReader):
             "Authorization": self.api_key,
             "Content-Type": "application/json",
         }
-        payload = {
-            "query": query
-        }
+        payload = {"query": query}
 
         # Make the GraphQL request
         response = requests.post(graphql_endpoint, json=payload, headers=headers)
@@ -34,11 +33,14 @@ class LinearReader(BaseReader):
         team_data = data.get("data", {}).get("team", {})
         for issue in team_data.get("issues", {}).get("nodes", []):
             assignee = issue.get("assignee", {}).get("name", "")
-            labels = [label_node["name"] for label_node in issue.get("labels", {}).get("nodes", [])]
+            labels = [
+                label_node["name"]
+                for label_node in issue.get("labels", {}).get("nodes", [])
+            ]
             project = issue.get("project", {}).get("name", "")
             state = issue.get("state", {}).get("name", "")
             creator = issue.get("creator", {}).get("name", "")
-            
+
             issues.append(
                 Document(
                     text=f"{issue['title']} \n {issue['description']}",

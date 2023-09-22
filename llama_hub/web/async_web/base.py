@@ -2,7 +2,6 @@ import asyncio
 import logging
 from typing import List
 
-from aiohttp import ClientResponse
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 

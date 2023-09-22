@@ -3,13 +3,15 @@ try:
 except ImportError:
     # relative import from file
     from sec_filings import SECExtractor
-import time
-import json
+
 import concurrent.futures
-from collections import defaultdict
+import json
 import os
-from llama_index.readers.base import BaseReader
+import time
+from collections import defaultdict
 from typing import List
+
+from llama_index.readers.base import BaseReader
 
 
 class SECFilingsLoader(BaseReader):

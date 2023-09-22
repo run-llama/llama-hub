@@ -1,14 +1,12 @@
-from llama_hub.semanticscholar.base import SemanticScholarReader
 import os
+
 import openai
+from llama_index import (ServiceContext, StorageContext, VectorStoreIndex,
+                         load_index_from_storage)
 from llama_index.llms import OpenAI
 from llama_index.query_engine import CitationQueryEngine
-from llama_index import (
-    VectorStoreIndex,
-    StorageContext,
-    load_index_from_storage,
-    ServiceContext,
-)
+
+from llama_hub.semanticscholar.base import SemanticScholarReader
 
 # initialize the SemanticScholarReader
 s2reader = SemanticScholarReader()
@@ -29,7 +27,6 @@ total_papers = 50
 persist_dir = (
     "./citation_" + query_space + "_" + str(total_papers) + "_" + str(full_text)
 )
-
 
 
 if not os.path.exists(persist_dir):

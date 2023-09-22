@@ -2,10 +2,11 @@
 
 from typing import List, Optional
 
-from llama_index.readers.schema.base import Document
-from llama_index.tools.tool_spec.base import BaseToolSpec
 import requests
 import yaml
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
 
 class OpenAPIToolSpec(BaseToolSpec):
     """OpenAPI Tool
