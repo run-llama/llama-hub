@@ -33,7 +33,6 @@ class TestAsyncWebPageReader(unittest.TestCase):
         )
 
     def test_async_web_reader_init(self):
-
         # test w/o args
         AsyncWebPageReader()
 
@@ -50,7 +49,6 @@ class TestAsyncWebPageReader(unittest.TestCase):
             reader.load_data()
 
     def test_async_web_reader_load_data(self):
-
         reader = AsyncWebPageReader()
 
         documents = reader.load_data(urls=[TEST_URL])
@@ -60,7 +58,6 @@ class TestAsyncWebPageReader(unittest.TestCase):
         assert documents[0].extra_info["Source"] == "http://localhost:8888/primary.xml"
 
     def test_async_web_reader_load_data_consume_error(self):
-
         reader = AsyncWebPageReader()
 
         documents = reader.load_data(urls=[TEST_URL_ERROR])
@@ -68,7 +65,6 @@ class TestAsyncWebPageReader(unittest.TestCase):
         assert len(documents) == 0
 
     def test_async_web_reader_load_data_raise_error(self):
-
         reader = AsyncWebPageReader(fail_on_error=True)
 
         with pytest.raises(
@@ -78,7 +74,6 @@ class TestAsyncWebPageReader(unittest.TestCase):
             reader.load_data(urls=[TEST_URL_ERROR])
 
     def test_async_web_reader_load_data_dedupe(self):
-
         reader = AsyncWebPageReader(dedupe=True)
 
         documents = reader.load_data(urls=[TEST_URL, TEST_URL_OTHER, TEST_URL])

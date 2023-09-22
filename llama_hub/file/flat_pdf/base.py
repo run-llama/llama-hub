@@ -32,7 +32,6 @@ class FlatPdfReader(BaseReader):
         import shutil
 
         try:
-
             if not file.is_file() and file.suffix != ".pdf":
                 raise Exception("Invalid file")
 

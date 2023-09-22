@@ -36,7 +36,6 @@ class GoogleCalendarReader(BaseReader):
         number_of_results: Optional[int] = 100,
         start_date: Optional[Union[str, datetime.date]] = None,
     ) -> List[Document]:
-
         """Load data from user's calendar.
 
         Args:

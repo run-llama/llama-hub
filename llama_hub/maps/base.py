@@ -60,7 +60,6 @@ class OpenMap(BaseReader):
         tag_values: Optional[List] = [""],
         local_area_buffer: Optional[int] = 2000,
     ) -> List[Document]:
-
         """
         This loader will bring you the all the node values from the open street maps for the given location
 

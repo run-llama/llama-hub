@@ -24,7 +24,6 @@ def dummy_load_pages(urls: str):
 
 class TestSitemapReader(unittest.TestCase):
     def test_sitemap_reader_init(self):
-
         # test w/o args
         SitemapReader()
 
@@ -42,7 +41,6 @@ class TestSitemapReader(unittest.TestCase):
 
     @patch("llama_hub.web.async_web.base.AsyncWebPageReader.load_data")
     def test_sitemap_reader_load_data(self, mock_load_data):
-
         with patch("urllib.request.urlopen") as mock_urlopen:
             sitemap_reader = SitemapReader()
 
@@ -63,7 +61,6 @@ class TestSitemapReader(unittest.TestCase):
 
     @patch("llama_hub.web.async_web.base.AsyncWebPageReader.load_data")
     def test_sitemap_reader_load_data_with_filter(self, mock_load_data):
-
         with patch("urllib.request.urlopen") as mock_urlopen:
             sitemap_reader = SitemapReader()
 

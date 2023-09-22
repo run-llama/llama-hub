@@ -33,7 +33,6 @@ class IntercomReader(BaseReader):
         articles = self.get_all_articles()
 
         for article in articles:
-
             body = article["body"]
             soup = BeautifulSoup(body, "html.parser")
             body = soup.get_text()

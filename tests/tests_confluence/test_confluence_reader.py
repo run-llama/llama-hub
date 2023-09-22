@@ -24,7 +24,6 @@ MOCK_OAUTH = {
 
 class TestConfluenceReader:
     def test_confluence_reader_initialization(self, mock_confluence):
-
         # Test with oauth2
         ConfluenceReader(base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH)
         mock_confluence.assert_called_with(

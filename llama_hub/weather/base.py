@@ -29,7 +29,6 @@ class WeatherReader(BaseReader):
         self,
         places: List[str],
     ) -> List[Document]:
-
         """Load weather data for the given locations.
         OWM's One Call API provides the following weather data for any geographical coordinate:
         - Current weather

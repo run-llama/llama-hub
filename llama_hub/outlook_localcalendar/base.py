@@ -42,7 +42,6 @@ class OutlookLocalCalendarReader(BaseReader):
         end_date: Optional[Union[str, datetime.date]] = None,
         more_attributes: Optional[List[str]] = None,
     ) -> List[Document]:
-
         """Load data from user's local calendar.
         Args:
             number_of_results (Optional[int]): the number of events to return. Defaults to 100.
