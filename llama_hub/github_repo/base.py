@@ -20,24 +20,18 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 from llama_index.readers.schema.base import Document
 
-if "pytest" in sys.modules:
-    from llama_hub.github_repo.github_client import (BaseGithubClient,
-                                                     GitBranchResponseModel,
-                                                     GitCommitResponseModel,
-                                                     GithubClient,
-                                                     GitTreeResponseModel)
-    from llama_hub.github_repo.utils import (BufferedGitBlobDataIterator,
-                                             get_file_extension,
-                                             print_if_verbose)
-else:
-    from llama_hub.github_repo.github_client import (BaseGithubClient,
-                                                     GitBranchResponseModel,
-                                                     GitCommitResponseModel,
-                                                     GithubClient,
-                                                     GitTreeResponseModel)
-    from llama_hub.github_repo.utils import (BufferedGitBlobDataIterator,
-                                             get_file_extension,
-                                             print_if_verbose)
+from llama_hub.github_repo.github_client import (
+    BaseGithubClient,
+    GitBranchResponseModel,
+    GitCommitResponseModel,
+    GithubClient,
+    GitTreeResponseModel,
+)
+from llama_hub.github_repo.utils import (
+    BufferedGitBlobDataIterator,
+    print_if_verbose,
+    get_file_extension,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -238,7 +232,7 @@ class GithubRepositoryReader(BaseReader):
         print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
 
         return self._loop.run_until_complete(
-            self._generate_documents(blobs_and_paths=blobs_and_paths)
+            self._generate_documents(blobs_and_paths=blobs_and_paths, id=commit_sha)
         )
 
     def _load_data_from_branch(self, branch: str) -> List[Document]:
@@ -261,7 +255,7 @@ class GithubRepositoryReader(BaseReader):
         print_if_verbose(self._verbose, f"got {len(blobs_and_paths)} blobs")
 
         return self._loop.run_until_complete(
-            self._generate_documents(blobs_and_paths=blobs_and_paths)
+            self._generate_documents(blobs_and_paths=blobs_and_paths, id=branch)
         )
 
     def load_data(
@@ -374,12 +368,14 @@ class GithubRepositoryReader(BaseReader):
     async def _generate_documents(
         self,
         blobs_and_paths: List[Tuple[GitTreeResponseModel.GitTreeObject, str]],
+        id: str = "",
     ) -> List[Document]:
         """
         Generate documents from a list of blobs and their full paths.
 
         :param `blobs_and_paths`: list of tuples of
             (tree object, file's full path in the repo realtive to the root of the repo)
+        :param `id`: the branch name or commit sha used when loading the repo
         :return: list of documents
         """
         buffered_iterator = BufferedGitBlobDataIterator(
@@ -438,12 +434,14 @@ class GithubRepositoryReader(BaseReader):
                 f"got {len(decoded_text)} characters"
                 + f"- adding to documents - {full_path}",
             )
+            url = os.path.join("https://github.com/", self._owner, self._repo, "blob/", id, full_path)
             document = Document(
                 text=decoded_text,
                 doc_id=blob_data.sha,
                 extra_info={
                     "file_path": full_path,
                     "file_name": full_path.split("/")[-1],
+                    "url": url
                 },
             )
             documents.append(document)

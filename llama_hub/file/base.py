@@ -9,6 +9,7 @@ from llama_index.readers.download import download_loader
 from llama_index.readers.schema.base import Document
 
 DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
+    ".hwp": "HWPReader",
     ".pdf": "PDFReader",
     ".docx": "DocxReader",
     ".pptx": "PptxReader",
