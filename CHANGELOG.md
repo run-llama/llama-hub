@@ -1,3 +1,14 @@
+## [v0.0.32] - 2023-09-22
+
+### New Features
+- feat: Add PlaygroundsSubgraphConnector to Llama Hub (#528)
+
+### Smaller Features + Bug Fixes
+- Fix BaseGithubClient and _generate_documents (#526)
+- Refactor load_data for consistent sheet handling and cleaner code (#488)
+- remove redundant if/else from imports in github readers (#524)
+- fix: 🚑️ remove app id and secret from feishu reader (#525)
+
 ## [v0.0.31] - 2023-09-18
 
 ### New Features
