@@ -1,13 +1,14 @@
-from llama_index import Document
 from llama_index.graph_stores import Neo4jGraphStore
-from llama_index.tools.tool_spec.base import BaseToolSpec
 from llama_index.llms.base import LLM, ChatMessage
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 
 class Neo4jQueryToolSpec(BaseToolSpec):
     """
     This class is responsible for querying a Neo4j graph database based on a provided schema definition.
     """
+
+    spec_functions = ["run_request"]
 
     def __init__(self, url, user, password, database, llm: LLM):
         """
@@ -68,24 +69,6 @@ class Neo4jQueryToolSpec(BaseToolSpec):
             output.insert(0, list(result.keys()))
             return output
 
-    def query_graph_db_as_document(self, neo4j_query, params=None):
-        """
-        Queries the Neo4j database.
-
-        Args:
-            neo4j_query (str): The Cypher query to be executed.
-            params (dict, optional): Parameters for the Cypher query. Defaults to None.
-
-        Returns:
-            list: The query results.
-        """
-        if params is None:
-            params = {}
-        with self.graph_store.client.session() as session:
-            result = session.run(neo4j_query, params)
-            output = [Document(text="\n".join([f"{key}:{val}" for key, val in zip(r.keys(), r.values())])) for r in result]
-            return output
-
     def construct_cypher_query(self, question, history=None):
         """
         Constructs a Cypher query based on a given question and history.
@@ -108,7 +91,7 @@ class Neo4jQueryToolSpec(BaseToolSpec):
         completions = self.llm.chat(messages)
         return completions.message.content
 
-    def run(self, question, history=None, retry=True):
+    def run_request(self, question, history=None, retry=True):
         """
         Executes a Cypher query based on a given question.
 
@@ -126,7 +109,7 @@ class Neo4jQueryToolSpec(BaseToolSpec):
         cypher = self.construct_cypher_query(question, history)
         print(cypher)
         try:
-            return self.query_graph_db_as_document(cypher)
+            return self.query_graph_db(cypher)
         # Self-healing flow
         except CypherSyntaxError as e:
             # If out of retries
@@ -135,12 +118,12 @@ class Neo4jQueryToolSpec(BaseToolSpec):
             # Self-healing Cypher flow by
             # providing specific error to GPT-4
             print("Retrying")
-            return self.run(
+            return self.run_request(
                 question,
                 [
                     ChatMessage(role='assistant', content=cypher),
-                    ChatMessage(role='system', conent=f"""This query returns an error: {str(e)} 
-                        Give me a improved query that works without any explanations or apologies"""),
+                    ChatMessage(role='system', conent=f"This query returns an error: {str(e)}\n"
+                                                      "Give me a improved query that works without any explanations or apologies"),
                 ],
                 retry=False
             )
