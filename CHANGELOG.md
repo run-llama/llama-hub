@@ -1,3 +1,8 @@
+## [v0.0.33] - 2023-09-24
+
+### New Features
+- Neo4j Schema Query Builder Integration (#520)
+
 ## [v0.0.32] - 2023-09-22
 
 ### New Features
