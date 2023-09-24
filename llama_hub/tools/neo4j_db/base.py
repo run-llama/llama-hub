@@ -1,5 +1,5 @@
 from llama_index.graph_stores import Neo4jGraphStore
-from llama_index.llms.base import LLM, ChatMessage
+from llama_index.llms.base import LLM, ChatMessage, MessageRole
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
 
@@ -81,8 +81,8 @@ class Neo4jQueryToolSpec(BaseToolSpec):
             str: The constructed Cypher query.
         """
         messages = [
-            ChatMessage(role='system', content=self.get_system_message()),
-            ChatMessage(role='user', content=question),
+            ChatMessage(role=MessageRole.SYSTEM, content=self.get_system_message()),
+            ChatMessage(role=MessageRole.USER, content=question),
         ]
         # Used for Cypher healing flows
         if history:
@@ -121,9 +121,9 @@ class Neo4jQueryToolSpec(BaseToolSpec):
             return self.run_request(
                 question,
                 [
-                    ChatMessage(role='assistant', content=cypher),
-                    ChatMessage(role='system', conent=f"This query returns an error: {str(e)}\n"
-                                                      "Give me a improved query that works without any explanations or apologies"),
+                    ChatMessage(role=MessageRole.ASSISTANT, content=cypher),
+                    ChatMessage(role=MessageRole.SYSTEM, conent=f"This query returns an error: {str(e)}\n"
+                                                                "Give me a improved query that works without any explanations or apologies"),
                 ],
                 retry=False
             )
