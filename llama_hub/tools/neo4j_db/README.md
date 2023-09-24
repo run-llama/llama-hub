@@ -18,13 +18,24 @@ Initialize the `Neo4jQueryToolSpec` class with:
 ```python
 from llama_hub.tools.neo4j_db.base import Neo4jQueryToolSpec
 from llama_index.llms import OpenAI
+from llama_index.agent import OpenAIAgent
 
 llm = OpenAI(model="gpt-4",
              openai_api_key="XXXX-XXXX",
              temperature=0
              )
 
-query_builder = Neo4jQueryToolSpec('url', 'user', 'password', llm=llm, database='db-name')
+gds_db = Neo4jQueryToolSpec(
+    url="neo4j-url",
+    user="neo4j-user",
+    password="neo4j=password",
+    llm=llm,
+    database='neo4j'
+)
+
+tools = gds_db.to_tool_list()
+agent = OpenAIAgent.from_tools(tools, verbose=True)
+
 ```
 
 Where:
@@ -37,21 +48,21 @@ Where:
 
 ### Running a Query
 
-To execute a Cypher query:
+To use the agent:
 
 ```python
-query_builder.run("What is the city with the most airports?")
+# use agent
+agent.chat("Where is JFK airport is located?")
 ```
 
 ```
 Generated Cypher:
 
-MATCH (p:Port)-[:LOCATED_IN]->(c:City)
-RETURN c.city_name AS City, COUNT(p) AS NumberOfAirports
-ORDER BY NumberOfAirports DESC
-LIMIT 1
+MATCH (p:Port {port_code: 'JFK'}) 
+RETURN p.location_name_wo_diacritics AS Location
 
-Return list of Llama_index documents
+Final answer:
+'The port code JFK is located in New York, United States.'
 ```
 
 
@@ -60,5 +71,3 @@ Return list of Llama_index documents
 - **Schema-Based Querying**: The class extracts the Neo4j database schema to guide the Cypher query generation.
 - **Self-Healing**: On a Cypher syntax error, the class corrects itself to produce a valid query.
 - **Language Model Integration**: Uses a language model for natural and accurate Cypher query generation.
-
----
