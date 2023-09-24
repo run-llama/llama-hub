@@ -121,5 +121,14 @@
   "ZapierToolSpec": {
     "id": "tools/zapier",
     "author": "ajhofmann"
+  },
+  "Neo4jQueryToolSpec": {
+    "id": "tools/neo4j_db",
+    "author": "shahafp",
+    "keywords": [
+      "graph",
+      "neo4j",
+      "cypher"
+    ]
   }
 }
