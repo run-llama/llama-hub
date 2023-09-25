@@ -167,78 +167,85 @@ class PlaygroundsSubgraphInspectorToolSpec(GraphQLToolSpec):
                     if sub_args_required:
                         args_required = True
         return fields, args_required
-        
-    def subgraph_to_text(self, subgraph):
+    
+    def format_section(self, category: str, description: str, example: str, entities: dict) -> str:
         """
-        Converts the processed subgraph schema into a readable textual format.
+        Formats a given section of the subgraph introspection result into a readable string format.
         
         Args:
-            subgraph (dict): Processed subgraph schema.
-            
+            category (str): The category name of the entities.
+            description (str): A description explaining the category.
+            example (str): A generic GraphQL query example related to the category.
+            entities (dict): Dictionary containing entities and their fields related to the category.
+        
         Returns:
-            str: Textual representation of the processed subgraph schema.
+            str: A formatted string representation of the provided section data.
         """
-        lines = []
+        section = [
+            f"Category: {category}",
+            f"Description: {description}",
+            "Generic Example:",
+            example,
+            "\nDetailed Breakdown:"
+        ]
 
-        # For Specific Entity Queries
-        lines.append("Category: Specific Entity Queries (Requires Arguments)")
-        lines.append("Description: These queries target a singular entity and require specific arguments (like an ID) to fetch data.")
-        lines.append("Generic Example:")
-        lines.append("""
-        {
-            entityName(id: "specific_id") {
-                fieldName1
-                fieldName2
-                ...
+        for entity, fields in entities.items():
+            section.append(f"  Entity: {entity}")
+            for field_info in fields:
+                field_str = f"    - {field_info['name']}"
+                if 'enumValues' in field_info:
+                    field_str += f" (Enum values: {', '.join(field_info['enumValues'])})"
+                section.append(field_str)
+            section.append("")  # Add a blank line for separation
+
+        section.append("")  # Add another blank line for separation between sections
+        return "\n".join(section)
+        
+    def subgraph_to_text(self, subgraph: dict) -> str:
+        """
+        Converts a processed subgraph representation into a textual summary based on entity categories.
+        
+        Args:
+            subgraph (dict): A processed representation of the introspected schema, categorized into specific entity queries, list entity queries, and other entities.
+        
+        Returns:
+            str: A textual summary of the processed subgraph schema.
+        """
+        sections = [
+            ("Specific Entity Queries (Requires Arguments)", 
+             "These queries target a singular entity and require specific arguments (like an ID) to fetch data.",
+             """
+            {
+                entityName(id: "specific_id") {
+                    fieldName1
+                    fieldName2
+                    ...
+                }
             }
-        }
-        """)
-        lines.append("\nDetailed Breakdown:")
-        for entity, fields in subgraph["specific_entity_queries"].items():
-            lines.append(f"  Entity: {entity}")
-            for field_info in fields:
-                field_str = f"    - {field_info['name']}"
-                if 'enumValues' in field_info:
-                    field_str += f" (Enum values: {', '.join(field_info['enumValues'])})"
-                lines.append(field_str)
-            lines.append("")  # Add a blank line for separation
-        lines.append("")  # Add a blank line for separation between categories
+            """,
+            subgraph["specific_entity_queries"]),
 
-        # For List Entity Queries
-        lines.append("Category: List Entity Queries (Optional Arguments)")
-        lines.append("Description: These queries fetch a list of entities. They don't strictly require arguments but often accept optional parameters for filtering, sorting, and pagination.")
-        lines.append("Generic Example:")
-        lines.append("""
-        {
-            entityNames(first: 10, orderBy: "someField", orderDirection: "asc") {
-                fieldName1
-                fieldName2
-                ...
+            ("List Entity Queries (Optional Arguments)", 
+             "These queries fetch a list of entities. They don't strictly require arguments but often accept optional parameters for filtering, sorting, and pagination.",
+             """
+            {
+                entityNames(first: 10, orderBy: "someField", orderDirection: "asc") {
+                    fieldName1
+                    fieldName2
+                    ...
+                }
             }
-        }
-        """)
-        lines.append("\nDetailed Breakdown:")
-        for entity, fields in subgraph["list_entity_queries"].items():
-            lines.append(f"  Entity: {entity}")
-            for field_info in fields:
-                field_str = f"    - {field_info['name']}"
-                if 'enumValues' in field_info:
-                    field_str += f" (Enum values: {', '.join(field_info['enumValues'])})"
-                lines.append(field_str)
-            lines.append("")  # Add a blank line for separation
-        lines.append("")  # Add a blank line for separation between categories
+            """,
+            subgraph["list_entity_queries"]),
 
-        # For Other Entities
-        lines.append("Category: Other Entities")
-        lines.append("Description: These are additional entities that may not fit the conventional singular/plural querying pattern of subgraphs.")
-        lines.append("\nDetailed Breakdown:")
-        for entity, fields in subgraph["other_entities"].items():
-            lines.append(f"  Entity: {entity}")
-            for field_info in fields:
-                field_str = f"    - {field_info['name']}"
-                if 'enumValues' in field_info:
-                    field_str += f" (Enum values: {', '.join(field_info['enumValues'])})"
-                lines.append(field_str)
-            lines.append("")  # Add a blank line for separation
+            ("Other Entities", 
+             "These are additional entities that may not fit the conventional singular/plural querying pattern of subgraphs.",
+             "",
+            subgraph["other_entities"])
+        ]
 
-        return "\n".join(lines)
+        result_lines = []
+        for category, desc, example, entities in sections:
+            result_lines.append(self.format_section(category, desc, example, entities))
+
+        return "\n".join(result_lines)
