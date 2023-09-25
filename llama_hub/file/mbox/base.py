@@ -4,7 +4,7 @@ Contains simple parser for mbox files.
 
 """
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -32,12 +32,14 @@ class MboxReader(BaseReader):
         *args: Any,
         max_count: int = 0,
         message_format: str = DEFAULT_MESSAGE_FORMAT,
+        id_fn: Optional[Callable[[str], str]] = None,
         **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
         self.max_count = max_count
         self.message_format = message_format
+        self.id_fn = id_fn
 
     def parse_file(self, filepath: Path, errors: str = "ignore") -> List[str]:
         """Parse file into string."""
@@ -109,5 +111,9 @@ class MboxReader(BaseReader):
         docs: List[Document] = []
         content = self.parse_file(file)
         for msg in content:
-            docs.append(Document(text=msg, extra_info=extra_info or {}))
+            d = Document(text=msg, extra_info=extra_info or {})
+            if self.id_fn:
+                 d.doc_id = self.id_fn(msg)
+            docs.append(d)
+
         return docs
