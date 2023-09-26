@@ -13,7 +13,7 @@ jobs:
       # You can use PyPy versions in python-version.
       # For example, pypy-2.7 and pypy-3.8
       matrix:
-        python-version: ["3.9", "3.8"]
+        python-version: ["3.9"]
         poetry-version: [1.5.1]
     steps:
       - uses: actions/checkout@v3
