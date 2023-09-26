@@ -955,5 +955,14 @@
       "repository",
       "collaborators"
     ]
+  },
+  "NougatOCRReader": {
+    "id": "github_repo_collaborators",
+    "author": "mdarshad1000",
+    "keywords": [
+      "pdf",
+      "ocr",
+      "academic papers"
+    ]
   }
 }
