@@ -29,4 +29,4 @@ jobs:
         run: |
           poetry install
       - name: Run testing
-        run: make lint
+        run: poetry run pytest tests
