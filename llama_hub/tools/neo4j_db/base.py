@@ -1,6 +1,7 @@
 from llama_index.graph_stores import Neo4jGraphStore
 from llama_index.llms.base import LLM, ChatMessage, MessageRole
 from llama_index.tools.tool_spec.base import BaseToolSpec
+from importlib.util import find_spec
 
 
 class Neo4jQueryToolSpec(BaseToolSpec):
@@ -20,15 +21,14 @@ class Neo4jQueryToolSpec(BaseToolSpec):
             password (str): Password for the Neo4j database.
             llm (obj): A language model for generating Cypher queries.
         """
-        try:
-            from neo4j import GraphDatabase
-
-        except ImportError:
+        if find_spec("neo4j") is None:
             raise ImportError(
                 "`neo4j` package not found, please run `pip install neo4j`"
             )
 
-        self.graph_store = Neo4jGraphStore(url=url, username=user, password=password, database=database)
+        self.graph_store = Neo4jGraphStore(
+            url=url, username=user, password=password, database=database
+        )
         self.llm = llm
 
     def get_system_message(self):
@@ -122,8 +122,11 @@ class Neo4jQueryToolSpec(BaseToolSpec):
                 question,
                 [
                     ChatMessage(role=MessageRole.ASSISTANT, content=cypher),
-                    ChatMessage(role=MessageRole.SYSTEM, conent=f"This query returns an error: {str(e)}\n"
-                                                                "Give me a improved query that works without any explanations or apologies"),
+                    ChatMessage(
+                        role=MessageRole.SYSTEM,
+                        conent=f"This query returns an error: {str(e)}\n"
+                        "Give me a improved query that works without any explanations or apologies",
+                    ),
                 ],
-                retry=False
+                retry=False,
             )

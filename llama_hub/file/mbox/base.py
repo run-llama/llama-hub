@@ -114,7 +114,7 @@ class MboxReader(BaseReader):
         for msg in content:
             d = Document(text=msg, extra_info=extra_info or {})
             if self.id_fn:
-                 d.doc_id = self.id_fn(msg)
+                d.doc_id = self.id_fn(msg)
             docs.append(d)
 
         return docs
