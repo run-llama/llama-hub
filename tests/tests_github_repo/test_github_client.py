@@ -1,22 +1,19 @@
-import pytest
 import base64
 import os
-from unittest.mock import MagicMock
 import unittest
 from typing import List, Tuple
+from unittest.mock import MagicMock
+
+import pytest
+
+from llama_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.github_client import GithubClient
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(
 #     "Skip by default due to dependence on network request and github api token.",
 #     allow_module_level=True,
 # )
-
-
-from llama_hub.github_repo.github_client import (
-    GithubClient,
-)
-
-from llama_hub.github_repo.base import GithubRepositoryReader
 
 
 @pytest.fixture
@@ -32,7 +29,9 @@ async def test_github_client(github_client):
     owner = "emptycrown"
     repo = "llama-hub"
     branch = "main"
-    commit_sha = "0cd691322e5244b48b68e3588d1343eb53f3a112"  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+    commit_sha = (  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+        "0cd691322e5244b48b68e3588d1343eb53f3a112"
+    )
 
     # test get_branch
     branch_data = await github_client.get_branch(owner, repo, branch)
@@ -132,6 +131,7 @@ isort==5.11.4
     ):
         assert dbc[0] == dbc[1], f"{dbc[0]} is not equal to {dbc[1]}"
 
+
 @pytest.mark.asyncio
 async def test_github_client_get_branch_parameter_exception(github_client):
     branch_data = await github_client.get_branch(
@@ -151,6 +151,7 @@ async def test_github_client_get_branch_parameter_exception(github_client):
             owner="emptycrown",
             repo="llama-hub",
         )
+
 
 class TestGithubRepositoryReader(unittest.TestCase):
     def setUp(self):

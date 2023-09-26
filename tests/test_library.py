@@ -43,7 +43,7 @@ def test_library_matches() -> None:
 def test_tools_library_matches() -> None:
     """Check that library.json corresponds to valid files."""
     hub_dir = Path(__file__).parent.parent / "llama_hub"
-    library_path = hub_dir / 'tools' / "library.json"
+    library_path = hub_dir / "tools" / "library.json"
     library_dict = json.load(open(library_path, "r"))
     for k, entry in library_dict.items():
         # make sure every entry has an "id" field

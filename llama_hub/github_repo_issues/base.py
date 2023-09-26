@@ -21,7 +21,6 @@ Each issue is converted to a document by doing the following:
 import asyncio
 import enum
 import logging
-import sys
 from typing import Dict, List, Optional, Tuple
 
 from llama_index.readers.base import BaseReader

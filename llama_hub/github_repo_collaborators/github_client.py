@@ -3,8 +3,7 @@ GitHub API client for collaborators
 """
 
 import os
-from typing import Any, Dict, Optional
-from typing import Protocol
+from typing import Any, Dict, Optional, Protocol
 
 
 class BaseGitHubCollaboratorsClient(Protocol):
@@ -184,7 +183,10 @@ if __name__ == "__main__":
     async def main() -> None:
         """Test the GitHubCollaboratorsClient."""
         client = GitHubCollaboratorsClient()
-        collaborators = await client.get_collaborators(owner="moncho", repo="dry",)
+        collaborators = await client.get_collaborators(
+            owner="moncho",
+            repo="dry",
+        )
 
         for collab in collaborators:
             print(collab[0]["login"])

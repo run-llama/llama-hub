@@ -25,12 +25,12 @@ class PandasExcelReader(BaseReader):
     """
 
     def __init__(
-            self,
-            *args: Any,
-            pandas_config: Optional[dict] = None,
-            concat_rows: bool = True,
-            row_joiner: str = "\n",
-            **kwargs: Any
+        self,
+        *args: Any,
+        pandas_config: Optional[dict] = None,
+        concat_rows: bool = True,
+        row_joiner: str = "\n",
+        **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)
@@ -39,11 +39,11 @@ class PandasExcelReader(BaseReader):
         self._row_joiner = row_joiner if row_joiner else "\n"
 
     def load_data(
-            self,
-            file: Path,
-            include_sheetname: bool = False,
-            sheet_name: Optional[Union[str, int, list]] = None,
-            extra_info: Optional[Dict] = None,
+        self,
+        file: Path,
+        include_sheetname: bool = False,
+        sheet_name: Optional[Union[str, int, list]] = None,
+        extra_info: Optional[Dict] = None,
     ) -> List[Document]:
         """Parse file and extract values from a specific column.
 
@@ -61,7 +61,9 @@ class PandasExcelReader(BaseReader):
         import pandas as pd
 
         if sheet_name is not None:
-            sheet_name = [sheet_name] if not isinstance(sheet_name, list) else sheet_name
+            sheet_name = (
+                [sheet_name] if not isinstance(sheet_name, list) else sheet_name
+            )
 
         dfs = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
 

@@ -1,6 +1,8 @@
-import pytest
 import unittest
 from unittest.mock import patch
+
+import pytest
+
 from llama_hub.confluence.base import ConfluenceReader, Document
 
 
@@ -22,7 +24,6 @@ MOCK_OAUTH = {
 
 class TestConfluenceReader:
     def test_confluence_reader_initialization(self, mock_confluence):
-
         # Test with oauth2
         ConfluenceReader(base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH)
         mock_confluence.assert_called_with(
@@ -68,23 +69,33 @@ class TestConfluenceReader:
 
         with pytest.raises(
             ValueError,
-            match="Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.",
+            match=(
+                "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql`"
+                " parameters."
+            ),
         ):
             confluence_reader.load_data()
 
-    def test_confluence_reader_load_data_invalid_args_multiple_methods(self, mock_confluence):
+    def test_confluence_reader_load_data_invalid_args_multiple_methods(
+        self, mock_confluence
+    ):
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
         )
         confluence_reader.confluence = mock_confluence
 
         with pytest.raises(
-                ValueError,
-                match="Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.",
+            ValueError,
+            match=(
+                "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql`"
+                " parameters."
+            ),
         ):
             confluence_reader.load_data(space_key="123", page_ids=["123"])
 
-    def test_confluence_reader_load_data_invalid_args_page_status_no_space_key(self, mock_confluence):
+    def test_confluence_reader_load_data_invalid_args_page_status_no_space_key(
+        self, mock_confluence
+    ):
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
         )
@@ -96,15 +107,17 @@ class TestConfluenceReader:
         ):
             confluence_reader.load_data(page_status="current", page_ids=["123"])
 
-    def test_confluence_reader_load_data_invalid_args_include_children_page_ids(self, mock_confluence):
+    def test_confluence_reader_load_data_invalid_args_include_children_page_ids(
+        self, mock_confluence
+    ):
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
         )
         confluence_reader.confluence = mock_confluence
 
         with pytest.raises(
-                ValueError,
-                match="Must specify `page_ids` when `include_children` is specified.",
+            ValueError,
+            match="Must specify `page_ids` when `include_children` is specified.",
         ):
             confluence_reader.load_data(space_key="123", include_children=True)
 
@@ -146,23 +159,25 @@ class TestConfluenceReader:
 
     def test_confluence_reader_load_data_by_space_id(self, mock_confluence):
         # one response with two pages
-        mock_confluence.get_all_pages_from_space.side_effect= [[
-            {
-                "id": "123",
-                "type": "page",
-                "status": "current",
-                "title": "Page 123",
-                "body": {"storage": {"value": "<p>Content 123</p>"}},
-            },
-            {
-                "id": "456",
-                "type": "page",
-                "status": "archived",
-                "title": "Page 456",
-                "body": {"storage": {"value": "<p>Content 456</p>"}},
-            },
-        ],
-            []]
+        mock_confluence.get_all_pages_from_space.side_effect = [
+            [
+                {
+                    "id": "123",
+                    "type": "page",
+                    "status": "current",
+                    "title": "Page 123",
+                    "body": {"storage": {"value": "<p>Content 123</p>"}},
+                },
+                {
+                    "id": "456",
+                    "type": "page",
+                    "status": "archived",
+                    "title": "Page 456",
+                    "body": {"storage": {"value": "<p>Content 456</p>"}},
+                },
+            ],
+            [],
+        ]
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -170,14 +185,22 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        documents = confluence_reader.load_data(space_key=mock_space_key, max_num_results=50)
+        documents = confluence_reader.load_data(
+            space_key=mock_space_key, max_num_results=50
+        )
 
         assert mock_confluence.get_all_pages_from_space.call_count == 2
-        assert mock_confluence.get_all_pages_from_space.call_args[1]["space"] == "spaceId123"
+        assert (
+            mock_confluence.get_all_pages_from_space.call_args[1]["space"]
+            == "spaceId123"
+        )
         assert mock_confluence.get_all_pages_from_space.call_args[1]["start"] == 2
         assert mock_confluence.get_all_pages_from_space.call_args[1]["limit"] == 48
         assert mock_confluence.get_all_pages_from_space.call_args[1]["status"] is None
-        assert mock_confluence.get_all_pages_from_space.call_args[1]["expand"] == 'body.storage.value'
+        assert (
+            mock_confluence.get_all_pages_from_space.call_args[1]["expand"]
+            == "body.storage.value"
+        )
 
         assert len(documents) == 2
         assert all(isinstance(doc, Document) for doc in documents)
@@ -223,7 +246,7 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_max_num_results = 3 # Asking for up to 3 pages. There are only two pages to retrieve though, and they'll come 1 at a time from Confluence.
+        mock_max_num_results = 3  # Asking for up to 3 pages. There are only two pages to retrieve though, and they'll come 1 at a time from Confluence.
         documents = confluence_reader.load_data(
             space_key=mock_space_key, max_num_results=mock_max_num_results
         )
@@ -243,7 +266,9 @@ class TestConfluenceReader:
         assert mock_confluence.get_page_child_by_type.call_count == 0
 
     def test_confluence_reader_load_data_max_10(self, mock_confluence):
-        mock_confluence.get_all_pages_from_space.side_effect = _mock_get_all_pages_from_space
+        mock_confluence.get_all_pages_from_space.side_effect = (
+            _mock_get_all_pages_from_space
+        )
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -264,7 +289,9 @@ class TestConfluenceReader:
         assert all(documents[i].doc_id == str(i) for i in range(8))
 
     def test_confluence_reader_load_data_max_8(self, mock_confluence):
-        mock_confluence.get_all_pages_from_space.side_effect = _mock_get_all_pages_from_space
+        mock_confluence.get_all_pages_from_space.side_effect = (
+            _mock_get_all_pages_from_space
+        )
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -272,7 +299,7 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_max_num_results = 5 # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
         documents = confluence_reader.load_data(
             space_key=mock_space_key, max_num_results=mock_max_num_results
         )
@@ -285,7 +312,9 @@ class TestConfluenceReader:
         assert all(documents[i].doc_id == str(i) for i in range(5))
 
     def test_confluence_reader_load_data_max_5(self, mock_confluence):
-        mock_confluence.get_all_pages_from_space.side_effect = _mock_get_all_pages_from_space
+        mock_confluence.get_all_pages_from_space.side_effect = (
+            _mock_get_all_pages_from_space
+        )
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -293,7 +322,7 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_max_num_results = 5 # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
         documents = confluence_reader.load_data(
             space_key=mock_space_key, max_num_results=mock_max_num_results
         )
@@ -305,7 +334,9 @@ class TestConfluenceReader:
         assert all(documents[i].doc_id == str(i) for i in range(5))
 
     def test_confluence_reader_load_data_max_none(self, mock_confluence):
-        mock_confluence.get_all_pages_from_space.side_effect = _mock_get_all_pages_from_space
+        mock_confluence.get_all_pages_from_space.side_effect = (
+            _mock_get_all_pages_from_space
+        )
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -314,9 +345,7 @@ class TestConfluenceReader:
 
         mock_space_key = "spaceId123"
         # asking for all pages.  They will come at most 3 at a time from Confluence, and there are 8 pages in confluence.
-        documents = confluence_reader.load_data(
-            space_key=mock_space_key
-        )
+        documents = confluence_reader.load_data(space_key=mock_space_key)
 
         # 4 calls are made, returning 3,3,2,0 results, respectively.
         assert mock_confluence.get_all_pages_from_space.call_count == 4
@@ -325,14 +354,13 @@ class TestConfluenceReader:
         assert all(documents[i].doc_id == str(i) for i in range(8))
 
     def test_confluence_reader_load_data_by_page_ids_max_10(self, mock_confluence):
-        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
-            {
-                "id": str(page_id),
-                "type": "page",
-                "status": "current",
-                "title": f"Page {page_id}",
-                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
-            }
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: {
+            "id": str(page_id),
+            "type": "page",
+            "status": "current",
+            "title": f"Page {page_id}",
+            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+        }
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -341,8 +369,14 @@ class TestConfluenceReader:
 
         mock_page_ids = ["0", "1", "2", "3", "4", "5", "6", "7"]
         mock_get_children = False
-        mock_max_num_results = 10 # Asking for up to 10 pages, but only requesting 8 specific ones.
-        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children, max_num_results=mock_max_num_results)
+        mock_max_num_results = (
+            10  # Asking for up to 10 pages, but only requesting 8 specific ones.
+        )
+        documents = confluence_reader.load_data(
+            page_ids=mock_page_ids,
+            include_children=mock_get_children,
+            max_num_results=mock_max_num_results,
+        )
 
         assert mock_confluence.get_page_by_id.call_count == 8
         assert len(documents) == 8
@@ -350,14 +384,13 @@ class TestConfluenceReader:
         assert [doc.doc_id for doc in documents] == mock_page_ids
 
     def test_confluence_reader_load_data_by_page_ids_max_5(self, mock_confluence):
-        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
-            {
-                "id": str(page_id),
-                "type": "page",
-                "status": "current",
-                "title": f"Page {page_id}",
-                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
-            }
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: {
+            "id": str(page_id),
+            "type": "page",
+            "status": "current",
+            "title": f"Page {page_id}",
+            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+        }
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -366,23 +399,26 @@ class TestConfluenceReader:
 
         mock_page_ids = ["0", "1", "2", "3", "4", "5", "6", "7"]
         mock_get_children = False
-        mock_max_num_results = 5 # Asking for up to 5 pages
-        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children, max_num_results=mock_max_num_results)
+        mock_max_num_results = 5  # Asking for up to 5 pages
+        documents = confluence_reader.load_data(
+            page_ids=mock_page_ids,
+            include_children=mock_get_children,
+            max_num_results=mock_max_num_results,
+        )
 
         assert mock_confluence.get_page_by_id.call_count == 5
         assert len(documents) == 5
         assert all(isinstance(doc, Document) for doc in documents)
         assert [doc.doc_id for doc in documents] == mock_page_ids[:5]
 
-    def test_confluence_reader_load_data_by_page_ids_max_5(self, mock_confluence):
-        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
-            {
-                "id": str(page_id),
-                "type": "page",
-                "status": "current",
-                "title": f"Page {page_id}",
-                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
-            }
+    def test_confluence_reader_load_data_by_page_ids_max_5_2(self, mock_confluence):
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: {
+            "id": str(page_id),
+            "type": "page",
+            "status": "current",
+            "title": f"Page {page_id}",
+            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+        }
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -392,7 +428,11 @@ class TestConfluenceReader:
         mock_page_ids = ["0", "1", "2", "3", "4", "5", "6", "7"]
         mock_get_children = False
         mock_max_num_results = None
-        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children, max_num_results=mock_max_num_results)
+        documents = confluence_reader.load_data(
+            page_ids=mock_page_ids,
+            include_children=mock_get_children,
+            max_num_results=mock_max_num_results,
+        )
 
         assert mock_confluence.get_page_by_id.call_count == 8
         assert len(documents) == 8
@@ -401,14 +441,13 @@ class TestConfluenceReader:
 
     def test_confluence_reader_load_data_dfs(self, mock_confluence):
         mock_confluence.get_child_id_list.side_effect = _mock_get_child_id_list
-        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
-            {
-                "id": str(page_id),
-                "type": "page",
-                "status": "current",
-                "title": f"Page {page_id}",
-                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
-            }
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: {
+            "id": str(page_id),
+            "type": "page",
+            "status": "current",
+            "title": f"Page {page_id}",
+            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+        }
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -417,7 +456,9 @@ class TestConfluenceReader:
 
         mock_page_id = "0"
         mock_get_children = True
-        documents = confluence_reader.load_data(page_ids=[mock_page_id], include_children=mock_get_children)
+        documents = confluence_reader.load_data(
+            page_ids=[mock_page_id], include_children=mock_get_children
+        )
 
         # {"0": ["1", "2", "3"], "1": ["4", "5"], "2": ["6"], "4": ["7"]}
         # 12 calls are made.  2 calls for each page that has children (0,1,2,4), 1 call for each page that does not have children (3,5,6,7).
@@ -430,14 +471,13 @@ class TestConfluenceReader:
 
     def test_confluence_reader_load_data_dfs_repeated_pages(self, mock_confluence):
         mock_confluence.get_child_id_list.side_effect = _mock_get_child_id_list
-        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
-            {
-                "id": str(page_id),
-                "type": "page",
-                "status": "current",
-                "title": f"Page {page_id}",
-                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
-            }
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: {
+            "id": str(page_id),
+            "type": "page",
+            "status": "current",
+            "title": f"Page {page_id}",
+            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+        }
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -446,7 +486,9 @@ class TestConfluenceReader:
 
         mock_page_ids = ["0", "2"]
         mock_get_children = True
-        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children)
+        documents = confluence_reader.load_data(
+            page_ids=mock_page_ids, include_children=mock_get_children
+        )
 
         # {"0": ["1", "2", "3"], "1": ["4", "5"], "2": ["6"], "4": ["7"]}
         # 12 calls are made for page_id "0".  2 calls for each page that has children (0,1,2,4), 1 call for each page that does not have children (3,5,6,7).
@@ -461,14 +503,13 @@ class TestConfluenceReader:
 
     def test_confluence_reader_load_data_dfs_max_6(self, mock_confluence):
         mock_confluence.get_child_id_list.side_effect = _mock_get_child_id_list
-        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: \
-            {
-                "id": str(page_id),
-                "type": "page",
-                "status": "current",
-                "title": f"Page {page_id}",
-                "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
-            }
+        mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: {
+            "id": str(page_id),
+            "type": "page",
+            "status": "current",
+            "title": f"Page {page_id}",
+            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+        }
 
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -478,8 +519,11 @@ class TestConfluenceReader:
         mock_page_ids = ["0", "2"]
         mock_get_children = True
         mock_max_num_results = 6
-        documents = confluence_reader.load_data(page_ids=mock_page_ids, include_children=mock_get_children,
-                                                max_num_results=mock_max_num_results)
+        documents = confluence_reader.load_data(
+            page_ids=mock_page_ids,
+            include_children=mock_get_children,
+            max_num_results=mock_max_num_results,
+        )
 
         # {"0": ["1", "2", "3"], "1": ["4", "5"], "2": ["6"], "4": ["7"]}
         # calls made to get_child_id_list for DFS on page_id "0":  0, 0, 1, 1, 4, 4, 7, 5.
@@ -495,25 +539,73 @@ class TestConfluenceReader:
 
     def test_confluence_reader_load_data_cql_paging_max_none(self, mock_confluence):
         mock_confluence.get.side_effect = [
-            {'results': [
-                {'id': '0', 'type': 'page', 'title': 'Page 0', 'body': {'storage': {'value': '<p>Content 0</p>'}}},
-                {'id': '1', 'type': 'page', 'title': 'Page 1', 'body': {'storage': {'value': '<p>Content 1</p>'}}},
-                {'id': '2', 'type': 'page', 'title': 'Page 2', 'body': {'storage': {'value': '<p>Content 2</p>'}}},
-            ],
-                '_links': {
-                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=3&cursor=RANDOMSTRING'}},
-            {'results': [
-                {'id': '3', 'type': 'page', 'title': 'Page 3', 'body': {'storage': {'value': '<p>Content 3</p>'}}},
-                {'id': '4', 'type': 'page', 'title': 'Page 4', 'body': {'storage': {'value': '<p>Content 4</p>'}}},
-                {'id': '5', 'type': 'page', 'title': 'Page 5', 'body': {'storage': {'value': '<p>Content 5</p>'}}},
-            ],
-                '_links': {
-                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=6&cursor=RANDOMSTRING'}},
-            {'results': [
-                {'id': '6', 'type': 'page', 'title': 'Page 6', 'body': {'storage': {'value': '<p>Content 6</p>'}}},
-                {'id': '7', 'type': 'page', 'title': 'Page 7', 'body': {'storage': {'value': '<p>Content 7</p>'}}},
-            ],
-                '_links': {}},
+            {
+                "results": [
+                    {
+                        "id": "0",
+                        "type": "page",
+                        "title": "Page 0",
+                        "body": {"storage": {"value": "<p>Content 0</p>"}},
+                    },
+                    {
+                        "id": "1",
+                        "type": "page",
+                        "title": "Page 1",
+                        "body": {"storage": {"value": "<p>Content 1</p>"}},
+                    },
+                    {
+                        "id": "2",
+                        "type": "page",
+                        "title": "Page 2",
+                        "body": {"storage": {"value": "<p>Content 2</p>"}},
+                    },
+                ],
+                "_links": {
+                    "next": "http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=3&cursor=RANDOMSTRING"
+                },
+            },
+            {
+                "results": [
+                    {
+                        "id": "3",
+                        "type": "page",
+                        "title": "Page 3",
+                        "body": {"storage": {"value": "<p>Content 3</p>"}},
+                    },
+                    {
+                        "id": "4",
+                        "type": "page",
+                        "title": "Page 4",
+                        "body": {"storage": {"value": "<p>Content 4</p>"}},
+                    },
+                    {
+                        "id": "5",
+                        "type": "page",
+                        "title": "Page 5",
+                        "body": {"storage": {"value": "<p>Content 5</p>"}},
+                    },
+                ],
+                "_links": {
+                    "next": "http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=6&cursor=RANDOMSTRING"
+                },
+            },
+            {
+                "results": [
+                    {
+                        "id": "6",
+                        "type": "page",
+                        "title": "Page 6",
+                        "body": {"storage": {"value": "<p>Content 6</p>"}},
+                    },
+                    {
+                        "id": "7",
+                        "type": "page",
+                        "title": "Page 7",
+                        "body": {"storage": {"value": "<p>Content 7</p>"}},
+                    },
+                ],
+                "_links": {},
+            },
         ]
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -528,27 +620,76 @@ class TestConfluenceReader:
         assert len(documents) == 8
         assert all(isinstance(doc, Document) for doc in documents)
         assert [doc.doc_id for doc in documents] == [str(i) for i in range(8)]
+
     def test_confluence_reader_load_data_cql_paging_max_6(self, mock_confluence):
         mock_confluence.get.side_effect = [
-            {'results': [
-                {'id': '0', 'type': 'page', 'title': 'Page 0', 'body': {'storage': {'value': '<p>Content 0</p>'}}},
-                {'id': '1', 'type': 'page', 'title': 'Page 1', 'body': {'storage': {'value': '<p>Content 1</p>'}}},
-                {'id': '2', 'type': 'page', 'title': 'Page 2', 'body': {'storage': {'value': '<p>Content 2</p>'}}},
-            ],
-                '_links': {
-                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=3&cursor=RANDOMSTRING'}},
-            {'results': [
-                {'id': '3', 'type': 'page', 'title': 'Page 3', 'body': {'storage': {'value': '<p>Content 3</p>'}}},
-                {'id': '4', 'type': 'page', 'title': 'Page 4', 'body': {'storage': {'value': '<p>Content 4</p>'}}},
-                {'id': '5', 'type': 'page', 'title': 'Page 5', 'body': {'storage': {'value': '<p>Content 5</p>'}}},
-            ],
-                '_links': {
-                    'next': 'http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=6&cursor=RANDOMSTRING'}},
-            {'results': [
-                {'id': '6', 'type': 'page', 'title': 'Page 6', 'body': {'storage': {'value': '<p>Content 6</p>'}}},
-                {'id': '7', 'type': 'page', 'title': 'Page 7', 'body': {'storage': {'value': '<p>Content 7</p>'}}},
-            ],
-                '_links': {}},
+            {
+                "results": [
+                    {
+                        "id": "0",
+                        "type": "page",
+                        "title": "Page 0",
+                        "body": {"storage": {"value": "<p>Content 0</p>"}},
+                    },
+                    {
+                        "id": "1",
+                        "type": "page",
+                        "title": "Page 1",
+                        "body": {"storage": {"value": "<p>Content 1</p>"}},
+                    },
+                    {
+                        "id": "2",
+                        "type": "page",
+                        "title": "Page 2",
+                        "body": {"storage": {"value": "<p>Content 2</p>"}},
+                    },
+                ],
+                "_links": {
+                    "next": "http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=3&cursor=RANDOMSTRING"
+                },
+            },
+            {
+                "results": [
+                    {
+                        "id": "3",
+                        "type": "page",
+                        "title": "Page 3",
+                        "body": {"storage": {"value": "<p>Content 3</p>"}},
+                    },
+                    {
+                        "id": "4",
+                        "type": "page",
+                        "title": "Page 4",
+                        "body": {"storage": {"value": "<p>Content 4</p>"}},
+                    },
+                    {
+                        "id": "5",
+                        "type": "page",
+                        "title": "Page 5",
+                        "body": {"storage": {"value": "<p>Content 5</p>"}},
+                    },
+                ],
+                "_links": {
+                    "next": "http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=6&cursor=RANDOMSTRING"
+                },
+            },
+            {
+                "results": [
+                    {
+                        "id": "6",
+                        "type": "page",
+                        "title": "Page 6",
+                        "body": {"storage": {"value": "<p>Content 6</p>"}},
+                    },
+                    {
+                        "id": "7",
+                        "type": "page",
+                        "title": "Page 7",
+                        "body": {"storage": {"value": "<p>Content 7</p>"}},
+                    },
+                ],
+                "_links": {},
+            },
         ]
         confluence_reader = ConfluenceReader(
             base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
@@ -557,7 +698,9 @@ class TestConfluenceReader:
 
         mock_cql = "type=page"
         mock_max_num_results = 6
-        documents = confluence_reader.load_data(cql=mock_cql, max_num_results=mock_max_num_results)
+        documents = confluence_reader.load_data(
+            cql=mock_cql, max_num_results=mock_max_num_results
+        )
 
         assert mock_confluence.get.call_count == 2
 
@@ -565,8 +708,15 @@ class TestConfluenceReader:
         assert all(isinstance(doc, Document) for doc in documents)
         assert [doc.doc_id for doc in documents] == [str(i) for i in range(6)]
 
-def _mock_get_all_pages_from_space(space, start=0, limit=3, status="current", expand="body.storage.value",
-                                   content_type="page"):
+
+def _mock_get_all_pages_from_space(
+    space,
+    start=0,
+    limit=3,
+    status="current",
+    expand="body.storage.value",
+    content_type="page",
+):
     """Mock the API results from a Confluence server that has 8 pages in a space, and a server limit of 3 results per call."""
     server_limit = 3
     num_pages_on_server = 8
@@ -577,13 +727,24 @@ def _mock_get_all_pages_from_space(space, start=0, limit=3, status="current", ex
             "status": "current",
             "title": f"Page {i}",
             "body": {"storage": {"value": f"<p>Content {i}</p>"}},
-        } for i in range(start, min(start + min(server_limit, limit or server_limit), num_pages_on_server))
+        }
+        for i in range(
+            start,
+            min(start + min(server_limit, limit or server_limit), num_pages_on_server),
+        )
     ]
 
-def _mock_get_child_id_list(page_id, type="page", start=0, limit=3, expand="body.storage.value"):
+
+def _mock_get_child_id_list(
+    page_id, type="page", start=0, limit=3, expand="body.storage.value"
+):
     """Mock the API results from a Confluence server that has 3 child pages for each page."""
     server_limit = 3
-    child_ids_by_page_id = {"0": ["1", "2", "3"], "1": ["4", "5"], "2": ["6"], "4": ["7"]}
+    child_ids_by_page_id = {
+        "0": ["1", "2", "3"],
+        "1": ["4", "5"],
+        "2": ["6"],
+        "4": ["7"],
+    }
     ret = child_ids_by_page_id.get(page_id, [])
-    return ret[start: start + min(server_limit, limit or server_limit)]
-
+    return ret[start : start + min(server_limit, limit or server_limit)]

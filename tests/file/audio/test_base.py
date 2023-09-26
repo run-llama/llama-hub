@@ -5,6 +5,8 @@ from urllib.request import Request, urlopen
 
 import pytest
 
+from importlib.util import find_spec
+
 from llama_hub.file.audio.base import AudioTranscriber
 
 REMOTE_AUDIO_SAMPLE_URL = (
@@ -13,12 +15,8 @@ REMOTE_AUDIO_SAMPLE_URL = (
 )
 
 LOCAL_TEST_FILE_PATH = "tests/tmp/llama-hub-audio-sample-test-temp.mp3"
-try:
-    import whisper
 
-    whisper_available = True
-except ImportError:
-    whisper_available = False
+whisper_available = find_spec("whisper") is not None
 
 
 @pytest.mark.skipif(

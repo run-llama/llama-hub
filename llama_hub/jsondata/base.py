@@ -3,6 +3,7 @@
 import json
 import re
 from typing import Dict, Generator, List, Union
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 

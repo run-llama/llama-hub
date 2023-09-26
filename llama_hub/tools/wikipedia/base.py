@@ -1,8 +1,9 @@
 """Wikipedia tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_index.readers.schema.base import Document
 from typing import Any, List
+
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 
 class WikipediaToolSpec(BaseToolSpec):
@@ -45,6 +46,7 @@ class WikipediaToolSpec(BaseToolSpec):
             query (str): the string to search for
         """
         import wikipedia
+
         pages = wikipedia.search(query)
         if len(pages) == 0:
             return "Unable to find any details on this search"

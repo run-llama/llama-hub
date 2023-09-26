@@ -79,7 +79,10 @@ class ArxivReader(BaseReader):
         # Include extra documents containing the abstracts
         abstract_documents = []
         for paper in search_results:
-            d = f"The following is a summary of the paper: {paper.title}\n\nSummary: {paper.summary}"
+            d = (
+                f"The following is a summary of the paper: {paper.title}\n\nSummary:"
+                f" {paper.summary}"
+            )
             abstract_documents.append(Document(text=d))
 
         # Delete downloaded papers
@@ -154,7 +157,10 @@ class ArxivReader(BaseReader):
         # Include extra documents containing the abstracts
         abstract_documents = []
         for paper in search_results:
-            d = f"The following is a summary of the paper: {paper.title}\n\nSummary: {paper.summary}"
+            d = (
+                f"The following is a summary of the paper: {paper.title}\n\nSummary:"
+                f" {paper.summary}"
+            )
             abstract_documents.append(Document(text=d))
 
         # Delete downloaded papers

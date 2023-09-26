@@ -30,7 +30,6 @@ class JiraReader(BaseReader):
     """
 
     def __init__(self, email: str, api_token: str, server_url: str) -> None:
-
         from jira import JIRA
 
         self.jira = JIRA(basic_auth=(email, api_token), server=f"https://{server_url}")

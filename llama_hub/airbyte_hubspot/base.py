@@ -1,4 +1,5 @@
 from typing import Any, Mapping, Optional
+
 from llama_hub.airbyte_cdk.base import AirbyteCDKReader, RecordHandler
 
 
@@ -19,4 +20,8 @@ class AirbyteHubspotReader(AirbyteCDKReader):
         """Initialize with parameters."""
         import source_hubspot
 
-        super().__init__(source_class=source_hubspot.SourceHubspot, config=config, record_handler=record_handler)
+        super().__init__(
+            source_class=source_hubspot.SourceHubspot,
+            config=config,
+            record_handler=record_handler,
+        )

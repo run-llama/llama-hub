@@ -1,11 +1,11 @@
 """Confluence reader."""
 import logging
 import os
-from retrying import retry
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+from retrying import retry
 
 CONFLUENCE_API_TOKEN = "CONFLUENCE_API_TOKEN"
 CONFLUENCE_PASSWORD = "CONFLUENCE_PASSWORD"
@@ -42,7 +42,8 @@ class ConfluenceReader(BaseReader):
             from atlassian import Confluence
         except ImportError:
             raise ImportError(
-                "`atlassian` package not found, please run `pip install atlassian-python-api`"
+                "`atlassian` package not found, please run `pip install"
+                " atlassian-python-api`"
             )
         self.confluence: Confluence = None
         if oauth2:
@@ -55,12 +56,14 @@ class ConfluenceReader(BaseReader):
                 user_name = os.getenv(CONFLUENCE_USERNAME)
                 if user_name is None:
                     raise ValueError(
-                        "Must set environment variable `CONFLUENCE_USERNAME` if oauth, oauth2, or `CONFLUENCE_API_TOKEN` are not provided."
+                        "Must set environment variable `CONFLUENCE_USERNAME` if oauth,"
+                        " oauth2, or `CONFLUENCE_API_TOKEN` are not provided."
                     )
                 password = os.getenv(CONFLUENCE_PASSWORD)
                 if password is None:
                     raise ValueError(
-                        "Must set environment variable `CONFLUENCE_PASSWORD` if oauth, oauth2, or `CONFLUENCE_API_TOKEN` are not provided."
+                        "Must set environment variable `CONFLUENCE_PASSWORD` if oauth,"
+                        " oauth2, or `CONFLUENCE_API_TOKEN` are not provided."
                     )
                 self.confluence = Confluence(
                     url=base_url, username=user_name, password=password, cloud=cloud
@@ -106,7 +109,8 @@ class ConfluenceReader(BaseReader):
             != 1
         ):
             raise ValueError(
-                "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters."
+                "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql`"
+                " parameters."
             )
 
         if page_status and not space_key:
@@ -122,8 +126,9 @@ class ConfluenceReader(BaseReader):
         if limit is not None:
             max_num_results = limit
             logger.warning(
-                "`limit` is deprecated and no longer relates to the Confluence server's API limits.  If "
-                "you wish to limit the number of returned results please use `max_num_results` instead."
+                "`limit` is deprecated and no longer relates to the Confluence server's"
+                " API limits.  If you wish to limit the number of returned results"
+                " please use `max_num_results` instead."
             )
 
         try:
@@ -292,8 +297,8 @@ class ConfluenceReader(BaseReader):
             pass
         except ImportError:
             raise ImportError(
-                "`pytesseract` or `pdf2image` or `Pillow` package not found, please run `pip install "
-                "pytesseract pdf2image Pillow`"
+                "`pytesseract` or `pdf2image` or `Pillow` package not found, please run"
+                " `pip install pytesseract pdf2image Pillow`"
             )
 
         # depending on setup you may also need to set the correct path for poppler and tesseract
@@ -332,7 +337,8 @@ class ConfluenceReader(BaseReader):
             from pdf2image import convert_from_bytes  # type: ignore
         except ImportError:
             raise ImportError(
-                "`pytesseract` or `pdf2image` package not found, please run `pip install pytesseract pdf2image`"
+                "`pytesseract` or `pdf2image` package not found, please run `pip"
+                " install pytesseract pdf2image`"
             )
 
         import pytesseract  # type: ignore
@@ -360,12 +366,14 @@ class ConfluenceReader(BaseReader):
 
     def process_image(self, link):
         try:
+            from io import BytesIO  # type: ignore
+
             import pytesseract  # type: ignore
             from PIL import Image  # type: ignore
-            from io import BytesIO  # type: ignore
         except ImportError:
             raise ImportError(
-                "`pytesseract` or `Pillow` package not found, please run `pip install pytesseract Pillow`"
+                "`pytesseract` or `Pillow` package not found, please run `pip install"
+                " pytesseract Pillow`"
             )
 
         response = self.confluence.request(path=link, absolute=True)
@@ -386,8 +394,9 @@ class ConfluenceReader(BaseReader):
 
     def process_doc(self, link):
         try:
-            import docx2txt  # type: ignore
             from io import BytesIO  # type: ignore
+
+            import docx2txt  # type: ignore
         except ImportError:
             raise ImportError(
                 "`docx2txt` package not found, please run `pip install docx2txt`"
@@ -435,14 +444,16 @@ class ConfluenceReader(BaseReader):
 
     def process_svg(self, link):
         try:
+            from io import BytesIO  # type: ignore
+
             import pytesseract  # type: ignore
             from PIL import Image  # type: ignore
-            from io import BytesIO  # type: ignore
-            from svglib.svglib import svg2rlg  # type: ignore
             from reportlab.graphics import renderPM  # type: ignore
+            from svglib.svglib import svg2rlg  # type: ignore
         except ImportError:
             raise ImportError(
-                "`pytesseract`, `Pillow`, or `svglib` package not found, please run `pip install pytesseract Pillow svglib`"
+                "`pytesseract`, `Pillow`, or `svglib` package not found, please run"
+                " `pip install pytesseract Pillow svglib`"
             )
 
         response = self.confluence.request(path=link, absolute=True)

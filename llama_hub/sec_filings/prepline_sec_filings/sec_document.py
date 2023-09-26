@@ -1,26 +1,27 @@
-from functools import partial
 import re
-from typing import List, Optional, Iterable, Iterator, Any, Tuple
 import sys
+from functools import partial
+from typing import Any, Iterable, Iterator, List, Optional, Tuple
 
 if sys.version_info < (3, 8):
     from typing_extensions import Final
 else:
     from typing import Final
 
+from collections import defaultdict
+
 import numpy as np
 import numpy.typing as npt
-from collections import defaultdict
+
 try:
     from sklearn.cluster import DBSCAN
-
     from unstructured.cleaners.core import clean
     from unstructured.documents.elements import (
-        Text,
+        Element,
         ListItem,
         NarrativeText,
+        Text,
         Title,
-        Element,
     )
     from unstructured.documents.html import HTMLDocument
     from unstructured.nlp.partition import is_possible_title
@@ -31,7 +32,7 @@ try:
         clean, extra_whitespace=True, dashes=True, trailing_punctuation=True
     )
 
-except:
+except Exception:
     # TODO: Hack mostly to get tests to pass
     DBSCAN = None
     clean = None
@@ -48,7 +49,7 @@ finally:
     pass
 try:
     from llama_hub.sec_filings.prepline_sec_filings.sections import SECSection
-except:
+except ImportError:
     from prepline_sec_filings.sections import SECSection
 
 
@@ -377,9 +378,9 @@ def is_10k_item_title(title: str) -> bool:
 
 def is_10k_risk_title(title: str) -> bool:
     """Checks to see if the title matches the pattern for the risk heading."""
-    return ("1a" in title.lower() or "risk factors" in title.lower()) and not (
-        "summary" in title.lower()
-    )
+    return (
+        "1a" in title.lower() or "risk factors" in title.lower()
+    ) and "summary" not in title.lower()
 
 
 def is_s1_section_title(title: str) -> bool:

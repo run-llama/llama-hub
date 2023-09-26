@@ -40,7 +40,7 @@ class MemosReader(BaseReader):
         try:
             req = requests.get(realUrl, params)
             res = req.json()
-        except:
+        except ValueError:
             raise ValueError("Your Memo URL is not valid")
 
         if "data" not in res:

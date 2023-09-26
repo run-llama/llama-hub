@@ -1,18 +1,17 @@
-from llama_index import Document
+from typing import List, Tuple
+from unittest.mock import AsyncMock, MagicMock, call
+
 import httpx
 import pytest
-from unittest.mock import MagicMock, AsyncMock, call
-from typing import List, Tuple
-
-
-from llama_hub.github_repo.github_client import (
-    GithubClient,
-    GitBlobResponseModel,
-    GitTreeResponseModel,
-    GitBranchResponseModel,
-)
+from llama_index import Document
 
 from llama_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.github_client import (
+    GitBlobResponseModel,
+    GitBranchResponseModel,
+    GithubClient,
+    GitTreeResponseModel,
+)
 
 ## Test GithubRepositoryReader's _recurse_tree method
 
@@ -121,7 +120,8 @@ async def test__recurse_tree():
             )
         else:
             raise httpx.HTTPError(
-                f"404 Client Error: Not Found for url: https://api.github.com/repos/{owner}/{repo}/git/trees/{sha}"
+                "404 Client Error: Not Found for url:"
+                f" https://api.github.com/repos/{owner}/{repo}/git/trees/{sha}"
             )
 
     github_client.get_tree = AsyncMock(side_effect=get_tree_side_effect)
@@ -198,9 +198,10 @@ async def test__recurse_tree():
     blobs_and_full_paths = await reader._recurse_tree(tree_sha)
 
     # make sure get_tree was called the expected number of times
-    assert (
-        github_client.get_tree.call_count == 3
-    ), "There should be only 3 calls to get_tree (one for the root tree, and one for each subfolder folder1 and folder3)"
+    assert github_client.get_tree.call_count == 3, (
+        "There should be only 3 calls to get_tree (one for the root tree, and one for"
+        " each subfolder folder1 and folder3)"
+    )
 
     # sort the expected and actual results by full path so we can compare them
     for (blob, full_path), (expected_blob, expected_full_path) in zip(
@@ -216,7 +217,10 @@ async def test__recurse_tree():
 
     with pytest.raises(
         httpx.HTTPError,
-        match="404 Client Error: Not Found for url: https://api.github.com/repos/owner/repo/git/trees/12345",
+        match=(
+            "404 Client Error: Not Found for url:"
+            " https://api.github.com/repos/owner/repo/git/trees/12345"
+        ),
     ):
         await reader._recurse_tree("12345")
 
@@ -378,7 +382,8 @@ async def test__generate_documents():
             )
         else:
             raise httpx.HTTPError(
-                f"404 Client Error: Not Found for url: https://api.github.com/repos/{owner}/{repo}/git/blobs/{sha}"
+                "404 Client Error: Not Found for url:"
+                f" https://api.github.com/repos/{owner}/{repo}/git/blobs/{sha}"
             )
 
     github_client.get_blob = AsyncMock(side_effect=get_blob_side_effect)
@@ -425,7 +430,9 @@ async def test__generate_documents():
             extra_info={
                 "file_path": "folder1/folder2/file3.rs",
                 "file_name": "file3.rs",
-                "url": "https://github.com/owner/repo/blob/1234/folder1/folder2/file3.rs",
+                "url": (
+                    "https://github.com/owner/repo/blob/1234/folder1/folder2/file3.rs"
+                ),
             },
         ),
         Document(
@@ -451,7 +458,10 @@ async def test__generate_documents():
 
     with pytest.raises(
         httpx.HTTPError,
-        match="404 Client Error: Not Found for url: https://api.github.com/repos/owner/repo/git/blobs/12345",
+        match=(
+            "404 Client Error: Not Found for url:"
+            " https://api.github.com/repos/owner/repo/git/blobs/12345"
+        ),
     ):
         await reader._generate_documents(
             [
@@ -490,7 +500,8 @@ def get_mocked_github_client():
             )
         else:
             raise httpx.HTTPError(
-                f"404 Client Error: Not Found for url: https://api.github.com/repos/{owner}/{repo}/branches/{branch}"
+                "404 Client Error: Not Found for url:"
+                f" https://api.github.com/repos/{owner}/{repo}/branches/{branch}"
             )
 
     github_client.get_branch = AsyncMock(side_effect=get_branch_side_effect)
@@ -690,7 +701,8 @@ def get_mocked_github_client():
             )
         else:
             raise httpx.HTTPError(
-                f"404 Client Error: Not Found for url: https://api.github.com/repos/{owner}/{repo}/git/trees/{sha}"
+                "404 Client Error: Not Found for url:"
+                f" https://api.github.com/repos/{owner}/{repo}/git/trees/{sha}"
             )
 
     github_client.get_tree = AsyncMock(side_effect=get_tree_side_effect)
@@ -702,17 +714,33 @@ def get_mocked_github_client():
             "2021": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBSRUFETUUubWQ=",  # README.md
             "2324": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBMSUNFTlNF",  # LICENSE
             "2627": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBzZXR1cC5weQ==",  # setup.py
-            "3031": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBzZXR0aW5ncy5qc29u",  # settings.json
+            "3031": (
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBzZXR0aW5ncy5qc29u"
+            ),  # settings.json
             "3637": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBpbmRleC5yc3Q=",  # index.rst
-            "4243": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBfX2luaXRfXy5weQ==",  # __init__.py
+            "4243": (
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBfX2luaXRfXy5weQ=="
+            ),  # __init__.py
             "4445": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBsaW50LnltbA==",  # lint.yml
-            "4647": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBidWlsZF9wYWNrYWdlLnltbA==",  # build_package.yml
+            "4647": (
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBidWlsZF9wYWNrYWdlLnltbA=="
+            ),  # build_package.yml
             "4849": "aGVsbG8gd29ybGQ=",  # example_picture.png
-            "5051": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBleGFtcGxlX2d1aWRlLm1k",  # example_guide.md
-            "5455": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBleGFtcGxlX3BhY2thZ2UucHk=",  # example_package.py
-            "5657": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciB0ZXN0X2ZpbGUxLnB5",  # test_file1.py
-            "5859": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciB0ZXN0X2ZpbGUyLmpz",  # test_file2.js
-            "6061": "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBleGFtcGxlX3N1YnBhY2thZ2UucHk=",  # example_subpackage.py
+            "5051": (
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBleGFtcGxlX2d1aWRlLm1k"
+            ),  # example_guide.md
+            "5455": (
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBleGFtcGxlX3BhY2thZ2UucHk="
+            ),  # example_package.py
+            "5657": (
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciB0ZXN0X2ZpbGUxLnB5"
+            ),  # test_file1.py
+            "5859": (
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciB0ZXN0X2ZpbGUyLmpz"
+            ),  # test_file2.js
+            "6061": (  # example_subpackage.py
+                "dGhpcyBpcyB0aGUgZmlsZSBjb250ZW50IGZvciBleGFtcGxlX3N1YnBhY2thZ2UucHk="
+            ),
         }
 
         if sha in mocked_blob_responses:
@@ -726,7 +754,8 @@ def get_mocked_github_client():
             )
         else:
             raise httpx.HTTPError(
-                f"404 Client Error: Not Found for url: https://api.github.com/repos/{owner}/{repo}/git/blobs/{sha}"
+                "404 Client Error: Not Found for url:"
+                f" https://api.github.com/repos/{owner}/{repo}/git/blobs/{sha}"
             )
 
     github_client.get_blob = AsyncMock(side_effect=get_blob_side_effect)
@@ -848,9 +877,10 @@ def test_load_data_without_filters():
 
     docs = reader.load_data(branch=branch_name)
 
-    assert len(docs) == len(
-        expected_docs
-    ), "There are 14 files in the test repo and 14 docs should be returned since no filters are applied."
+    assert len(docs) == len(expected_docs), (
+        "There are 14 files in the test repo and 14 docs should be returned since no"
+        " filters are applied."
+    )
 
     print("Expected docs:")
     for doc in expected_docs:
@@ -987,9 +1017,10 @@ def test_load_data_with_filters2():
 
     docs = reader.load_data(branch=branch_name)
 
-    assert len(docs) == len(
-        expected_docs
-    ), "Should have 5 docs since only .yml, .png, .js, .md files are included. However, the docs/guides and src/package/subpackage directories are excluded."
+    assert len(docs) == len(expected_docs), (
+        "Should have 5 docs since only .yml, .png, .js, .md files are included."
+        " However, the docs/guides and src/package/subpackage directories are excluded."
+    )
 
     print("Expected docs:")
     for doc in expected_docs:
@@ -1050,9 +1081,10 @@ def test_load_data_with_filters3():
 
     docs = reader.load_data(branch=branch_name)
 
-    assert len(docs) == len(
-        expected_docs
-    ), f"There are 4 files in total. Only 2 files should pass the filters but {len(docs)} files were returned."
+    assert len(docs) == len(expected_docs), (
+        "There are 4 files in total. Only 2 files should pass the filters but"
+        f" {len(docs)} files were returned."
+    )
 
     print("Expected docs:")
     for doc in expected_docs:
@@ -1148,9 +1180,10 @@ def test_load_data_with_filters4():
 
     docs = reader.load_data(branch=branch_name)
 
-    assert len(docs) == len(
-        expected_docs
-    ), f"There are 7 files in total. Only 7 files should pass the filters but {len(docs)} files were returned."
+    assert len(docs) == len(expected_docs), (
+        "There are 7 files in total. Only 7 files should pass the filters but"
+        f" {len(docs)} files were returned."
+    )
 
     print("Expected docs:")
     for doc in expected_docs:

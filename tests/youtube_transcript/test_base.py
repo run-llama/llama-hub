@@ -1,6 +1,10 @@
+from unittest.mock import patch
+
 import pytest
-from unittest.mock import patch, MagicMock
+
 from llama_hub.youtube_transcript import YoutubeTranscriptReader, is_youtube_video
+
+from importlib.util import find_spec
 
 
 def test_is_youtube_video_helper() -> None:
@@ -28,12 +32,7 @@ def test_is_youtube_video_helper() -> None:
     ), "Expected youtu.be with subdomain to be invalid"
 
 
-try:
-    import youtube_transcript_api
-
-    transcription_api_available = True
-except ImportError:
-    transcription_api_available = False
+transcription_api_available = find_spec("youtube_transcript_api") is not None
 
 
 @pytest.mark.skipif(
@@ -53,8 +52,8 @@ def test_loading_a_url_into_documents(monkeypatch) -> None:
         return_value=fake_transcript,
     ):
         documents = YoutubeTranscriptReader().load_data([video_url])
-        assert documents[0].text == (
-            "N'existe pas sans son contraire\n"
+        assert (
+            documents[0].text == "N'existe pas sans son contraire\n"
             "qui lui semble facile à trouver\n"
             "Le bonheur n'existe que pour plaire,\n"
             "je le veux"

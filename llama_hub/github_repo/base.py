@@ -5,21 +5,19 @@ Retrieves the contents of a Github repository and returns a list of documents.
 The documents are either the contents of the files in the repository or
 the text extracted from the files using the parser.
 """
-import os
 import asyncio
 import base64
 import binascii
+import enum
 import logging
+import os
 import pathlib
 import tempfile
-import enum
-import sys
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 from llama_index.readers.schema.base import Document
-
 
 from llama_hub.github_repo.github_client import (
     BaseGithubClient,
@@ -30,8 +28,8 @@ from llama_hub.github_repo.github_client import (
 )
 from llama_hub.github_repo.utils import (
     BufferedGitBlobDataIterator,
-    print_if_verbose,
     get_file_extension,
+    print_if_verbose,
 )
 
 logger = logging.getLogger(__name__)
@@ -147,7 +145,8 @@ class GithubRepositoryReader(BaseReader):
         if filter_type == self.FilterType.EXCLUDE:
             print_if_verbose(
                 self._verbose,
-                f"Checking if {tree_obj_path} is not a subdirectory of any of the filter directories",
+                f"Checking if {tree_obj_path} is not a subdirectory of any of the"
+                " filter directories",
             )
             return not any(
                 tree_obj_path.startswith(directory) for directory in filter_directories
@@ -155,7 +154,8 @@ class GithubRepositoryReader(BaseReader):
         if filter_type == self.FilterType.INCLUDE:
             print_if_verbose(
                 self._verbose,
-                f"Checking if {tree_obj_path} is a subdirectory of any of the filter directories",
+                f"Checking if {tree_obj_path} is a subdirectory of any of the filter"
+                " directories",
             )
             return any(
                 tree_obj_path.startswith(directory)
@@ -435,14 +435,16 @@ class GithubRepositoryReader(BaseReader):
                 f"got {len(decoded_text)} characters"
                 + f"- adding to documents - {full_path}",
             )
-            url = os.path.join("https://github.com/", self._owner, self._repo, "blob/", id, full_path)
+            url = os.path.join(
+                "https://github.com/", self._owner, self._repo, "blob/", id, full_path
+            )
             document = Document(
                 text=decoded_text,
                 doc_id=blob_data.sha,
                 extra_info={
                     "file_path": full_path,
                     "file_name": full_path.split("/")[-1],
-                    "url": url
+                    "url": url,
                 },
             )
             documents.append(document)

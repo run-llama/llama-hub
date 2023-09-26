@@ -10,7 +10,6 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-
 class ElasticsearchReader(BaseReader):
     """
     Read documents from an Elasticsearch/Opensearch index.
@@ -23,10 +22,7 @@ class ElasticsearchReader(BaseReader):
         basic_auth (set): basic authentication username password
     """
 
-    def __init__(
-            self, endpoint: str, index: str, basic_auth: Optional[set] = None
-    ):
-
+    def __init__(self, endpoint: str, index: str, basic_auth: Optional[set] = None):
         """Initialize with parameters."""
         from elasticsearch import Elasticsearch
 
@@ -35,11 +31,11 @@ class ElasticsearchReader(BaseReader):
         self._endpoint = endpoint
 
     def load_data(
-            self,
-            field: str,
-            query: Optional[dict] = None,
-            embedding_field: Optional[str] = None,
-            size: Optional[int] = 10
+        self,
+        field: str,
+        query: Optional[dict] = None,
+        embedding_field: Optional[str] = None,
+        size: Optional[int] = 10,
     ) -> List[Document]:
         """Read data from the Elasticsearch index.
 
@@ -56,12 +52,14 @@ class ElasticsearchReader(BaseReader):
             List[Document]: A list of documents.
 
         """
-        query = query['query'] if query is not None else None  # To remain backward compatible
+        query = (
+            query["query"] if query is not None else None
+        )  # To remain backward compatible
         res = self._es_client.search(index=self._index, query=query, size=size)
         documents = []
         for hit in res["hits"]["hits"]:
             value = hit["_source"][field]
-            _ = hit['_source'].pop(field)
+            _ = hit["_source"].pop(field)
             embedding = hit["_source"].get(embedding_field or "", None)
             documents.append(
                 Document(text=value, extra_info=hit["_source"], embedding=embedding)

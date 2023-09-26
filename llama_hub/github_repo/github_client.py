@@ -6,8 +6,9 @@ It is used by the Github readers to retrieve the data from Github.
 """
 
 import os
+
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Protocol
 
 from dataclasses_json import DataClassJsonMixin
 
@@ -147,9 +148,6 @@ class GitBranchResponseModel(DataClassJsonMixin):
     commit: Commit
     name: str
     _links: Links
-
-
-from typing import Protocol
 
 
 class BaseGithubClient(Protocol):

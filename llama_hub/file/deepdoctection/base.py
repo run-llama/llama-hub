@@ -1,8 +1,8 @@
 """Deepdoctection Data Reader."""
 
 from pathlib import Path
-from typing import Optional, Set
-from typing import Dict, List
+from typing import List, Optional, Set
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -14,8 +14,12 @@ class DeepDoctectionReader(BaseReader):
 
     """
 
-    def __init__(self, split_by_layout: bool = False, config_overwrite: Optional[List] = None,
-                 extra_info: Optional[Set] = None ) -> None:
+    def __init__(
+        self,
+        split_by_layout: bool = False,
+        config_overwrite: Optional[List] = None,
+        extra_info: Optional[Set] = None,
+    ) -> None:
         """Init params.
 
         Args:
@@ -43,13 +47,14 @@ class DeepDoctectionReader(BaseReader):
         self.analyzer = dd.get_dd_analyzer(config_overwrite=config_overwrite)
         self.split_by_layout = split_by_layout
         self.extra_info_attrs = extra_info or set()
-        self._key_to_chunk_position = {"document_id": 0,
-                                       "image_id": 1,
-                                       "page_number": 2,
-                                       "annotation_id": 3,
-                                       "reading_order": 4,
-                                       "category_name": 5
-                                       }
+        self._key_to_chunk_position = {
+            "document_id": 0,
+            "image_id": 1,
+            "page_number": 2,
+            "annotation_id": 3,
+            "reading_order": 4,
+            "category_name": 5,
+        }
 
     def load_data(self, file: Path) -> List[Document]:
         """Parse file or directory with scans."""
@@ -58,11 +63,21 @@ class DeepDoctectionReader(BaseReader):
         result_docs = []
         for page in df:
             if self.split_by_layout:
-                result_docs.extend(Document(text=chunk[6],
-                                            extra_info={k: chunk[self._key_to_chunk_position[k]] for k in
-                                                        self.extra_info_attrs})
-                                   for chunk in page.chunks)
+                result_docs.extend(
+                    Document(
+                        text=chunk[6],
+                        extra_info={
+                            k: chunk[self._key_to_chunk_position[k]]
+                            for k in self.extra_info_attrs
+                        },
+                    )
+                    for chunk in page.chunks
+                )
             else:
-                extra_info = {k: getattr(page, k) for k in self.extra_info_attrs if hasattr(page, k)}
+                extra_info = {
+                    k: getattr(page, k)
+                    for k in self.extra_info_attrs
+                    if hasattr(page, k)
+                }
                 result_docs.append(Document(text=page.text, extra_info=extra_info))
         return result_docs

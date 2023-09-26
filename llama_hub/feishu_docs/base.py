@@ -1,14 +1,12 @@
 """Feishu docs reader."""
 import json
-import time
 import os
-
-import requests
+import time
 from typing import List
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
 
 # Copyright (2023) Bytedance Ltd. and/or its affiliates
 #
@@ -33,8 +31,10 @@ class FeishuDocsReader(BaseReader):
     """
 
     host = "https://open.feishu.cn"
-    documents_raw_content_url_path = '/open-apis/docx/v1/documents/{}/raw_content'
-    tenant_access_token_internal_url_path = "/open-apis/auth/v3/tenant_access_token/internal"
+    documents_raw_content_url_path = "/open-apis/docx/v1/documents/{}/raw_content"
+    tenant_access_token_internal_url_path = (
+        "/open-apis/auth/v3/tenant_access_token/internal"
+    )
 
     def __init__(self, app_id, app_secret):
         """
@@ -78,8 +78,8 @@ class FeishuDocsReader(BaseReader):
         if self.tenant_access_token == "" or self.expire < time.time():
             self._update_tenant_access_token()
         headers = {
-            'Authorization': 'Bearer {}'.format(self.tenant_access_token),
-            'Content-Type': 'application/json; charset=utf-8'
+            "Authorization": "Bearer {}".format(self.tenant_access_token),
+            "Content-Type": "application/json; charset=utf-8",
         }
         response = requests.get(url, headers=headers)
         return response.json()["data"]["content"]
@@ -87,26 +87,19 @@ class FeishuDocsReader(BaseReader):
     def _update_tenant_access_token(self):
         """For update tenant_access_token"""
         url = self.host + self.tenant_access_token_internal_url_path
-        headers = {
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-        data = {
-            "app_id": self.app_id,
-            "app_secret": self.app_secret
-        }
+        headers = {"Content-Type": "application/json; charset=utf-8"}
+        data = {"app_id": self.app_id, "app_secret": self.app_secret}
         response = requests.post(url, data=json.dumps(data), headers=headers)
         self.tenant_access_token = response.json()["tenant_access_token"]
         self.expire = time.time() + response.json()["expire"]
 
     def set_lark_domain(self):
         """The default API endpoints are for Feishu, in order to switch to Lark, we should use set_lark_domain"""
-        self.host = 'https://open.larksuite.com'
+        self.host = "https://open.larksuite.com"
 
 
 if __name__ == "__main__":
     app_id = os.environ.get("FEISHU_APP_ID")
     app_secret = os.environ.get("FEISHU_APP_SECRET")
     reader = FeishuDocsReader(app_id, app_secret)
-    print(
-        reader.load_data(document_ids=[os.environ.get("FEISHU_DOC_ID")])
-    )
+    print(reader.load_data(document_ids=[os.environ.get("FEISHU_DOC_ID")]))

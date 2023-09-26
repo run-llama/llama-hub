@@ -2,10 +2,9 @@
 
 from typing import Dict, List, Optional
 
+import yaml
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
-import yaml
 
 
 class GraphDBCypherReader(BaseReader):

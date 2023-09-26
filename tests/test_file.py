@@ -4,9 +4,9 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, Dict
 
-sys.path.append(Path(__file__).parent.parent)
-
 from llama_hub.file.base import SimpleDirectoryReader
+
+sys.path.append(Path(__file__).parent.parent)
 
 
 def test_recursive() -> None:

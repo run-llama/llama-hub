@@ -15,11 +15,12 @@ class PDFMinerReader(BaseReader):
     ) -> List[Document]:
         """Parse file."""
         try:
-            from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-            from pdfminer.pdfpage import PDFPage as PDF_Page
+            from io import StringIO
+
             from pdfminer.converter import TextConverter
             from pdfminer.layout import LAParams
-            from io import StringIO
+            from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
+            from pdfminer.pdfpage import PDFPage as PDF_Page
 
             def _extract_text_from_page(page):
                 resource_manager = PDFResourceManager()

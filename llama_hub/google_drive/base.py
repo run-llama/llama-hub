@@ -41,7 +41,9 @@ class GoogleDriveReader(BaseReader):
                 "extension": ".docx",
             },
             "application/vnd.google-apps.spreadsheet": {
-                "mimetype": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "mimetype": (
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ),
                 "extension": ".xlsx",
             },
             "application/vnd.google-apps.presentation": {
@@ -62,8 +64,8 @@ class GoogleDriveReader(BaseReader):
             credentials, pydrive object
         """
         from google.auth.transport.requests import Request
-        from google.oauth2.credentials import Credentials
         from google.oauth2 import service_account
+        from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
         from pydrive.auth import GoogleAuth
         from pydrive.drive import GoogleDrive
@@ -227,8 +229,9 @@ class GoogleDriveReader(BaseReader):
         """
 
         from io import BytesIO
-        from googleapiclient.http import MediaIoBaseDownload
+
         from googleapiclient.discovery import build
+        from googleapiclient.http import MediaIoBaseDownload
 
         try:
             # Get file details

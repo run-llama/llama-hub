@@ -29,7 +29,6 @@ class WeatherReader(BaseReader):
         self,
         places: List[str],
     ) -> List[Document]:
-
         """Load weather data for the given locations.
         OWM's One Call API provides the following weather data for any geographical coordinate:
         - Current weather
@@ -42,7 +41,7 @@ class WeatherReader(BaseReader):
 
         try:
             import pyowm
-        except:
+        except ImportError:
             raise ImportError("install pyowm using `pip install pyowm`")
 
         owm = pyowm.OWM(api_key=self.token)
@@ -58,7 +57,7 @@ class WeatherReader(BaseReader):
 
             try:
                 city = list_of_locations[0]
-            except:
+            except ValueError:
                 raise ValueError(
                     f"Unable to find {place}, try checking the spelling and try again"
                 )

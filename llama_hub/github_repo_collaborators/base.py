@@ -19,10 +19,8 @@ Each collaborator is converted to a document by doing the following:
 """
 import asyncio
 import enum
-from importlib import metadata
 import logging
-import sys
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -31,7 +29,6 @@ from llama_hub.github_repo_collaborators.github_client import (
     BaseGitHubCollaboratorsClient,
     GitHubCollaboratorsClient,
 )
-
 
 logger = logging.getLogger(__name__)
 
@@ -106,23 +103,23 @@ class GitHubRepositoryCollaboratorsReader(BaseReader):
     ) -> List[Document]:
         """
         GitHub repository collaborators reader.
-        
+
         Retrieves the list of collaborators in a GitHub repository and converts them to documents.
-        
+
         Each collaborator is converted to a document by doing the following:
-        
+
             - The text of the document is the login.
             - The title of the document is also the login.
             - The extra_info of the document is a dictionary with the following keys:
                 - login: str, the login of the user
                 - type: str, the type of user e.g. "User"
                 - site_admin: bool, whether the user has admin permissions
-                - role_name: str, e.g. "admin"              
+                - role_name: str, e.g. "admin"
                 - name: str, the name of the user, if available
                 - email: str, the email of the user, if available
                 - permissions: str, the permissions of the user, if available
-        
-        
+
+
         :return: list of documents
         """
         documents = []
@@ -140,16 +137,17 @@ class GitHubRepositoryCollaboratorsReader(BaseReader):
 
                 break
             print_if_verbose(
-                self._verbose, f"Found {len(collaborators)} collaborators in the repo page {page}"
+                self._verbose,
+                f"Found {len(collaborators)} collaborators in the repo page {page}",
             )
             page += 1
             for collab in collaborators:
                 extra_info = {
-                        "login": collab["login"],
-                        "type": collab["type"],
-                        "site_admin": collab["site_admin"],
-                        "role_name": collab["role_name"]                      
-                    }
+                    "login": collab["login"],
+                    "type": collab["type"],
+                    "site_admin": collab["site_admin"],
+                    "role_name": collab["role_name"],
+                }
                 if collab.get("name") is not None:
                     extra_info["name"] = collab["name"]
                 if collab.get("email") is not None:
@@ -158,8 +156,8 @@ class GitHubRepositoryCollaboratorsReader(BaseReader):
                     extra_info["permissions"] = collab["permissions"]
                 document = Document(
                     doc_id=str(collab["login"]),
-                    text=str(collab["login"]), # unsure for this
-                    extra_info=extra_info
+                    text=str(collab["login"]),  # unsure for this
+                    extra_info=extra_info,
                 )
                 documents.append(document)
 

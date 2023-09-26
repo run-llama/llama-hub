@@ -4,6 +4,9 @@ from typing import Any, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+
+from importlib.util import find_spec
+
 from llama_hub.youtube_transcript.utils import YOUTUBE_URL_PATTERNS
 
 
@@ -11,9 +14,7 @@ class YoutubeTranscriptReader(BaseReader):
     """Youtube Transcript reader."""
 
     def __init__(self) -> None:
-        try:
-            import youtube_transcript_api
-        except ImportError:
+        if find_spec("youtube_transcript_api") is None:
             raise ImportError(
                 "Missing package: youtube_transcript_api.\n"
                 "Please `pip install youtube_transcript_api` to use this Reader"

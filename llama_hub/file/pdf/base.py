@@ -1,18 +1,17 @@
 """Read PDF files."""
 
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import IO, Dict, List, Optional, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from typing import Union, IO
 
 
 class PDFReader(BaseReader):
     """PDF reader."""
 
     def load_data(
-            self, file: Union[IO[bytes], str, Path], extra_info: Optional[Dict] = None
+        self, file: Union[IO[bytes], str, Path], extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
         import pypdf

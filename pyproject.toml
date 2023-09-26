@@ -36,3 +36,25 @@ pytest-asyncio = "^0.21.1"
 [build-system]
 requires = ["poetry>=0.12", "poetry-core>=1.0.0"]
 build-backend = "poetry.masonry.api"
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ["notebooks", "build", "examples"]
+
+[tool.ruff]
+# Allow lines to be as long as 200 characters.
+# TODO: it should be removed, but we need to fix the entire code first.
+line-length = 200
+exclude = [
+    ".venv",
+    "__pycache__",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".ruff_cache",
+    "examples",
+    "notebooks",
+    ".git"
+]
+
+[tool.ruff.per-file-ignores]
+"base.py" = ["E402", "F811", "E501"]

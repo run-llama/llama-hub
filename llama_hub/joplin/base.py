@@ -4,11 +4,11 @@ When Joplin is installed and running it will parse all markdown
 files into a List of Documents.
 
 """
-from datetime import datetime
 import json
 import os
-from typing import Iterator, List, Optional
 import urllib
+from datetime import datetime
+from typing import Iterator, List, Optional
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
@@ -55,7 +55,7 @@ class JoplinReader(BaseReader):
                 from llama_hub.utils import import_loader
 
                 mr = import_loader("MarkdownReader")
-            except:
+            except Exception:
                 mr = download_loader("MarkdownReader")
             self.parser = mr()
 
@@ -63,7 +63,7 @@ class JoplinReader(BaseReader):
         base_url = f"http://{host}:{port}"
         self._get_note_url = (
             f"{base_url}/notes?token={access_token}"
-            f"&fields=id,parent_id,title,body,created_time,updated_time&page={{page}}"
+            "&fields=id,parent_id,title,body,created_time,updated_time&page={page}"
         )
         self._get_folder_url = (
             f"{base_url}/folders/{{id}}?token={access_token}&fields=title"
@@ -77,7 +77,9 @@ class JoplinReader(BaseReader):
             return os.environ["JOPLIN_ACCESS_TOKEN"]
         else:
             raise ValueError(
-                "You need to provide an access token to use the Joplin reader. You may provide it as an argument or set the JOPLIN_ACCESS_TOKEN environment variable."
+                "You need to provide an access token to use the Joplin reader. You may"
+                " provide it as an argument or set the JOPLIN_ACCESS_TOKEN environment"
+                " variable."
             )
 
     def _get_notes(self) -> Iterator[Document]:

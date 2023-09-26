@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document, ImageDocument
@@ -24,10 +24,10 @@ class ImageVisionLLMReader(BaseReader):
                 import torch  # noqa: F401
             except ImportError:
                 raise ImportError(
-                    "install pytorch to use the model: " "`pip install torch`"
+                    "install pytorch to use the model: `pip install torch`"
                 )
             try:
-                from transformers import Blip2Processor, Blip2ForConditionalGeneration
+                from transformers import Blip2ForConditionalGeneration, Blip2Processor
             except ImportError:
                 raise ImportError(
                     "transformers is required for using BLIP2 model: "
@@ -44,7 +44,7 @@ class ImageVisionLLMReader(BaseReader):
                 from PIL import Image  # noqa: F401
             except ImportError:
                 raise ImportError(
-                    "PIL is required to read image files: " "`pip install Pillow`"
+                    "PIL is required to read image files: `pip install Pillow`"
                 )
             device = "cuda" if torch.cuda.is_available() else "cpu"
             dtype = torch.float16 if torch.cuda.is_available() else torch.float32
@@ -66,9 +66,8 @@ class ImageVisionLLMReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        from PIL import Image
-
         from llama_index.img_utils import img_2_b64
+        from PIL import Image
 
         # load document image
         image = Image.open(file)
