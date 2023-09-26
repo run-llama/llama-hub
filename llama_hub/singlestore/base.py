@@ -56,7 +56,7 @@ class SingleStoreReader(BaseReader):
             from llama_hub.utils import import_loader
 
             self.DatabaseReader = import_loader("DatabaseReader")
-        except:
+        except Exception:
             self.DatabaseReader = download_loader("DatabaseReader")
 
         self.reader = self.DatabaseReader(

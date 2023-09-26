@@ -29,7 +29,9 @@ async def test_github_client(github_client):
     owner = "emptycrown"
     repo = "llama-hub"
     branch = "main"
-    commit_sha = "0cd691322e5244b48b68e3588d1343eb53f3a112"  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+    commit_sha = (  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+        "0cd691322e5244b48b68e3588d1343eb53f3a112"
+    )
 
     # test get_branch
     branch_data = await github_client.get_branch(owner, repo, branch)

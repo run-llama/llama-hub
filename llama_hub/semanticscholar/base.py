@@ -47,7 +47,10 @@ class SemanticScholarReader(BaseReader):
     def _download_pdf(self, paper_id, url: str, base_dir="pdfs"):
         logger = logging.getLogger()
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,"
+                " like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+            )
         }
         # Making a GET request
         response = requests.get(url, headers=headers, stream=True)

@@ -2,10 +2,18 @@ from typing import Any, Dict, List
 
 try:
     from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
-        REPORT_TYPES, VALID_FILING_TYPES, SECDocument)
+        REPORT_TYPES,
+        VALID_FILING_TYPES,
+        SECDocument,
+    )
     from llama_hub.sec_filings.prepline_sec_filings.sections import (
-        ALL_SECTIONS, SECTIONS_10K, SECTIONS_10Q, SECTIONS_S1,
-        section_string_to_enum, validate_section_names)
+        ALL_SECTIONS,
+        SECTIONS_10K,
+        SECTIONS_10Q,
+        SECTIONS_S1,
+        section_string_to_enum,
+        validate_section_names,
+    )
     from llama_hub.sec_filings.utils import get_filing_urls_to_download
 finally:
     pass
@@ -57,7 +65,7 @@ import os
 
 try:
     from unstructured.staging.base import convert_to_isd
-except:
+except Exception:
 
     class Element:
         pass
@@ -263,8 +271,8 @@ class SECExtractor:
         sec_document = SECDocument.from_string(text)
         if sec_document.filing_type not in VALID_FILING_TYPES:
             raise ValueError(
-                f"SEC document filing type {sec_document.filing_type} is not supported, "
-                f"must be one of {','.join(VALID_FILING_TYPES)}"
+                f"SEC document filing type {sec_document.filing_type} is not supported,"
+                f" must be one of {','.join(VALID_FILING_TYPES)}"
             )
         results = {}
         if m_section == [ALL_SECTIONS]:

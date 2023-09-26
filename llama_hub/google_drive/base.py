@@ -41,7 +41,9 @@ class GoogleDriveReader(BaseReader):
                 "extension": ".docx",
             },
             "application/vnd.google-apps.spreadsheet": {
-                "mimetype": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "mimetype": (
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ),
                 "extension": ".xlsx",
             },
             "application/vnd.google-apps.presentation": {

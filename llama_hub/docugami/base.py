@@ -304,7 +304,8 @@ class DocugamiReader(BaseReader):
 
         if not self.access_token:
             raise Exception(
-                "Please specify access token as argument or set the DOCUGAMI_API_KEY env var."
+                "Please specify access token as argument or set the DOCUGAMI_API_KEY"
+                " env var."
             )
 
         _document_details = self._document_details_for_docset_id(docset_id)

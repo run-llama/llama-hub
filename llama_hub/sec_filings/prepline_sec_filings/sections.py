@@ -28,7 +28,8 @@ class SECSection(Enum):
     DESCRIPTION_OF_DEBT = re.compile(r"^description of .*debt")
     FUTURE_SALE = re.compile(r"(?:shares|stock) eligible for future sale")
     US_TAX = re.compile(
-        r"(?:us|u\.s\.|united states|material federal).* tax (?:consideration|consequence)"
+        r"(?:us|u\.s\.|united states|material federal).* tax"
+        r" (?:consideration|consequence)"
     )
     UNDERWRITING = re.compile(r"underwrit")
     LEGAL_MATTERS = re.compile(r"legal matters")

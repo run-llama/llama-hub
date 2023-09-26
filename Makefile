@@ -5,7 +5,7 @@ format:
 	isort .
 
 lint:
-	mypy .
+	ruff check .
 	black --check .
 test:
 	pytest tests

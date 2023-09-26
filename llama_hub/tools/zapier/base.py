@@ -29,7 +29,8 @@ class ZapierToolSpec(BaseToolSpec):
         actions = json.loads(self.list_actions())
         if "results" not in actions:
             raise ValueError(
-                "No Zapier actions exposed, visit https://nla.zapier.com/dev/actions/ to expose actions."
+                "No Zapier actions exposed, visit https://nla.zapier.com/dev/actions/"
+                " to expose actions."
             )
         results = actions["results"]
 

@@ -27,9 +27,10 @@ except ImportError:
     limits = fake_decorator
     sleep_and_retry = fake_decorator
 try:
-    from llama_hub.sec_filings.prepline_sec_filings.sec_document import \
-        VALID_FILING_TYPES
-except:
+    from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
+        VALID_FILING_TYPES,
+    )
+except ImportError:
     from prepline_sec_filings.sec_document import VALID_FILING_TYPES
 
 SEC_ARCHIVE_URL: Final[str] = "https://www.sec.gov/Archives/edgar/data"

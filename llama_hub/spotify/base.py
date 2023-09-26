@@ -56,7 +56,8 @@ class SpotifyReader(BaseReader):
                 results.append(Document(text=playlist_string))
         else:
             raise ValueError(
-                "Invalid collection parameter value. Allowed values are 'albums', 'tracks', or 'playlists'."
+                "Invalid collection parameter value. Allowed values are 'albums',"
+                " 'tracks', or 'playlists'."
             )
 
         return results

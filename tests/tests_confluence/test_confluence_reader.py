@@ -69,7 +69,10 @@ class TestConfluenceReader:
 
         with pytest.raises(
             ValueError,
-            match="Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.",
+            match=(
+                "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql`"
+                " parameters."
+            ),
         ):
             confluence_reader.load_data()
 
@@ -83,7 +86,10 @@ class TestConfluenceReader:
 
         with pytest.raises(
             ValueError,
-            match="Must specify exactly one among `space_key`, `page_ids`, `label`, `cql` parameters.",
+            match=(
+                "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql`"
+                " parameters."
+            ),
         ):
             confluence_reader.load_data(space_key="123", page_ids=["123"])
 
@@ -405,7 +411,7 @@ class TestConfluenceReader:
         assert all(isinstance(doc, Document) for doc in documents)
         assert [doc.doc_id for doc in documents] == mock_page_ids[:5]
 
-    def test_confluence_reader_load_data_by_page_ids_max_5(self, mock_confluence):
+    def test_confluence_reader_load_data_by_page_ids_max_5_2(self, mock_confluence):
         mock_confluence.get_page_by_id.side_effect = lambda page_id, expand: {
             "id": str(page_id),
             "type": "page",

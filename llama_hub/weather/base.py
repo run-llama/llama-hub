@@ -41,7 +41,7 @@ class WeatherReader(BaseReader):
 
         try:
             import pyowm
-        except:
+        except ImportError:
             raise ImportError("install pyowm using `pip install pyowm`")
 
         owm = pyowm.OWM(api_key=self.token)
@@ -57,7 +57,7 @@ class WeatherReader(BaseReader):
 
             try:
                 city = list_of_locations[0]
-            except:
+            except ValueError:
                 raise ValueError(
                     f"Unable to find {place}, try checking the spelling and try again"
                 )

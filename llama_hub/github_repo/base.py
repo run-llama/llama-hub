@@ -19,13 +19,18 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 from llama_index.readers.schema.base import Document
 
-from llama_hub.github_repo.github_client import (BaseGithubClient,
-                                                 GitBranchResponseModel,
-                                                 GitCommitResponseModel,
-                                                 GithubClient,
-                                                 GitTreeResponseModel)
-from llama_hub.github_repo.utils import (BufferedGitBlobDataIterator,
-                                         get_file_extension, print_if_verbose)
+from llama_hub.github_repo.github_client import (
+    BaseGithubClient,
+    GitBranchResponseModel,
+    GitCommitResponseModel,
+    GithubClient,
+    GitTreeResponseModel,
+)
+from llama_hub.github_repo.utils import (
+    BufferedGitBlobDataIterator,
+    get_file_extension,
+    print_if_verbose,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -140,7 +145,8 @@ class GithubRepositoryReader(BaseReader):
         if filter_type == self.FilterType.EXCLUDE:
             print_if_verbose(
                 self._verbose,
-                f"Checking if {tree_obj_path} is not a subdirectory of any of the filter directories",
+                f"Checking if {tree_obj_path} is not a subdirectory of any of the"
+                " filter directories",
             )
             return not any(
                 tree_obj_path.startswith(directory) for directory in filter_directories
@@ -148,7 +154,8 @@ class GithubRepositoryReader(BaseReader):
         if filter_type == self.FilterType.INCLUDE:
             print_if_verbose(
                 self._verbose,
-                f"Checking if {tree_obj_path} is a subdirectory of any of the filter directories",
+                f"Checking if {tree_obj_path} is a subdirectory of any of the filter"
+                " directories",
             )
             return any(
                 tree_obj_path.startswith(directory)

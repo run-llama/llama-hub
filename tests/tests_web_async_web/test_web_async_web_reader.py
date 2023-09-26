@@ -69,7 +69,10 @@ class TestAsyncWebPageReader(unittest.TestCase):
 
         with pytest.raises(
             ValueError,
-            match="error fetching page from http://localhost:8888/failme. server returned status: 500 and response Boo!",
+            match=(
+                "error fetching page from http://localhost:8888/failme. server returned"
+                " status: 500 and response Boo!"
+            ),
         ):
             reader.load_data(urls=[TEST_URL_ERROR])
 

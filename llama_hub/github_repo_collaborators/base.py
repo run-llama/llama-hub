@@ -26,7 +26,9 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 from llama_hub.github_repo_collaborators.github_client import (
-    BaseGitHubCollaboratorsClient, GitHubCollaboratorsClient)
+    BaseGitHubCollaboratorsClient,
+    GitHubCollaboratorsClient,
+)
 
 logger = logging.getLogger(__name__)
 

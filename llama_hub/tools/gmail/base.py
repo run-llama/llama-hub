@@ -232,7 +232,11 @@ class GmailToolSpec(BaseToolSpec):
         service = self.service
 
         if draft_id is None:
-            return "You did not provide a draft id when calling this function. If you previously created or retrieved the draft, the id is available in context"
+            return (
+                "You did not provide a draft id when calling this function. If you"
+                " previously created or retrieved the draft, the id is available in"
+                " context"
+            )
 
         draft = self.get_draft(draft_id)
         headers = draft["message"]["payload"]["headers"]

@@ -204,11 +204,17 @@ class KalturaESearchReader(BaseReader):
             If with_captions is True, it sets entry_info to include all entry information and entry_dict to only include the entry transcript fetched via self._get_captions(items_data).
         """
         from KalturaClient.Plugins.ElasticSearch import (
-            KalturaCategoryEntryStatus, KalturaESearchCaptionFieldName,
-            KalturaESearchCaptionItem, KalturaESearchCategoryEntryFieldName,
-            KalturaESearchCategoryEntryItem, KalturaESearchEntryOperator,
-            KalturaESearchEntryParams, KalturaESearchItemType,
-            KalturaESearchOperatorType, KalturaESearchUnifiedItem)
+            KalturaCategoryEntryStatus,
+            KalturaESearchCaptionFieldName,
+            KalturaESearchCaptionItem,
+            KalturaESearchCategoryEntryFieldName,
+            KalturaESearchCategoryEntryItem,
+            KalturaESearchEntryOperator,
+            KalturaESearchEntryParams,
+            KalturaESearchItemType,
+            KalturaESearchOperatorType,
+            KalturaESearchUnifiedItem,
+        )
 
         # Load and initialize the Kaltura client
         if not self._kaltura_loaded:

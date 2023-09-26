@@ -12,19 +12,35 @@ import secrets
 from base64 import b64encode
 from typing import List, Mapping, Optional, Union
 
-from fastapi import (APIRouter, FastAPI, File, Form, HTTPException, Request,
-                     UploadFile, status)
+from fastapi import (
+    APIRouter,
+    FastAPI,
+    File,
+    Form,
+    HTTPException,
+    Request,
+    UploadFile,
+    status,
+)
 from fastapi.responses import StreamingResponse
 from starlette.datastructures import Headers
 from starlette.types import Send
 
 try:
     from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
-        REPORT_TYPES, VALID_FILING_TYPES, SECDocument)
+        REPORT_TYPES,
+        VALID_FILING_TYPES,
+        SECDocument,
+    )
     from llama_hub.sec_filings.prepline_sec_filings.sections import (
-        ALL_SECTIONS, SECTIONS_10K, SECTIONS_10Q, SECTIONS_S1,
-        section_string_to_enum, validate_section_names)
-except:
+        ALL_SECTIONS,
+        SECTIONS_10K,
+        SECTIONS_10Q,
+        SECTIONS_S1,
+        section_string_to_enum,
+        validate_section_names,
+    )
+except ImportError:
     from prepline_sec_filings.sections import (
         section_string_to_enum,
         validate_section_names,
@@ -178,12 +194,14 @@ def pipeline_api(
             }
         else:
             raise ValueError(
-                f"output_schema '{response_schema}' is not supported for {response_type}"
+                f"output_schema '{response_schema}' is not supported for"
+                f" {response_type}"
             )
     elif response_type == "text/csv":
         if response_schema != ISD:
             raise ValueError(
-                f"output_schema '{response_schema}' is not supported for {response_type}"
+                f"output_schema '{response_schema}' is not supported for"
+                f" {response_type}"
             )
         return convert_to_isd_csv(results)
     else:

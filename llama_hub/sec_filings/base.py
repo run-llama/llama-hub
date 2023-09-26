@@ -100,7 +100,8 @@ class SECFilingsLoader(BaseReader):
                     ) as f:
                         json.dump(data, f, indent=4)
                 print(
-                    f"Done for {curr_tic} for document {curr_filing_type} and year {curr_year}"
+                    f"Done for {curr_tic} for document {curr_filing_type} and year"
+                    f" {curr_year}"
                 )
 
         print(f"It took {round(time.time()-start,2)} seconds")

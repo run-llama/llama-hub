@@ -96,7 +96,8 @@ class AsyncWebPageReader(BaseReader):
 
                 if self._fail_on_error:
                     raise ValueError(
-                        f"error fetching page from {urls[i]}. server returned status: {response.status} and response {raw_page}"
+                        f"error fetching page from {urls[i]}. server returned status:"
+                        f" {response.status} and response {raw_page}"
                     )
 
                 continue

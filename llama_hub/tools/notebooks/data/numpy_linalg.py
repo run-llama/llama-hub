@@ -39,14 +39,50 @@ import warnings
 from typing import Any, NamedTuple
 
 from numpy._typing import NDArray
-from numpy.core import (Inf, abs, add, all, amax, amin, argsort, array,
-                        asanyarray, asarray, atleast_2d, cdouble,
-                        complexfloating, count_nonzero, csingle, divide, dot,
-                        double, empty, empty_like, errstate, finfo, inexact,
-                        intc, intp, isfinite, isnan, matmul, moveaxis,
-                        multiply, newaxis, object_, overrides, prod,
-                        reciprocal, sign, single, sort, sqrt, sum, swapaxes,
-                        zeros)
+from numpy.core import (
+    Inf,
+    abs,
+    add,
+    all,
+    amax,
+    amin,
+    argsort,
+    array,
+    asanyarray,
+    asarray,
+    atleast_2d,
+    cdouble,
+    complexfloating,
+    count_nonzero,
+    csingle,
+    divide,
+    dot,
+    double,
+    empty,
+    empty_like,
+    errstate,
+    finfo,
+    inexact,
+    intc,
+    intp,
+    isfinite,
+    isnan,
+    matmul,
+    moveaxis,
+    multiply,
+    newaxis,
+    object_,
+    overrides,
+    prod,
+    reciprocal,
+    sign,
+    single,
+    sort,
+    sqrt,
+    sum,
+    swapaxes,
+    zeros,
+)
 from numpy.core.multiarray import normalize_axis_index
 from numpy.lib.twodim_base import eye, triu
 from numpy.linalg import _umath_linalg
@@ -139,7 +175,7 @@ def _raise_linalgerror_lstsq(err, flag):
 
 
 def _raise_linalgerror_qr(err, flag):
-    raise LinAlgError("Incorrect argument found while performing " "QR factorization")
+    raise LinAlgError("Incorrect argument found while performing QR factorization")
 
 
 def _makearray(a):
@@ -213,7 +249,7 @@ def _assert_2d(*arrays):
     for a in arrays:
         if a.ndim != 2:
             raise LinAlgError(
-                "%d-dimensional array given. Array must be " "two-dimensional" % a.ndim
+                "%d-dimensional array given. Array must be two-dimensional" % a.ndim
             )
 
 
@@ -221,8 +257,8 @@ def _assert_stacked_2d(*arrays):
     for a in arrays:
         if a.ndim < 2:
             raise LinAlgError(
-                "%d-dimensional array given. Array must be "
-                "at least two-dimensional" % a.ndim
+                "%d-dimensional array given. Array must be at least two-dimensional"
+                % a.ndim
             )
 
 
@@ -335,8 +371,8 @@ def tensorsolve(a, b, axes=None):
 
     if a.size != prod**2:
         raise LinAlgError(
-            "Input arrays must satisfy the requirement \
-            prod(a.shape[b.ndim:]) == prod(a.shape[:b.ndim])"
+            "Input arrays must satisfy the requirement            "
+            " prod(a.shape[b.ndim:]) == prod(a.shape[:b.ndim])"
         )
 
     a = a.reshape(prod, prod)

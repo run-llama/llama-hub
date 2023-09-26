@@ -6,7 +6,10 @@ from urllib.parse import urlparse
 import requests
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
-INVALID_URL_PROMPT = "This url did not include a hostname or scheme. Please determine the complete URL and try again."
+INVALID_URL_PROMPT = (
+    "This url did not include a hostname or scheme. Please determine the complete URL"
+    " and try again."
+)
 
 
 class RequestsToolSpec(BaseToolSpec):

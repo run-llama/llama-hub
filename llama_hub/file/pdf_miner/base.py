@@ -19,8 +19,7 @@ class PDFMinerReader(BaseReader):
 
             from pdfminer.converter import TextConverter
             from pdfminer.layout import LAParams
-            from pdfminer.pdfinterp import (PDFPageInterpreter,
-                                            PDFResourceManager)
+            from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
             from pdfminer.pdfpage import PDFPage as PDF_Page
 
             def _extract_text_from_page(page):

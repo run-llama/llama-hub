@@ -16,8 +16,13 @@ import numpy.typing as npt
 try:
     from sklearn.cluster import DBSCAN
     from unstructured.cleaners.core import clean
-    from unstructured.documents.elements import (Element, ListItem,
-                                                 NarrativeText, Text, Title)
+    from unstructured.documents.elements import (
+        Element,
+        ListItem,
+        NarrativeText,
+        Text,
+        Title,
+    )
     from unstructured.documents.html import HTMLDocument
     from unstructured.nlp.partition import is_possible_title
 
@@ -27,7 +32,7 @@ try:
         clean, extra_whitespace=True, dashes=True, trailing_punctuation=True
     )
 
-except:
+except Exception:
     # TODO: Hack mostly to get tests to pass
     DBSCAN = None
     clean = None
@@ -44,7 +49,7 @@ finally:
     pass
 try:
     from llama_hub.sec_filings.prepline_sec_filings.sections import SECSection
-except:
+except ImportError:
     from prepline_sec_filings.sections import SECSection
 
 

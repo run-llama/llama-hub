@@ -44,7 +44,7 @@ class OpenMap(BaseReader):
     def _get_latlon(locarea: str, user_agent: str) -> tuple:
         try:
             from geopy.geocoders import Nominatim
-        except:
+        except ImportError:
             raise ImportError("install geopy using `pip3 install geopy`")
 
         geolocator = Nominatim(user_agent=user_agent)
@@ -79,7 +79,7 @@ class OpenMap(BaseReader):
         try:
             from osmxtract import location, overpass
             from osmxtract.errors import OverpassBadRequest
-        except:
+        except ImportError:
             raise ImportError("install osmxtract using `pip3 install osmxtract`")
 
         null_list = ["", "null", "none", None]

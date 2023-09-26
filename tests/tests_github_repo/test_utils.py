@@ -4,8 +4,10 @@ from typing import List, Tuple
 import pytest
 
 from llama_hub.github_repo.github_client import GitTreeResponseModel
-from llama_hub.github_repo.utils import (BufferedAsyncIterator,
-                                         BufferedGitBlobDataIterator)
+from llama_hub.github_repo.utils import (
+    BufferedAsyncIterator,
+    BufferedGitBlobDataIterator,
+)
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(

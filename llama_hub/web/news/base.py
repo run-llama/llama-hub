@@ -4,6 +4,7 @@ from typing import Any, List
 
 from llama_index.readers.base import BaseReader
 from llama_index.schema import Document
+from importlib.util import find_spec
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +25,7 @@ class NewsArticleReader(BaseReader):
         self, text_mode: bool = True, use_nlp: bool = True, **newspaper_kwargs: Any
     ) -> None:
         """Initialize with parameters."""
-        try:
-            import newspaper
-        except ImportError:
+        if find_spec("newspaper") is None:
             raise ImportError(
                 "`newspaper` package not found, please run `pip install newspaper3k`"
             )

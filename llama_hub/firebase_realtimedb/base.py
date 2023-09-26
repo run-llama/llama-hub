@@ -28,7 +28,8 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
             from firebase_admin import credentials
         except ImportError:
             raise ImportError(
-                "`firebase_admin` package not found, please run `pip install firebase-admin`"
+                "`firebase_admin` package not found, please run `pip install"
+                " firebase-admin`"
             )
 
         if not firebase_admin._apps:
@@ -55,7 +56,8 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
             from firebase_admin import db
         except ImportError:
             raise ImportError(
-                "`firebase_admin` package not found, please run `pip install firebase-admin`"
+                "`firebase_admin` package not found, please run `pip install"
+                " firebase-admin`"
             )
 
         ref = db.reference(path)

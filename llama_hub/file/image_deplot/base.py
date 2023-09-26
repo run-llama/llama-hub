@@ -25,8 +25,10 @@ class ImageTabularChartReader(BaseReader):
             try:
                 import torch  # noqa: F401
                 from PIL import Image  # noqa: F401
-                from transformers import (Pix2StructForConditionalGeneration,
-                                          Pix2StructProcessor)
+                from transformers import (
+                    Pix2StructForConditionalGeneration,
+                    Pix2StructProcessor,
+                )
             except ImportError:
                 raise ImportError(
                     "Please install extra dependencies that are required for "

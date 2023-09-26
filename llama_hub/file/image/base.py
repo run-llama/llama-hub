@@ -35,8 +35,7 @@ class ImageReader(BaseReader):
                 processor = None
                 model = pytesseract
             else:
-                from transformers import (DonutProcessor,
-                                          VisionEncoderDecoderModel)
+                from transformers import DonutProcessor, VisionEncoderDecoderModel
 
                 processor = DonutProcessor.from_pretrained(
                     "naver-clova-ix/donut-base-finetuned-cord-v2"

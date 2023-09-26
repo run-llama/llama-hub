@@ -26,8 +26,9 @@ class AirbyteCDKReader(BaseReader):
         """Initialize with parameters."""
 
         from airbyte_cdk.models.airbyte_protocol import AirbyteRecordMessage
-        from airbyte_cdk.sources.embedded.base_integration import \
-            BaseEmbeddedIntegration
+        from airbyte_cdk.sources.embedded.base_integration import (
+            BaseEmbeddedIntegration,
+        )
         from airbyte_cdk.sources.embedded.runner import CDKRunner
 
         class CDKIntegration(BaseEmbeddedIntegration):

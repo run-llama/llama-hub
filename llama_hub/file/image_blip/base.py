@@ -26,11 +26,10 @@ class ImageCaptionReader(BaseReader):
                 import torch  # noqa: F401
             except ImportError:
                 raise ImportError(
-                    "install pytorch to use the model: " "`pip install torch`"
+                    "install pytorch to use the model: `pip install torch`"
                 )
             try:
-                from transformers import (BlipForConditionalGeneration,
-                                          BlipProcessor)
+                from transformers import BlipForConditionalGeneration, BlipProcessor
             except ImportError:
                 raise ImportError(
                     "transformers is required for using BLIP model: "
@@ -47,7 +46,7 @@ class ImageCaptionReader(BaseReader):
                 from PIL import Image  # noqa: F401
             except ImportError:
                 raise ImportError(
-                    "PIL is required to read image files: " "`pip install Pillow`"
+                    "PIL is required to read image files: `pip install Pillow`"
                 )
 
             device = "cuda" if torch.cuda.is_available() else "cpu"

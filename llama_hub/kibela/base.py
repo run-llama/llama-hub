@@ -97,7 +97,10 @@ class KibelaReader(BaseReader):
             res = self.request(query, params)
             note_conn = parse_obj_as(Connection[Note], res["notes"])
             for note in note_conn.edges:
-                doc = f"---\nurl: {note.node.url}\ntitle: {note.node.title}\n---\ncontent:\n{note.node.content}\n"
+                doc = (
+                    f"---\nurl: {note.node.url}\ntitle:"
+                    f" {note.node.title}\n---\ncontent:\n{note.node.content}\n"
+                )
                 documents.append(Document(text=doc))
             has_next = note_conn.pageInfo.hasNextPage
             params = {"after": note_conn.pageInfo.endCursor}

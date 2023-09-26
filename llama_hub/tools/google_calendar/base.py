@@ -190,7 +190,10 @@ class GoogleCalendarToolSpec(BaseToolSpec):
             "attendees": attendees_list,
         }
         event = service.events().insert(calendarId="primary", body=event).execute()
-        return "Your calendar event has been created successfully! You can move on to the next step."
+        return (
+            "Your calendar event has been created successfully! You can move on to the"
+            " next step."
+        )
 
     def get_date(self):
         """

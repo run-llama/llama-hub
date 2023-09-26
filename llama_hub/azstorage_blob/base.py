@@ -115,7 +115,8 @@ class AzStorageBlobReader(BaseReader):
                 total_download_end_time - total_download_start_time
             )
             logger.info(
-                f"Downloading completed in approximately {total_elapsed_time // 60}min {total_elapsed_time % 60}s."
+                f"Downloading completed in approximately {total_elapsed_time // 60}min"
+                f" {total_elapsed_time % 60}s."
             )
             logger.info("Document creation starting")
 

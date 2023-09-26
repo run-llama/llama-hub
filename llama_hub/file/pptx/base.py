@@ -19,8 +19,11 @@ class PptxReader(BaseReader):
         """Init reader."""
         self.caption_images = caption_images
         if caption_images:
-            from transformers import (AutoTokenizer, VisionEncoderDecoderModel,
-                                      ViTFeatureExtractor)
+            from transformers import (
+                AutoTokenizer,
+                VisionEncoderDecoderModel,
+                ViTFeatureExtractor,
+            )
 
             model = VisionEncoderDecoderModel.from_pretrained(
                 "nlpconnect/vit-gpt2-image-captioning"

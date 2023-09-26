@@ -74,7 +74,8 @@ class MboxReader(BaseReader):
 
             if not content:
                 print(
-                    "WARNING llama_hub.file.mbox found messages with content that stayed None. Skipping entry..."
+                    "WARNING llama_hub.file.mbox found messages with content that"
+                    " stayed None. Skipping entry..."
                 )
                 continue
 

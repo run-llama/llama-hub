@@ -32,11 +32,9 @@ class SimpleCouchDBReader(BaseReader):
         import couchdb3
 
         if couchdb_url is not None:
-            self.client: CouchDBClient = couchdb3.Server(couchdb_url)
+            self.client = couchdb3.Server(couchdb_url)
         else:
-            self.client: CouchDBClient = couchdb3.Server(
-                f"http://{user}:{pwd}@{host}:{port}"
-            )
+            self.client = couchdb3.Server(f"http://{user}:{pwd}@{host}:{port}")
         self.max_docs = max_docs
 
     def load_data(self, db_name: str, query: Optional[str] = None) -> List[Document]:
@@ -61,13 +59,17 @@ class SimpleCouchDBReader(BaseReader):
             logging.debug("executing query")
             results = db.find(query)
 
-        if type(results) is not dict:
+        if not isinstance(results, dict):
             logging.debug(results.rows)
         else:
             logging.debug(results)
 
         # check if more than one result
-        if type(results) is not dict and results.rows is not None:
+        if (
+            not isinstance(results, dict)
+            and hasattr(results, "rows")
+            and results.rows is not None
+        ):
             for row in results.rows:
                 # check that the id field exists
                 if "id" not in row:

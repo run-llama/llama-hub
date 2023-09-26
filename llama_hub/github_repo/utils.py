@@ -11,13 +11,17 @@ from abc import ABC, abstractmethod
 from typing import List, Tuple
 
 if "pytest" in sys.modules:
-    from llama_hub.github_repo.github_client import (GitBlobResponseModel,
-                                                     GithubClient,
-                                                     GitTreeResponseModel)
+    from llama_hub.github_repo.github_client import (
+        GitBlobResponseModel,
+        GithubClient,
+        GitTreeResponseModel,
+    )
 else:
-    from llama_hub.github_repo.github_client import (GitBlobResponseModel,
-                                                     GithubClient,
-                                                     GitTreeResponseModel)
+    from llama_hub.github_repo.github_client import (
+        GitBlobResponseModel,
+        GithubClient,
+        GitTreeResponseModel,
+    )
 
 
 def print_if_verbose(verbose: bool, message: str) -> None:

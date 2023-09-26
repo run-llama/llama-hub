@@ -11,7 +11,7 @@ try:
     from faker import Faker
 
     fake = Faker()
-except:
+except Exception:
     fake = None
 
 MAX_RETRIES = 10
