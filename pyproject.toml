@@ -42,7 +42,8 @@ ignore_missing_imports = true
 exclude = ["notebooks", "build", "examples"]
 
 [tool.ruff]
-# Allow lines to be as long as 120 characters.
+# Allow lines to be as long as 200 characters.
+# TODO: it should be removed, but we need to fix the entire code first.
 line-length = 200
 exclude = [
     ".venv",
