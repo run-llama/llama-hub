@@ -52,3 +52,7 @@ class JsonDataReader(BaseReader):
         lines = json_output.split("\n")
         useful_lines = [line for line in lines if not re.match(r"^[{}\[\],]*$", line)]
         return [Document(text="\n".join(useful_lines))]
+
+
+# legacy
+JSONDataReader = JsonDataReader
