@@ -45,6 +45,10 @@
       "azure"
     ]
   },
+  "AzCognitiveSearchReader": {
+    "id": "azcognitive_search",
+    "author": "mrcabellom"
+  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
@@ -215,6 +219,10 @@
       "neo4j",
       "cypher"
     ]
+  },
+  "GladiaAudioTranscriber": {
+    "id": "file/audio_gladia",
+    "author": "ravi03071991"
   },
   "DiscordReader": {
     "id": "discord",
