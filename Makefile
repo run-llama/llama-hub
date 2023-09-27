@@ -2,8 +2,6 @@
 
 format:
 	black .
-	isort .
-
 lint:
 	ruff check .
 	black --check .
