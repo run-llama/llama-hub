@@ -5,7 +5,7 @@
 - add full formatting and linting (#537, #538)
 
 ### Smaller Features + Bug Fixes
-- fix: added missing leaders removed from a old PR (#540)
+- fix: added missing loaders removed from a old PR (#540)
 - break loop if API error for slack reader (#544)  
 - mbox: allow custom, stable document id (#393)
 - update database doc (#531)
