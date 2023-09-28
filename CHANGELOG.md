@@ -1,3 +1,17 @@
+## [v0.0.34] - 2023-09-27
+
+### New Features
+- feat: Add PlaygroundsSubgraphInspectorToolSpec to llama_hub (#535)
+- add full formatting and linting (#537, #538)
+
+### Smaller Features + Bug Fixes
+- fix: added missing loaders removed from a old PR (#540)
+- break loop if API error for slack reader (#544)  
+- mbox: allow custom, stable document id (#393)
+- update database doc (#531)
+- fix: jsondata loader on library (#539)
+- fix: remove isort due using black and add a new checklist (#546)
+
 ## [v0.0.33] - 2023-09-24
 
 ### New Features
