@@ -1,12 +1,13 @@
 """Macrometa GDN Reader."""
 
-from typing import Any, List
-import requests, json
+from typing import List
+import requests
+import json
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-class MagrometaGDNReader(BaseReader):
+class MacrometaGDNReader(BaseReader):
     """Macrometa GDN Reader.
     
     Reads vectors from Macrometa GDN
@@ -79,6 +80,6 @@ class MagrometaGDNReader(BaseReader):
         return str(all_documents)
 
 if __name__ == "__main__":
-    reader = MagrometaGDNReader("https://api-anurag.eng.macrometa.io", "test")
+    reader = MacrometaGDNReader("https://api-anurag.eng.macrometa.io", "test")
     print(reader.load_data(collection_list=["test"]))
     
