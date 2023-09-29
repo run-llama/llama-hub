@@ -1,3 +1,9 @@
+## Unreleased
+
+### Smaller Features + Bug Fixes
+- fix: PyMuPDF Reader broken (#547)
+- Add page id to extra_info (#542) 
+
 ## [v0.0.34] - 2023-09-27
 
 ### New Features
