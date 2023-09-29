@@ -919,11 +919,13 @@
   "ZepReader": {
     "id": "zep",
     "author": "zep",
+    "keywords": ["zep", "retriever", "memory", "storage"]
+  },
+  "MacrometaGDNReader": {
+  	"id": "macrometa_gdn",
+  	"author": "Dain Im",
     "keywords": [
-      "zep",
-      "retriever",
-      "memory",
-      "storage"
+      "macrometa"
     ]
   },
   "BagelReader": {
