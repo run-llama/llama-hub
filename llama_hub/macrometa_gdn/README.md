@@ -9,9 +9,9 @@ To use this loader, you need to pass the URL and API key through the class contr
 ```python
 from llama_index import download_loader
 
-MacrometaGDNLoader = download_loader('MacrometaGDNLoader')
+MacrometaGDNReader = download_loader('MacrometaGDNReader')
 
 collections = ['test_collection']
-loader = MacrometaGDNLoader(url="https://api-macrometa.io",apikey="test")
+loader = MacrometaGDNReader(url="https://api-macrometa.io",apikey="test")
 vectors= loader.load_data(collection_list=collections)
 ```

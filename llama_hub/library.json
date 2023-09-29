@@ -921,7 +921,7 @@
     "author": "zep",
     "keywords": ["zep", "retriever", "memory", "storage"]
   },
-  "MacrometaGDNLoader": {
+  "MacrometaGDNReader": {
   	"id": "macrometa_gdn",
   	"author": "Dain Im",
     "keywords": [
