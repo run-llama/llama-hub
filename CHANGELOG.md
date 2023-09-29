@@ -6,6 +6,7 @@
 ### Smaller Features + Bug Fixes
 - fix: PyMuPDF Reader broken (#547)
 - Add page id to extra_info (#542) 
+- Update: Readme with corrected example url for Playgrounds_subgraph_connector tool (#551)
 
 ## [v0.0.34] - 2023-09-27
 
