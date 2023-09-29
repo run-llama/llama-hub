@@ -1,5 +1,8 @@
 ## Unreleased
 
+### New Features
+- Loader for Macrometa GDN (#484)
+
 ### Smaller Features + Bug Fixes
 - fix: PyMuPDF Reader broken (#547)
 - Add page id to extra_info (#542) 
