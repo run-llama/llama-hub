@@ -291,7 +291,12 @@ class ConfluenceReader(BaseReader):
         return Document(
             text=text,
             doc_id=page["id"],
-            extra_info={"title": page["title"], "page_id": page["id"]},
+            extra_info={
+                "title": page["title"],
+                "page_id": page["id"],
+                "status": page["status"],
+                "url": self.base_url + page["_links"]["webui"],
+            },
         )
 
     def process_attachment(self, page_id):
