@@ -150,9 +150,19 @@ class TestConfluenceReader:
         assert len(documents) == 2
         assert all(isinstance(doc, Document) for doc in documents)
         assert documents[0].doc_id == "123"
-        assert documents[0].extra_info == {"title": "Page 123", "page_id": "123", "status": "current", "url": f"{CONFLUENCE_BASE_URL}/spaces/123/pages/123/Page+123"}
+        assert documents[0].extra_info == {
+            "title": "Page 123",
+            "page_id": "123",
+            "status": "current",
+            "url": f"{CONFLUENCE_BASE_URL}/spaces/123/pages/123/Page+123",
+        }
         assert documents[1].doc_id == "456"
-        assert documents[1].extra_info == {"title": "Page 456", "page_id": "456", "status": "current", "url": f"{CONFLUENCE_BASE_URL}/spaces/456/pages/456/Page+456"}
+        assert documents[1].extra_info == {
+            "title": "Page 456",
+            "page_id": "456",
+            "status": "current",
+            "url": f"{CONFLUENCE_BASE_URL}/spaces/456/pages/456/Page+456",
+        }
 
         assert mock_confluence.get_page_by_id.call_count == 2
 
@@ -211,9 +221,19 @@ class TestConfluenceReader:
         assert len(documents) == 2
         assert all(isinstance(doc, Document) for doc in documents)
         assert documents[0].doc_id == "123"
-        assert documents[0].extra_info == {"title": "Page 123", "page_id": "123", "status": "current", "url": f"{CONFLUENCE_BASE_URL}/spaces/123/pages/123/Page+123"}
+        assert documents[0].extra_info == {
+            "title": "Page 123",
+            "page_id": "123",
+            "status": "current",
+            "url": f"{CONFLUENCE_BASE_URL}/spaces/123/pages/123/Page+123",
+        }
         assert documents[1].doc_id == "456"
-        assert documents[1].extra_info == {"title": "Page 456", "page_id": "456", "status": "archived", "url": f"{CONFLUENCE_BASE_URL}/spaces/456/pages/456/Page+456"}
+        assert documents[1].extra_info == {
+            "title": "Page 456",
+            "page_id": "456",
+            "status": "archived",
+            "url": f"{CONFLUENCE_BASE_URL}/spaces/456/pages/456/Page+456",
+        }
 
         assert mock_confluence.get_page_by_id.call_count == 0
         assert mock_confluence.get_all_pages_by_label.call_count == 0
@@ -264,9 +284,19 @@ class TestConfluenceReader:
         assert len(documents) == 2
         assert all(isinstance(doc, Document) for doc in documents)
         assert documents[0].doc_id == "123"
-        assert documents[0].extra_info == {"title": "Page 123", "page_id": "123", "status": "current", "url": f"{CONFLUENCE_BASE_URL}/spaces/123/pages/123/Page+123"}
+        assert documents[0].extra_info == {
+            "title": "Page 123",
+            "page_id": "123",
+            "status": "current",
+            "url": f"{CONFLUENCE_BASE_URL}/spaces/123/pages/123/Page+123",
+        }
         assert documents[1].doc_id == "456"
-        assert documents[1].extra_info == {"title": "Page 456", "page_id": "456", "status": "current", "url": f"{CONFLUENCE_BASE_URL}/spaces/456/pages/456/Page+456"}
+        assert documents[1].extra_info == {
+            "title": "Page 456",
+            "page_id": "456",
+            "status": "current",
+            "url": f"{CONFLUENCE_BASE_URL}/spaces/456/pages/456/Page+456",
+        }
 
         assert mock_confluence.get_page_by_id.call_count == 0
         assert mock_confluence.get_all_pages_by_label.call_count == 0
