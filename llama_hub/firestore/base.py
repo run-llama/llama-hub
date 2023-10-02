@@ -4,6 +4,12 @@ from typing import Any, List, Optional
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+DEFAULT_FIRESTORE_DATABASE = "(default)"
+CLIENT_INFO = "LlamaHub"
+IMPORT_ERROR_MSG = (
+    "`firestore` package not found, please run `pip3 install google-cloud-firestore`"
+)
+
 
 class FirestoreReader(BaseReader):
     """Simple Firestore reader.
@@ -20,13 +26,19 @@ class FirestoreReader(BaseReader):
     def __init__(
         self,
         project_id: str,
+        database_id: str = DEFAULT_FIRESTORE_DATABASE,
         *args: Optional[Any],
         **kwargs: Optional[Any],
     ) -> None:
         """Initialize with parameters."""
-        from google.cloud import firestore
+        try:
+            from google.cloud import firestore
+        except ImportError:
+            raise ImportError(IMPORT_ERROR_MSG)
 
-        self.db = firestore.Client(project=project_id)
+        self.db = firestore.Client(project=project_id,
+                                   database=database_id,
+                                   client_info=CLIENT_INFO)
 
     def load_data(self, collection: str) -> List[Document]:
         """Load data from a Firestore collection, returning a list of Documents.

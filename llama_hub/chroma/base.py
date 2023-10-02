@@ -31,7 +31,7 @@ class ChromaReader(BaseReader):
 
         self._client = chromadb.Client(
             Settings(
-                chroma_db_impl="duckdb+parquet", persist_directory=persist_directory
+                is_persistent=True, persist_directory=persist_directory
             )
         )
         self._collection = self._client.get_collection(collection_name)

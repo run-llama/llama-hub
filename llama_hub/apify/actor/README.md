@@ -35,7 +35,7 @@ ApifyActor = download_loader("ApifyActor")
 reader = ApifyActor("<My Apify API token>")
 documents = reader.load_data(
     actor_id="apify/website-content-crawler",
-    run_input={"startUrls": [{"url": "https://gpt-index.readthedocs.io/en/latest"}]}
+    run_input={"startUrls": [{"url": "https://gpt-index.readthedocs.io/en/latest"}]},
     dataset_mapping_function=tranform_dataset_item,
 )
 ```

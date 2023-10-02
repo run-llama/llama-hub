@@ -12,6 +12,7 @@ class Article:
         self.title = ""
         self.content = ""
         self.published = ""
+        self.url = ""
 
 
 class HatenaBlogReader(BaseReader):
@@ -36,7 +37,7 @@ class HatenaBlogReader(BaseReader):
             results.append(
                 Document(
                     text=a.content,
-                    extra_info={"title": a.title, "published": a.published},
+                    extra_info={"title": a.title, "published": a.published, "url": a.url},
                 )
             )
 
@@ -71,6 +72,7 @@ class HatenaBlogReader(BaseReader):
             article = Article()
             article.title = entry.find("title").string
             article.published = entry.find("published").string
+            article.url = entry.find("link", rel="alternate")["href"]
             content = entry.find("content")
             if content.get("type") == "text/html":
                 article.content = (
