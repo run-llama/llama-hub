@@ -35,27 +35,31 @@ config_options = {
     'metadata_fields': ['<YOUR_METADATA_FIELDS>']
 }
 # Create an instance of the WordLiftLoader
-reader = WordLiftLoader(endpoint, headers, query, fields, config_options)
+async def main():
+    reader = WordLiftLoader(endpoint, headers, query, fields, config_options)
 
-# Load the data
-documents = reader.load_data()
+    # Load the data
+    documents = await reader.load_data()
 
-# Convert the documents
-converted_doc = []
-for doc in documents:
-    converted_doc_id = json.dumps(doc.doc_id)
-    converted_doc.append(Document(text=doc.text, doc_id=converted_doc_id,
-                         embedding=doc.embedding, doc_hash=doc.doc_hash, extra_info=doc.extra_info))
+    # Convert the documents
+    converted_doc = []
+    for doc in documents:
+        converted_doc_id = json.dumps(doc.doc_id)
+        converted_doc.append(Document(text=doc.text, doc_id=converted_doc_id,
+                            embedding=doc.embedding, doc_hash=doc.doc_hash, extra_info=doc.extra_info))
 
-# Create the index and query engine
-index = VectorStoreIndex.from_documents(converted_doc)
-query_engine = index.as_query_engine()
+    # Create the index and query engine
+    index = VectorStoreIndex.from_documents(converted_doc)
+    query_engine = index.as_query_engine()
 
-# Perform a query
-result = query_engine.query("<YOUR_QUERY>")
+    # Perform a query
+    result = query_engine.query("<YOUR_QUERY>")
 
-# Process the result as needed
-logging.info("Result: %s", result)
+    # Process the result as needed
+    logging.info("Result: %s", result)
+
+if __name__ == "__main__":
+    asyncio.run(main())  # Run the asyncio event loop
 
 ```
 This loader is designed to be used as a way to load data from WordLift KGs into [LlamaIndex](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/apify/actor#:~:text=load%20data%20into-,LlamaIndex,-and/or%20subsequently) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. 
