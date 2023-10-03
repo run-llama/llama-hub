@@ -8,6 +8,7 @@
 - Add page id to extra_info (#542) 
 - Update: Readme with corrected example url for Playgrounds_subgraph_connector tool (#551)
 - add url and status to confluence loader document (#553)
+- Changes from llama_index/PR#7906 (#557)
 
 ## [v0.0.34] - 2023-09-27
 
