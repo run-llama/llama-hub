@@ -11,6 +11,7 @@
 - Changes from llama_index/PR#7906 (#557)
 - fix: sql_wrapper utilities (#558)
 - Adding functionality for AsanaReader (#386)
+- Add JSONL functionality to JSONReader (#552)
 
 ## [v0.0.34] - 2023-09-27
 
