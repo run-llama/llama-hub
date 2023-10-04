@@ -13,14 +13,11 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-
-
 class BotoMinioReader(BaseReader):
     """General reader for any S3 file or directory.
     A loader that fetches a file or iterates through a directory on minio using boto3.
 
     """
-    
 
     def __init__(
         self,
@@ -85,23 +82,23 @@ class BotoMinioReader(BaseReader):
         import boto3
 
         s3_client = boto3.client(
-                            's3', 
-                            endpoint_url=self.s3_endpoint_url,
-                            aws_access_key_id=self.aws_access_id,
-                            aws_secret_access_key=self.aws_access_secret,
-                            aws_session_token=self.aws_session_token,
-                            config=boto3.session.Config(signature_version='s3v4'),
-                            verify=False
-                         )
+            "s3",
+            endpoint_url=self.s3_endpoint_url,
+            aws_access_key_id=self.aws_access_id,
+            aws_secret_access_key=self.aws_access_secret,
+            aws_session_token=self.aws_session_token,
+            config=boto3.session.Config(signature_version="s3v4"),
+            verify=False,
+        )
         s3 = boto3.resource(
-                        's3',
-                        endpoint_url=self.s3_endpoint_url,
-                        aws_access_key_id=self.aws_access_id,
-                        aws_secret_access_key=self.aws_access_secret,
-                        aws_session_token=self.aws_session_token,
-                        config=boto3.session.Config(signature_version='s3v4'),
-                        verify=False
-                        )
+            "s3",
+            endpoint_url=self.s3_endpoint_url,
+            aws_access_key_id=self.aws_access_id,
+            aws_secret_access_key=self.aws_access_secret,
+            aws_session_token=self.aws_session_token,
+            config=boto3.session.Config(signature_version="s3v4"),
+            verify=False,
+        )
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.key:
@@ -116,9 +113,10 @@ class BotoMinioReader(BaseReader):
 
                     suffix = Path(obj.key).suffix
 
-                    is_dir = obj.key.endswith("/") # skip folders
+                    is_dir = obj.key.endswith("/")  # skip folders
                     is_bad_ext = (
-                        self.required_exts is not None and suffix not in self.required_exts # skip other extentions
+                        self.required_exts is not None
+                        and suffix not in self.required_exts  # skip other extentions
                     )
 
                     if is_dir or is_bad_ext:
@@ -134,11 +132,13 @@ class BotoMinioReader(BaseReader):
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
-            loader = SimpleDirectoryReader(temp_dir,
-                                           file_extractor=self.file_extractor,
-                                           required_exts=self.required_exts,
-                                           filename_as_id=self.filename_as_id,
-                                           num_files_limit=self.num_files_limit,
-                                           file_metadata=self.file_metadata)
+            loader = SimpleDirectoryReader(
+                temp_dir,
+                file_extractor=self.file_extractor,
+                required_exts=self.required_exts,
+                filename_as_id=self.filename_as_id,
+                num_files_limit=self.num_files_limit,
+                file_metadata=self.file_metadata,
+            )
 
             return loader.load_data()
