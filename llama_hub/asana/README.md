@@ -1,6 +1,6 @@
 # Asana Loader
 
-This loader loads documents from Asana. The user specifies an API token to initialize the AsanaReader. They then specify a `workspace_id` or a `project_id` and the id_type as `workspace` or `project` to load in the corresponding Document objects from the corresponding object.
+This loader loads documents from Asana. The user specifies an API token to initialize the AsanaReader. They then specify a `workspace_id` OR a `project_id` to load in the corresponding Document objects.
 
 ## Usage
 
@@ -13,7 +13,12 @@ import os
 AsanaReader = download_loader('AsanaReader')
 
 reader = AsanaReader("<ASANA_TOKEN">)
-documents = reader.load_data(id="<WORKSPACE_OR_PROJECT_ID">, id_type="<WORKSPACE_OR_PROJECT")
+
+# Option 1
+documents = reader.load_data(workspace_id="<WORKSPACE_ID">)
+
+# Option 2
+documents = reader.load_data(project_id="<PROJECT_ID">)
 
 ```
 
