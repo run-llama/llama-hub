@@ -2,9 +2,9 @@
 
 from typing import Dict, List, Optional
 
+import yaml
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import yaml
 
 
 class GraphQLReader(BaseReader):
@@ -63,7 +63,7 @@ class GraphQLReader(BaseReader):
 
         for key in result:
             entry = result[key]
-            if type(entry) == list:
+            if isinstance(entry, list):
                 documents.extend([Document(text=yaml.dump(v)) for v in entry])
             else:
                 documents.append(Document(text=yaml.dump(entry)))

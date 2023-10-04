@@ -30,9 +30,7 @@ class ChromaReader(BaseReader):
             raise ValueError("Please provide a collection name and persist directory.")
 
         self._client = chromadb.Client(
-            Settings(
-                is_persistent=True, persist_directory=persist_directory
-            )
+            Settings(is_persistent=True, persist_directory=persist_directory)
         )
         self._collection = self._client.get_collection(collection_name)
 

@@ -10,13 +10,10 @@ Created on Sun Apr 16 12:03:19 2023
 import datetime
 import importlib
 import platform
-
-
 from typing import List, Optional, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
 
 # Copyright 2023 Evslin Consulting
 #
@@ -45,7 +42,6 @@ class OutlookLocalCalendarReader(BaseReader):
         end_date: Optional[Union[str, datetime.date]] = None,
         more_attributes: Optional[List[str]] = None,
     ) -> List[Document]:
-
         """Load data from user's local calendar.
         Args:
             number_of_results (Optional[int]): the number of events to return. Defaults to 100.

@@ -2,41 +2,47 @@
 
 from typing import List, Optional
 
-from llama_index.readers.schema.base import Document
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_hub.tools.openapi.base import OpenAPIToolSpec
 import requests
 import yaml
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
+from llama_hub.tools.openapi.base import OpenAPIToolSpec
+
 
 class ChatGPTPluginToolSpec(BaseToolSpec):
     """ChatGPT Plugin Tool
 
-    This tool leverages the OpenAPI tool spec to automatically load ChatGPT 
+    This tool leverages the OpenAPI tool spec to automatically load ChatGPT
     plugins from a manifest file.
     You should also provide the Requests tool spec to allow the Agent to make calls to the OpenAPI endpoints
     To use endpoints with authorization, use the Requests tool spec with the authorization headers
     """
 
-    spec_functions = ['load_openapi_spec', 'describe_plugin']
+    spec_functions = ["load_openapi_spec", "describe_plugin"]
 
-    def __init__(self, manifest: Optional[dict] = None, manifest_url: Optional[str] = None):
+    def __init__(
+        self, manifest: Optional[dict] = None, manifest_url: Optional[str] = None
+    ):
         if manifest and manifest_url:
-            raise ValueError('You cannot provide both a manifest and a manifest_url')
+            raise ValueError("You cannot provide both a manifest and a manifest_url")
         elif manifest:
             pass
         elif manifest_url:
             response = requests.get(manifest_url).text
             manifest = yaml.load(response, Loader=yaml.Loader)
         else:
-            raise ValueError('You must provide either a manifest or a manifest_url')
+            raise ValueError("You must provide either a manifest or a manifest_url")
 
-        if manifest['api']['type'] != 'openapi':
-            raise ValueError(f'API type must be "openapi", not "{manifest["api"]["type"]}"')
+        if manifest["api"]["type"] != "openapi":
+            raise ValueError(
+                f'API type must be "openapi", not "{manifest["api"]["type"]}"'
+            )
 
-        if manifest['auth']['type'] != 'none':
-            raise ValueError(f'Authentication cannot be supported for ChatGPT plugins')
+        if manifest["auth"]["type"] != "none":
+            raise ValueError("Authentication cannot be supported for ChatGPT plugins")
 
-        self.openapi = OpenAPIToolSpec(url=manifest['api']['url'])
+        self.openapi = OpenAPIToolSpec(url=manifest["api"]["url"])
 
         self.plugin_description = f"""
             'human_description': {manifest['description_for_human']}
@@ -64,4 +70,3 @@ class ChatGPTPluginToolSpec(BaseToolSpec):
 
     def describe_plugin(self) -> List[Document]:
         return self.plugin_description
-

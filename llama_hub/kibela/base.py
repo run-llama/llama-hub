@@ -1,10 +1,10 @@
 """LLama Kibela Reader"""
-from typing import Dict, List, Optional, TypeVar, Generic
+from typing import Dict, Generic, List, Optional, TypeVar
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from pydantic import BaseModel, parse_obj_as
 from pydantic.generics import GenericModel
-
 
 NodeType = TypeVar("NodeType")
 
@@ -46,8 +46,8 @@ class KibelaReader(BaseReader):
 
     def __init__(self, team: str, token: str) -> None:
         """Initialize with parameters."""
-        from gql.transport.aiohttp import AIOHTTPTransport
         from gql import Client
+        from gql.transport.aiohttp import AIOHTTPTransport
 
         self.url = f"https://{team}.kibe.la/api/v1"
         self.headers = {"Authorization": f"Bearer {token}"}
@@ -97,7 +97,10 @@ class KibelaReader(BaseReader):
             res = self.request(query, params)
             note_conn = parse_obj_as(Connection[Note], res["notes"])
             for note in note_conn.edges:
-                doc = f"---\nurl: {note.node.url}\ntitle: {note.node.title}\n---\ncontent:\n{note.node.content}\n"
+                doc = (
+                    f"---\nurl: {note.node.url}\ntitle:"
+                    f" {note.node.title}\n---\ncontent:\n{note.node.content}\n"
+                )
                 documents.append(Document(text=doc))
             has_next = note_conn.pageInfo.hasNextPage
             params = {"after": note_conn.pageInfo.endCursor}

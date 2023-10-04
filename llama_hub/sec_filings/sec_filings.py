@@ -1,29 +1,20 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 try:
-    from llama_hub.sec_filings.utils import get_filing_urls_to_download
-    from llama_hub.sec_filings.prepline_sec_filings.sections import (
-        section_string_to_enum,
-        validate_section_names,
-        SECSection,
-    )
     from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
-        SECDocument,
         REPORT_TYPES,
         VALID_FILING_TYPES,
-    )
-
-    from llama_hub.sec_filings.prepline_sec_filings.fetch import (
-        get_form_by_ticker,
-        open_form_by_ticker,
-        get_filing,
+        SECDocument,
     )
     from llama_hub.sec_filings.prepline_sec_filings.sections import (
         ALL_SECTIONS,
         SECTIONS_10K,
         SECTIONS_10Q,
         SECTIONS_S1,
+        section_string_to_enum,
+        validate_section_names,
     )
+    from llama_hub.sec_filings.utils import get_filing_urls_to_download
 finally:
     pass
     # from utils import get_filing_urls_to_download
@@ -49,30 +40,36 @@ finally:
     #     SECTIONS_10Q,
     #     SECTIONS_S1,
     # )
-from datetime import date
-from enum import Enum
 import re
 import signal
+from datetime import date
+from enum import Enum
+from typing import Optional
+
 import requests
-from typing import Union, Optional
 
 try:
     from ratelimit import limits, sleep_and_retry
 except ImportError:
+
     def fake_decorator(*args, **kwargs):
         def inner(func):
             return func
+
         return inner
+
     limits = fake_decorator
     sleep_and_retry = fake_decorator
 
 import os
+
 try:
     from unstructured.staging.base import convert_to_isd
-except:
+except Exception:
+
     class Element:
         pass
-    
+
     def convert_to_isd(elements: List[Element]) -> List[Dict[str, Any]]:
         """Represents the document elements as an Initial Structured Document (ISD)."""
         isd: List[Dict[str, str]] = []
@@ -80,6 +77,7 @@ except:
             section = element.to_dict()
             isd.append(section)
         return isd
+
 
 DATE_FORMAT_TOKENS = "%Y-%m-%d"
 DEFAULT_BEFORE_DATE = date.today().strftime(DATE_FORMAT_TOKENS)
@@ -186,7 +184,7 @@ class SECExtractor:
             for fm in filing_metadata
         ]
         for idx, fm in enumerate(acc_nums_yrs[:-1]):
-            if fm[0] == None:
+            if fm[0] is None:
                 fm[0] = acc_nums_yrs[idx + 1][0]
         for acy in acc_nums_yrs:
             if tic not in final_dict:
@@ -273,8 +271,8 @@ class SECExtractor:
         sec_document = SECDocument.from_string(text)
         if sec_document.filing_type not in VALID_FILING_TYPES:
             raise ValueError(
-                f"SEC document filing type {sec_document.filing_type} is not supported, "
-                f"must be one of {','.join(VALID_FILING_TYPES)}"
+                f"SEC document filing type {sec_document.filing_type} is not supported,"
+                f" must be one of {','.join(VALID_FILING_TYPES)}"
             )
         results = {}
         if m_section == [ALL_SECTIONS]:

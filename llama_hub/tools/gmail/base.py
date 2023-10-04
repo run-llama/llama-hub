@@ -1,11 +1,12 @@
 """GMail tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_index.readers.schema.base import Document
-from email.message import EmailMessage
-import email
-from typing import Any, List, Optional
 import base64
+import email
+from email.message import EmailMessage
+from typing import Any, List, Optional
+
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.compose",
@@ -57,6 +58,7 @@ class GmailToolSpec(BaseToolSpec):
             Credentials, the obtained credential.
         """
         import os
+
         from google.auth.transport.requests import Request
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
@@ -230,7 +232,11 @@ class GmailToolSpec(BaseToolSpec):
         service = self.service
 
         if draft_id is None:
-            return "You did not provide a draft id when calling this function. If you previously created or retrieved the draft, the id is available in context"
+            return (
+                "You did not provide a draft id when calling this function. If you"
+                " previously created or retrieved the draft, the id is available in"
+                " context"
+            )
 
         draft = self.get_draft(draft_id)
         headers = draft["message"]["payload"]["headers"]

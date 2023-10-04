@@ -1,11 +1,12 @@
 from typing import Any, Mapping, Optional
+
 from llama_hub.airbyte_cdk.base import AirbyteCDKReader, RecordHandler
 
 
 class AirbyteGongReader(AirbyteCDKReader):
     """AirbyteGongReader reader.
 
-    Retrieve documents from Gong 
+    Retrieve documents from Gong
 
     Args:
         config: The config object for the gong source.
@@ -19,4 +20,8 @@ class AirbyteGongReader(AirbyteCDKReader):
         """Initialize with parameters."""
         import source_gong
 
-        super().__init__(source_class=source_gong.SourceGong, config=config, record_handler=record_handler)
+        super().__init__(
+            source_class=source_gong.SourceGong,
+            config=config,
+            record_handler=record_handler,
+        )

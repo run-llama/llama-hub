@@ -101,9 +101,10 @@ class S3Reader(BaseReader):
 
                     suffix = Path(obj.key).suffix
 
-                    is_dir = obj.key.endswith("/") # skip folders
+                    is_dir = obj.key.endswith("/")  # skip folders
                     is_bad_ext = (
-                        self.required_exts is not None and suffix not in self.required_exts # skip other extentions
+                        self.required_exts is not None
+                        and suffix not in self.required_exts  # skip other extentions
                     )
 
                     if is_dir or is_bad_ext:
@@ -119,11 +120,13 @@ class S3Reader(BaseReader):
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
-            loader = SimpleDirectoryReader(temp_dir,
-                                           file_extractor=self.file_extractor,
-                                           required_exts=self.required_exts,
-                                           filename_as_id=self.filename_as_id,
-                                           num_files_limit=self.num_files_limit,
-                                           file_metadata=self.file_metadata)
+            loader = SimpleDirectoryReader(
+                temp_dir,
+                file_extractor=self.file_extractor,
+                required_exts=self.required_exts,
+                filename_as_id=self.filename_as_id,
+                num_files_limit=self.num_files_limit,
+                file_metadata=self.file_metadata,
+            )
 
             return loader.load_data()

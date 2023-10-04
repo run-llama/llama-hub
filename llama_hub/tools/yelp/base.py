@@ -21,9 +21,10 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
 from typing import Optional
+
 from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 
 class YelpToolSpec(BaseToolSpec):
@@ -35,6 +36,7 @@ class YelpToolSpec(BaseToolSpec):
     def __init__(self, api_key: str, client_id: str) -> Document:
         """Initialize with parameters."""
         from yelpapi import YelpAPI
+
         self.client = YelpAPI(api_key)
 
     def business_search(self, location: str, term: str, radius: Optional[int] = None):

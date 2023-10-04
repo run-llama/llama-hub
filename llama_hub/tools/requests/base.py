@@ -1,12 +1,15 @@
 """Requests Tool."""
 
 from typing import Optional
-
-from llama_index.tools.tool_spec.base import BaseToolSpec
-import requests
 from urllib.parse import urlparse
 
-INVALID_URL_PROMPT = "This url did not include a hostname or scheme. Please determine the complete URL and try again."
+import requests
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
+INVALID_URL_PROMPT = (
+    "This url did not include a hostname or scheme. Please determine the complete URL"
+    " and try again."
+)
 
 
 class RequestsToolSpec(BaseToolSpec):

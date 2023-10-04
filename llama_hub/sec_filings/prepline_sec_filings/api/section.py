@@ -3,52 +3,47 @@
 # DO NOT MODIFY DIRECTLY
 #####################################################################
 
-import io
-import os
 import gzip
+import io
+import json
 import mimetypes
-from typing import List, Union
+import os
+import secrets
+from base64 import b64encode
+from typing import List, Mapping, Optional, Union
+
 from fastapi import (
-    status,
+    APIRouter,
     FastAPI,
     File,
     Form,
+    HTTPException,
     Request,
     UploadFile,
-    APIRouter,
-    HTTPException,
+    status,
 )
-from fastapi.responses import PlainTextResponse
-import json
 from fastapi.responses import StreamingResponse
 from starlette.datastructures import Headers
 from starlette.types import Send
-from base64 import b64encode
-from typing import Optional, Mapping, Iterator, Tuple
-import secrets
 
 try:
-    from llama_hub.sec_filings.prepline_sec_filings.sections import (
-        section_string_to_enum,
-        validate_section_names,
-        SECSection,
-    )
     from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
-        SECDocument,
         REPORT_TYPES,
         VALID_FILING_TYPES,
+        SECDocument,
     )
     from llama_hub.sec_filings.prepline_sec_filings.sections import (
-    ALL_SECTIONS,
-    SECTIONS_10K,
-    SECTIONS_10Q,
-    SECTIONS_S1,
+        ALL_SECTIONS,
+        SECTIONS_10K,
+        SECTIONS_10Q,
+        SECTIONS_S1,
+        section_string_to_enum,
+        validate_section_names,
     )
-except:
+except ImportError:
     from prepline_sec_filings.sections import (
         section_string_to_enum,
         validate_section_names,
-        SECSection,
     )
     from prepline_sec_filings.sec_document import (
         SECDocument,
@@ -56,21 +51,20 @@ except:
         VALID_FILING_TYPES,
     )
     from prepline_sec_filings.sections import (
-    ALL_SECTIONS,
-    SECTIONS_10K,
-    SECTIONS_10Q,
-    SECTIONS_S1,
+        ALL_SECTIONS,
+        SECTIONS_10K,
+        SECTIONS_10Q,
+        SECTIONS_S1,
     )
-from enum import Enum
-import re
-import signal
-from unstructured.staging.base import convert_to_isd
 
 import csv
+import re
+import signal
+from enum import Enum
 from typing import Dict
-from unstructured.documents.elements import Text, NarrativeText, Title, ListItem
-from unstructured.staging.label_studio import stage_for_label_studio
 
+from unstructured.staging.base import convert_to_isd
+from unstructured.staging.label_studio import stage_for_label_studio
 
 app = FastAPI()
 router = APIRouter()
@@ -200,12 +194,14 @@ def pipeline_api(
             }
         else:
             raise ValueError(
-                f"output_schema '{response_schema}' is not supported for {response_type}"
+                f"output_schema '{response_schema}' is not supported for"
+                f" {response_type}"
             )
     elif response_type == "text/csv":
         if response_schema != ISD:
             raise ValueError(
-                f"output_schema '{response_schema}' is not supported for {response_type}"
+                f"output_schema '{response_schema}' is not supported for"
+                f" {response_type}"
             )
         return convert_to_isd_csv(results)
     else:

@@ -1,9 +1,8 @@
 from typing import Any, Dict, List, Mapping, Optional, Sequence, TypeVar, Union
 
-from typing_extensions import Literal
-
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+from typing_extensions import Literal
 
 # define types
 ID = str

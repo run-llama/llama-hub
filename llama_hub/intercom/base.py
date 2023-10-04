@@ -1,6 +1,7 @@
 """Intercom reader."""
-from typing import List
 import json
+from typing import List
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -32,7 +33,6 @@ class IntercomReader(BaseReader):
         articles = self.get_all_articles()
 
         for article in articles:
-
             body = article["body"]
             soup = BeautifulSoup(body, "html.parser")
             body = soup.get_text()

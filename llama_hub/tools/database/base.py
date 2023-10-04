@@ -2,16 +2,14 @@
 
 from typing import Any, List, Optional
 
-from sqlalchemy import text
-from sqlalchemy.engine import Engine
-from sqlalchemy import MetaData
-from sqlalchemy.schema import CreateTable
-from sqlalchemy.exc import NoSuchTableError
-
-from llama_index.langchain_helpers.sql_wrapper import SQLDatabase
+from llama_index.utilities.sql_wrapper import SQLDatabase
+from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_index.readers.base import BaseReader
+from sqlalchemy import MetaData, text
+from sqlalchemy.engine import Engine
+from sqlalchemy.exc import NoSuchTableError
+from sqlalchemy.schema import CreateTable
 
 
 class DatabaseToolSpec(BaseToolSpec, BaseReader):

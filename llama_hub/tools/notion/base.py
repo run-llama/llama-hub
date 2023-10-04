@@ -1,11 +1,12 @@
 """Notion tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, List, Dict, Any
-from llama_index.readers.schema.base import Document
-import re
-import requests
 import os
+import re
+from typing import Any, Dict, List, Optional
+
+import requests
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 SEARCH_URL = "https://api.notion.com/v1/search"
 INTEGRATION_TOKEN_NAME = "NOTION_INTEGRATION_TOKEN"
@@ -53,7 +54,11 @@ class NotionToolSpec(BaseToolSpec):
 
         """
         if not UUID_REGEX.match(block_id):
-            return "This endpoint only supports block ids in the form of a uuid as input. Please use the search_data endpoint to find the id of the page you are looking for and then call this endpoint again"
+            return (
+                "This endpoint only supports block ids in the form of a uuid as input."
+                " Please use the search_data endpoint to find the id of the page you"
+                " are looking for and then call this endpoint again"
+            )
 
         block_url = BLOCK_CHILD_URL_TMPL.format(block_id=block_id)
         block = {

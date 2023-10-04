@@ -1,3 +1,69 @@
+## Unreleased
+
+### New Features
+- Loader for Macrometa GDN (#484)
+
+### Smaller Features + Bug Fixes
+- fix: PyMuPDF Reader broken (#547)
+- Add page id to extra_info (#542) 
+- Update: Readme with corrected example url for Playgrounds_subgraph_connector tool (#551)
+- add url and status to confluence loader document (#553)
+- Changes from llama_index/PR#7906 (#557)
+- fix: sql_wrapper utilities (#558)
+- Adding functionality for AsanaReader (#386)
+
+## [v0.0.34] - 2023-09-27
+
+### New Features
+- feat: Add PlaygroundsSubgraphInspectorToolSpec to llama_hub (#535)
+- add full formatting and linting (#537, #538)
+
+### Smaller Features + Bug Fixes
+- fix: added missing loaders removed from a old PR (#540)
+- break loop if API error for slack reader (#544)  
+- mbox: allow custom, stable document id (#393)
+- update database doc (#531)
+- fix: jsondata loader on library (#539)
+- fix: remove isort due using black and add a new checklist (#546)
+
+## [v0.0.33] - 2023-09-24
+
+### New Features
+- Neo4j Schema Query Builder Integration (#520)
+
+## [v0.0.32] - 2023-09-22
+
+### New Features
+- feat: Add PlaygroundsSubgraphConnector to Llama Hub (#528)
+
+### Smaller Features + Bug Fixes
+- Fix BaseGithubClient and _generate_documents (#526)
+- Refactor load_data for consistent sheet handling and cleaner code (#488)
+- remove redundant if/else from imports in github readers (#524)
+- fix: 🚑️ remove app id and secret from feishu reader (#525)
+
+## [v0.0.31] - 2023-09-18
+
+### New Features
+- Add reader for GitHub collaborators (#512)
+- HWPReader (#517)
+
+### Smaller Features + Bug Fixes
+- fixed typos in the readme.md of salesforce tool (#515)
+- Service account support for google drive loader (#513)
+- Enhance PDFReader to accept File object as well, in addition to a path string (#514)
+- add urls to metadata saved by github repo reader (#522)
+
+## [v0.0.30] - 2023-09-12
+
+### New Features
+- Elastic data reader (#508)
+- Salesforce Tool (#507)
+
+### Smaller Features + Bug Fixes
+- add HWPReader to JSON (#500)
+- Add issue labels to `extra_info` saved by GithubRepositoryIssuesReader (#502)
+
 ## [v0.0.29] - 2023-09-08
 
 ### New Features

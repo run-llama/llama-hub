@@ -3,13 +3,15 @@ try:
 except ImportError:
     # relative import from file
     from sec_filings import SECExtractor
-import time
-import json
+
 import concurrent.futures
-from collections import defaultdict
+import json
 import os
-from llama_index.readers.base import BaseReader
+import time
+from collections import defaultdict
 from typing import List
+
+from llama_index.readers.base import BaseReader
 
 
 class SECFilingsLoader(BaseReader):
@@ -98,7 +100,8 @@ class SECFilingsLoader(BaseReader):
                     ) as f:
                         json.dump(data, f, indent=4)
                 print(
-                    f"Done for {curr_tic} for document {curr_filing_type} and year {curr_year}"
+                    f"Done for {curr_tic} for document {curr_filing_type} and year"
+                    f" {curr_year}"
                 )
 
         print(f"It took {round(time.time()-start,2)} seconds")

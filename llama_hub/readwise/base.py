@@ -1,9 +1,9 @@
 """Simple Reader that loads highlights from Readwise.io"""
-import requests
-import json
 import datetime
+import json
 from typing import List, Optional
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 

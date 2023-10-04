@@ -2,9 +2,10 @@
 import json
 import os
 import re
-import requests
-from typing import List, Optional, Tuple, Union
 import sys
+from typing import List, Optional, Tuple, Union
+
+import requests
 
 if sys.version_info < (3, 8):
     from typing_extensions import Final
@@ -16,15 +17,20 @@ import webbrowser
 try:
     from ratelimit import limits, sleep_and_retry
 except ImportError:
+
     def fake_decorator(*args, **kwargs):
         def inner(func):
             return func
+
         return inner
+
     limits = fake_decorator
     sleep_and_retry = fake_decorator
 try:
-    from llama_hub.sec_filings.prepline_sec_filings.sec_document import VALID_FILING_TYPES
-except:
+    from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
+        VALID_FILING_TYPES,
+    )
+except ImportError:
     from prepline_sec_filings.sec_document import VALID_FILING_TYPES
 
 SEC_ARCHIVE_URL: Final[str] = "https://www.sec.gov/Archives/edgar/data"

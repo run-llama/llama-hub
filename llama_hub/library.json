@@ -45,6 +45,10 @@
       "azure"
     ]
   },
+  "AzCognitiveSearchReader": {
+    "id": "azcognitive_search",
+    "author": "mrcabellom"
+  },
   "GoogleDocsReader": {
     "id": "google_docs",
     "author": "jerryjliu"
@@ -104,6 +108,10 @@
   "JSONReader": {
     "id": "file/json",
     "author": "yisding"
+  },
+  "JsonDataReader": {
+    "id": "jsondata",
+    "author": "jerryjliu"
   },
   "MarkdownReader": {
     "id": "file/markdown",
@@ -211,6 +219,10 @@
       "neo4j",
       "cypher"
     ]
+  },
+  "GladiaAudioTranscriber": {
+    "id": "file/audio_gladia",
+    "author": "ravi03071991"
   },
   "DiscordReader": {
     "id": "discord",
@@ -917,11 +929,13 @@
   "ZepReader": {
     "id": "zep",
     "author": "zep",
+    "keywords": ["zep", "retriever", "memory", "storage"]
+  },
+  "MacrometaGDNReader": {
+  	"id": "macrometa_gdn",
+  	"author": "Dain Im",
     "keywords": [
-      "zep",
-      "retriever",
-      "memory",
-      "storage"
+      "macrometa"
     ]
   },
   "BagelReader": {
@@ -955,6 +969,15 @@
     "author": "sangwongenip",
     "keywords": [
       "hwp"
+    ]
+  },
+  "GitHubRepositoryCollaboratorsReader": {
+    "id": "github_repo_collaborators",
+    "author": "rwood-97",
+    "keywords": [
+      "github",
+      "repository",
+      "collaborators"
     ]
   }
 }

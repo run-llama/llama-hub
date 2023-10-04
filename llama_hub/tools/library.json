@@ -71,6 +71,16 @@
     "id": "tools/weather",
     "author": "logan-markewich"
   },
+  "PlaygroundsSubgraphConnectorToolSpec": {
+    "id": "tools/playgrounds_subgraph_connector",
+    "author": "tachi",
+    "keywords": ["subgraph", "blockchain", "playgroundsapi", "graphql", "decentralized", "thegraph"]
+  },
+  "PlaygroundsSubgraphInspectorToolSpec": {
+    "id": "tools/playgrounds_subgraph_inspector",
+    "author": "tachi",
+    "keywords": ["subgraph", "blockchain", "playgroundsapi", "graphql", "decentralized", "thegraph"]
+  },
   "PythonFileToolSpec": {
     "id": "tools/python_file",
     "author": "ajhofmann"
@@ -116,5 +126,14 @@
   "ZapierToolSpec": {
     "id": "tools/zapier",
     "author": "ajhofmann"
+  },
+  "Neo4jQueryToolSpec": {
+    "id": "tools/neo4j_db",
+    "author": "shahafp",
+    "keywords": [
+      "graph",
+      "neo4j",
+      "cypher"
+    ]
   }
 }

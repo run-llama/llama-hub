@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_index.readers.schema.base import Document
 import datetime
 import os
 from typing import Any, List, Optional, Union
+
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
@@ -38,7 +39,6 @@ class GoogleCalendarToolSpec(BaseToolSpec):
         number_of_results: Optional[int] = 100,
         start_date: Optional[Union[str, datetime.date]] = None,
     ) -> List[Document]:
-
         """Load data from user's calendar.
 
         Args:
@@ -190,7 +190,10 @@ class GoogleCalendarToolSpec(BaseToolSpec):
             "attendees": attendees_list,
         }
         event = service.events().insert(calendarId="primary", body=event).execute()
-        return "Your calendar event has been created successfully! You can move on to the next step."
+        return (
+            "Your calendar event has been created successfully! You can move on to the"
+            " next step."
+        )
 
     def get_date(self):
         """
