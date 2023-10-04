@@ -880,7 +880,7 @@
     ]
   },
   "MinioReader": {
-    "id": "minio/minio",
+    "id": "minio/minio-client",
     "author": "semoal",
     "keywords": [
       "minio",
@@ -889,7 +889,7 @@
     ]
   },
   "BotoMinioReader": {
-    "id": "minio/boto",
+    "id": "minio/boto3-client",
     "author": "webcoderz",
     "keywords": [
       "minio",
