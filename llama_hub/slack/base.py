@@ -26,6 +26,8 @@ class SlackReader(BaseReader):
         latest_date (Optional[datetime]): Latest date from which to
             read conversations. If not provided, defaults to current timestamp
             in combination with earliest_date.
+        workspace_url (Optional[str]): Slack workspace base url. This will be
+            used to provide a link back to the source message if provided.
     """
 
     def __init__(
@@ -33,6 +35,7 @@ class SlackReader(BaseReader):
         slack_token: Optional[str] = None,
         earliest_date: Optional[datetime] = None,
         latest_date: Optional[datetime] = None,
+        workspace_url: Optional[str] = "",
     ) -> None:
         """Initialize with parameters."""
         from slack_sdk import WebClient
@@ -45,6 +48,7 @@ class SlackReader(BaseReader):
                 "variable `SLACK_BOT_TOKEN`."
             )
         self.client = WebClient(token=slack_token)
+        self.workspace_url = workspace_url
         if latest_date is not None and earliest_date is None:
             raise ValueError(
                 "Must specify `earliest_date` if `latest_date` is specified."
@@ -104,12 +108,12 @@ class SlackReader(BaseReader):
 
         return "\n\n".join(messages_text)
 
-    def _read_channel(self, channel_id: str, reverse_chronological: bool) -> str:
+    def _read_channel(self, channel_id: str, reverse_chronological: bool) -> List[dict]:
         from slack_sdk.errors import SlackApiError
 
         """Read a channel."""
 
-        result_messages: List[str] = []
+        result_messages: List[dict] = []
         next_cursor = None
         while True:
             try:
@@ -137,14 +141,12 @@ class SlackReader(BaseReader):
                 # 'reply_count' is present if there are replies in the
                 # conversation thread otherwise not.
                 # using it to reduce number of slack api calls.
-                result_messages.extend(
-                    (
-                        self._read_message(channel_id, message["ts"])
-                        if "reply_count" in message
-                        else message["text"]
-                    )
-                    for message in conversation_history
-                )
+                for message in conversation_history:
+                    if "reply_count" in message:
+                        text = self._read_message(channel_id, message["ts"])
+                    else:
+                        text = message["text"]
+                    result_messages.extend([{"text": text, "timestamp": message["ts"]}])
                 if not result["has_more"]:
                     break
                 next_cursor = result["response_metadata"]["next_cursor"]
@@ -161,11 +163,10 @@ class SlackReader(BaseReader):
                     logger.error("Error parsing conversation replies: {}".format(e))
                     break
 
-        return (
-            "\n\n".join(result_messages)
-            if reverse_chronological
-            else "\n\n".join(result_messages[::-1])
-        )
+        if reverse_chronological:
+            return result_messages
+        else:
+            return result_messages[::-1]
 
     def load_data(
         self, channel_ids: List[str], reverse_chronological: bool = True
@@ -182,9 +183,18 @@ class SlackReader(BaseReader):
             channel_content = self._read_channel(
                 channel_id, reverse_chronological=reverse_chronological
             )
-            results.append(
-                Document(text=channel_content, extra_info={"channel": channel_id})
-            )
+            for message_content in channel_content:
+                timestamp = message_content["timestamp"]
+                results.append(
+                    Document(
+                        text=message_content["text"],
+                        extra_info={
+                            "channel": channel_id,
+                            "timestamp": timestamp,
+                            "url": f"{self.workspace_url}/archives/{channel_id}/p{timestamp.replace('.', '')}",
+                        },
+                    )
+                )
         return results
 
 
