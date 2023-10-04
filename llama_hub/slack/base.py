@@ -26,6 +26,8 @@ class SlackReader(BaseReader):
         latest_date (Optional[datetime]): Latest date from which to
             read conversations. If not provided, defaults to current timestamp
             in combination with earliest_date.
+        workspace_url (Optional[str]): Slack workspace base url. This will be
+            used to provide a link back to the source message if provided.
     """
 
     def __init__(
