@@ -78,6 +78,7 @@ class AsanaReader(BaseReader):
                         if task.get("custom_fields") is not None
                     ],
                     "workspace_name": workspace_name,
+                    "url": f"https://app.asana.com/0/{project['gid']}/{task['gid']}",
                 }
 
                 if task.get("followers") is not None:

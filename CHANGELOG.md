@@ -13,6 +13,7 @@
 - Adding functionality for AsanaReader (#386)
 - Add JSONL functionality to JSONReader (#552)
 - add url and timestamp to slack loader documents metadata (#559)
+- add url to asana loader docs (#560)
 
 ## [v0.0.34] - 2023-09-27
 
