@@ -39,7 +39,7 @@ In order to connect to Microsoft SQL Server database, it is required to install 
 After installing the drivers, you should be able to use the DatabaseReader to initiate Microsoft SQL Server connection and the connectionstring uri follow this format ```'mssql+pyodbc://<username>:<Password>@<SQLServer>:<Port>/<Database Name>?driver=<DriverName>'```
 
 ```python
-from llama_index.langchain_helpers.sql_wrapper import SQLDatabase
+from llama_index.utilities.sql_wrapper import SQLDatabase
 
 reader = DatabaseReader(
     sql_database = SQLDatabase.from_uri('mssql+pyodbc://dummyuser:dummypassword@dummysqlserver:1433/dummydb?driver=ODBC+Driver+18+for+SQL+Server')
