@@ -1,10 +1,13 @@
-import pytest
 import unittest
 from unittest.mock import patch
-from llama_hub.web.sitemap.base import SitemapReader
+
+import pytest
 from llama_index.readers.schema.base import Document
 
-MOCK_URL = 'https://gpt-index.readthedocs.io/sitemap.xml'
+from llama_hub.web.sitemap.base import SitemapReader
+
+MOCK_URL = "https://gpt-index.readthedocs.io/sitemap.xml"
+
 
 def get_sitemapdata():
     f = open("tests/tests_web_sitemap/test_sitemap.xml", "r")
@@ -18,9 +21,9 @@ def dummy_load_pages(urls: str):
         documents.append(doc)
     return documents
 
+
 class TestSitemapReader(unittest.TestCase):
     def test_sitemap_reader_init(self):
-
         # test w/o args
         SitemapReader()
 
@@ -38,7 +41,6 @@ class TestSitemapReader(unittest.TestCase):
 
     @patch("llama_hub.web.async_web.base.AsyncWebPageReader.load_data")
     def test_sitemap_reader_load_data(self, mock_load_data):
-
         with patch("urllib.request.urlopen") as mock_urlopen:
             sitemap_reader = SitemapReader()
 
@@ -59,7 +61,6 @@ class TestSitemapReader(unittest.TestCase):
 
     @patch("llama_hub.web.async_web.base.AsyncWebPageReader.load_data")
     def test_sitemap_reader_load_data_with_filter(self, mock_load_data):
-
         with patch("urllib.request.urlopen") as mock_urlopen:
             sitemap_reader = SitemapReader()
 
@@ -80,4 +81,7 @@ class TestSitemapReader(unittest.TestCase):
             mock_response.read.assert_called_once()
             assert mock_load_data.call_count == 1
             assert len(documents) == 1
-            assert documents[0].extra_info['Source'] == 'https://gpt-index.readthedocs.io/en/latest/'
+            assert (
+                documents[0].extra_info["Source"]
+                == "https://gpt-index.readthedocs.io/en/latest/"
+            )

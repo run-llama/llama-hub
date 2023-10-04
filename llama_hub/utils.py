@@ -1,11 +1,11 @@
 """LlamaHub utils."""
 
-from typing import Type
-from llama_index.readers.base import BaseReader
-from pathlib import Path
-import json
 import importlib
+import json
+from pathlib import Path
+from typing import Type
 
+from llama_index.readers.base import BaseReader
 
 LIBRARY_JSON_PATH = Path(__file__).parent / "library.json"
 

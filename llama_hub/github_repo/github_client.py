@@ -6,8 +6,9 @@ It is used by the Github readers to retrieve the data from Github.
 """
 
 import os
+
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Protocol
 
 from dataclasses_json import DataClassJsonMixin
 
@@ -149,9 +150,6 @@ class GitBranchResponseModel(DataClassJsonMixin):
     _links: Links
 
 
-from typing import Protocol
-
-
 class BaseGithubClient(Protocol):
     def get_all_endpoints(self) -> Dict[str, str]:
         ...
@@ -193,7 +191,8 @@ class BaseGithubClient(Protocol):
         self,
         owner: str,
         repo: str,
-        branch_name: str,
+        branch: Optional[str],
+        branch_name: Optional[str],
     ) -> GitBranchResponseModel:
         ...
 
@@ -322,7 +321,11 @@ class GithubClient:
             return response
 
     async def get_branch(
-        self, owner: str, repo: str, branch: str
+        self,
+        owner: str,
+        repo: str,
+        branch: Optional[str] = None,
+        branch_name: Optional[str] = None,
     ) -> GitBranchResponseModel:
         """
         Get information about a branch. (Github API endpoint: getBranch).
@@ -338,6 +341,11 @@ class GithubClient:
         Examples:
             >>> branch_info = client.get_branch("owner", "repo", "branch")
         """
+        if branch is None:
+            if branch_name is None:
+                raise ValueError("Either branch or branch_name must be provided.")
+            branch = branch_name
+
         return GitBranchResponseModel.from_json(
             (
                 await self.request(

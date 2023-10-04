@@ -1,6 +1,7 @@
 """Hatena Blog reader."""
 
-from typing import List, Dict
+from typing import Dict, List
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -12,6 +13,7 @@ class Article:
         self.title = ""
         self.content = ""
         self.published = ""
+        self.url = ""
 
 
 class HatenaBlogReader(BaseReader):
@@ -36,7 +38,11 @@ class HatenaBlogReader(BaseReader):
             results.append(
                 Document(
                     text=a.content,
-                    extra_info={"title": a.title, "published": a.published},
+                    extra_info={
+                        "title": a.title,
+                        "published": a.published,
+                        "url": a.url,
+                    },
                 )
             )
 
@@ -57,8 +63,8 @@ class HatenaBlogReader(BaseReader):
 
     def get_articles(self, url: str) -> Dict:
         import requests
-        from requests.auth import HTTPBasicAuth
         from bs4 import BeautifulSoup
+        from requests.auth import HTTPBasicAuth
 
         articles: List[Article] = []
         next_page = None
@@ -71,6 +77,7 @@ class HatenaBlogReader(BaseReader):
             article = Article()
             article.title = entry.find("title").string
             article.published = entry.find("published").string
+            article.url = entry.find("link", rel="alternate")["href"]
             content = entry.find("content")
             if content.get("type") == "text/html":
                 article.content = (

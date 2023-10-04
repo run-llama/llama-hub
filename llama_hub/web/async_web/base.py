@@ -1,12 +1,12 @@
-import logging
 import asyncio
+import logging
 from typing import List
-from aiohttp import ClientResponse
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 logger = logging.getLogger(__name__)
+
 
 class AsyncWebPageReader(BaseReader):
     """Asynchronous web page reader.
@@ -21,9 +21,15 @@ class AsyncWebPageReader(BaseReader):
         fail_on_error (bool): if requested url does not return status code 200 the routine will raise an ValueError
     """
 
-    def __init__(self, html_to_text: bool = False, limit: int = 10, dedupe: bool = True, fail_on_error: bool = False) -> None:
+    def __init__(
+        self,
+        html_to_text: bool = False,
+        limit: int = 10,
+        dedupe: bool = True,
+        fail_on_error: bool = False,
+    ) -> None:
         """Initialize with parameters."""
-        
+
         try:
             import html2text  # noqa: F401
         except ImportError:
@@ -84,22 +90,27 @@ class AsyncWebPageReader(BaseReader):
 
             response, raw_page = response_tuple
 
-
             if response.status != 200:
                 logger.warning(f"error fetching page from {urls[i]}")
                 logger.info(response)
 
                 if self._fail_on_error:
-                    raise ValueError(f"error fetching page from {urls[i]}. server returned status: {response.status} and response {raw_page}")
+                    raise ValueError(
+                        f"error fetching page from {urls[i]}. server returned status:"
+                        f" {response.status} and response {raw_page}"
+                    )
 
                 continue
 
             if self._html_to_text:
                 import html2text
+
                 response_text = html2text.html2text(raw_page)
             else:
                 response_text = raw_page
 
-            documents.append(Document(text=response_text, extra_info={"Source": str(response.url)}))
+            documents.append(
+                Document(text=response_text, extra_info={"Source": str(response.url)})
+            )
 
         return documents

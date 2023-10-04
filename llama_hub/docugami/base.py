@@ -3,10 +3,9 @@
 import io
 import os
 import re
-
-import requests
 from typing import Any, Dict, List, Mapping, Optional
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -122,7 +121,7 @@ class DocugamiReader(BaseReader):
             return Document(
                 text=text,
                 metadata=metadata,
-                excluded_llm_metadata_keys=[XPATH_KEY, DOCUMENT_ID_KEY, STRUCTURE_KEY]
+                excluded_llm_metadata_keys=[XPATH_KEY, DOCUMENT_ID_KEY, STRUCTURE_KEY],
             )
 
         # parse the tree and return chunks
@@ -305,7 +304,8 @@ class DocugamiReader(BaseReader):
 
         if not self.access_token:
             raise Exception(
-                "Please specify access token as argument or set the DOCUGAMI_API_KEY env var."
+                "Please specify access token as argument or set the DOCUGAMI_API_KEY"
+                " env var."
             )
 
         _document_details = self._document_details_for_docset_id(docset_id)

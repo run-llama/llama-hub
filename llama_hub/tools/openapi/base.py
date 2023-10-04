@@ -1,10 +1,11 @@
 """OpenAPI Tool."""
 
-from typing import List
+from typing import List, Optional
 
+import requests
+import yaml
 from llama_index.readers.schema.base import Document
 from llama_index.tools.tool_spec.base import BaseToolSpec
-import jsonschema
 
 
 class OpenAPIToolSpec(BaseToolSpec):
@@ -16,8 +17,19 @@ class OpenAPIToolSpec(BaseToolSpec):
 
     spec_functions = ["load_openapi_spec"]
 
-    def __init__(self, spec: dict):
-        self.spec = Document(text=str(self.process_api_spec(spec)))
+    def __init__(self, spec: Optional[dict] = None, url: Optional[str] = None):
+        if spec and url:
+            raise ValueError("Only provide one of OpenAPI dict or url")
+        elif spec:
+            pass
+        elif url:
+            response = requests.get(url).text
+            spec = yaml.load(response, Loader=yaml.Loader)
+        else:
+            raise ValueError("You must provide a url or OpenAPI spec as a dict")
+
+        parsed_spec = self.process_api_spec(spec)
+        self.spec = Document(text=str(parsed_spec))
 
     def load_openapi_spec(self) -> List[Document]:
         """
@@ -61,6 +73,14 @@ class OpenAPIToolSpec(BaseToolSpec):
 
         def dereference_openapi(openapi_doc):
             """Dereferences a Swagger/OpenAPI document by resolving all $ref pointers."""
+            try:
+                import jsonschema
+            except ImportError:
+                raise ImportError(
+                    "The jsonschema library is required to parse OpenAPI documents. "
+                    "Please install it with `pip install jsonschema`."
+                )
+
             resolver = jsonschema.RefResolver.from_schema(openapi_doc)
 
             def _dereference(obj):

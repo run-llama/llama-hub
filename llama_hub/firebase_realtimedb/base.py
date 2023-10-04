@@ -27,8 +27,11 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
             import firebase_admin
             from firebase_admin import credentials
         except ImportError:
-            raise ImportError("`firebase_admin` package not found, please run `pip install firebase-admin`")
-        
+            raise ImportError(
+                "`firebase_admin` package not found, please run `pip install"
+                " firebase-admin`"
+            )
+
         if not firebase_admin._apps:
             if service_account_key_path:
                 cred = credentials.Certificate(service_account_key_path)
@@ -36,10 +39,7 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
                     cred, options={"databaseURL": database_url}
                 )
             else:
-                firebase_admin.initialize_app(
-                    options={"databaseURL": database_url}
-                )
-        
+                firebase_admin.initialize_app(options={"databaseURL": database_url})
 
     def load_data(self, path: str, field: Optional[str] = None) -> List[Document]:
         """Load data from Firebase Realtime Database and convert it into documents.
@@ -55,8 +55,11 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
         try:
             from firebase_admin import db
         except ImportError:
-            raise ImportError("`firebase_admin` package not found, please run `pip install firebase-admin`")
-        
+            raise ImportError(
+                "`firebase_admin` package not found, please run `pip install"
+                " firebase-admin`"
+            )
+
         ref = db.reference(path)
         data = ref.get()
 
@@ -69,10 +72,10 @@ class FirebaseRealtimeDatabaseReader(BaseReader):
                     "document_id": key,
                 }
                 if type(entry) is Dict and field in entry:
-                  text = entry[field]
+                    text = entry[field]
                 else:
-                  text = str(entry)
-                
+                    text = str(entry)
+
                 document = Document(text=text, extra_info=extra_info)
                 documents.append(document)
         elif isinstance(data, str):

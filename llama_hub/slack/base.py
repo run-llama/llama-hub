@@ -100,6 +100,7 @@ class SlackReader(BaseReader):
                     time.sleep(int(e.response.headers["retry-after"]))
                 else:
                     logger.error("Error parsing conversation replies: {}".format(e))
+                    break
 
         return "\n\n".join(messages_text)
 
@@ -137,9 +138,11 @@ class SlackReader(BaseReader):
                 # conversation thread otherwise not.
                 # using it to reduce number of slack api calls.
                 result_messages.extend(
-                    self._read_message(channel_id, message["ts"])
-                    if "reply_count" in message
-                    else message["text"]
+                    (
+                        self._read_message(channel_id, message["ts"])
+                        if "reply_count" in message
+                        else message["text"]
+                    )
                     for message in conversation_history
                 )
                 if not result["has_more"]:
@@ -156,6 +159,7 @@ class SlackReader(BaseReader):
                     time.sleep(int(e.response.headers["retry-after"]))
                 else:
                     logger.error("Error parsing conversation replies: {}".format(e))
+                    break
 
         return (
             "\n\n".join(result_messages)

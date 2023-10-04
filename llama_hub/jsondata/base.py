@@ -3,6 +3,7 @@
 import json
 import re
 from typing import Dict, Generator, List, Union
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -26,7 +27,7 @@ def _depth_first_yield(json_data: Dict, path: List[str]) -> Generator[str, None,
         yield " ".join(path)
 
 
-class JSONDataReader(BaseReader):
+class JsonDataReader(BaseReader):
     """Json Data reader.
 
     Reads in Json Data.
@@ -51,3 +52,7 @@ class JSONDataReader(BaseReader):
         lines = json_output.split("\n")
         useful_lines = [line for line in lines if not re.match(r"^[{}\[\],]*$", line)]
         return [Document(text="\n".join(useful_lines))]
+
+
+# legacy
+JSONDataReader = JsonDataReader

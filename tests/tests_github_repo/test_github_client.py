@@ -1,22 +1,19 @@
-import pytest
 import base64
 import os
-from unittest.mock import MagicMock
 import unittest
 from typing import List, Tuple
+from unittest.mock import MagicMock
+
+import pytest
+
+from llama_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.github_client import GithubClient
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(
 #     "Skip by default due to dependence on network request and github api token.",
 #     allow_module_level=True,
 # )
-
-
-from llama_hub.github_repo.github_client import (
-    GithubClient,
-)
-
-from llama_hub.github_repo.base import GithubRepositoryReader
 
 
 @pytest.fixture
@@ -32,7 +29,9 @@ async def test_github_client(github_client):
     owner = "emptycrown"
     repo = "llama-hub"
     branch = "main"
-    commit_sha = "0cd691322e5244b48b68e3588d1343eb53f3a112"  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+    commit_sha = (  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+        "0cd691322e5244b48b68e3588d1343eb53f3a112"
+    )
 
     # test get_branch
     branch_data = await github_client.get_branch(owner, repo, branch)
@@ -60,7 +59,6 @@ async def test_github_client(github_client):
         == f"https://api.github.com/repos/{owner}/{repo}/git/trees/{commit_data.commit.tree.sha}"
     ), "Tree url is incorrect"
     assert tree_data.sha == commit_data.commit.tree.sha, "Tree sha is incorrect"
-    print(tree_data.tree[0].sha)
     assert 1 == 1
 
     # test get_blob
@@ -70,7 +68,7 @@ async def test_github_client(github_client):
         ("Makefile", "blob"),
         (".gitignore", "blob"),
         ("tests", "tree"),
-        ("llama_hub", "tree"),
+        ("loader_hub", "tree"),
         (".github", "tree"),
     ]
     # check if the first depth of the tree has the expected files. All the expected files should be in the first depth of the tree and vice versa
@@ -132,6 +130,27 @@ isort==5.11.4
         filter(lambda x: x != "", expected_decoded_blob_content.splitlines()),
     ):
         assert dbc[0] == dbc[1], f"{dbc[0]} is not equal to {dbc[1]}"
+
+
+@pytest.mark.asyncio
+async def test_github_client_get_branch_parameter_exception(github_client):
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch="main",
+    )
+    assert branch_data.name == "main"
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch_name="main",
+    )
+    assert branch_data.name == "main"
+    with pytest.raises(ValueError):
+        await github_client.get_branch(
+            owner="emptycrown",
+            repo="llama-hub",
+        )
 
 
 class TestGithubRepositoryReader(unittest.TestCase):

@@ -1,17 +1,15 @@
 """Vector DB tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
 from typing import List
+
 from llama_index.indices.base import BaseIndex
 from llama_index.query_engine import RetrieverQueryEngine
-from llama_index.vector_stores.types import (
-    ExactMatchFilter,
-    MetadataFilters,
-)
 from llama_index.retrievers import VectorIndexRetriever
+from llama_index.tools.tool_spec.base import BaseToolSpec
+from llama_index.vector_stores.types import ExactMatchFilter, MetadataFilters
 
 
-class VectorDB(BaseToolSpec):
+class VectorDBToolSpec(BaseToolSpec):
     """Vector DB tool spec."""
 
     spec_functions = ["auto_retrieve_fn"]
@@ -53,3 +51,7 @@ class VectorDB(BaseToolSpec):
 
         response = query_engine.query(query)
         return str(response)
+
+
+# backwards compatibility
+VectorDB = VectorDBToolSpec

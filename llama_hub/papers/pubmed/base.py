@@ -26,8 +26,8 @@ class PubmedReader(BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
-        from datetime import datetime
         import xml.etree.ElementTree as xml
+        from datetime import datetime
 
         import requests
 
@@ -61,7 +61,9 @@ class PubmedReader(BaseReader):
                     pubmed_search.append(
                         {
                             "title": title,
-                            "url": f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/",
+                            "url": (
+                                f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/"
+                            ),
                             "date": info["date"],
                             "documents": info["documents"],
                         }
@@ -142,7 +144,9 @@ class PubmedReader(BaseReader):
                         {
                             "title": title,
                             "journal": journal,
-                            "url": f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/",
+                            "url": (
+                                f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/"
+                            ),
                             "text": raw_text,
                         }
                     )
