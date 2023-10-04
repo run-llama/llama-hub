@@ -184,11 +184,14 @@ class SlackReader(BaseReader):
             for message_content in channel_content:
                 timestamp = message_content["timestamp"]
                 results.append(
-                    Document(text=message_content["text"], extra_info={
-                        "channel": channel_id,
-                        "timestamp": timestamp,
-                        "url": f"{self.workspace_url}/archives/{channel_id}/p{timestamp.replace('.', '')}",
-                    })
+                    Document(
+                        text=message_content["text"],
+                        extra_info={
+                            "channel": channel_id,
+                            "timestamp": timestamp,
+                            "url": f"{self.workspace_url}/archives/{channel_id}/p{timestamp.replace('.', '')}",
+                        },
+                    )
                 )
         return results
 
