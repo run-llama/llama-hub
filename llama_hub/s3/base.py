@@ -30,6 +30,7 @@ class S3Reader(BaseReader):
         aws_access_secret: Optional[str] = None,
         aws_session_token: Optional[str] = None,
         s3_endpoint_url: Optional[str] = "https://s3.amazonaws.com",
+        custom_reader_path: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """Initialize S3 bucket and key, along with credentials if needed.
@@ -67,6 +68,7 @@ class S3Reader(BaseReader):
         self.filename_as_id = filename_as_id
         self.num_files_limit = num_files_limit
         self.file_metadata = file_metadata
+        self.custom_reader_path = custom_reader_path
 
         self.aws_access_id = aws_access_id
         self.aws_access_secret = aws_access_secret
@@ -118,7 +120,14 @@ class S3Reader(BaseReader):
             try:
                 from llama_index import SimpleDirectoryReader
             except ImportError:
-                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+                custom_reader_path = self.custom_reader_path
+
+                if custom_reader_path is not None:
+                    SimpleDirectoryReader = download_loader(
+                        "SimpleDirectoryReader", custom_path=custom_reader_path
+                    )
+                else:
+                    SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
             loader = SimpleDirectoryReader(
                 temp_dir,
