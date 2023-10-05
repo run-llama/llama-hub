@@ -11,6 +11,7 @@ from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+
 class S3Reader(BaseReader):
     """General reader for any S3 file or directory."""
 
@@ -119,7 +120,9 @@ class S3Reader(BaseReader):
             try:
                 from llama_index import SimpleDirectoryReader
             except ImportError:
-                SimpleDirectoryReader = download_loader("SimpleDirectoryReader", custom_path=self.custom_reader_path)
+                SimpleDirectoryReader = download_loader(
+                    "SimpleDirectoryReader", custom_path=self.custom_reader_path
+                )
 
             loader = SimpleDirectoryReader(
                 temp_dir,
