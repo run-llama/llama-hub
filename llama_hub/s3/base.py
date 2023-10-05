@@ -120,10 +120,15 @@ class S3Reader(BaseReader):
             try:
                 from llama_index import SimpleDirectoryReader
             except ImportError:
-                SimpleDirectoryReader = download_loader(
-                    "SimpleDirectoryReader", custom_path=self.custom_reader_path
-                )
-
+                custom_reader_path = self.custom_reader_path
+                
+                if custom_reader_path is not None
+                    SimpleDirectoryReader = download_loader(
+                        "SimpleDirectoryReader", custom_path=custom_reader_path
+                    )
+                else:
+                    SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+                    
             loader = SimpleDirectoryReader(
                 temp_dir,
                 file_extractor=self.file_extractor,
