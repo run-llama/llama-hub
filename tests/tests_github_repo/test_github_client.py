@@ -1,31 +1,19 @@
-from llama_index import Document
-import httpx
-import pytest
-import asyncio
 import base64
 import os
-from unittest.mock import MagicMock, AsyncMock, call
 import unittest
 from typing import List, Tuple
+from unittest.mock import MagicMock
+
+import pytest
+
+from llama_hub.github_repo.base import GithubRepositoryReader
+from llama_hub.github_repo.github_client import GithubClient
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(
 #     "Skip by default due to dependence on network request and github api token.",
 #     allow_module_level=True,
 # )
-
-from loader_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
-
-from loader_hub.github_repo.github_client import (
-    GithubClient,
-    GitBlobResponseModel,
-    GitTreeResponseModel,
-)
-
-from loader_hub.github_repo.base import GithubRepositoryReader
 
 
 @pytest.fixture
@@ -41,7 +29,9 @@ async def test_github_client(github_client):
     owner = "emptycrown"
     repo = "llama-hub"
     branch = "main"
-    commit_sha = "0cd691322e5244b48b68e3588d1343eb53f3a112"  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+    commit_sha = (  # Points to Add spotify reader, https://github.com/emptycrown/llama-hub/commit/0cd691322e5244b48b68e3588d1343eb53f3a112
+        "0cd691322e5244b48b68e3588d1343eb53f3a112"
+    )
 
     # test get_branch
     branch_data = await github_client.get_branch(owner, repo, branch)
@@ -51,8 +41,7 @@ async def test_github_client(github_client):
         == f"https://api.github.com/repos/{owner}/{repo}/branches/{branch}"
     ), "Branch self link is incorrect"
     assert (
-        branch_data._links.html
-        == f"https://github.com/{owner}/{repo}/tree/{branch}"
+        branch_data._links.html == f"https://github.com/{owner}/{repo}/tree/{branch}"
     ), "Branch html link is incorrect"
 
     # test get_commit
@@ -64,17 +53,12 @@ async def test_github_client(github_client):
     ), "Commit url is incorrect"
 
     # test get_tree
-    tree_data = await github_client.get_tree(
-        owner, repo, commit_data.commit.tree.sha
-    )
+    tree_data = await github_client.get_tree(owner, repo, commit_data.commit.tree.sha)
     assert (
         tree_data.url
         == f"https://api.github.com/repos/{owner}/{repo}/git/trees/{commit_data.commit.tree.sha}"
     ), "Tree url is incorrect"
-    assert (
-        tree_data.sha == commit_data.commit.tree.sha
-    ), "Tree sha is incorrect"
-    print(tree_data.tree[0].sha)
+    assert tree_data.sha == commit_data.commit.tree.sha, "Tree sha is incorrect"
     assert 1 == 1
 
     # test get_blob
@@ -112,9 +96,7 @@ async def test_github_client(github_client):
     ][0]
 
     # test get_blob
-    blob_data = await github_client.get_blob(
-        owner, repo, test_requirements_txt.sha
-    )
+    blob_data = await github_client.get_blob(owner, repo, test_requirements_txt.sha)
     assert blob_data.encoding == "base64", "Blob encoding is incorrect"
     assert (
         blob_data.url
@@ -148,6 +130,27 @@ isort==5.11.4
         filter(lambda x: x != "", expected_decoded_blob_content.splitlines()),
     ):
         assert dbc[0] == dbc[1], f"{dbc[0]} is not equal to {dbc[1]}"
+
+
+@pytest.mark.asyncio
+async def test_github_client_get_branch_parameter_exception(github_client):
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch="main",
+    )
+    assert branch_data.name == "main"
+    branch_data = await github_client.get_branch(
+        owner="emptycrown",
+        repo="llama-hub",
+        branch_name="main",
+    )
+    assert branch_data.name == "main"
+    with pytest.raises(ValueError):
+        await github_client.get_branch(
+            owner="emptycrown",
+            repo="llama-hub",
+        )
 
 
 class TestGithubRepositoryReader(unittest.TestCase):
@@ -184,17 +187,13 @@ class TestGithubRepositoryReader(unittest.TestCase):
             [".py"],
             GithubRepositoryReader.FilterType.INCLUDE,
         )
-        self.assertTrue(
-            self.reader._check_filter_file_extensions(tree_obj_path)
-        )
+        self.assertTrue(self.reader._check_filter_file_extensions(tree_obj_path))
 
         self.reader._filter_file_extensions = (
             [".txt"],
             GithubRepositoryReader.FilterType.EXCLUDE,
         )
-        self.assertTrue(
-            self.reader._check_filter_file_extensions(tree_obj_path)
-        )
+        self.assertTrue(self.reader._check_filter_file_extensions(tree_obj_path))
 
     def test__allow_tree_obj_with_files_only(self):
         tree_obj_paths = [

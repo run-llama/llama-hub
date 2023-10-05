@@ -1,31 +1,19 @@
-from llama_index import Document
-import httpx
-import pytest
 import asyncio
-import base64
-import os
-from unittest.mock import MagicMock, AsyncMock, call
-import unittest
 from typing import List, Tuple
+
+import pytest
+
+from llama_hub.github_repo.github_client import GitTreeResponseModel
+from llama_hub.github_repo.utils import (
+    BufferedAsyncIterator,
+    BufferedGitBlobDataIterator,
+)
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(
 #     "Skip by default due to dependence on network request and github api token.",
 #     allow_module_level=True,
 # )
-
-from loader_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
-
-from loader_hub.github_repo.github_client import (
-    GithubClient,
-    GitBlobResponseModel,
-    GitTreeResponseModel,
-)
-
-from loader_hub.github_repo.base import GithubRepositoryReader
 
 
 class MockGithubClient:

@@ -14,16 +14,19 @@ jobs:
       # For example, pypy-2.7 and pypy-3.8
       matrix:
         python-version: ["3.9", "3.8"]
+        poetry-version: [1.5.1]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
       - name: Install deps
         run: |
-          python -m pip install --upgrade pip
-          pip install https://github.com/jerryjliu/gpt_index/archive/master.zip
-          pip install -r test_requirements.txt
+          poetry install
       - name: Run testing
-        run: pytest tests
+        run: poetry run pytest tests

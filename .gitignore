@@ -4,3 +4,7 @@
 **/__pycache__/
 .venv
 **/.DS_Store
+.vscode
+.idea/
+llama-hub.iml
+llamahub/
