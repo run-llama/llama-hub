@@ -1,8 +1,10 @@
 ## Unreleased
 
-### New Features
+### [v0.0.35] - 2023-10-05
 - Loader for Macrometa GDN (#484)
 - adding boto3 minio doc loader (#497)
+- Add new data reader: AssemblyAIAudioTranscriptReader (#562)
+
 ### Smaller Features + Bug Fixes
 - fix: PyMuPDF Reader broken (#547)
 - Add page id to extra_info (#542) 
