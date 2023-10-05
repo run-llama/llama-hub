@@ -12,7 +12,7 @@ You can use any LlamaIndex loader to load data into Lilac, clean data, and then 
 
 ## Usage
 
-### LlamaIndex documents
+### LlamaIndex => Lilac
 
 See [this notebook](https://github.com/lilacai/lilac/blob/main/notebooks/LlamaIndexLoader.ipynb) for getting data into Lilac from LlamaHub.
 
@@ -37,7 +37,7 @@ ll.create_dataset(
     name='arxiv-karpathy',
     source=ll.LlamaIndexDocsSource(
       # documents comes from the loader.load_data call in the previous cell.
-      documents=documents,)))
+      documents=documents)))
 
 # You can start a lilac server with. Once you've cleaned the dataset, you can come back into GPTIndex.
 ll.start_server(project_dir='./data')
@@ -60,7 +60,7 @@ documents = loader.load_data(
 
 index = GPTVectorStoreIndex.from_documents(documents)
 
-index.query("How are ImagNet labels validated?")
+index.query("How are ImageNet labels validated?")
 ```
 
 This loader is designed to be used as a way to load data into [GPT Index](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used in a [LangChain](https://github.com/hwchase17/langchain) Agent.
