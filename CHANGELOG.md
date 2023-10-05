@@ -22,6 +22,7 @@
 ### New Features
 - feat: Add PlaygroundsSubgraphInspectorToolSpec to llama_hub (#535)
 - add full formatting and linting (#537, #538)
+- Add new data reader: AssemblyAIAudioTranscriptReader (#562)
 
 ### Smaller Features + Bug Fixes
 - fix: added missing loaders removed from a old PR (#540)
