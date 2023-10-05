@@ -15,6 +15,7 @@
 - add url and timestamp to slack loader documents metadata (#559)
 - add url to asana loader docs (#560)
 - Added oAuth to Jira loader (#272)
+- refactor: add custom path for download_loader to enable functionality (#318)
 
 ## [v0.0.34] - 2023-09-27
 
