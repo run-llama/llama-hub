@@ -4,13 +4,13 @@ This loader uses OpenAI's Whisper model to transcribe the text of an audio file 
 
 ## Usage
 
-To use this loader, you need to pass in a `Path` to a local file.
+To use this loader, you will need the `whisper` python package installed. You can do so with `pip install whisper`.
+
+Then, simply pass a `Path` to a local file into `load_data`:
 
 ```python
 from pathlib import Path
-from llama_index import download_loader
-
-AudioTranscriber = download_loader("AudioTranscriber")
+from llama_hub.file.audio import AudioTranscriber
 
 loader = AudioTranscriber()
 documents = loader.load_data(file=Path('./podcast.mp3'))

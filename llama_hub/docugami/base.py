@@ -3,10 +3,9 @@
 import io
 import os
 import re
-
-import requests
 from typing import Any, Dict, List, Mapping, Optional
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -121,7 +120,8 @@ class DocugamiReader(BaseReader):
 
             return Document(
                 text=text,
-                extra_info=metadata,
+                metadata=metadata,
+                excluded_llm_metadata_keys=[XPATH_KEY, DOCUMENT_ID_KEY, STRUCTURE_KEY],
             )
 
         # parse the tree and return chunks
@@ -224,7 +224,7 @@ class DocugamiReader(BaseReader):
             artifact_url = artifact.get("url")
             artifact_doc = artifact.get("document")
 
-            if artifact_name == f"{project_id}.xml" and artifact_url and artifact_doc:
+            if artifact_name == "report-values.xml" and artifact_url and artifact_doc:
                 doc_id = artifact_doc["id"]
                 metadata: Dict = {}
 
@@ -247,11 +247,11 @@ class DocugamiReader(BaseReader):
                     artifact_tree = etree.parse(io.BytesIO(response.content))
                     artifact_root = artifact_tree.getroot()
                     ns = artifact_root.nsmap
-                    entries = artifact_root.xpath("//wp:Entry", namespaces=ns)
+                    entries = artifact_root.xpath("//pr:Entry", namespaces=ns)
                     for entry in entries:
-                        heading = entry.xpath("./wp:Heading", namespaces=ns)[0].text
+                        heading = entry.xpath("./pr:Heading", namespaces=ns)[0].text
                         value = " ".join(
-                            entry.xpath("./wp:Value", namespaces=ns)[0].itertext()
+                            entry.xpath("./pr:Value", namespaces=ns)[0].itertext()
                         ).strip()
                         metadata[heading] = value
                     per_file_metadata[doc_id] = metadata
@@ -285,10 +285,11 @@ class DocugamiReader(BaseReader):
             )
 
     def load_data(
-            self,
-            docset_id: str,
-            document_ids: Optional[List[str]] = None,
-            access_token: Optional[str] = None) -> List[Document]:
+        self,
+        docset_id: str,
+        document_ids: Optional[List[str]] = None,
+        access_token: Optional[str] = None,
+    ) -> List[Document]:
         """Load data the given docset_id in Docugami
 
         Args:
@@ -302,7 +303,10 @@ class DocugamiReader(BaseReader):
             self.access_token = access_token
 
         if not self.access_token:
-            raise Exception("Please specify access token as argument or set the DOCUGAMI_API_KEY env var.")
+            raise Exception(
+                "Please specify access token as argument or set the DOCUGAMI_API_KEY"
+                " env var."
+            )
 
         _document_details = self._document_details_for_docset_id(docset_id)
         if document_ids:
@@ -320,9 +324,7 @@ class DocugamiReader(BaseReader):
 
         for doc in _document_details:
             doc_metadata = combined_project_metadata.get(doc["id"])
-            chunks += self._load_chunks_for_document(
-                docset_id, doc, doc_metadata
-            )
+            chunks += self._load_chunks_for_document(docset_id, doc, doc_metadata)
 
         return chunks
 
@@ -330,5 +332,7 @@ class DocugamiReader(BaseReader):
 if __name__ == "__main__":
     reader = DocugamiReader()
     print(
-        reader.load_data(docset_id="ecxqpipcoe2p", document_ids=["43rj0ds7s0ur", "bpc1vibyeke2"])
+        reader.load_data(
+            docset_id="ecxqpipcoe2p", document_ids=["43rj0ds7s0ur", "bpc1vibyeke2"]
+        )
     )

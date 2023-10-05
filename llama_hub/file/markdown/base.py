@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, cast
 
 from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from llama_index.schema import Document
 
 
 class MarkdownReader(BaseReader):
@@ -65,7 +65,7 @@ class MarkdownReader(BaseReader):
             ]
         else:
             markdown_tups = [
-                (key, re.sub("\n", "", value)) for key, value in markdown_tups
+                (key, re.sub("<.*?>", "", value)) for key, value in markdown_tups
             ]
 
         return markdown_tups
@@ -88,7 +88,7 @@ class MarkdownReader(BaseReader):
         """Parse file into tuples.
         If content is provided, use that instead of reading from file."""
         if content is None:
-            with open(filepath, "r") as f:
+            with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read()
         if self._remove_hyperlinks:
             content = self.remove_hyperlinks(content)
@@ -106,5 +106,13 @@ class MarkdownReader(BaseReader):
         """Parse file into string.
         If content is provided, use that instead of reading from file."""
         tups = self.parse_tups(file, content=content)
+        results = []
         # TODO: don't include headers right now
-        return [Document(value, extra_info=extra_info) for _, value in tups]
+        results = [
+            Document(
+                text=f"\n\n{header}\n{value}" if header else value,
+                metadata=extra_info or {},
+            )
+            for header, value in tups
+        ]
+        return results

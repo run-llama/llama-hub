@@ -19,10 +19,16 @@ class AudioTranscriber(BaseReader):
 
     def __init__(self, *args: Any, model_version: str = "base", **kwargs: Any) -> None:
         """Init params."""
+        try:
+            import whisper
+        except ImportError:
+            raise ImportError(
+                "Missing required package: whisper\n"
+                "Please `pip install whisper` to use AudioTranscriber"
+            )
+
         super().__init__(*args, **kwargs)
         self._model_version = model_version
-
-        import whisper
 
         model = whisper.load_model(self._model_version)
 
@@ -52,4 +58,4 @@ class AudioTranscriber(BaseReader):
 
         transcript = result["text"]
 
-        return [Document(transcript, extra_info=extra_info)]
+        return [Document(text=transcript, extra_info=extra_info or {})]

@@ -43,7 +43,7 @@ class GoogleDocsReader(BaseReader):
         results = []
         for document_id in document_ids:
             doc = self._load_doc(document_id)
-            results.append(Document(doc, extra_info={"document_id": document_id}))
+            results.append(Document(text=doc, extra_info={"document_id": document_id}))
         return results
 
     def _load_doc(self, document_id: str) -> str:
@@ -74,9 +74,9 @@ class GoogleDocsReader(BaseReader):
             Credentials, the obtained credential.
         """
         from google.auth.transport.requests import Request
+        from google.oauth2 import service_account
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
-        from google.oauth2 import service_account
 
         creds = None
         if os.path.exists("token.json"):

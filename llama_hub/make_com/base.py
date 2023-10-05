@@ -10,7 +10,7 @@ import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_index.response.schema import Response
-from llama_index.data_structs.node import Node, NodeWithScore
+from llama_index.schema import NodeWithScore, TextNode
 
 
 class MakeWrapper(BaseReader):
@@ -50,9 +50,7 @@ if __name__ == "__main__":
     wrapper = MakeWrapper()
     test_response = Response(
         response="test response",
-        source_nodes=[
-            NodeWithScore(node=Node(source_text="test source", doc_id="test id"))
-        ],
+        source_nodes=[NodeWithScore(node=TextNode(text="test source", id_="test id"))],
     )
     wrapper.pass_response_to_webhook(
         "https://hook.us1.make.com/asdfadsfasdfasdfd",

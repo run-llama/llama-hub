@@ -1,0 +1,139 @@
+{
+  "ArxivToolSpec": {
+    "id": "tools/arxiv",
+    "author": "ajhofmann",
+    "keywords": ["math", "science", "research"]
+  },
+  "AzureCVToolSpec": {
+    "id": "tools/azure_cv",
+    "author": "ajhofmann",
+    "keywords": ["image", "vision", "cv"]
+  },
+  "AzureSpeechToolSpec": {
+    "id": "tools/azure_speech",
+    "author": "ajhofmann"
+  },
+  "AzureTranslateToolSpec": {
+    "id": "tools/azure_translate",
+    "author": "ajhofmann" 
+  },
+  "BingSearchToolSpec": {
+    "id": "tools/bing_search",
+    "author": "ajhofmann"
+  },
+  "ChatGPTPluginToolSpec": {
+    "id": "tools/chatgpt_plugin",
+    "author": "ajhofmann"
+  },
+  "CodeInterpreterToolSpec": {
+    "id": "tools/code_interpreter",
+    "author": "ajhofmann"
+  },
+  "DatabaseToolSpec": {
+    "id": "tools/database",
+    "author": "ajhofmann",
+    "keywords": ["sql", "postgres", "snowflake", "aws rds"]
+  },
+  "GmailToolSpec": {
+    "id": "tools/gmail",
+    "author": "ajhofmann",
+    "keywords": ["gmail", "email"]
+  },
+  "GoogleCalendarToolSpec": {
+    "id": "tools/google_calendar",
+    "author": "ajhofmann"
+  },
+  "GoogleSearchToolSpec": {
+    "id": "tools/google_search",
+    "author": "ajhofmann"
+  },
+  "GraphQLToolSpec": {
+    "id": "tools/graphql",
+    "author": "ajhofmann"
+  },
+  "MetaphorToolSpec": {
+    "id": "tools/metaphor",
+    "author": "ajhofmann"
+  },
+  "MultionToolSpec": {
+    "id": "tools/multion",
+    "author": "ajhofmann"
+  },
+  "NotionToolSpec": {
+    "id": "tools/notion",
+    "author": "jerryjliu"
+  },
+  "OpenAPIToolSpec": {
+    "id": "tools/openapi",
+    "author": "ajhofmann"
+  },
+  "OpenWeatherMapToolSpec": {
+    "id": "tools/weather",
+    "author": "logan-markewich"
+  },
+  "PlaygroundsSubgraphConnectorToolSpec": {
+    "id": "tools/playgrounds_subgraph_connector",
+    "author": "tachi",
+    "keywords": ["subgraph", "blockchain", "playgroundsapi", "graphql", "decentralized", "thegraph"]
+  },
+  "PlaygroundsSubgraphInspectorToolSpec": {
+    "id": "tools/playgrounds_subgraph_inspector",
+    "author": "tachi",
+    "keywords": ["subgraph", "blockchain", "playgroundsapi", "graphql", "decentralized", "thegraph"]
+  },
+  "PythonFileToolSpec": {
+    "id": "tools/python_file",
+    "author": "ajhofmann"
+  },
+  "RequestsToolSpec": {
+    "id": "tools/requests",
+    "author": "ajhofmann"
+  },
+  "SalesforceToolSpec": {
+    "id": "tools/salesforce",
+    "author": "chrispangg",
+    "keywords": ["salesforce"]
+  },
+  "ShopifyToolSpec": {
+    "id": "tools/shopify",
+    "author": "ajhofmann"
+  },
+  "SlackToolSpec": {
+    "id": "tools/slack",
+    "author": "jerryjliu"
+  },
+  "TextToImageToolSpec": {
+    "id": "tools/text_to_image",
+    "author": "ajhofmann"
+  },
+  "VectorDBToolSpec": {
+    "id": "tools/vector_db",
+    "author": "jerryjliu"
+  },
+  "WikipediaToolSpec": {
+    "id": "tools/wikipedia",
+    "author": "ajhofmann"
+  },
+  "WolframAlphaToolSpec": {
+    "id": "tools/wolfram_alpha",
+    "author": "ajhofmann",
+    "keywords": ["math"]
+  },
+  "YelpToolSpec": {
+    "id": "tools/yelp",
+    "author": "ajhofmann"
+  },
+  "ZapierToolSpec": {
+    "id": "tools/zapier",
+    "author": "ajhofmann"
+  },
+  "Neo4jQueryToolSpec": {
+    "id": "tools/neo4j_db",
+    "author": "shahafp",
+    "keywords": [
+      "graph",
+      "neo4j",
+      "cypher"
+    ]
+  }
+}

@@ -26,8 +26,8 @@ class PubmedReader(BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
-        from datetime import datetime
         import xml.etree.ElementTree as xml
+        from datetime import datetime
 
         import requests
 
@@ -61,7 +61,9 @@ class PubmedReader(BaseReader):
                     pubmed_search.append(
                         {
                             "title": title,
-                            "url": f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/",
+                            "url": (
+                                f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/"
+                            ),
                             "date": info["date"],
                             "documents": info["documents"],
                         }
@@ -77,7 +79,7 @@ class PubmedReader(BaseReader):
                 text = "\n".join([p["text"] for p in d["passages"]])
                 pubmed_documents.append(
                     Document(
-                        text,
+                        text=text,
                         extra_info={
                             "Title of this paper": paper["title"],
                             "URL": paper["url"],
@@ -142,7 +144,9 @@ class PubmedReader(BaseReader):
                         {
                             "title": title,
                             "journal": journal,
-                            "url": f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/",
+                            "url": (
+                                f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{_id}/"
+                            ),
                             "text": raw_text,
                         }
                     )
@@ -156,7 +160,7 @@ class PubmedReader(BaseReader):
         for paper in pubmed_search:
             pubmed_documents.append(
                 Document(
-                    paper["text"],
+                    text=paper["text"],
                     extra_info={
                         "Title of this paper": paper["title"],
                         "Journal it was published in:": paper["journal"],

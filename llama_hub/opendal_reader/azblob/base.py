@@ -4,7 +4,7 @@ A loader that fetches a file or iterates through a directory on Azblob or.
 
 """
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
@@ -18,9 +18,9 @@ class OpendalAzblobReader(BaseReader):
         self,
         container: str,
         path: str = "/",
-        endpoint: Optional[str] = None,
-        account_name: Optional[str] = None,
-        account_key: Optional[str] = None,
+        endpoint: str = "",
+        account_name: str = "",
+        account_key: str = "",
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
     ) -> None:
         """Initialize Azblob container, along with credentials if needed.
@@ -57,6 +57,7 @@ class OpendalAzblobReader(BaseReader):
 
         try:
             from llama_hub.utils import import_loader
+
             OpendalReader = import_loader("OpendalReader")
         except ImportError:
             OpendalReader = download_loader("OpendalReader")

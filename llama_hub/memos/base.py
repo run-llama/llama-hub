@@ -40,10 +40,10 @@ class MemosReader(BaseReader):
         try:
             req = requests.get(realUrl, params)
             res = req.json()
-        except:
+        except ValueError:
             raise ValueError("Your Memo URL is not valid")
 
-        if not "data" in res:
+        if "data" not in res:
             raise ValueError("Invalid Memo response")
 
         memos = res["data"]
@@ -54,6 +54,6 @@ class MemosReader(BaseReader):
                 "resource_list": memo["resourceList"],
                 id: memo["id"],
             }
-            documents.append(Document(content, extra_info=extra_info))
+            documents.append(Document(text=content, extra_info=extra_info))
 
         return documents

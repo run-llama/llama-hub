@@ -18,7 +18,7 @@ class RDFReader(BaseReader):
         """Initialize loader."""
         super().__init__(*args, **kwargs)
 
-        from rdflib import Graph, URIRef
+        from rdflib import Graph
         from rdflib.namespace import RDF, RDFS
 
         self.Graph = Graph
@@ -76,4 +76,4 @@ class RDFReader(BaseReader):
 
         text = "\n".join(text_list)
 
-        return [Document(text, extra_info=extra_info)]
+        return [Document(text=text, extra_info=extra_info or {})]

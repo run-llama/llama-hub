@@ -30,9 +30,10 @@ SOFTWARE.
 
 #!/usr/bin/env python3
 
-import os
 import fnmatch
+import os
 from typing import List, Optional
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -150,6 +151,6 @@ class GPTRepoReader(BaseReader):
         docs = []
         for text in text_list:
             doc_text = output_text + text + "\n--END--\n"
-            docs.append(Document(doc_text))
+            docs.append(Document(text=doc_text))
 
         return docs

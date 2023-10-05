@@ -19,8 +19,11 @@ class PptxReader(BaseReader):
         """Init reader."""
         self.caption_images = caption_images
         if caption_images:
-            from transformers import (AutoTokenizer, VisionEncoderDecoderModel,
-                                      ViTFeatureExtractor)
+            from transformers import (
+                AutoTokenizer,
+                VisionEncoderDecoderModel,
+                ViTFeatureExtractor,
+            )
 
             model = VisionEncoderDecoderModel.from_pretrained(
                 "nlpconnect/vit-gpt2-image-captioning"
@@ -100,4 +103,4 @@ class PptxReader(BaseReader):
                 if hasattr(shape, "text"):
                     result += f"{shape.text}\n"
 
-        return [Document(result, extra_info=extra_info)]
+        return [Document(text=result, extra_info=extra_info or {})]

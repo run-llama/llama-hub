@@ -2,10 +2,10 @@
 
 from typing import Dict, List, Optional
 
+import yaml
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-import yaml
 
 class GraphDBCypherReader(BaseReader):
     """Graph database Cypher reader.
@@ -15,17 +15,11 @@ class GraphDBCypherReader(BaseReader):
     Args:
         uri (str): Graph Database URI
         username (str): Username
-        password (str): Password 
+        password (str): Password
 
     """
 
-    def __init__(
-        self,
-        uri: str,
-        username: str,
-        password: str,
-        database: str
-    ) -> None:
+    def __init__(self, uri: str, username: str, password: str, database: str) -> None:
         """Initialize with parameters."""
         try:
             from neo4j import GraphDatabase, basic_auth
@@ -37,9 +31,11 @@ class GraphDBCypherReader(BaseReader):
         if uri:
             if uri is None:
                 raise ValueError("`uri` must be provided.")
-            self.client = GraphDatabase.driver(uri=uri, auth=basic_auth(username, password))
+            self.client = GraphDatabase.driver(
+                uri=uri, auth=basic_auth(username, password)
+            )
             self.database = database
-            
+
     def load_data(
         self, query: str, parameters: Optional[Dict] = None
     ) -> List[Document]:
@@ -56,8 +52,10 @@ class GraphDBCypherReader(BaseReader):
         if parameters is None:
             parameters = {}
 
-        records, summary, keys = self.client.execute_query(query, parameters, database_ = self.database)
+        records, summary, keys = self.client.execute_query(
+            query, parameters, database_=self.database
+        )
 
-        documents = [Document(yaml.dump(entry.data())) for entry in records]
+        documents = [Document(text=yaml.dump(entry.data())) for entry in records]
 
         return documents

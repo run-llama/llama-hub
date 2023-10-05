@@ -30,6 +30,6 @@ class TrafilaturaWebReader(BaseReader):
         for url in urls:
             downloaded = trafilatura.fetch_url(url)
             response = trafilatura.extract(downloaded)
-            documents.append(Document(response))
+            documents.append(Document(text=response))
 
         return documents

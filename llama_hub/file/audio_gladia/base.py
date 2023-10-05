@@ -4,7 +4,7 @@ A transcriber for the audio of mp3, mp4 files using Gladia's OpenAI Whisper.
 
 """
 from pathlib import Path
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -94,4 +94,4 @@ class GladiaAudioTranscriber(BaseReader):
         response_dict = response.json()
         transcript = response_dict["prediction"]
 
-        return [Document(transcript, extra_info=extra_info)]
+        return [Document(text=transcript, extra_info=extra_info or {})]

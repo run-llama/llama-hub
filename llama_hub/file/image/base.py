@@ -6,7 +6,7 @@ A parser for image files.
 
 import re
 from pathlib import Path
-from typing import Dict, Optional, cast, List
+from typing import Dict, List, Optional, cast
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document, ImageDocument
@@ -52,9 +52,8 @@ class ImageReader(BaseReader):
         self, file: Path, extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
-        from PIL import Image
-
         from llama_index.img_utils import img_2_b64
+        from PIL import Image
 
         # load document image
         image = Image.open(file)

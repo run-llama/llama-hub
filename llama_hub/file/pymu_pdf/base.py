@@ -9,6 +9,15 @@ from llama_index.readers.schema.base import Document
 class PyMuPDFReader(BaseReader):
     """Read PDF files using PyMuPDF library."""
 
+    def load_data(
+        self,
+        file_path: Union[Path, str],
+        metadata: bool = True,
+        extra_info: Optional[Dict] = None,
+    ) -> List[Document]:
+        """Loads list of documents from PDF file and also accepts extra information in dict format."""
+        return self.load(file_path, metadata=metadata, extra_info=extra_info)
+
     def load(
         self,
         file_path: Union[Path, str],
@@ -66,6 +75,8 @@ class PyMuPDFReader(BaseReader):
 
         else:
             return [
-                Document(text=page.get_text().encode("utf-8"), extra_info=extra_info)
+                Document(
+                    text=page.get_text().encode("utf-8"), extra_info=extra_info or {}
+                )
                 for page in doc
             ]

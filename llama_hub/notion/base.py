@@ -90,7 +90,9 @@ class NotionPageReader(BaseReader):
         """Read a page."""
         return self._read_block(page_id)
 
-    def query_database(self, database_id: str, query_dict: Dict[str, Any] = {"page_size": 100}) -> List[str]:
+    def query_database(
+        self, database_id: str, query_dict: Dict[str, Any] = {"page_size": 100}
+    ) -> List[str]:
         """Get all the pages from a Notion database."""
         pages = []
 
@@ -163,11 +165,11 @@ class NotionPageReader(BaseReader):
             page_ids = self.query_database(database_id)
             for page_id in page_ids:
                 page_text = self.read_page(page_id)
-                docs.append(Document(page_text, extra_info={"page_id": page_id}))
+                docs.append(Document(text=page_text, extra_info={"page_id": page_id}))
         else:
             for page_id in page_ids:
                 page_text = self.read_page(page_id)
-                docs.append(Document(page_text, extra_info={"page_id": page_id}))
+                docs.append(Document(text=page_text, extra_info={"page_id": page_id}))
 
         return docs
 

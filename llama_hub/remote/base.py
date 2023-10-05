@@ -49,20 +49,21 @@ class RemoteReader(BaseReader):
         """Parse whatever is at the URL."""
         import tempfile
         from urllib.parse import urlparse
-        from urllib.request import urlopen, Request
+        from urllib.request import Request, urlopen
 
         extra_info = {"Source": url}
 
-        req = Request(url, headers={'User-Agent' : "Magic Browser"})
+        req = Request(url, headers={"User-Agent": "Magic Browser"})
         result = urlopen(req)
         url_type = result.info().get_content_type()
         documents = []
         if url_type == "text/html" or url_type == "text/plain":
             text = "\n\n".join([str(el.decode("utf-8-sig")) for el in result])
-            documents = [Document(text, extra_info=extra_info)]
+            documents = [Document(text=text, extra_info=extra_info)]
         elif self._is_youtube_video(url):
             try:
                 from llama_hub.utils import import_loader
+
                 YoutubeTranscriptReader = import_loader("YoutubeTranscriptReader")
             except ImportError:
                 YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")

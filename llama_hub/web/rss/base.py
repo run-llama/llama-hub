@@ -68,6 +68,6 @@ class RssReader(BaseReader):
                     data = html2text.html2text(data)
 
                 extra_info = {"title": entry.title, "link": entry.link}
-                documents.append(Document(data, extra_info=extra_info))
+                documents.append(Document(text=data, extra_info=extra_info))
 
         return documents

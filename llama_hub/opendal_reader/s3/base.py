@@ -4,7 +4,7 @@ A loader that fetches a file or iterates through a directory on AWS S3 or other 
 
 """
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
@@ -18,10 +18,10 @@ class OpendalS3Reader(BaseReader):
         self,
         bucket: str,
         path: str = "/",
-        endpoint: Optional[str] = None,
-        region: Optional[str] = None,
-        access_key_id: Optional[str] = None,
-        secret_access_key: Optional[str] = None,
+        endpoint: str = "",
+        region: str = "",
+        access_key_id: str = "",
+        secret_access_key: str = "",
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
     ) -> None:
         """Initialize S3 bucket and key, along with credentials if needed.
@@ -59,6 +59,7 @@ class OpendalS3Reader(BaseReader):
 
         try:
             from llama_hub.utils import import_loader
+
             OpendalReader = import_loader("OpendalReader")
         except ImportError:
             OpendalReader = download_loader("OpendalReader")

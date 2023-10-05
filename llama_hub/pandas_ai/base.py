@@ -1,14 +1,14 @@
 """Pandas AI loader."""
 
 from pathlib import Path
-from typing import Dict, List, Optional, Any
-import pandas as pd
-import numpy as np
-
-from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
-from llama_index.readers.download import download_loader
 from tempfile import TemporaryDirectory
+from typing import Any, List, Optional
+
+import numpy as np
+import pandas as pd
+from llama_index.readers.base import BaseReader
+from llama_index.readers.download import download_loader
+from llama_index.readers.schema.base import Document
 
 
 class PandasAIReader(BaseReader):
@@ -47,8 +47,8 @@ class PandasAIReader(BaseReader):
     ) -> None:
         """Init params."""
         try:
-            from pandasai.llm.openai import OpenAI
             from pandasai import PandasAI
+            from pandasai.llm.openai import OpenAI
         except ImportError:
             raise ImportError("Please install pandasai to use this reader.")
 
@@ -67,7 +67,6 @@ class PandasAIReader(BaseReader):
         is_conversational_answer: bool = False,
     ) -> Any:
         """Load dataframe."""
-        import pandasai
 
         return self._pandas_ai.run(
             initial_df, prompt=query, is_conversational_answer=is_conversational_answer
@@ -97,6 +96,7 @@ class PandasAIReader(BaseReader):
 
             try:
                 from llama_hub.utils import import_loader
+
                 PandasCSVReader = import_loader("PandasCSVReader")
             except ImportError:
                 PandasCSVReader = download_loader("PandasCSVReader")

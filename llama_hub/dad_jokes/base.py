@@ -29,4 +29,4 @@ class DadJokesReader(BaseReader):
             None.
 
         """
-        return [Document(self._get_random_dad_joke())]
+        return [Document(text=self._get_random_dad_joke())]

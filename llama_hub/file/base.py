@@ -4,11 +4,12 @@ import logging
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Union
 
-from llama_index.readers.download import download_loader
 from llama_index.readers.base import BaseReader
+from llama_index.readers.download import download_loader
 from llama_index.readers.schema.base import Document
 
 DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
+    ".hwp": "HWPReader",
     ".pdf": "PDFReader",
     ".docx": "DocxReader",
     ".pptx": "PptxReader",
@@ -135,8 +136,9 @@ class SimpleDirectoryReader(BaseReader):
                 if isinstance(reader, str):
                     try:
                         from llama_hub.utils import import_loader
+
                         reader = import_loader(reader)()
-                    except ImportError as e:
+                    except ImportError:
                         reader = download_loader(reader)()
 
                 extracted_documents = reader.load_data(
@@ -148,7 +150,7 @@ class SimpleDirectoryReader(BaseReader):
                 # do standard read
                 with open(input_file, "r", errors=self.errors) as f:
                     data = f.read()
-                document = Document(data, extra_info=metadata)
+                document = Document(text=data, extra_info=metadata or {})
                 documents.append(document)
 
         return documents

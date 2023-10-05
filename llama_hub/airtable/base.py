@@ -11,14 +11,13 @@ class AirtableReader(BaseReader):
     Args:
         api_key (str): Airtable API key.
     """
-    
+
     def __init__(self, api_key: str) -> None:
         """Initialize Airtable reader."""
-        
 
         self.api_key = api_key
 
-    def load_data(self, base_id: str,table_id: str) -> List[Document]:
+    def load_data(self, base_id: str, table_id: str) -> List[Document]:
         """Load data from a table in a base
 
         Args:
@@ -28,6 +27,7 @@ class AirtableReader(BaseReader):
             List[Document]: List of documents.
         """
         from pyairtable import Table
+
         table = Table(self.api_key, base_id, table_id)
-        all_records=table.all()
-        return [Document(f"{all_records}", extra_info={})]
+        all_records = table.all()
+        return [Document(text=f"{all_records}", extra_info={})]

@@ -1,8 +1,15 @@
 """Firestore Reader."""
 
 from typing import Any, List, Optional
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+
+DEFAULT_FIRESTORE_DATABASE = "(default)"
+CLIENT_INFO = "LlamaHub"
+IMPORT_ERROR_MSG = (
+    "`firestore` package not found, please run `pip3 install google-cloud-firestore`"
+)
 
 
 class FirestoreReader(BaseReader):
@@ -20,12 +27,19 @@ class FirestoreReader(BaseReader):
     def __init__(
         self,
         project_id: str,
+        database_id: str = DEFAULT_FIRESTORE_DATABASE,
         *args: Optional[Any],
         **kwargs: Optional[Any],
     ) -> None:
         """Initialize with parameters."""
-        from google.cloud import firestore
-        self.db = firestore.Client(project=project_id)
+        try:
+            from google.cloud import firestore
+        except ImportError:
+            raise ImportError(IMPORT_ERROR_MSG)
+
+        self.db = firestore.Client(
+            project=project_id, database=database_id, client_info=CLIENT_INFO
+        )
 
     def load_data(self, collection: str) -> List[Document]:
         """Load data from a Firestore collection, returning a list of Documents.
@@ -40,7 +54,7 @@ class FirestoreReader(BaseReader):
         col_ref = self.db.collection(collection)
         for doc in col_ref.stream():
             doc_str = ", ".join([f"{k}: {v}" for k, v in doc.to_dict().items()])
-            documents.append(Document(doc_str))
+            documents.append(Document(text=doc_str))
         return documents
 
     def load_document(self, document_url: str) -> Document:
@@ -67,4 +81,4 @@ class FirestoreReader(BaseReader):
         if not doc.exists:
             raise ValueError(f"No such document: {document_url}")
         doc_str = ", ".join([f"{k}: {v}" for k, v in doc.to_dict().items()])
-        return Document(doc_str)
+        return Document(text=doc_str)

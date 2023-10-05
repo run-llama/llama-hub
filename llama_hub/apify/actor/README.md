@@ -24,7 +24,7 @@ from llama_index.readers.schema.base import Document
 # Converts a single record from the Actor's resulting dataset to the LlamaIndex format
 def tranform_dataset_item(item):
     return Document(
-        item.get("text"),
+        text=item.get("text"),
         extra_info={
             "url": item.get("url"),
         },
@@ -35,7 +35,7 @@ ApifyActor = download_loader("ApifyActor")
 reader = ApifyActor("<My Apify API token>")
 documents = reader.load_data(
     actor_id="apify/website-content-crawler",
-    run_input={"startUrls": [{"url": "https://gpt-index.readthedocs.io/en/latest"}]}
+    run_input={"startUrls": [{"url": "https://gpt-index.readthedocs.io/en/latest"}]},
     dataset_mapping_function=tranform_dataset_item,
 )
 ```

@@ -37,6 +37,11 @@ class UnstructuredReader(BaseReader):
         text_chunks = [" ".join(str(el).split()) for el in elements]
 
         if split_documents:
-            return [Document(chunk, extra_info=extra_info) for chunk in text_chunks]
+            return [
+                Document(text=chunk, extra_info=extra_info or {})
+                for chunk in text_chunks
+            ]
         else:
-            return [Document("\n\n".join(text_chunks), extra_info=extra_info)]
+            return [
+                Document(text="\n\n".join(text_chunks), extra_info=extra_info or {})
+            ]
