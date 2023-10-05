@@ -3,6 +3,7 @@
 pytest==7.2.1
 pytest-dotenv==0.5.2
 pytest_httpserver==1.0.8
+pytest-mock==3.11.1
 
 # pin types
 typing-inspect==0.8.0
