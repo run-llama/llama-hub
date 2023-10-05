@@ -880,12 +880,22 @@
     ]
   },
   "MinioReader": {
-    "id": "minio",
+    "id": "minio/minio-client",
     "author": "semoal",
     "keywords": [
       "minio",
       "bucket",
       "storage"
+    ]
+  },
+  "BotoMinioReader": {
+    "id": "minio/boto3-client",
+    "author": "webcoderz",
+    "keywords": [
+      "minio",
+      "bucket",
+      "storage",
+      "boto"
     ]
   },
   "NewsArticleReader": {
