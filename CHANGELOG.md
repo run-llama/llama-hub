@@ -2,7 +2,7 @@
 
 ### New Features
 - Loader for Macrometa GDN (#484)
-
+- adding boto3 minio doc loader (#497)
 ### Smaller Features + Bug Fixes
 - fix: PyMuPDF Reader broken (#547)
 - Add page id to extra_info (#542) 
@@ -14,7 +14,6 @@
 - Add JSONL functionality to JSONReader (#552)
 - add url and timestamp to slack loader documents metadata (#559)
 - add url to asana loader docs (#560)
-
 ## [v0.0.34] - 2023-09-27
 
 ### New Features
