@@ -74,9 +74,9 @@ class GoogleDriveReader(BaseReader):
         creds = None
         if os.path.exists(self.token_path):
             creds = Credentials.from_authorized_user_file(self.token_path, SCOPES)
-        elif os.path.exists(self.service_account_path):
+        elif os.path.exists(self.credentials_path):
             creds = service_account.Credentials.from_service_account_file(
-                self.service_account_path, scopes=SCOPES
+                self.credentials_path, scopes=SCOPES
             )
             gauth = GoogleAuth()
             gauth.credentials = creds

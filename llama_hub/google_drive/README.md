@@ -20,10 +20,12 @@ You can also filter the files by the mimeType e.g.: `mime_types=["application/vn
 
 ## Usage
 
-We need `credentials.json` and `client_secrets.json` files to use this reader.
+We need `credentials.json` file to use this reader.
 
-1. You need to get your `credentials.json` file by following the steps mentioned [here](https://developers.google.com/drive/api/v3/quickstart/python)
-2. Create duplicate file of `credentials.json` with name `client_secrets.json` which will be used by pydrive for downloading files.
+1. You need to create a service account folllowing the steps mentioned [here](https://cloud.google.com/iam/docs/keys-create-delete)
+2. Get your json file and rename to `credentials.json` and move to the project root
+
+> Note: If you are not using Google Workspaces (formerly GSuite), You'll need to share your document making it public, or inviting your service account as an reader/editor of the folder or file.
 
 Finally, make sure you enable "Google Drive API" in the console of your Google App.
 
