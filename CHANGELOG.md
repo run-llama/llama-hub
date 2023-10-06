@@ -1,5 +1,10 @@
 ## Unreleased
 
+### New Features
+
+### Smaller Features + Bug Fixes
+- fix: credentials path and readme improvement (#567)
+
 ### [v0.0.35] - 2023-10-05
 - Loader for Macrometa GDN (#484)
 - adding boto3 minio doc loader (#497)
