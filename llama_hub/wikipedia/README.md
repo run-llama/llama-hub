@@ -1,6 +1,6 @@
 # Wikipedia Loader
 
-This loader fetches the text from Wikipedia articles using the [`wikipedia` Python package][2].
+This loader fetches the text from Wikipedia articles using the [`wikipedia` Python package][1].
 The inputs may be page titles or keywords that uniquely identify a Wikipedia page.
 In its current form, this loader only extracts text and ignores images, tables, etc.
 
@@ -17,9 +17,7 @@ loader = WikipediaReader()
 documents = loader.load_data(pages=['Berlin', 'Rome', 'Tokyo', 'Canberra', 'Santiago'])
 ```
 
-This loader is designed for loading data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index)
+This loader is designed for loading data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index)
 and/or subsequently used as a Tool in a [LangChain](https://github.com/langchain-ai/langchain) Agent.
-See [this LlamaIndex tutorial][1] for examples.
 
-[1]: https://gpt-index.readthedocs.io/en/stable/examples/index_structs/knowledge_graph/KnowledgeGraphIndex_vs_VectorStoreIndex_vs_CustomIndex_combined.html#load-data-from-wikipedia
-[2]: https://pypi.org/project/wikipedia/
+[1]: https://pypi.org/project/wikipedia/
