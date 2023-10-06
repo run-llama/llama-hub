@@ -287,7 +287,7 @@ class GoogleDriveReader(BaseReader):
                 metadata = {}
 
                 for fileid_meta in fileids_meta:
-                    filename = next(tempfile._get_candidate_names())
+                    filename = fileid_meta[2]
                     filepath = os.path.join(temp_dir, filename)
                     fileid = fileid_meta[0]
                     final_filepath = self._download_file(fileid, filepath)
