@@ -17,7 +17,6 @@ loader = WikipediaReader()
 documents = loader.load_data(pages=['Berlin', 'Rome', 'Tokyo', 'Canberra', 'Santiago'])
 ```
 
-This loader is designed for loading data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index)
-and/or subsequently used as a Tool in a [LangChain](https://github.com/langchain-ai/langchain) Agent.
+This loader is designed for loading data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index).
 
 [1]: https://pypi.org/project/wikipedia/
