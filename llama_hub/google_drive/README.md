@@ -25,7 +25,7 @@ We need `credentials.json` file to use this reader.
 1. You need to create a service account folllowing the steps mentioned [here](https://cloud.google.com/iam/docs/keys-create-delete)
 2. Get your json file and rename to `credentials.json` and move to the project root
 
-> Note: If you are not using Google Workspaces (formerly GSuite), You'll need to share your document making it public, or invting your service account as an reader/editor of the folder or file.
+> Note: If you are not using Google Workspaces (formerly GSuite), You'll need to share your document making it public, or inviting your service account as an reader/editor of the folder or file.
 
 Finally, make sure you enable "Google Drive API" in the console of your Google App.
 
