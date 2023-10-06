@@ -39,7 +39,7 @@ class PDFNougatOCR(BaseReader):
             output_folder.mkdir(exist_ok=True)
 
             # Call the method to run the Nougat OCR command
-            output = self.nougat_ocr(file_path)
+            self.nougat_ocr(file_path)
 
             # Rest of your code for reading and processing the output
             file_path = Path(file_path)  
@@ -55,7 +55,7 @@ class PDFNougatOCR(BaseReader):
                 .replace(r"\]", "$$")
             )
 
-            # !!! Need to chunk the before creating Document object here !!!
+            # Need to chunk before creating Document
 
             return [Document(text=content)]
 
