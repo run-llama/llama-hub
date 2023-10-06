@@ -983,5 +983,13 @@
       "repository",
       "collaborators"
     ]
+  },
+  "RayyanReader": {
+    "id": "rayyan",
+    "author": "hammady",
+    "keywords": [
+      "rayyan",
+      "systematic review"
+    ]
   }
 }
