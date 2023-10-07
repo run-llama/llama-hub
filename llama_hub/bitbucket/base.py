@@ -2,6 +2,7 @@
 
 from typing import List, Optional
 
+import base64
 import os
 import requests
 from llama_index.readers.base import BaseReader
@@ -52,7 +53,6 @@ class BitbucketReader(BaseReader):
         if response.status_code == 200:
             repositories = response.json()["values"]
             for repo in repositories:
-                repo_name = repo["name"]
                 repo_slug = repo["slug"]
                 slugs.append(repo_slug)
         return slugs
@@ -97,7 +97,7 @@ class BitbucketReader(BaseReader):
     def load_text(self, paths) -> List:
         text_dict = []
         for path in paths:
-            lines_list = load_text_by_paths(
+            lines_list = self.load_text_by_paths(
                 self.base_url, self.project_key, path["slug"], path["path"], self.branch
             )
             concatenated_string = ""
@@ -111,7 +111,7 @@ class BitbucketReader(BaseReader):
 
     def load_data(self) -> List[Document]:
         """Return a list of Document made of each file in Bitbucket."""
-        slugs = get_slugs()
+        slugs = self.get_slugs()
         paths = []
         for slug in slugs:
             self.load_all_file_paths(
