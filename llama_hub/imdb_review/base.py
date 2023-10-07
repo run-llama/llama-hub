@@ -1,5 +1,5 @@
 try:
-    from llama_hub.imdb_reviews.scraper import main_scraper
+    from llama_hub.imdb_review.scraper import main_scraper
 except ImportError:
     from scraper import main_scraper
 

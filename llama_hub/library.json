@@ -985,7 +985,7 @@
     ]
   },
   "IMDBReviews":{
-    "id": "imdb_reviews",
+    "id": "imdb_review",
     "author": "Athe-kunal",
     "keywords":[
       "movies",
