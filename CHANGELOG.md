@@ -1,4 +1,4 @@
-## Unreleased
+## [v0.0.36] - 2023-10-07
 
 ### New Features
 - Add RayyanLoader to fetch review articles from Rayyan (#570)
