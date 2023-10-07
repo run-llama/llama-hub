@@ -983,5 +983,14 @@
       "repository",
       "collaborators"
     ]
+  },
+  "IMDBReviews":{
+    "id": "imdb_reviews",
+    "author": "Athe-kunal",
+    "keywords":[
+      "movies",
+      "reviews",
+      "IMDB"
+    ]
   }
 }
