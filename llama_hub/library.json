@@ -984,6 +984,15 @@
       "collaborators"
     ]
   },
+  "BitbucketReader":{
+    "id": "bitbucket",
+    "author": "lejdiprifti",
+    "keywords":[
+      "bitbucket",
+      "project",
+      "repository"
+    ]
+  },
   "RayyanReader": {
     "id": "rayyan",
     "author": "hammady",
