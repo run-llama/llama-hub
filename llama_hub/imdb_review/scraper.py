@@ -128,7 +128,7 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
             load_button = driver.find_element(By.CLASS_NAME, "ipl-load-more__button")
             load_button.click()
             time.sleep(1)
-        except:
+        except Exception:
             print('Load more operation complete')
             break
 

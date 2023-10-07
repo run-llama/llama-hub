@@ -20,6 +20,6 @@ class IMDBMovieReviewsLoader(BaseReader):
 
         return movie_reviews_df
 
-if __name__ == '__main__':
-    df = IMDBMovieReviewsLoader('The Social Network 2010','edge').load_data()
-    print(df)
+# if __name__ == '__main__':
+#     df = IMDBMovieReviewsLoader('The Social Network 2010','edge').load_data()
+#     print(df)
