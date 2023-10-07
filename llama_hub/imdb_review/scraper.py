@@ -4,10 +4,8 @@ try:
     from selenium.common.exceptions import NoSuchElementException
     import pandas as pd
     import os
-    from selenium import webdriver
     import time
     import re
-    import os
     import concurrent.futures
     from selenium.webdriver.chrome.service import Service
     from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -62,8 +60,9 @@ def scrape_data(revs):
     """
 
     try:
-        if_spoiler = revs.find_element(By.CLASS_NAME, "spoiler-warning")
-        spolier_btn = revs.find_element(By.CLASS_NAME, "ipl-expander").click()
+        # if_spoiler = revs.find_element(By.CLASS_NAME, "spoiler-warning")
+        spolier_btn = revs.find_element(By.CLASS_NAME, "ipl-expander")
+        spolier_btn.click()
         contents = revs.find_element(
             By.XPATH, "//div[contains(@class, 'text show-more__control')]"
         ).text
@@ -99,7 +98,7 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
         "google",
         "edge",
         "firefox",
-    ], f"The webdriver should be in ['google','edge','firefox']"
+    ], "The webdriver should be in ['google','edge','firefox']"
 
     ia = imdb.Cinemagoer()
     movies = ia.search_movie(movie_name)
@@ -121,7 +120,7 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
     driver.get(movie_link)
     driver.maximize_window()
 
-    last_height = driver.execute_script("return document.body.scrollHeight")
+    driver.execute_script("return document.body.scrollHeight")
 
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight-250);")
@@ -130,6 +129,7 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
             load_button.click()
             time.sleep(1)
         except:
+            print('Load more operation complete')
             break
 
     driver.execute_script("window.scrollTo(0, 100);")
