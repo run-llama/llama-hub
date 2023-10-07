@@ -16,6 +16,7 @@ try:
 except ImportError:
     print("There is an import error")
 
+
 def clean_text(text: str) -> str:
     """Clean raw text string.
 
