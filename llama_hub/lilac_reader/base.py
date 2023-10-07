@@ -8,6 +8,7 @@ from llama_index.readers.schema.base import Document
 if TYPE_CHECKING:
     from lilac import FilterLike, Path, ColumnId
 
+
 class LilacReader(BaseReader):
     """
     Lilac dataset reader
@@ -16,9 +17,9 @@ class LilacReader(BaseReader):
     def load_data(
         self,
         dataset: str,
-        text_path: "Path" = 'text',
-        doc_id_path: Optional["Path"] = 'doc_id',
-        columns: Optional[List['ColumnId']] = None,
+        text_path: "Path" = "text",
+        doc_id_path: Optional["Path"] = "doc_id",
+        columns: Optional[List["ColumnId"]] = None,
         filters: Optional[list["FilterLike"]] = None,
         project_dir: Optional[str] = None,
     ) -> List[Document]:
@@ -39,11 +40,8 @@ class LilacReader(BaseReader):
         try:
             import lilac as ll
         except ImportError:
-            raise (
-                "`lilac` package not found, please run `pip install lilac`"
-            )
+            raise ("`lilac` package not found, please run `pip install lilac`")
 
-    
         namespace, dataset_name = dataset.split("/")
         lilac_dataset = ll.get_dataset(namespace, dataset_name, project_dir=project_dir)
 
@@ -53,17 +51,22 @@ class LilacReader(BaseReader):
         text_path = ll.normalize_path(text_path)
         text_field = manifest.data_schema.get_field(text_path)
         if not text_field:
-            raise ValueError(f"Could not find text field {text_path} in dataset {dataset}")
+            raise ValueError(
+                f"Could not find text field {text_path} in dataset {dataset}"
+            )
 
         doc_id_path = ll.normalize_path(doc_id_path)
         doc_id_field = manifest.data_schema.get_field(doc_id_path)
         if not doc_id_field:
-            raise ValueError(f"Could not find doc_id field {doc_id_path} in dataset {dataset}")
+            raise ValueError(
+                f"Could not find doc_id field {doc_id_path} in dataset {dataset}"
+            )
 
         rows = lilac_dataset.select_rows(
-            columns=(columns + [text_field, doc_id_path]) if columns else ['*'],
+            columns=(columns + [text_field, doc_id_path]) if columns else ["*"],
             filters=filters,
-            combine_columns=True)
+            combine_columns=True,
+        )
 
         def _item_from_path(item: ll.Item, path: ll.PathTuple) -> ll.Item:
             if len(path) == 1:
@@ -74,7 +77,7 @@ class LilacReader(BaseReader):
                     return item
             else:
                 return _item_from_path(item[path[0]], path[1:])
-            
+
         def _remove_item_path(item: ll.Item, path: ll.PathTuple) -> None:
             if len(path) == 0:
                 return
@@ -95,12 +98,6 @@ class LilacReader(BaseReader):
             doc_id = _item_from_path(row, doc_id_path)
             _remove_item_path(row, text_path)
             _remove_item_path(row, doc_id_path)
-            documents.append(
-                Document(
-                    text=text,
-                    doc_id=doc_id,
-                    extra_info=row or {}
-                    ))
+            documents.append(Document(text=text, doc_id=doc_id, extra_info=row or {}))
 
         return documents
-    
