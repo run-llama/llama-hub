@@ -983,5 +983,14 @@
       "repository",
       "collaborators"
     ]
+  },
+  "BitbucketReader":{
+    "id": "bitbucket_reader",
+    "author": "priftil",
+    "keywords":[
+      "bitbucket",
+      "project",
+      "repository"
+    ]
   }
 }
