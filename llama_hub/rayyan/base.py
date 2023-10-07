@@ -5,19 +5,6 @@ import logging
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-from rayyan import Rayyan
-from rayyan.user import User
-from rayyan.review import Review
-
-from tqdm import tqdm
-from tenacity import (
-    retry,
-    stop_all,
-    stop_after_attempt,
-    stop_after_delay,
-    wait_random_exponential,
-)
-
 
 class RayyanReader(BaseReader):
     """Rayyan reader. Reads articles from a Rayyan review.
@@ -32,6 +19,9 @@ class RayyanReader(BaseReader):
         self, credentials_path: str, rayyan_url: str = "https://rayyan.ai"
     ) -> None:
         """Initialize Rayyan reader."""
+        from rayyan import Rayyan
+        from rayyan.user import User
+
         logging.debug("Initializing Rayyan reader...")
         self.rayyan = Rayyan(credentials_path, url=rayyan_url)
         user = User(self.rayyan).get_info()
@@ -47,6 +37,15 @@ class RayyanReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
+        from rayyan.review import Review
+        from tqdm import tqdm
+        from tenacity import (
+            retry,
+            stop_all,
+            stop_after_attempt,
+            stop_after_delay,
+            wait_random_exponential,
+        )
 
         rayyan_review = Review(self.rayyan)
         my_review = rayyan_review.get(review_id)
