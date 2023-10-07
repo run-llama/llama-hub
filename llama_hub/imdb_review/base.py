@@ -6,7 +6,7 @@ except ImportError:
 from llama_index.readers.base import BaseReader
 
 
-class IMDBMovieReviewsLoader(BaseReader):
+class IMDBReviews(BaseReader):
     def __init__(self, movie_name_year: str, webdriver_engine: str = "edge"):
         self.movie_name_year = movie_name_year
         self.webdriver_engine = webdriver_engine
