@@ -1,4 +1,4 @@
-# Bilibili Transcript Loader
+# Bitbucket Loader
 
 This loader utilizes the Bitbucket API to load the files inside a Bitbucket repository as Documents in an index.
 
