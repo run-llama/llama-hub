@@ -985,7 +985,7 @@
     ]
   },
   "BitbucketReader":{
-    "id": "bitbucket_reader",
+    "id": "bitbucket",
     "author": "lejdiprifti",
     "keywords":[
       "bitbucket",
