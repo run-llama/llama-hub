@@ -16,9 +16,6 @@ try:
 except ImportError:
     print("There is an import error")
 
-os.makedirs("movie_reviews", exist_ok=True)
-
-
 def clean_text(text: str) -> str:
     """Clean raw text string.
 
@@ -93,6 +90,7 @@ def scrape_data(revs):
 
 
 def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
+    os.makedirs("movie_reviews", exist_ok=True)
     assert webdriver_engine in [
         "google",
         "edge",
