@@ -93,7 +93,6 @@ def scrape_data(revs):
 
 
 def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
-
     assert webdriver_engine in [
         "google",
         "edge",
@@ -104,7 +103,7 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
     movies = ia.search_movie(movie_name)
     movie_name = movies[0].data["title"] + " " + str(movies[0].data["year"])
 
-    assert movie_name!="", "Please check the movie name that you passed"
+    assert movie_name != "", "Please check the movie name that you passed"
     print(
         f"Scraping movie reviews for {movie_name}. If you think it is not the right one, the best practice is to pass the movie name and year"
     )
@@ -129,7 +128,7 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
             load_button.click()
             time.sleep(1)
         except Exception:
-            print('Load more operation complete')
+            print("Load more operation complete")
             break
 
     driver.execute_script("window.scrollTo(0, 100);")
@@ -151,7 +150,9 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
         reviews_title.append(title)
 
         # driver.quit()
-    df = pd.DataFrame(columns=["review_date", "review_title", "review_content", "review_rating"])
+    df = pd.DataFrame(
+        columns=["review_date", "review_title", "review_content", "review_rating"]
+    )
 
     df["review_date"] = reviews_date
     df["review_title"] = reviews_title

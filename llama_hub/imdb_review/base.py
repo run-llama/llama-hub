@@ -7,18 +7,15 @@ from llama_index.readers.base import BaseReader
 
 
 class IMDBMovieReviewsLoader(BaseReader):
-    def __init__(
-      self,
-      movie_name_year: str,
-      webdriver_engine: str='edge'
-    ):
+    def __init__(self, movie_name_year: str, webdriver_engine: str = "edge"):
         self.movie_name_year = movie_name_year
         self.webdriver_engine = webdriver_engine
 
     def load_data(self):
-        movie_reviews_df = main_scraper(self.movie_name_year,self.webdriver_engine)
+        movie_reviews_df = main_scraper(self.movie_name_year, self.webdriver_engine)
 
         return movie_reviews_df
+
 
 # if __name__ == '__main__':
 #     df = IMDBMovieReviewsLoader('The Social Network 2010','edge').load_data()
