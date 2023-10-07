@@ -1,53 +1,78 @@
-from typing import List
+from typing import List, Optional, TypedDict
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-def safe_value_dict(dict_obj):
-    for key, value in dict_obj.items():
-        if isinstance(value, (str, int, float)):
-            dict_obj[key] = value
-        elif isinstance(value, list):
-            # Convert lists to strings
-            dict_obj[key] = ", ".join(map(str, value))
-        elif value is None:
-            # Replace None with a default string
-            dict_obj[key] = ""
-        else:
-            # Convert other types to strings
-            dict_obj[key] = str(value)
-    return dict_obj
+class BasicAuth(TypedDict):
+    email: str
+    api_token: str
+    server_url: str
+
+
+class Oauth2(TypedDict):
+    cloud_id: str
+    api_token: str
 
 
 class JiraReader(BaseReader):
     """Jira reader. Reads data from Jira issues from passed query.
 
     Args:
-        email (str): Jira email.
-        api_token (str): Jira API token.
-        server_url (str): Jira server url.
+        Optional basic_auth:{
+            "email": "email",
+            "api_token": "token",
+            "server_url": "server_url"
+        }
+        Optional oauth:{
+            "cloud_id": "cloud_id",
+            "api_token": "token"
+        }
     """
 
-    def __init__(self, email: str, api_token: str, server_url: str) -> None:
+    def __init__(
+        self,
+        email: Optional[str] = None,
+        api_token: Optional[str] = None,
+        server_url: Optional[str] = None,
+        BasicAuth: Optional[BasicAuth] = None,
+        Oauth2: Optional[Oauth2] = None,
+    ) -> None:
         from jira import JIRA
 
-        self.jira = JIRA(basic_auth=(email, api_token), server=f"https://{server_url}")
+        if email and api_token and server_url:
+            if BasicAuth is None:
+                BasicAuth = {}
+            BasicAuth["email"] = email
+            BasicAuth["api_token"] = api_token
+            BasicAuth["server_url"] = server_url
+
+        if Oauth2:
+            options = {
+                "server": f"https://api.atlassian.com/ex/jira/{Oauth2['cloud_id']}",
+                "headers": {"Authorization": f"Bearer {Oauth2['api_token']}"},
+            }
+            self.jira = JIRA(options=options)
+        else:
+            self.jira = JIRA(
+                basic_auth=(BasicAuth["email"], BasicAuth["api_token"]),
+                server=f"https://{BasicAuth['server_url']}",
+            )
 
     def load_data(self, query: str) -> List[Document]:
         relevant_issues = self.jira.search_issues(query)
 
         issues = []
 
+        assignee = ""
+        reporter = ""
+        epic_key = ""
+        epic_summary = ""
+        epic_descripton = ""
+
         for issue in relevant_issues:
             # Iterates through only issues and not epics
             if "parent" in (issue.raw["fields"]):
-                assignee = ""
-                reporter = ""
-                epic_key = ""
-                epic_summary = ""
-                epic_descripton = ""
-
                 if issue.fields.assignee:
                     assignee = issue.fields.assignee.displayName
 
@@ -65,29 +90,27 @@ class JiraReader(BaseReader):
                         "description"
                     ]
 
-                issues.append(
-                    Document(
-                        text=f"{issue.fields.summary} \n {issue.fields.description}",
-                        extra_info=safe_value_dict(
-                            {
-                                "id": issue.id,
-                                "title": issue.fields.summary,
-                                "url": issue.permalink(),
-                                "created_at": issue.fields.created,
-                                "updated_at": issue.fields.updated,
-                                "labels": issue.fields.labels,
-                                "status": issue.fields.status.name,
-                                "assignee": assignee,
-                                "reporter": reporter,
-                                "project": issue.fields.project.name,
-                                "issue_type": issue.fields.issuetype.name,
-                                "priority": issue.fields.priority.name,
-                                "epic_key": epic_key,
-                                "epic_summary": epic_summary,
-                                "epic_description": epic_descripton,
-                            }
-                        ),
-                    )
+            issues.append(
+                Document(
+                    text=f"{issue.fields.summary} \n {issue.fields.description}",
+                    extra_info={
+                        "id": issue.id,
+                        "title": issue.fields.summary,
+                        "url": issue.permalink(),
+                        "created_at": issue.fields.created,
+                        "updated_at": issue.fields.updated,
+                        "labels": issue.fields.labels,
+                        "status": issue.fields.status.name,
+                        "assignee": assignee,
+                        "reporter": reporter,
+                        "project": issue.fields.project.name,
+                        "issue_type": issue.fields.issuetype.name,
+                        "priority": issue.fields.priority.name,
+                        "epic_key": epic_key,
+                        "epic_summary": epic_summary,
+                        "epic_description": epic_descripton,
+                    },
                 )
+            )
 
         return issues

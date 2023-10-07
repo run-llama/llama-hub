@@ -35,6 +35,10 @@
     "id": "asana",
     "author": "daveey"
   },
+  "AssemblyAIAudioTranscriptReader": {
+    "id": "assemblyai",
+    "author": "patrickloeber"
+  },
   "AzStorageBlobReader": {
     "id": "azstorage_blob",
     "author": "rivms",

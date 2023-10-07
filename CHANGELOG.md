@@ -1,8 +1,15 @@
 ## Unreleased
 
 ### New Features
+
+### Smaller Features + Bug Fixes
+- fix: credentials path and readme improvement (#567)
+- fix: pdf google drive (#568)
+### [v0.0.35] - 2023-10-05
 - Loader for Macrometa GDN (#484)
 - adding boto3 minio doc loader (#497)
+- Add new data reader: AssemblyAIAudioTranscriptReader (#562)
+
 ### Smaller Features + Bug Fixes
 - fix: PyMuPDF Reader broken (#547)
 - Add page id to extra_info (#542) 
@@ -14,11 +21,15 @@
 - Add JSONL functionality to JSONReader (#552)
 - add url and timestamp to slack loader documents metadata (#559)
 - add url to asana loader docs (#560)
+- Added oAuth to Jira loader (#272)
+- refactor: add custom path for download_loader to enable functionality (#318)
+
 ## [v0.0.34] - 2023-09-27
 
 ### New Features
 - feat: Add PlaygroundsSubgraphInspectorToolSpec to llama_hub (#535)
 - add full formatting and linting (#537, #538)
+- Add new data reader: AssemblyAIAudioTranscriptReader (#562)
 
 ### Smaller Features + Bug Fixes
 - fix: added missing loaders removed from a old PR (#540)
