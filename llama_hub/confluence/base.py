@@ -137,7 +137,7 @@ class ConfluenceReader(BaseReader):
             raise ImportError(
                 "`html2text` package not found, please run `pip install html2text`"
             )
-        
+
         text_maker = html2text.HTML2Text()
         text_maker.ignore_links = True
         text_maker.ignore_images = True
