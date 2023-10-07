@@ -1,10 +1,14 @@
 ## Unreleased
 
 ### New Features
+- Add RayyanLoader to fetch review articles from Rayyan (#570)
+- added bitbucket loader (#572)
 
 ### Smaller Features + Bug Fixes
 - fix: credentials path and readme improvement (#567)
 - fix: pdf google drive (#568)
+- Updating URLs in Wikipedia Loader (#569)
+
 ### [v0.0.35] - 2023-10-05
 - Loader for Macrometa GDN (#484)
 - adding boto3 minio doc loader (#497)
