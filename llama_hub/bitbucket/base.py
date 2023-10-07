@@ -35,18 +35,20 @@ class BitbucketReader(BaseReader):
         self.project_key = project_key
         self.branch = branch
 
+    def get_headers(self):
+        username = os.getenv("BITBUCKET_USERNAME")
+        api_token = os.getenv("BITBUCKET_API_KEY")
+        auth = base64.b64encode(f"{username}:{api_token}".encode()).decode()
+        return {"Authorization": f"Basic {auth}"}
+
     def get_slugs(self) -> List:
         """
         Get slugs of the specific project.
         """
-        username = os.getenv("BITBUCKET_USERNAME")
-        api_token = os.getenv("BITBUCKET_API_KEY")
-        auth = base64.b64encode(f"{username}:{api_token}".encode()).decode()
-
         repos_url = (
             f"{self.base_url}/rest/api/latest/projects/{self.project_key}/repos/"
         )
-        headers = {"Authorization": f"Basic {auth}"}
+        headers = self.get_headers()
         slugs = []
         response = requests.get(repos_url, headers=headers)
 
@@ -66,6 +68,7 @@ class BitbucketReader(BaseReader):
         query_params = {
             "at": branch,
         }
+        headers = self.get_headers()
         response = requests.get(content_url, headers=headers, params=query_params)
         children = response.json()["children"]
         for value in children["values"]:
@@ -90,6 +93,7 @@ class BitbucketReader(BaseReader):
         query_params = {
             "at": branch,
         }
+        headers = self.get_headers()
         response = requests.get(content_url, headers=headers, params=query_params)
         children = response.json()
         return children["lines"]
