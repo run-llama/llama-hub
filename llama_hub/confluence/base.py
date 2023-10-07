@@ -134,7 +134,7 @@ class ConfluenceReader(BaseReader):
         try:
             import html2text  # type: ignore
         except ImportError:
-            raise ImportError(
+            raise (
                 "`html2text` package not found, please run `pip install html2text`"
             )
 
