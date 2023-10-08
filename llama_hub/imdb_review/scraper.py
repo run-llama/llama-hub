@@ -92,11 +92,6 @@ def scrape_data(revs):
 
 def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
     os.makedirs("movie_reviews", exist_ok=True)
-    assert webdriver_engine in [
-        "google",
-        "edge",
-        "firefox",
-    ], "The webdriver should be in ['google','edge','firefox']"
 
     ia = imdb.Cinemagoer()
     movies = ia.search_movie(movie_name)
@@ -150,15 +145,15 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
 
         # driver.quit()
     df = pd.DataFrame(
-        columns=["review_date", "review_title", "review_content", "review_rating"]
+        columns=["review_date", "review_title", "review_comment", "review_rating"]
     )
 
     df["review_date"] = reviews_date
     df["review_title"] = reviews_title
-    df["review_content"] = reviews_comment
+    df["review_comment"] = reviews_comment
     df["review_rating"] = reviews_rating
 
     # print(df)
     df.to_csv(f"movie_reviews/{movie_name}.csv", index=False)
 
-    return df
+    return reviews_date, reviews_title, reviews_comment, reviews_rating
