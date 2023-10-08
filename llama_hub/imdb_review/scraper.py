@@ -90,9 +90,22 @@ def scrape_data(revs):
     return date, contents, rating, title
 
 
-def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
-    os.makedirs("movie_reviews", exist_ok=True)
+def main_scraper(
+    movie_name: str, webdriver_engine: str = "edge", generate_csv: bool = False
+):
+    """The main helper function to scrape data in multiprocessing way
 
+    Args:
+        movie_name (str): The name of the movie along with the year
+        webdriver_engine (str, optional): The webdriver engine to use. Defaults to "edge".
+        generate_csv (bool, optional): whether to save the dataframe files. Defaults to False.
+
+    Returns:
+        reviews_date (List): list of dates of each review
+        reviews_title (List): list of title of each review
+        reviews_comment (List): list of comment of each review
+        reviews_rating (List):  list of ratings of each review
+    """
     ia = imdb.Cinemagoer()
     movies = ia.search_movie(movie_name)
     movie_name = movies[0].data["title"] + " " + str(movies[0].data["year"])
@@ -144,16 +157,18 @@ def main_scraper(movie_name: str, webdriver_engine: str = "edge"):
         reviews_title.append(title)
 
         # driver.quit()
-    df = pd.DataFrame(
-        columns=["review_date", "review_title", "review_comment", "review_rating"]
-    )
+    if generate_csv:
+        os.makedirs("movie_reviews", exist_ok=True)
+        df = pd.DataFrame(
+            columns=["review_date", "review_title", "review_comment", "review_rating"]
+        )
 
-    df["review_date"] = reviews_date
-    df["review_title"] = reviews_title
-    df["review_comment"] = reviews_comment
-    df["review_rating"] = reviews_rating
+        df["review_date"] = reviews_date
+        df["review_title"] = reviews_title
+        df["review_comment"] = reviews_comment
+        df["review_rating"] = reviews_rating
 
-    # print(df)
-    df.to_csv(f"movie_reviews/{movie_name}.csv", index=False)
+        # print(df)
+        df.to_csv(f"movie_reviews/{movie_name}.csv", index=False)
 
     return reviews_date, reviews_title, reviews_comment, reviews_rating

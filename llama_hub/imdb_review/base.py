@@ -8,7 +8,12 @@ from llama_index.readers.schema.base import Document
 
 
 class IMDBReviews(BaseReader):
-    def __init__(self, movie_name_year: str, webdriver_engine: str = "edge"):
+    def __init__(
+        self,
+        movie_name_year: str,
+        webdriver_engine: str = "edge",
+        generate_csv: bool = False,
+    ):
         assert webdriver_engine in [
             "google",
             "edge",
@@ -16,6 +21,7 @@ class IMDBReviews(BaseReader):
         ], "The webdriver should be in ['google','edge','firefox']"
         self.movie_name_year = movie_name_year
         self.webdriver_engine = webdriver_engine
+        self.generate_csv = generate_csv
 
     def load_data(self) -> List[Document]:
         """scrapes the data from the IMDB website movie reviews
@@ -24,7 +30,7 @@ class IMDBReviews(BaseReader):
             List[Document]: document object in llama index with date and rating as extra information
         """
         reviews_date, reviews_title, reviews_comment, reviews_rating = main_scraper(
-            self.movie_name_year, self.webdriver_engine
+            self.movie_name_year, self.webdriver_engine, self.generate_csv
         )
 
         all_docs = []
