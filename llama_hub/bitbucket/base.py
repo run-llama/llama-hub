@@ -21,6 +21,7 @@ class BitbucketReader(BaseReader):
         base_url: Optional[str] = None,
         project_key: Optional[str] = None,
         branch: Optional[str] = "refs/heads/develop",
+        extensions_to_skip: Optional[List] = [],
     ) -> None:
         """Initialize with parameters."""
         if os.getenv("BITBUCKET_USERNAME") is None:
@@ -34,6 +35,7 @@ class BitbucketReader(BaseReader):
         self.base_url = base_url
         self.project_key = project_key
         self.branch = branch
+        self.extensions_to_skip = extensions_to_skip
 
     def get_headers(self):
         username = os.getenv("BITBUCKET_USERNAME")
@@ -76,12 +78,13 @@ class BitbucketReader(BaseReader):
         children = response["children"]
         for value in children["values"]:
             if value["type"] == "FILE":
-                paths.append(
-                    {
-                        "slug": slug,
-                        "path": f'{directory_path}/{value["path"]["toString"]}',
-                    }
-                )
+                if value["extension"] not in self.extensions_to_skip:
+                    paths.append(
+                        {
+                            "slug": slug,
+                            "path": f'{directory_path}/{value["path"]["toString"]}',
+                        }
+                    )
             elif value["type"] == "DIRECTORY":
                 self.load_all_file_paths(
                     slug=slug,
@@ -102,7 +105,11 @@ class BitbucketReader(BaseReader):
         headers = self.get_headers()
         response = requests.get(content_url, headers=headers, params=query_params)
         children = response.json()
-        return children["lines"]
+        if "errors" in children:
+            raise ValueError(children["errors"])
+        if "lines" in children:
+            return children["lines"]
+        return []
 
     def load_text(self, paths) -> List:
         text_dict = []
