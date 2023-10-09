@@ -1,6 +1,8 @@
 # LlamaHub 🦙
 
-This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/jerryjliu/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
+**Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
+
+This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
 
 Loaders and readers allow you to easily ingest data for search and retrieval by a large language models, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capaibility of next level large language models.
 

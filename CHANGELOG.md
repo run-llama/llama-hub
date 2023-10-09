@@ -1,3 +1,11 @@
+## [v0.0.37] - 2023-10-09
+
+### New Features
+- Add Nougat OCR loader (#541)
+
+### Smaller Features + Bug Fixes
+- improve bitbucket loader and extension to skip (#576)
+
 ## [v0.0.36] - 2023-10-07
 
 ### New Features
