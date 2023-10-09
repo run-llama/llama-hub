@@ -984,6 +984,16 @@
       "collaborators"
     ]
   },
+
+  "IMDBReviews":{
+    "id": "imdb_review",
+    "author": "Athe-kunal",
+    "keywords":[
+      "movies",
+      "reviews",
+      "IMDB"
+  ]
+},
   "PDFNougatOCR": {
     "id": "nougat_ocr",
     "author": "mdarshad1000",
