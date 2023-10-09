@@ -984,6 +984,15 @@
       "collaborators"
     ]
   },
+  "PDFNougatOCR": {
+    "id": "nougat_ocr",
+    "author": "mdarshad1000",
+    "keywords": [
+      "pdf",
+      "ocr",
+      "academic papers"
+    ]
+  },
   "BitbucketReader":{
     "id": "bitbucket",
     "author": "lejdiprifti",
