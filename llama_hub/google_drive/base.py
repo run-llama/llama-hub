@@ -74,9 +74,9 @@ class GoogleDriveReader(BaseReader):
         creds = None
         if os.path.exists(self.token_path):
             creds = Credentials.from_authorized_user_file(self.token_path, SCOPES)
-        elif os.path.exists(self.service_account_path):
+        elif os.path.exists(self.credentials_path):
             creds = service_account.Credentials.from_service_account_file(
-                self.service_account_path, scopes=SCOPES
+                self.credentials_path, scopes=SCOPES
             )
             gauth = GoogleAuth()
             gauth.credentials = creds
@@ -287,7 +287,7 @@ class GoogleDriveReader(BaseReader):
                 metadata = {}
 
                 for fileid_meta in fileids_meta:
-                    filename = next(tempfile._get_candidate_names())
+                    filename = fileid_meta[2]
                     filepath = os.path.join(temp_dir, filename)
                     fileid = fileid_meta[0]
                     final_filepath = self._download_file(fileid, filepath)

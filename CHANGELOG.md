@@ -1,3 +1,48 @@
+## [v0.0.36] - 2023-10-07
+
+### New Features
+- Add RayyanLoader to fetch review articles from Rayyan (#570)
+- added bitbucket loader (#572)
+
+### Smaller Features + Bug Fixes
+- fix: credentials path and readme improvement (#567)
+- fix: pdf google drive (#568)
+- Updating URLs in Wikipedia Loader (#569)
+
+### [v0.0.35] - 2023-10-05
+- Loader for Macrometa GDN (#484)
+- adding boto3 minio doc loader (#497)
+- Add new data reader: AssemblyAIAudioTranscriptReader (#562)
+
+### Smaller Features + Bug Fixes
+- fix: PyMuPDF Reader broken (#547)
+- Add page id to extra_info (#542) 
+- Update: Readme with corrected example url for Playgrounds_subgraph_connector tool (#551)
+- add url and status to confluence loader document (#553)
+- Changes from llama_index/PR#7906 (#557)
+- fix: sql_wrapper utilities (#558)
+- Adding functionality for AsanaReader (#386)
+- Add JSONL functionality to JSONReader (#552)
+- add url and timestamp to slack loader documents metadata (#559)
+- add url to asana loader docs (#560)
+- Added oAuth to Jira loader (#272)
+- refactor: add custom path for download_loader to enable functionality (#318)
+
+## [v0.0.34] - 2023-09-27
+
+### New Features
+- feat: Add PlaygroundsSubgraphInspectorToolSpec to llama_hub (#535)
+- add full formatting and linting (#537, #538)
+- Add new data reader: AssemblyAIAudioTranscriptReader (#562)
+
+### Smaller Features + Bug Fixes
+- fix: added missing loaders removed from a old PR (#540)
+- break loop if API error for slack reader (#544)  
+- mbox: allow custom, stable document id (#393)
+- update database doc (#531)
+- fix: jsondata loader on library (#539)
+- fix: remove isort due using black and add a new checklist (#546)
+
 ## [v0.0.33] - 2023-09-24
 
 ### New Features

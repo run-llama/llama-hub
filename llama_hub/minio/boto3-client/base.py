@@ -1,8 +1,9 @@
-"""S3 file and directory reader.
+"""Minio file and directory reader.
 
-A loader that fetches a file or iterates through a directory on AWS S3.
+A loader that fetches a file or iterates through a directory on Minio.
 
 """
+
 import tempfile
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -12,8 +13,11 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 
-class S3Reader(BaseReader):
-    """General reader for any S3 file or directory."""
+class BotoMinioReader(BaseReader):
+    """General reader for any S3 file or directory.
+    A loader that fetches a file or iterates through a directory on minio using boto3.
+
+    """
 
     def __init__(
         self,
@@ -30,7 +34,6 @@ class S3Reader(BaseReader):
         aws_access_secret: Optional[str] = None,
         aws_session_token: Optional[str] = None,
         s3_endpoint_url: Optional[str] = "https://s3.amazonaws.com",
-        custom_reader_path: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """Initialize S3 bucket and key, along with credentials if needed.
@@ -68,7 +71,6 @@ class S3Reader(BaseReader):
         self.filename_as_id = filename_as_id
         self.num_files_limit = num_files_limit
         self.file_metadata = file_metadata
-        self.custom_reader_path = custom_reader_path
 
         self.aws_access_id = aws_access_id
         self.aws_access_secret = aws_access_secret
@@ -79,16 +81,24 @@ class S3Reader(BaseReader):
         """Load file(s) from S3."""
         import boto3
 
-        s3 = boto3.resource("s3")
-        s3_client = boto3.client("s3")
-        if self.aws_access_id:
-            session = boto3.Session(
-                aws_access_key_id=self.aws_access_id,
-                aws_secret_access_key=self.aws_access_secret,
-                aws_session_token=self.aws_session_token,
-            )
-            s3 = session.resource("s3")
-            s3_client = session.client("s3", endpoint_url=self.s3_endpoint_url)
+        s3_client = boto3.client(
+            "s3",
+            endpoint_url=self.s3_endpoint_url,
+            aws_access_key_id=self.aws_access_id,
+            aws_secret_access_key=self.aws_access_secret,
+            aws_session_token=self.aws_session_token,
+            config=boto3.session.Config(signature_version="s3v4"),
+            verify=False,
+        )
+        s3 = boto3.resource(
+            "s3",
+            endpoint_url=self.s3_endpoint_url,
+            aws_access_key_id=self.aws_access_id,
+            aws_secret_access_key=self.aws_access_secret,
+            aws_session_token=self.aws_session_token,
+            config=boto3.session.Config(signature_version="s3v4"),
+            verify=False,
+        )
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.key:
@@ -120,14 +130,7 @@ class S3Reader(BaseReader):
             try:
                 from llama_index import SimpleDirectoryReader
             except ImportError:
-                custom_reader_path = self.custom_reader_path
-
-                if custom_reader_path is not None:
-                    SimpleDirectoryReader = download_loader(
-                        "SimpleDirectoryReader", custom_path=custom_reader_path
-                    )
-                else:
-                    SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
+                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
             loader = SimpleDirectoryReader(
                 temp_dir,

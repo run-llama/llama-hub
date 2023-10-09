@@ -51,13 +51,30 @@ class JSONReader(BaseReader):
         self.levels_back = levels_back
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+        self,
+        file: Path,
+        is_jsonl: Optional[bool] = False,
+        extra_info: Optional[Dict] = None,
     ) -> List[Document]:
-        """Load data from the input file."""
+        """Load data from the input file.
+
+        Args:
+            file (Path): Path to the input file.
+            is_jsonl (Optional[bool]): If True, indicates that the file is in JSONL format. Defaults to False.
+            extra_info (Optional[Dict]): Additional information. Default is None.
+
+        Returns:
+            List[Document]: List of documents.
+        """
         if not isinstance(file, Path):
             file = Path(file)
         with open(file, "r") as f:
-            data = json.load(f)
+            data = []
+            if is_jsonl:
+                for line in f:
+                    data.append(json.loads(line.strip()))
+            else:
+                data = json.load(f)
             documents = []
             for json_object in data:
                 if self.levels_back is None:

@@ -35,6 +35,10 @@
     "id": "asana",
     "author": "daveey"
   },
+  "AssemblyAIAudioTranscriptReader": {
+    "id": "assemblyai",
+    "author": "patrickloeber"
+  },
   "AzStorageBlobReader": {
     "id": "azstorage_blob",
     "author": "rivms",
@@ -44,6 +48,10 @@
       "container",
       "azure"
     ]
+  },
+  "AzCognitiveSearchReader": {
+    "id": "azcognitive_search",
+    "author": "mrcabellom"
   },
   "GoogleDocsReader": {
     "id": "google_docs",
@@ -104,6 +112,10 @@
   "JSONReader": {
     "id": "file/json",
     "author": "yisding"
+  },
+  "JsonDataReader": {
+    "id": "jsondata",
+    "author": "jerryjliu"
   },
   "MarkdownReader": {
     "id": "file/markdown",
@@ -211,6 +223,10 @@
       "neo4j",
       "cypher"
     ]
+  },
+  "GladiaAudioTranscriber": {
+    "id": "file/audio_gladia",
+    "author": "ravi03071991"
   },
   "DiscordReader": {
     "id": "discord",
@@ -868,12 +884,22 @@
     ]
   },
   "MinioReader": {
-    "id": "minio",
+    "id": "minio/minio-client",
     "author": "semoal",
     "keywords": [
       "minio",
       "bucket",
       "storage"
+    ]
+  },
+  "BotoMinioReader": {
+    "id": "minio/boto3-client",
+    "author": "webcoderz",
+    "keywords": [
+      "minio",
+      "bucket",
+      "storage",
+      "boto"
     ]
   },
   "NewsArticleReader": {
@@ -907,11 +933,13 @@
   "ZepReader": {
     "id": "zep",
     "author": "zep",
+    "keywords": ["zep", "retriever", "memory", "storage"]
+  },
+  "MacrometaGDNReader": {
+  	"id": "macrometa_gdn",
+  	"author": "Dain Im",
     "keywords": [
-      "zep",
-      "retriever",
-      "memory",
-      "storage"
+      "macrometa"
     ]
   },
   "BagelReader": {
@@ -963,6 +991,23 @@
       "pdf",
       "ocr",
       "academic papers"
+    ]
+  },
+  "BitbucketReader":{
+    "id": "bitbucket",
+    "author": "lejdiprifti",
+    "keywords":[
+      "bitbucket",
+      "project",
+      "repository"
+    ]
+  },
+  "RayyanReader": {
+    "id": "rayyan",
+    "author": "hammady",
+    "keywords": [
+      "rayyan",
+      "systematic review"
     ]
   }
 }
