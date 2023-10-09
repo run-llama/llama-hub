@@ -984,6 +984,7 @@
       "collaborators"
     ]
   },
+
   "IMDBReviews":{
     "id": "imdb_review",
     "author": "Athe-kunal",
@@ -993,6 +994,15 @@
       "IMDB"
   ]
 },
+  "PDFNougatOCR": {
+    "id": "nougat_ocr",
+    "author": "mdarshad1000",
+    "keywords": [
+      "pdf",
+      "ocr",
+      "academic papers"
+    ]
+  },
   "BitbucketReader":{
     "id": "bitbucket",
     "author": "lejdiprifti",
