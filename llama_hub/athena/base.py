@@ -1,9 +1,10 @@
 """Athena Reader."""
 from typing import Optional
+import warnings
+import boto3
 from sqlalchemy.engine import create_engine
 from llama_index.readers.base import BaseReader
-import boto3
-import warnings
+
 
 class AthenaReader(BaseReader):
     """Athena reader. 
@@ -13,15 +14,16 @@ class AthenaReader(BaseReader):
     We recommend that you use IAM roles instead of IAM user credentials.
     If you must use credentials, do not embed them in your code.
     Instead, store them in environment variables or in a separate configuration file.
-    
+
     """
+
     def __init__(
         self,
     ) -> None:
         """Initialize with parameters."""
-        
 
-    def create_engine (
+    def create_engine(
+        self,
         aws_access_key: Optional[str] = None,
         aws_secret_key: Optional[str] = None,
         aws_region: str = None,
@@ -41,7 +43,7 @@ class AthenaReader(BaseReader):
         if not aws_access_key or not aws_secret_key:
 
             conn_str = "awsathena+rest://:@athena.{region_name}.amazonaws.com:443/"\
-                    "{database}?s3_staging_dir={s3_staging_dir}?work_group={workgroup}"
+                "{database}?s3_staging_dir={s3_staging_dir}?work_group={workgroup}"
 
             engine = create_engine(conn_str.format(
                 region_name=aws_region,
@@ -50,8 +52,9 @@ class AthenaReader(BaseReader):
                 workgroup=workgroup,
             ))
 
-        else: 
-            warnings.warn("aws_access_key and aws_secret_key are set. We recommend to use IAM role instead.")
+        else:
+            warnings.warn(
+                "aws_access_key and aws_secret_key are set. We recommend to use IAM role instead.")
             boto3.client(
                 'athena',
                 aws_access_key_id=aws_access_key,
@@ -60,7 +63,7 @@ class AthenaReader(BaseReader):
             )
 
             conn_str = "awsathena+rest://:@athena.{region_name}.amazonaws.com:443/"\
-                    "{database}?s3_staging_dir={s3_staging_dir}?work_group={workgroup}"
+                "{database}?s3_staging_dir={s3_staging_dir}?work_group={workgroup}"
 
             engine = create_engine(conn_str.format(
                 region_name=aws_region,
@@ -68,5 +71,4 @@ class AthenaReader(BaseReader):
                 database=database,
                 workgroup=workgroup,
             ))
-
         return engine
