@@ -22,7 +22,7 @@ class AthenaReader(BaseReader):
     ) -> None:
         """Initialize with parameters."""
 
-    def create_engine(
+    def create_athena_engine(
         self,
         aws_access_key: Optional[str] = None,
         aws_secret_key: Optional[str] = None,

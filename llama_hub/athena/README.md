@@ -25,7 +25,7 @@ TABLE = os.environ['TABLE']
 
 llm = OpenAI(model="gpt-4",temperature=0, max_tokens=1024)
 
-engine = AthenaReader.create_engine(
+engine = AthenaReader.create_athena_engine(
     aws_region=AWS_REGION,
     s3_staging_dir=S3_STAGING_DIR,
     database=DATABASE,
