@@ -1,10 +1,7 @@
 """Athena Reader."""
-from typing import Optional
 import warnings
-import boto3
-from sqlalchemy.engine import create_engine
+from typing import Optional
 from llama_index.readers.base import BaseReader
-
 
 class AthenaReader(BaseReader):
     """Athena reader. 
@@ -21,6 +18,8 @@ class AthenaReader(BaseReader):
         self,
     ) -> None:
         """Initialize with parameters."""
+        import boto3
+        from sqlalchemy.engine import create_engine
 
     def create_athena_engine(
         self,
@@ -40,6 +39,7 @@ class AthenaReader(BaseReader):
             database is the Athena database name
             workgroup is the Athena workgroup name
         """
+        
         if not aws_access_key or not aws_secret_key:
 
             conn_str = "awsathena+rest://:@athena.{region_name}.amazonaws.com:443/"\
