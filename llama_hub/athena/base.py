@@ -18,8 +18,6 @@ class AthenaReader(BaseReader):
         self,
     ) -> None:
         """Initialize with parameters."""
-        import boto3
-        from sqlalchemy.engine import create_engine
 
     def create_athena_engine(
         self,
@@ -39,6 +37,8 @@ class AthenaReader(BaseReader):
             database is the Athena database name
             workgroup is the Athena workgroup name
         """
+        import boto3
+        from sqlalchemy.engine import create_engine
         
         if not aws_access_key or not aws_secret_key:
 
