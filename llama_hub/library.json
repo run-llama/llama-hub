@@ -1019,5 +1019,14 @@
       "rayyan",
       "systematic review"
     ]
+  },
+  "AthenaReader": {
+    "id": "athena",
+    "author": "mattick27",
+    "keywords": [
+      "aws athena",
+      "sql",
+      "datalake"
+    ]
   }
 }
