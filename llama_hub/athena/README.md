@@ -48,3 +48,6 @@ query_str = (
 )
 response = query_engine.query(query_str)
 ```
+
+## Screeshot
+![image](https://vultureprime-research-center.s3.ap-southeast-1.amazonaws.com/Screenshot+2566-10-07+at+17.58.45.png)
