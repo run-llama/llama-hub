@@ -1,4 +1,4 @@
-from playgrounds_subgraph_connector.base import (
+from llama_hub.tools.playgrounds_subgraph_connector.base import (
     PlaygroundsSubgraphConnectorToolSpec,
 )
 

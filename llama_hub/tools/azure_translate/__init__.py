@@ -1,5 +1,5 @@
 ## init
-from azure_translate.base import (
+from llama_hub.tools.azure_translate.base import (
     AzureTranslateToolSpec,
     ENDPOINT_BASE_URL,
 )

@@ -1,5 +1,5 @@
 # __init__.py
-from yelp.base import (
+from llama_hub.tools.yelp.base import (
     YelpToolSpec,
 )
 

@@ -1,5 +1,5 @@
 ## init
-from bing_search.base import (
+from llama_hub.tools.bing_search.base import (
     BingSearchToolSpec,
     ENDPOINT_BASE_URL,
 )

@@ -1,5 +1,5 @@
 ## Init.py
-from text_to_image.base import (
+from llama_hub.tools.text_to_image.base import (
     TextToImageToolSpec,
 )
 

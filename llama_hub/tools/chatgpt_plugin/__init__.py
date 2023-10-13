@@ -1,5 +1,5 @@
 """init.py"""
-from chatgpt_plugin.base import (
+from llama_hub.tools.chatgpt_plugin.base import (
     ChatGPTPluginToolSpec,
 )
 

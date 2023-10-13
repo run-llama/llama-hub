@@ -1,5 +1,5 @@
 # init
-from wolfram_alpha.base import (
+from llama_hub.tools.wolfram_alpha.base import (
     QUERY_URL_TMPL,
     WolframAlphaToolSpec,
 )

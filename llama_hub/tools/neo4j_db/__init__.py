@@ -1,5 +1,5 @@
 """Init file."""
-from neo4j_db.base import (
+from llama_hub.tools.neo4j_db.base import (
     Neo4jQueryToolSpec,
 )
 

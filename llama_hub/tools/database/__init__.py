@@ -1,5 +1,5 @@
 # __init__.py
-from database.base import (
+from llama_hub.tools.database.base import (
     DatabaseToolSpec,
 )
 

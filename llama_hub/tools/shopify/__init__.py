@@ -1,5 +1,5 @@
 ## Init.py
-from shopify.base import (
+from llama_hub.tools.shopify.base import (
     ShopifyToolSpec,
 )
 

@@ -1,5 +1,5 @@
 ## init
-from azure_cv.base import (
+from llama_hub.tools.azure_cv.base import (
     AzureCVToolSpec,
     CV_URL_TMPL,
 )

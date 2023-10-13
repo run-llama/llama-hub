@@ -1,5 +1,5 @@
 # __init__.py
-from openapi.base import (
+from llama_hub.tools.openapi.base import (
     OpenAPIToolSpec,
 )
 

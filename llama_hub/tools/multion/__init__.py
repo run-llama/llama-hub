@@ -1,5 +1,5 @@
 ## init
-from multion.base import (
+from llama_hub.tools.multion.base import (
     MultionToolSpec,
 )
 

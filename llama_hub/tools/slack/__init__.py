@@ -1,5 +1,5 @@
 # __init__.py
-from slack.base import (
+from llama_hub.tools.slack.base import (
     SlackToolSpec,
 )
 

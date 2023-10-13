@@ -1,5 +1,5 @@
 ## init
-from arxiv.base import (
+from llama_hub.tools.arxiv.base import (
     ArxivToolSpec,
 )
 

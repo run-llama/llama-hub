@@ -1,5 +1,5 @@
 """Google Calendar Tool Spec"""
-from google_calendar.base import (
+from llama_hub.tools.google_calendar.base import (
     GoogleCalendarToolSpec,
     SCOPES,
 )

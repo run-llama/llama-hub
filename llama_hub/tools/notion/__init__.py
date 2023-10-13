@@ -1,5 +1,5 @@
 """Notion tool spec."""
-from notion.base import (
+from llama_hub.tools.notion.base import (
     BLOCK_CHILD_URL_TMPL,
     DATABASE_URL_TMPL,
     INTEGRATION_TOKEN_NAME,

@@ -1,5 +1,5 @@
 """Init file."""
-from salesforce.base import (
+from llama_hub.tools.salesforce.base import (
     SalesforceToolSpec,
 )
 

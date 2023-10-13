@@ -1,5 +1,5 @@
 ## init file
-from azure_speech.base import (
+from llama_hub.tools.azure_speech.base import (
     AzureSpeechToolSpec,
 )
 

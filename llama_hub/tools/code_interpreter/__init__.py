@@ -1,5 +1,5 @@
 """init.py"""
-from code_interpreter.base import (
+from llama_hub.tools.code_interpreter.base import (
     CodeInterpreterToolSpec,
 )
 

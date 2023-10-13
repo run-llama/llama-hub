@@ -1,5 +1,5 @@
 """__init__.py"""
-from gmail.base import (
+from llama_hub.tools.gmail.base import (
     GmailToolSpec,
     SCOPES,
 )

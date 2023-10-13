@@ -1,5 +1,5 @@
 #
-from requests.base import (
+from llama_hub.tools.requests.base import (
     INVALID_URL_PROMPT,
     RequestsToolSpec,
 )

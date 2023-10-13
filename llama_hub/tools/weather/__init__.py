@@ -1,4 +1,4 @@
-from weather.base import (
+from llama_hub.tools.weather.base import (
     OpenWeatherMapToolSpec,
 )
 

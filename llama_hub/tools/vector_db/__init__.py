@@ -1,5 +1,5 @@
 # init
-from vector_db.base import (
+from llama_hub.tools.vector_db.base import (
     VectorDB,
     VectorDBToolSpec,
 )

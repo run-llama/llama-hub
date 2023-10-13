@@ -1,5 +1,5 @@
 ## init
-from graphql.base import (
+from llama_hub.tools.graphql.base import (
     GraphQLToolSpec,
 )
 

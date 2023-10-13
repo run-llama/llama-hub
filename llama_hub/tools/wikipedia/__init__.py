@@ -1,5 +1,5 @@
 """Init file."""
-from wikipedia.base import (
+from llama_hub.tools.wikipedia.base import (
     WikipediaToolSpec,
 )
 

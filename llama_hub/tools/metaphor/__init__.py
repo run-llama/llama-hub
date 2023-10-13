@@ -1,5 +1,5 @@
 ## init
-from metaphor.base import (
+from llama_hub.tools.metaphor.base import (
     MetaphorToolSpec,
 )
 

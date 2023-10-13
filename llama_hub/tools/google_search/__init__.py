@@ -1,5 +1,5 @@
 # init
-from google_search.base import (
+from llama_hub.tools.google_search.base import (
     GoogleSearchToolSpec,
     QUERY_URL_TMPL,
 )
