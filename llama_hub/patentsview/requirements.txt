@@ -1,4 +1,0 @@
-"""Patentsview patent abstract loader"""
-
-
-from llama_index.reader.base import BaseReader
