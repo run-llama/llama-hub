@@ -8,7 +8,7 @@ Here's an example of how to use it
 
 ```python
 
-from llama_hub.linear.base import LinearReader
+from llama_hub.linear import LinearReader
 
 reader = LinearReader(api_key=api_key)
 query = """

@@ -13,7 +13,7 @@ This tool has more a extensive example usage documented in a Jupyter notebook [h
 Here's an example usage of the MultionToolSpec.
 
 ```python
-from llama_hub.tools.metaphor.base import MultionToolSpec
+from llama_hub.tools.metaphor import MultionToolSpec
 from llama_index.agent import OpenAIAgent
 
 multion_tool = MultionToolSpec()

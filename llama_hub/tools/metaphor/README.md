@@ -12,7 +12,7 @@ This tool has more a extensive example usage documented in a Jupyter notebook [h
 Here's an example usage of the MetaphorToolSpec.
 
 ```python
-from llama_hub.tools.metaphor.base import MetaphorToolSpec
+from llama_hub.tools.metaphor import MetaphorToolSpec
 from llama_index.agent import OpenAIAgent
 
 metaphor_tool = MetaphorToolSpec(

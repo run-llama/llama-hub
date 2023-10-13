@@ -12,7 +12,7 @@ The Airbyte Shopify Loader allows you to access different Shopify objects.
 Here's an example usage of the AirbyteShopifyReader.
 
 ```python
-from llama_hub.airbyte_shopify.base import AirbyteShopifyReader
+from llama_hub.airbyte_shopify import AirbyteShopifyReader
 
 shopify_config = {
     # ...

@@ -12,7 +12,7 @@ The tool has access to the following functions:
 Here's an example usage of the OpenWeatherMapToolSpec.
 
 ```python
-from llama_hub.tools.weather.base import OpenWeatherMapToolSpec
+from llama_hub.tools.weather import OpenWeatherMapToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = OpenWeatherMapToolSpec(key="...")

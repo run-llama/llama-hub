@@ -22,7 +22,7 @@ To utilize the tool, simply initialize it with the appropriate `identifier` (Sub
 ```python
 import openai
 from llama_index.agent import OpenAIAgent
-from llama_hub.tools.playgrounds_subgraph_connector.base import PlaygroundsSubgraphConnectorToolSpec
+from llama_hub.tools.playgrounds_subgraph_connector import PlaygroundsSubgraphConnectorToolSpec
 
 def simple_test():
     """

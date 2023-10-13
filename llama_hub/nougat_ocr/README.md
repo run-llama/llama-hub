@@ -9,7 +9,7 @@ Users can input the path of the academic PDF document `file` which they want to 
 Here's an example usage of the PDFNougatOCR.
 
 ```python
-from llama_hub.nougat_ocr.base import PDFNougatOCR
+from llama_hub.nougat_ocr import PDFNougatOCR
 
 reader = PDFNougatOCR()
 

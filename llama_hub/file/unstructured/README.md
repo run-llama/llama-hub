@@ -10,7 +10,7 @@ To use this loader, you need to pass in a `Path` to a local file. Optionally, yo
 
 ```python
 from pathlib import Path
-from llama_hub.file.unstructured.base import UnstructuredReader
+from llama_hub.file.unstructured import UnstructuredReader
 
 loader = UnstructuredReader()
 documents = loader.load_data(file=Path('./10k_filing.html'))

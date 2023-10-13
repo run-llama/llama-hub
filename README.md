@@ -24,7 +24,7 @@ pip install llama-hub
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
@@ -40,7 +40,7 @@ from llama_index.agent import OpenAIAgent
 import openai
 openai.api_key = 'sk-api-key'
 
-from llama_hub.tools.google_calendar.base import GoogleCalendarToolSpec
+from llama_hub.tools.google_calendar import GoogleCalendarToolSpec
 tool_spec = GoogleCalendarToolSpec()
 
 agent = OpenAIAgent.from_tools(tool_spec.to_tool_list())
@@ -56,7 +56,7 @@ Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
