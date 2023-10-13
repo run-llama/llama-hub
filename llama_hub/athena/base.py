@@ -42,7 +42,6 @@ class AthenaReader(BaseReader):
         from sqlalchemy.engine import create_engine
 
         if not aws_access_key or not aws_secret_key:
-
             conn_str = (
                 "awsathena+rest://:@athena.{region_name}.amazonaws.com:443/"
                 "{database}?s3_staging_dir={s3_staging_dir}?work_group={workgroup}"
