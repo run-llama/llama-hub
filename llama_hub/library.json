@@ -1028,5 +1028,10 @@
       "sql",
       "datalake"
     ]
+  },
+  "PatentsviewReader": {
+    "id": "patentsview",
+    "author": "shao-shuai",
+    "keywords": ["patent"]
   }
 }
