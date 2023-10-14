@@ -7,6 +7,7 @@ from llama_index.readers.schema.base import Document
 
 BASE_URL = "https://api.patentsview.org/patents/query"
 
+
 class PatentsviewReader(BaseReader):
     """Patentsview reader.
 
@@ -16,8 +17,7 @@ class PatentsviewReader(BaseReader):
 
     def __init__(self) -> None:
         """Initialize with request body."""
-        self.json = {"q":{"patent_id":None},
-                     "f":["patent_abstract"]}
+        self.json = {"q": {"patent_id": None}, "f": ["patent_abstract"]}
 
     def load_data(self, patent_number: List[str]) -> List[Document]:
         """
@@ -31,10 +31,10 @@ class PatentsviewReader(BaseReader):
         """
         if not patent_number:
             raise ValueError("Please input patent number")
-        
+
         self.json["q"]["patent_id"] = patent_number
 
-        response = requests.post(BASE_URL,  json = self.json)
+        response = requests.post(BASE_URL, json=self.json)
 
         if response.status_code == 200:
             data = response.json()
