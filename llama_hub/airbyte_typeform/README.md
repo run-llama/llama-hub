@@ -12,7 +12,7 @@ The Airbyte Typeform Loader allows you to access different Typeform objects.
 Here's an example usage of the AirbyteTypeformReader.
 
 ```python
-from llama_hub.airbyte_typeform.base import AirbyteTypeformReader
+from llama_hub.airbyte_typeform import AirbyteTypeformReader
 
 typeform_config = {
     # ...

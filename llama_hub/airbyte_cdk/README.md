@@ -16,7 +16,7 @@ Here's an example usage of the AirbyteCdkReader.
 
 ```python
 from llama_index import download_loader
-from llama_hub.airbyte_cdk.base import AirbyteCDKReader
+from llama_hub.airbyte_cdk import AirbyteCDKReader
 from source_github.source import SourceGithub # this is just an example, you can use any source here - this one is loaded from the Airbyte Github repo via pip install git+https://github.com/airbytehq/airbyte.git@master#egg=source_github&subdirectory=airbyte-integrations/connectors/source-github`
 
 

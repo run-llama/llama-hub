@@ -13,7 +13,7 @@ import dotenv
 from llama_index import SQLDatabase,ServiceContext
 from llama_index.indices.struct_store import NLSQLTableQueryEngine
 from llama_index.llms import OpenAI
-from llama_hub.athena.base import AthenaReader
+from llama_hub.athena import AthenaReader
 
 dotenv.load_dotenv()
 

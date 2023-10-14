@@ -7,7 +7,7 @@ This loader reads the HWP file, which is the format of many official documents i
 To use this loader, you need to pass in a file name. It's fine whether the file is compressed or not.
 
 ```python
-from llama_hub.hangeul.base import HWPReader
+from llama_hub.hangeul import HWPReader
 from pathlib import Path
 
 hwp_path = Path('/path/to/hwp')

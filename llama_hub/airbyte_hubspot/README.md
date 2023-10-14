@@ -12,7 +12,7 @@ The Airbyte Hubspot Loader allows you to access different Hubspot objects.
 Here's an example usage of the AirbyteHubspotReader.
 
 ```python
-from llama_hub.airbyte_hubspot.base import AirbyteHubspotReader
+from llama_hub.airbyte_hubspot import AirbyteHubspotReader
 
 hubspot_config = {
     # ...

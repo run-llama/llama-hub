@@ -19,7 +19,7 @@ and set your [Apify API token](https://console.apify.com/account/integrations) i
 
 ```python
 from llama_index import download_loader
-from llama_index.readers.schema.base import Document
+from llama_index.readers.schema import Document
 
 # Converts a single record from the Actor's resulting dataset to the LlamaIndex format
 def tranform_dataset_item(item):

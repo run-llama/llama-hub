@@ -11,7 +11,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the WolframAlphaToolSpec.
 
 ```python
-from llama_hub.tools.wolfram_alpha.base import WolframAlphaToolSpec
+from llama_hub.tools.wolfram_alpha import WolframAlphaToolSpec
 from llama_index.agent import OpenAIAgent
 
 

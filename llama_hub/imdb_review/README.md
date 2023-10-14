@@ -53,7 +53,7 @@ print(response)
 ```python
 from llama_index import download_loader
 from langchain.llms import OpenAI
-from langchain.agents.agent_toolkits.pandas.base import create_pandas_dataframe_agent
+from langchain.agents.agent_toolkits.pandas import create_pandas_dataframe_agent
 from langchain.agents import Tool
 from langchain.agents import initialize_agent
 from langchain.chat_models import ChatOpenAI

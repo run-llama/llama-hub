@@ -24,7 +24,7 @@ pip install llama-hub
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
@@ -40,7 +40,7 @@ from llama_index.agent import OpenAIAgent
 import openai
 openai.api_key = 'sk-api-key'
 
-from llama_hub.tools.google_calendar.base import GoogleCalendarToolSpec
+from llama_hub.tools.google_calendar import GoogleCalendarToolSpec
 tool_spec = GoogleCalendarToolSpec()
 
 agent = OpenAIAgent.from_tools(tool_spec.to_tool_list())
@@ -56,7 +56,7 @@ Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
@@ -129,7 +129,7 @@ This will create an editable install of `llama-hub` in your venv.
 
 ### Step 1: Create a new directory
 
-For loaders, create a new directory in `llama_hub`, and for tools create a directory in `llama_hub/tools` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
+For loaders, create a new directory in `llama_hub`, and for tools create a directory in `llama_hub/tools` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file specifying the module's public interface with `__all__`, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
 
 If you'd like, you can create the new directory and files by running the following script in the `llama_hub` directory. Just remember to put your dependencies into a `requirements.txt` file.
 

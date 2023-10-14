@@ -10,7 +10,7 @@ Here's an example usage of the PDFTableReader.
 `pages` parameter is the same as camelot's `pages`. Therefore, you can use patterns such as `all`, `1,2,3`, `10-20`, and so on.
 
 ```python
-from llama_hub.pdf_table.base import PDFTableReader
+from llama_hub.pdf_table import PDFTableReader
 from pathlib import Path
 
 reader = PDFTableReader()

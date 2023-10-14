@@ -9,7 +9,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Another example showcases retrieval augmentation over a knowledge corpus with text-to-image. [Notebook](https://github.com/emptycrown/llama-hub/blob/main/llama_hub/tools/notebooks/text_to_image-pg.ipynb).
 
 ```python
-from llama_hub.tools.text_to_image.base import TextToImageToolSpec
+from llama_hub.tools.text_to_image import TextToImageToolSpec
 from llama_index.agent import OpenAIAgent
 
 openai.api_key = 'sk-your-key'

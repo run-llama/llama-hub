@@ -9,7 +9,7 @@ It is based on the [Async Website Loader](https://llama-hub-ui.vercel.app/l/web-
 To use this loader, you just declare the sitemap.xml url like this:
 
 ```python
-from llama_hub.web.sitemap.base import SitemapReader
+from llama_hub.web.sitemap import SitemapReader
 
 # for jupyter notebooks uncomment the following two lines of code:
 # import nest_asyncio

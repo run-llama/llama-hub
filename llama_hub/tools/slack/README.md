@@ -5,7 +5,7 @@ This tool fetches the text from a list of Slack channels. You will need to initi
 ## Usage
 
 ```python
-from llama_hub.tools.slack.base import SlackToolSpec
+from llama_hub.tools.slack import SlackToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = SlackToolSpec(slack_token='token')

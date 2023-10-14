@@ -12,7 +12,7 @@ The Airbyte Gong Loader allows you to access different Gong objects.
 Here's an example usage of the AirbyteGongReader.
 
 ```python
-from llama_hub.airbyte_gong.base import AirbyteGongReader
+from llama_hub.airbyte_gong import AirbyteGongReader
 
 gong_config = {
     # ...
