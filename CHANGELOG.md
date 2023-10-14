@@ -1,3 +1,13 @@
+## Unreleased
+
+### New Features
+- IMDB Review loader (#571) 
+- Add AWS Athena Reader (#579)
+- add PatentsviewReader for reading patent abstract (#582) 
+
+### Smaller Features + Bug Fixes
+- Add proper __init__.py files (#581)
+
 ## [v0.0.37] - 2023-10-09
 
 ### New Features
