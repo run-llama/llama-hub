@@ -1,4 +1,4 @@
-## Unreleased
+## [v0.0.38] - 2023-10-16
 
 ### New Features
 - IMDB Review loader (#571) 
