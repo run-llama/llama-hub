@@ -1,6 +1,6 @@
 """Qdrant reader."""
 
-from typing import List, Optional, cast, Dict
+from typing import Dict, List, Optional, cast
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -113,14 +113,14 @@ class QdrantReader(BaseReader):
         Returns:
             List[Document]: A list of documents.
         """
-        from qdrant_client.http.models.models import Payload
         from qdrant_client.http.models import (
             FieldCondition,
+            Filter,
             MatchText,
             MatchValue,
             Range,
-            Filter,
         )
+        from qdrant_client.http.models.models import Payload
 
         should_search_mapping = should_search_mapping or {}
         must_search_mapping = must_search_mapping or {}

@@ -12,7 +12,7 @@ The Airbyte Stripe Loader allows you to access different Stripe objects.
 Here's an example usage of the AirbyteStripeReader.
 
 ```python
-from llama_hub.airbyte_stripe.base import AirbyteStripeReader
+from llama_hub.airbyte_stripe import AirbyteStripeReader
 
 stripe_config = {
     # ...

@@ -1,8 +1,9 @@
 """Kaltura eSearch API Reader."""
-import requests
-import logging
 import json
-from typing import Optional, List, Dict, Any
+import logging
+from typing import Any, Dict, List, Optional
+
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -203,16 +204,16 @@ class KalturaESearchReader(BaseReader):
             If with_captions is True, it sets entry_info to include all entry information and entry_dict to only include the entry transcript fetched via self._get_captions(items_data).
         """
         from KalturaClient.Plugins.ElasticSearch import (
-            KalturaESearchCaptionItem,
+            KalturaCategoryEntryStatus,
             KalturaESearchCaptionFieldName,
-            KalturaESearchUnifiedItem,
-            KalturaESearchEntryParams,
+            KalturaESearchCaptionItem,
+            KalturaESearchCategoryEntryFieldName,
             KalturaESearchCategoryEntryItem,
             KalturaESearchEntryOperator,
-            KalturaESearchOperatorType,
+            KalturaESearchEntryParams,
             KalturaESearchItemType,
-            KalturaCategoryEntryStatus,
-            KalturaESearchCategoryEntryFieldName,
+            KalturaESearchOperatorType,
+            KalturaESearchUnifiedItem,
         )
 
         # Load and initialize the Kaltura client

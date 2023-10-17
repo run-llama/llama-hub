@@ -14,7 +14,7 @@ Here's an example usage of the AzureTranslateToolSpec.
 
 ```python
 from llama_index.agent import OpenAIAgent
-from llama_hub.tools.azure_translate.base import AzureTranslateToolSpec
+from llama_hub.tools.azure_translate import AzureTranslateToolSpec
 
 translate_tool = AzureTranslateToolSpec(
     api_key='your-key',

@@ -1,6 +1,8 @@
 # LlamaHub 🦙
 
-This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/jerryjliu/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
+**Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
+
+This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
 
 Loaders and readers allow you to easily ingest data for search and retrieval by a large language models, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capaibility of next level large language models.
 
@@ -22,7 +24,7 @@ pip install llama-hub
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
@@ -38,7 +40,7 @@ from llama_index.agent import OpenAIAgent
 import openai
 openai.api_key = 'sk-api-key'
 
-from llama_hub.tools.google_calendar.base import GoogleCalendarToolSpec
+from llama_hub.tools.google_calendar import GoogleCalendarToolSpec
 tool_spec = GoogleCalendarToolSpec()
 
 agent = OpenAIAgent.from_tools(tool_spec.to_tool_list())
@@ -54,7 +56,7 @@ Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
@@ -93,7 +95,7 @@ index.query('Where did the author go to school?')
 
 ## How to add a loader or tool
 
-Adding a loader or tool simply requires forking this repo and making a Pull Request. The Llama Hub website will update automatically. However, please keep in the mind the following guidelines when making your PR.
+Adding a loader or tool simply requires forking this repo and making a Pull Request. The Llama Hub website will update automatically. However, please keep in mind the following guidelines when making your PR.
 
 ### Step 0: Setup virtual environment, install Poetry and dependencies
 
@@ -127,7 +129,7 @@ This will create an editable install of `llama-hub` in your venv.
 
 ### Step 1: Create a new directory
 
-For loaders, create a new directory in `llama_hub`, and for tools create a directory in `llama_hub/tools` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
+For loaders, create a new directory in `llama_hub`, and for tools create a directory in `llama_hub/tools` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file specifying the module's public interface with `__all__`, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
 
 If you'd like, you can create the new directory and files by running the following script in the `llama_hub` directory. Just remember to put your dependencies into a `requirements.txt` file.
 

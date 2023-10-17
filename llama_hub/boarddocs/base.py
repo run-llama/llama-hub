@@ -1,11 +1,10 @@
 """Reader that pulls in a BoardDocs site."""
+import json
 from typing import Any, List, Optional
 
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-
-import json
-import requests
 
 
 class BoardDocsReader(BaseReader):
@@ -33,7 +32,9 @@ class BoardDocsReader(BaseReader):
             "accept": "application/json, text/javascript, */*; q=0.01",
             "accept-language": "en-US,en;q=0.9",
             "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "sec-ch-ua": '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+            "sec-ch-ua": (
+                '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"'
+            ),
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": '"macOS"',
             "sec-fetch-dest": "empty",

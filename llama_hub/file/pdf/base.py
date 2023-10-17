@@ -1,7 +1,7 @@
 """Read PDF files."""
 
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import IO, Dict, List, Optional, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -11,12 +11,19 @@ class PDFReader(BaseReader):
     """PDF reader."""
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+        self, file: Union[IO[bytes], str, Path], extra_info: Optional[Dict] = None
     ) -> List[Document]:
         """Parse file."""
         import pypdf
 
-        with open(file, "rb") as fp:
+        # Check if the file is already a Path object, if not, create a Path object from the string
+        if not isinstance(file, Path) and isinstance(file, str):
+            file = Path(file)
+
+        # Open the file if it's not already open, else use it as it is
+        context = open(file, "rb") if isinstance(file, Path) else file
+
+        with context as fp:
             # Create a PDF object
             pdf = pypdf.PdfReader(fp)
 

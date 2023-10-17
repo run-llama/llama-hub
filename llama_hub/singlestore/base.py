@@ -1,10 +1,10 @@
 """SingleStore reader."""
 
-from typing import Any, Dict, List, Optional
+from typing import List
 
+from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from llama_index import download_loader, ListIndex
 
 
 class SingleStoreReader(BaseReader):
@@ -22,7 +22,18 @@ class SingleStoreReader(BaseReader):
         vector_field (str): Vector Field.
     """
 
-    def __init__(self, scheme: str, host: str, port: str, user: str, password: str, dbname: str, table_name: str, content_field: str = "text", vector_field: str = "embedding"):
+    def __init__(
+        self,
+        scheme: str,
+        host: str,
+        port: str,
+        user: str,
+        password: str,
+        dbname: str,
+        table_name: str,
+        content_field: str = "text",
+        vector_field: str = "embedding",
+    ):
         """Initialize with parameters."""
         self.scheme = scheme
         self.host = host
@@ -36,16 +47,18 @@ class SingleStoreReader(BaseReader):
 
         try:
             import pymysql
+
             pymysql.install_as_MySQLdb()
         except ImportError:
             pass
 
         try:
             from llama_hub.utils import import_loader
-            self.DatabaseReader = import_loader('DatabaseReader')
-        except:
-            self.DatabaseReader = download_loader('DatabaseReader')
-        
+
+            self.DatabaseReader = import_loader("DatabaseReader")
+        except Exception:
+            self.DatabaseReader = download_loader("DatabaseReader")
+
         self.reader = self.DatabaseReader(
             scheme=self.scheme,
             host=self.host,
@@ -71,5 +84,5 @@ class SingleStoreReader(BaseReader):
         ORDER BY score 
         DESC LIMIT {top_k}
         """
-        
+
         return self.reader.load_data(query=query)

@@ -1,11 +1,10 @@
 """RSS feed reader for news - processes each article with NewsArticleReader."""
 import logging
-from typing import Any, Callable, Dict, List, Optional, Tuple
-
-import requests
+from typing import Any, List
 
 from llama_index.readers.base import BaseReader
 from llama_index.schema import Document
+
 from llama_hub.web.news.base import NewsArticleReader
 
 logger = logging.getLogger(__name__)
@@ -42,10 +41,7 @@ class RssNewsReader(BaseReader):
 
         self.reader_kwargs = reader_kwargs
 
-    def load_data(self,
-                  urls: List[str] = None,
-                  opml: str = None
-                  ) -> List[Document]:
+    def load_data(self, urls: List[str] = None, opml: str = None) -> List[Document]:
         """Load data from either RSS feeds or OPML.
 
         Args:
@@ -56,8 +52,12 @@ class RssNewsReader(BaseReader):
             List[Document]: List of documents.
 
         """
-        if (urls is None) == (opml is None):  # This is True if both are None or neither is None
-            raise ValueError('Provide either the urls or the opml argument, but not both.')
+        if (urls is None) == (
+            opml is None
+        ):  # This is True if both are None or neither is None
+            raise ValueError(
+                "Provide either the urls or the opml argument, but not both."
+            )
 
         import feedparser
 
@@ -85,9 +85,11 @@ class RssNewsReader(BaseReader):
                     article = NewsArticleReader(**self.reader_kwargs).load_data(
                         urls=[entry.link],
                     )[0]
-                    article.metadata['feed'] = url
+                    article.metadata["feed"] = url
 
-                    documents.append(Document(text=article.text, metadata=article.metadata))
+                    documents.append(
+                        Document(text=article.text, metadata=article.metadata)
+                    )
 
             except Exception as e:
                 logger.error(f"Error fetching or processing {url}, exception: {e}")

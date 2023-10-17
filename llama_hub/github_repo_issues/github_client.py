@@ -3,8 +3,7 @@ GitHub API client for issues
 """
 
 import os
-from typing import Any, Dict, Optional
-from typing import Protocol
+from typing import Any, Dict, Optional, Protocol
 
 
 class BaseGitHubIssuesClient(Protocol):

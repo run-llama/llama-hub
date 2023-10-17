@@ -1,1 +1,1 @@
-httpx
+elasticsearch==8.9

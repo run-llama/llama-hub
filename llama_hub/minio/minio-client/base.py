@@ -3,6 +3,7 @@
 A loader that fetches a file or iterates through a directory on Minio.
 
 """
+
 import tempfile
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union

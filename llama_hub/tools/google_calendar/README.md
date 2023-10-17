@@ -12,7 +12,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the GoogleCalendarToolSpec.
 
 ```python
-from llama_hub.tools.google_calendar.base import GoogleCalendarToolSpec
+from llama_hub.tools.google_calendar import GoogleCalendarToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = GoogleCalendarToolSpec()

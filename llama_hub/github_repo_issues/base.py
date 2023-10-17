@@ -21,23 +21,15 @@ Each issue is converted to a document by doing the following:
 import asyncio
 import enum
 import logging
-import sys
 from typing import Dict, List, Optional, Tuple
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-if "pytest" in sys.modules:
-    from llama_hub.github_repo_issues.github_client import (
-        BaseGitHubIssuesClient,
-        GitHubIssuesClient,
-    )
-else:
-    from llama_hub.github_repo_issues.github_client import (
-        BaseGitHubIssuesClient,
-        GitHubIssuesClient,
-    )
-
+from llama_hub.github_repo_issues.github_client import (
+    BaseGitHubIssuesClient,
+    GitHubIssuesClient,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -192,6 +184,8 @@ class GitHubRepositoryIssuesReader(BaseReader):
                     extra_info["closed_at"] = issue["closed_at"]
                 if issue["assignee"] is not None:
                     extra_info["assignee"] = issue["assignee"]["login"]
+                if issue["labels"] is not None:
+                    extra_info["labels"] = [label["name"] for label in issue["labels"]]
                 document.extra_info = extra_info
                 documents.append(document)
 

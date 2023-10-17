@@ -1,7 +1,7 @@
 """(Unofficial) Google Keep reader using gkeepapi."""
 
-import os
 import json
+import os
 from typing import Any, List
 
 from llama_index.readers.base import BaseReader
@@ -30,10 +30,9 @@ class GoogleKeepReader(BaseReader):
         for note_id in document_ids:
             note = keep.get(note_id)
             if note is None:
-                raise ValueError(f'Note with id {note_id} not found.')
+                raise ValueError(f"Note with id {note_id} not found.")
             text = f"Title: {note.title}\nContent: {note.text}"
-            results.append(Document(text=text, extra_info={"note_id":
-                                                           note_id}))
+            results.append(Document(text=text, extra_info={"note_id": note_id}))
         return results
 
     def load_all_notes(self) -> List[Document]:
@@ -44,8 +43,7 @@ class GoogleKeepReader(BaseReader):
         results = []
         for note in notes:
             text = f"Title: {note.title}\nContent: {note.text}"
-            results.append(Document(text=text, extra_info={"note_id":
-                                                           note.id}))
+            results.append(Document(text=text, extra_info={"note_id": note.id}))
         return results
 
     def _get_keep(self) -> Any:
@@ -57,13 +55,13 @@ class GoogleKeepReader(BaseReader):
             with open("keep_credentials.json", "r") as f:
                 credentials = json.load(f)
         else:
-            raise RuntimeError('Failed to load keep_credentials.json.')
+            raise RuntimeError("Failed to load keep_credentials.json.")
 
         keep = gkeepapi.Keep()
 
         success = keep.login(credentials["username"], credentials["password"])
         if not success:
-            raise RuntimeError('Failed to login to Google Keep.')
+            raise RuntimeError("Failed to login to Google Keep.")
 
         return keep
 
@@ -71,6 +69,9 @@ class GoogleKeepReader(BaseReader):
 if __name__ == "__main__":
     reader = GoogleKeepReader()
     print(
-        reader.load_data(document_ids=[
-            "1eKU7kGn8eJCErZ52OC7vCzHDSQaspFYGHHCiTX_IvhFOc7ZQZVJhTIDFMdTJOPiejOk"
-        ]))
+        reader.load_data(
+            document_ids=[
+                "1eKU7kGn8eJCErZ52OC7vCzHDSQaspFYGHHCiTX_IvhFOc7ZQZVJhTIDFMdTJOPiejOk"
+            ]
+        )
+    )

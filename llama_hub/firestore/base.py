@@ -1,6 +1,7 @@
 """Firestore Reader."""
 
 from typing import Any, List, Optional
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -35,7 +36,6 @@ class FirestoreReader(BaseReader):
             from google.cloud import firestore
         except ImportError:
             raise ImportError(IMPORT_ERROR_MSG)
-
         self.db = firestore.Client(project=project_id,
                                    database=database_id,
                                    client_info=CLIENT_INFO)

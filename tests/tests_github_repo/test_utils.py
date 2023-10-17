@@ -1,22 +1,19 @@
-import pytest
 import asyncio
 from typing import List, Tuple
+
+import pytest
+
+from llama_hub.github_repo.github_client import GitTreeResponseModel
+from llama_hub.github_repo.utils import (
+    BufferedAsyncIterator,
+    BufferedGitBlobDataIterator,
+)
 
 # Remove this to test changes to GithubRepositoryReader.
 # pytest.skip(
 #     "Skip by default due to dependence on network request and github api token.",
 #     allow_module_level=True,
 # )
-
-from llama_hub.github_repo.utils import (
-    BufferedAsyncIterator,
-    BufferedGitBlobDataIterator,
-)
-
-from llama_hub.github_repo.github_client import (
-    GitTreeResponseModel,
-)
-
 
 
 class MockGithubClient:

@@ -49,7 +49,7 @@ class RemoteReader(BaseReader):
         """Parse whatever is at the URL."""
         import tempfile
         from urllib.parse import urlparse
-        from urllib.request import urlopen, Request
+        from urllib.request import Request, urlopen
 
         extra_info = {"Source": url}
 

@@ -1,9 +1,10 @@
 """News article reader using Newspaper."""
 import logging
-import requests
+from typing import Any, List
+
 from llama_index.readers.base import BaseReader
 from llama_index.schema import Document
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from importlib.util import find_spec
 
 logger = logging.getLogger(__name__)
 
@@ -20,15 +21,11 @@ class NewsArticleReader(BaseReader):
             https://newspaper.readthedocs.io/en/latest/user_guide/quickstart.html#article
     """
 
-    def __init__(self,
-                 text_mode: bool = True,
-                 use_nlp: bool = True,
-                 **newspaper_kwargs: Any
-                 ) -> None:
+    def __init__(
+        self, text_mode: bool = True, use_nlp: bool = True, **newspaper_kwargs: Any
+    ) -> None:
         """Initialize with parameters."""
-        try:
-            import newspaper
-        except ImportError:
+        if find_spec("newspaper") is None:
             raise ImportError(
                 "`newspaper` package not found, please run `pip install newspaper3k`"
             )
@@ -51,6 +48,7 @@ class NewsArticleReader(BaseReader):
         documents = []
         for url in urls:
             from newspaper import Article
+
             try:
                 article = Article(url, **self.newspaper_kwargs)
                 article.download()

@@ -1,11 +1,12 @@
 """Azure Cognitive Vision tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, List
+from typing import List, Optional
+
 import requests
-import urllib.parse
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 CV_URL_TMPL = "https://{resource}.cognitiveservices.azure.com/computervision/imageanalysis:analyze"
+
 
 class AzureCVToolSpec(BaseToolSpec):
     """Azure Cognitive Vision tool spec."""
@@ -16,8 +17,8 @@ class AzureCVToolSpec(BaseToolSpec):
         self,
         resource: str,
         api_key: str,
-        language: Optional[str] = 'en',
-        api_version: Optional[str] = '2023-04-01-preview'
+        language: Optional[str] = "en",
+        api_version: Optional[str] = "2023-04-01-preview",
     ) -> None:
         """Initialize with parameters."""
         self.api_key = api_key
@@ -36,11 +37,11 @@ class AzureCVToolSpec(BaseToolSpec):
         """
         response = requests.post(
             f'{self.cv_url}?features={",".join(features)}&language={self.language}&api-version={self.api_version}',
-            headers={ 'Ocp-Apim-Subscription-Key': self.api_key },
-            json={'url': url}
+            headers={"Ocp-Apim-Subscription-Key": self.api_key},
+            json={"url": url},
         )
         response_json = response.json()
-        if 'read' in features:
-            response_json['readResult'] = response_json['readResult']['content']
+        if "read" in features:
+            response_json["readResult"] = response_json["readResult"]["content"]
 
         return response_json

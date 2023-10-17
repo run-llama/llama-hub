@@ -1,8 +1,10 @@
 """Azure Speech tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, List
 import time
+from typing import List, Optional
+
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
 
 class AzureSpeechToolSpec(BaseToolSpec):
     """Azure Speech tool spec."""
@@ -10,12 +12,10 @@ class AzureSpeechToolSpec(BaseToolSpec):
     spec_functions = ["speech_to_text", "text_to_speech"]
 
     def __init__(
-        self,
-        region: str,
-        speech_key: str,
-        language: Optional[str] = "en-US"
+        self, region: str, speech_key: str, language: Optional[str] = "en-US"
     ) -> None:
         import azure.cognitiveservices.speech as speechsdk
+
         """Initialize with parameters."""
         self.config = speechsdk.SpeechConfig(subscription=speech_key, region=region)
         self.config.speech_recognition_language = language
@@ -29,12 +29,13 @@ class AzureSpeechToolSpec(BaseToolSpec):
             text (str): The text to play
         """
         import azure.cognitiveservices.speech as speechsdk
+
         speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=self.config)
         result = speech_synthesizer.speak_text(text)
 
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-            stream = speechsdk.AudioDataStream(result)
-            return 'Audio playback complete.'
+            speechsdk.AudioDataStream(result)
+            return "Audio playback complete."
         elif result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
             print("Speech synthesis canceled: {}".format(cancellation_details.reason))
@@ -51,7 +52,9 @@ class AzureSpeechToolSpec(BaseToolSpec):
             nonlocal done
             done = True
 
-        speech_recognizer.recognized.connect(lambda evt, results=results: results.append(evt.result.text))
+        speech_recognizer.recognized.connect(
+            lambda evt, results=results: results.append(evt.result.text)
+        )
         speech_recognizer.session_stopped.connect(stop_cb)
         speech_recognizer.canceled.connect(stop_cb)
 
@@ -70,8 +73,9 @@ class AzureSpeechToolSpec(BaseToolSpec):
             filename (str): The name of the file to transcribe
         """
         import azure.cognitiveservices.speech as speechsdk
+
         speech_recognizer = speechsdk.SpeechRecognizer(
             speech_config=self.config,
-            audio_config=speechsdk.audio.AudioConfig(filename=filename)
+            audio_config=speechsdk.audio.AudioConfig(filename=filename),
         )
         return self._transcribe(speech_recognizer)

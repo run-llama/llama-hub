@@ -1,11 +1,12 @@
 """GMail tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from llama_index.readers.schema.base import Document
-from email.message import EmailMessage
-import email
-from typing import Any, List, Optional
 import base64
+import email
+from email.message import EmailMessage
+from typing import Any, List, Optional
+
+from llama_index.readers.schema.base import Document
+from llama_index.tools.tool_spec.base import BaseToolSpec
 
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.compose",
@@ -44,15 +45,7 @@ class GmailToolSpec(BaseToolSpec):
         """Load emails from the user's account"""
         self._cache_service()
 
-        messsages = self.search_messages()
-
-        results = []
-        for message in messsages:
-            text = message.pop("body")
-            extra_info = message
-            results.append(Document(text=text, extra_info=extra_info))
-
-        return results
+        return self.search_messages()
 
     def _get_credentials(self) -> Any:
         """Get valid user credentials from storage.
@@ -65,6 +58,7 @@ class GmailToolSpec(BaseToolSpec):
             Credentials, the obtained credential.
         """
         import os
+
         from google.auth.transport.requests import Request
         from google.oauth2.credentials import Credentials
         from google_auth_oauthlib.flow import InstalledAppFlow
@@ -87,10 +81,9 @@ class GmailToolSpec(BaseToolSpec):
 
         return creds
 
-    def search_messages(self):
-        query = self.query
-
-        max_results = self.max_results
+    def search_messages(self, query: str, max_results: Optional[int] = None):
+        if not max_results:
+            max_results = self.max_results
 
         self._cache_service()
 
@@ -102,17 +95,17 @@ class GmailToolSpec(BaseToolSpec):
             .get("messages", [])
         )
 
-        result = []
+        results = []
         try:
             for message in messages:
                 message_data = self.get_message_data(message)
-                if not message_data:
-                    continue
-                result.append(message_data)
+                text = message_data.pop("body")
+                extra_info = message_data
+                results.append(Document(text=text, extra_info=extra_info))
         except Exception as e:
             raise Exception("Can't get message data" + str(e))
 
-        return result
+        return results
 
     def get_message_data(self, message):
         message_id = message["id"]
@@ -161,14 +154,14 @@ class GmailToolSpec(BaseToolSpec):
         from bs4 import BeautifulSoup
 
         try:
-            body = base64.urlsafe_b64decode(message["raw"].encode("ASCII"))
+            body = base64.urlsafe_b64decode(message["raw"].encode("utf-8"))
             mime_msg = email.message_from_bytes(body)
 
             # If the message body contains HTML, parse it with BeautifulSoup
             if "text/html" in mime_msg:
                 soup = BeautifulSoup(body, "html.parser")
                 body = soup.get_text()
-            return body.decode("ascii")
+            return body.decode("utf-8")
         except Exception as e:
             raise Exception("Can't parse message body" + str(e))
 
@@ -239,7 +232,11 @@ class GmailToolSpec(BaseToolSpec):
         service = self.service
 
         if draft_id is None:
-            return "You did not provide a draft id when calling this function. If you previously created or retrieved the draft, the id is available in context"
+            return (
+                "You did not provide a draft id when calling this function. If you"
+                " previously created or retrieved the draft, the id is available in"
+                " context"
+            )
 
         draft = self.get_draft(draft_id)
         headers = draft["message"]["payload"]["headers"]

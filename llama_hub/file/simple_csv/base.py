@@ -23,7 +23,11 @@ class SimpleCSVReader(BaseReader):
     """
 
     def __init__(
-        self, *args: Any, concat_rows: bool = True, encoding: str = "utf-8", **kwargs: Any
+        self,
+        *args: Any,
+        concat_rows: bool = True,
+        encoding: str = "utf-8",
+        **kwargs: Any
     ) -> None:
         """Init params."""
         super().__init__(*args, **kwargs)

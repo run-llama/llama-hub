@@ -4,12 +4,12 @@
 #####################################################################
 
 
-from fastapi import FastAPI, Request, status
 import logging
 import os
 
-from .section import router as section_router
+from fastapi import FastAPI, Request, status
 
+from .section import router as section_router
 
 app = FastAPI(
     title="Unstructured Pipeline API",

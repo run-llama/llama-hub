@@ -8,7 +8,7 @@ Here's an example of how to use it. You can get your access token from [here](ht
 
 ```python
 import os
-from llama_hub.kibela.base import KibelaReader
+from llama_hub.kibela import KibelaReader
 
 team = os.environ["KIBELA_TEAM"]
 token = os.environ["KIBELA_TOKEN"]

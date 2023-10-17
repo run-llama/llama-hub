@@ -1,10 +1,12 @@
 """Text to Image tool spec."""
 
-from llama_index.tools.tool_spec.base import BaseToolSpec
-from typing import Optional, List
-import openai
 from io import BytesIO
+from typing import List, Optional
+
+import openai
 import requests
+from llama_index.tools.tool_spec.base import BaseToolSpec
+
 
 class TextToImageToolSpec(BaseToolSpec):
     """Text to Image tool spec."""
@@ -16,10 +18,7 @@ class TextToImageToolSpec(BaseToolSpec):
             openai.api_key = api_key
 
     def generate_images(
-        self,
-        prompt: str,
-        n: Optional[int] = 1,
-        size: Optional[str] = '256x256'
+        self, prompt: str, n: Optional[int] = 1, size: Optional[str] = "256x256"
     ) -> List[str]:
         """
         Pass a prompt to OpenAIs text to image API to produce an image from the supplied query
@@ -32,21 +31,14 @@ class TextToImageToolSpec(BaseToolSpec):
         When handling the urls returned from this function, NEVER strip any parameters or try to modify the url, they are nessecary for authorization to view the image
         """
         try:
-            response = openai.Image.create(
-                prompt=prompt,
-                n=n,
-                size=size
-            )
-            images = [image['url'] for image in response['data']]
+            response = openai.Image.create(prompt=prompt, n=n, size=size)
+            images = [image["url"] for image in response["data"]]
             return images
         except openai.error.OpenAIError as e:
             return e.error
 
-
-    def generate_image_variation(self,
-            url: str,
-            n: Optional[int] = 1,
-            size: Optional[str] = '256x256'
+    def generate_image_variation(
+        self, url: str, n: Optional[int] = 1, size: Optional[str] = "256x256"
     ) -> str:
         """
         Accepts the url of an image and uses OpenAIs api to generate a variation of the image.
@@ -60,15 +52,12 @@ class TextToImageToolSpec(BaseToolSpec):
         """
         try:
             response = openai.Image.create_variation(
-                image=BytesIO(requests.get(url).content).getvalue(),
-                n=n,
-                size=size
+                image=BytesIO(requests.get(url).content).getvalue(), n=n, size=size
             )
-            images = [image['url'] for image in response['data']]
+            images = [image["url"] for image in response["data"]]
             return images
         except openai.error.OpenAIError as e:
             return e.error
-
 
     def show_images(self, urls: List[str]):
         """
@@ -77,12 +66,10 @@ class TextToImageToolSpec(BaseToolSpec):
         Args:
             urls (str): The url(s) of the image(s) to show
         """
-        from PIL import Image
         import matplotlib.pyplot as plt
+        from PIL import Image
+
         for url in urls:
             plt.figure()
             plt.imshow(Image.open(BytesIO(requests.get(url).content)))
-        return 'images rendered succesfully'
-
-
-
+        return "images rendered succesfully"
