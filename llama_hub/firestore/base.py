@@ -34,15 +34,17 @@ class FirestoreReader(BaseReader):
         """Initialize with parameters."""
         try:
             from google.cloud import firestore
-            from google.cloud.firestore_v1.services.firestore.transports.base import DEFAULT_CLIENT_INFO
+            from google.cloud.firestore_v1.services.firestore.transports.base import (
+                DEFAULT_CLIENT_INFO,
+            )
         except ImportError:
             raise ImportError(IMPORT_ERROR_MSG)
 
         client_info = DEFAULT_CLIENT_INFO
         client_info.user_agent = USER_AGENT
-        self.db = firestore.Client(project=project_id,
-                                   database=database_id,
-                                   client_info=client_info)
+        self.db = firestore.Client(
+            project=project_id, database=database_id, client_info=client_info
+        )
 
     def load_data(self, collection: str) -> List[Document]:
         """Load data from a Firestore collection, returning a list of Documents.
