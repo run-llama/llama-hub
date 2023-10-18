@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from llmsherpa.readers import LayoutPDFReader
 
 
 class SmartPDFLoader(BaseReader):
@@ -17,6 +16,8 @@ class SmartPDFLoader(BaseReader):
         self, *args: Any, llmsherpa_api_url: str = None, **kwargs: Any
     ) -> None:
         super().__init__(*args, **kwargs)
+        from llmsherpa.readers import LayoutPDFReader
+
         self.pdf_reader = LayoutPDFReader(llmsherpa_api_url)
 
     def load_data(
