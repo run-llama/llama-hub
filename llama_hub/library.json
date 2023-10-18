@@ -1035,7 +1035,7 @@
     "keywords": ["patent"]
   },
   "SmartPDFLoader": {
-    "id": "smartpdfloader",
+    "id": "smart_pdf_loader",
     "author": "ansukla",
     "keywords": [
       "pdf",
