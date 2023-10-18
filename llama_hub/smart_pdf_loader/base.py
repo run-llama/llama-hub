@@ -5,6 +5,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llmsherpa.readers import LayoutPDFReader
 
+
 class SmartPDFLoader(BaseReader):
     """SmartPDFLoader uses nested layout information such as sections, paragraphs, lists and tables to smartly chunk PDFs for optimal usage of LLM context window
 
@@ -13,10 +14,7 @@ class SmartPDFLoader(BaseReader):
     """
 
     def __init__(
-        self,
-        *args: Any,
-        llmsherpa_api_url: str = None,
-        **kwargs: Any
+        self, *args: Any, llmsherpa_api_url: str = None, **kwargs: Any
     ) -> None:
         super().__init__(*args, **kwargs)
         self.pdf_reader = LayoutPDFReader(llmsherpa_api_url)
@@ -35,6 +33,8 @@ class SmartPDFLoader(BaseReader):
         results = []
         doc = self.pdf_reader.read_pdf(pdf_path_or_url)
         for chunk in doc.chunks():
-            document = Document(text=chunk.to_context_text(), extra_info={"chunk_type": chunk.tag})
+            document = Document(
+                text=chunk.to_context_text(), extra_info={"chunk_type": chunk.tag}
+            )
             results.append(document)
         return results
