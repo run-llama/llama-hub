@@ -1033,5 +1033,14 @@
     "id": "patentsview",
     "author": "shao-shuai",
     "keywords": ["patent"]
+  },
+  "SmartPDFLoader": {
+    "id": "smart_pdf_loader",
+    "author": "ansukla",
+    "keywords": [
+      "pdf",
+      "pdf table",
+      "pdf layout"
+    ]
   }
 }
