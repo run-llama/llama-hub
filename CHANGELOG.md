@@ -7,6 +7,7 @@
 
 ### Smaller Features + Bug Fixes
 - Add proper __init__.py files (#581)
+- Add possibility to pass model kwargs to image loader models
 
 ## [v0.0.37] - 2023-10-09
 
