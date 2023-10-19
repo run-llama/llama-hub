@@ -4,7 +4,7 @@
 
 This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
 
-Loaders and readers allow you to easily ingest data for search and retrieval by a large language models, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capaibility of next level large language models.
+Loaders and readers allow you to easily ingest data for search and retrieval by a large language models, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capability of next level large language models.
 
 For a variety of examples on data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks). You can find example Jupyter notebooks for creating data agents that can load and parse data from Google Docs, SQL Databases, Notion, Slack and also manage you Google Calendar, Gmail inbox, or read and use OpenAPI specs. 
 
