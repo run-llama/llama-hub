@@ -4,11 +4,11 @@
 
 This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
 
-Loaders and readers allow you to easily ingest data for search and retrieval by a large language models, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capability of next level large language models.
+Loaders and readers allow you to easily ingest data for search and retrieval by a large language model, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capability of next level large language models.
 
-For a variety of examples on data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks). You can find example Jupyter notebooks for creating data agents that can load and parse data from Google Docs, SQL Databases, Notion, Slack and also manage you Google Calendar, Gmail inbox, or read and use OpenAPI specs. 
+For a variety of examples of data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks). You can find example Jupyter notebooks for creating data agents that can load and parse data from Google Docs, SQL Databases, Notion, and Slack, and also manage your Google Calendar, and Gmail inbox, or read and use OpenAPI specs. 
 
-For an easier way to browse the integrations available, checkout the website here: https://llamahub.ai/.
+For an easier way to browse the integrations available, check out the website here: https://llamahub.ai/.
 
 <img width="1465" alt="Screenshot 2023-07-17 at 6 12 32 PM" src="https://github.com/ajhofmann/llama-hub/assets/10040285/5e344de4-4aca-4f6c-9944-46c00baa5eb2">
 
@@ -48,11 +48,11 @@ agent.chat('what is the first thing on my calendar today')
 agent.chat("Please create an event for tomorrow at 4pm to review pull requests")
 ```
 
-For a variety of examples on creating and using data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks).
+For a variety of examples of creating and using data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks).
 
 ### LangChain
 
-Note: Make sure you change the description of the `Tool` to match your use-case.
+Note: Make sure you change the description of the `Tool` to match your use case.
 
 ```python
 from llama_index import GPTVectorStoreIndex
@@ -139,16 +139,16 @@ If you'd like, you can create the new directory and files by running the followi
 
 ### Step 2: Write your README
 
-Inside your new directory, create a `README.md` that mirrors that of the existing ones. It should have a summary of what your loader or tool does, its inputs, and how its used in the context of LlamaIndex and LangChain.
+Inside your new directory, create a `README.md` that mirrors that of the existing ones. It should have a summary of what your loader or tool does, its inputs, and how it is used in the context of LlamaIndex and LangChain.
 
 ### Step 3: Add your loader to the library.json file
 
-Finally, add your loader to the `llama_hub/library.json` file (for tools, add them to the `llama_hub/tools/library.json`) so that it may be used by others. As is exemplified by the current file, add in the class name of your loader or tool, along with its id, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
+Finally, add your loader to the `llama_hub/library.json` file (for tools, add them to the `llama_hub/tools/library.json`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
 
 ### Step 4: Make a Pull Request!
 
 Create a PR against the main branch. We typically review the PR within a day. To help expedite the process, it may be helpful to provide screenshots (either in the PR or in
-the README directly) showing your data loader or tool in action!
+the README directly) Show your data loader or tool in action!
 
 ## Running tests
 
