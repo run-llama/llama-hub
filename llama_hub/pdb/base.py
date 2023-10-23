@@ -25,9 +25,12 @@ class PdbAbstractReader(BaseReader):
             title, abstracts = get_pdb_abstract(pdb_id)
             primary_citation = abstracts[title]
             abstract = primary_citation["abstract"]
+            abstract_text = "\n".join(
+                ["\n".join([str(k), str(v)]) for k, v in abstract.items()]
+            )
             results.append(
                 Document(
-                    text=abstract,
+                    text=abstract_text,
                     extra_info={"pdb_id": pdb_id, "primary_citation": primary_citation},
                 )
             )
