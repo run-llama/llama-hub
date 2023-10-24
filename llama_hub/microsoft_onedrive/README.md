@@ -4,12 +4,12 @@ This loader reads files from Microsoft OneDrive Personal [(https://onedrive.live
 
 It supports recursively traversing and downloading files from subfolders and provides capablity to download only files with specific mime types. To use this loader, you need to pass in a list of file/folder id or file/folder paths.
 
-### Subfolder traversing (enabled by default)
+#### Subfolder traversing (enabled by default)
 
 To disbale: `loader.load_data(recursive = False)`
 
 
-### mime_types
+#### Mime types
 
 You can also filter the files by the mimeType e.g.: `mime_types=["application/vnd.openxmlformats-officedocument.wordprocessingml.document"]`
 
@@ -30,6 +30,7 @@ OneDriveReader supports following two **MSAL authentication**:
  - This mode of authnetication is not supported by Microsoft currently for OneDrive Personal, hence this can be used only for OneDrive for Business(Microsoft 365).
  - API Permission required for registered app: 
    > Microsoft Graph --> Application Permissions -- > Files.Read.All (**Grant Admin Consent**)
+  -----
    > Microsoft Graph --> Application Permissions -- > User.Read.All (**Grant Admin Consent**)
 
 ## Usage
@@ -118,7 +119,7 @@ documents = loader.load_data(file_ids=["subfolder/subfolder2/fileid1.pdf", "subf
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
 
 
-#### OneDriveReader Author
+#### Author
 [Godwin Paul Vincent](https://github.com/godwin3737)
 
 

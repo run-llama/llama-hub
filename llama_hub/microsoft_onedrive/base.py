@@ -233,7 +233,7 @@ class OneDriveReader(BaseReader):
 
         return props
     
-    def _check_and_download_file_from_onedrive(self, item: Dict[str, Any], local_dir: str, mime_types: Optional[List[str]] = None):
+    def _check_approved_mimetype_and_download_file(self, item: Dict[str, Any], local_dir: str, mime_types: Optional[List[str]] = None):
         """
         Checks files based on MIME types and download the accepted files.
 
@@ -261,7 +261,7 @@ class OneDriveReader(BaseReader):
         return metadata
 
 
-    def _download_files_from_onedrive(
+    def _connect_download_and_return_metadata(
         self, 
         access_token: str,  
         local_dir: str, 
@@ -296,11 +296,11 @@ class OneDriveReader(BaseReader):
             metadata = {}
             for item in data['value']:                
                 if 'folder' in item and include_subfolders:  # It's a folder; traverse if flag is set
-                    subfolder_metadata = self._download_files_from_onedrive(access_token, local_dir, item['id'], include_subfolders, mime_types=mime_types, userprincipalname = userprincipalname)
+                    subfolder_metadata = self._connect_download_and_return_metadata(access_token, local_dir, item['id'], include_subfolders, mime_types=mime_types, userprincipalname = userprincipalname)
                     metadata.update(subfolder_metadata)  # Merge metadata
 
                 elif 'file' in item:
-                    file_metadata = self._check_and_download_file_from_onedrive(item, local_dir, mime_types)
+                    file_metadata = self._check_approved_mimetype_and_download_file(item, local_dir, mime_types)
                     metadata.update(file_metadata)
 
             return metadata
@@ -310,7 +310,7 @@ class OneDriveReader(BaseReader):
         raise Exception(f"Unable to retrieve items for: {current_item}")
 
 
-    def _download_files(
+    def _init_download_and_get_metadata(
         self, 
         temp_dir: str, 
         folder_id: Optional[str] = None, 
@@ -322,7 +322,7 @@ class OneDriveReader(BaseReader):
         userprincipalname : Optional[str] = None,
     ) -> None:
         """
-        Download files from OneDrive based on specified folder or file IDs.
+        Download files from OneDrive based on specified folder or file IDs/Paths.
 
         Parameters:
         - temp_dir (str): The temporary directory where files will be downloaded.
@@ -341,7 +341,7 @@ class OneDriveReader(BaseReader):
         # If a folder_id is provided, download files from the folder
         if folder_id:
             is_download_from_root = False
-            folder_metadata=self._download_files_from_onedrive(access_token, temp_dir, folder_id, recursive, mime_types=mime_types, userprincipalname = userprincipalname)
+            folder_metadata=self._connect_download_and_return_metadata(access_token, temp_dir, folder_id, recursive, mime_types=mime_types, userprincipalname = userprincipalname)
             downloaded_files_metadata.update(folder_metadata)
 
         # Download files using the provided file IDs
@@ -349,13 +349,13 @@ class OneDriveReader(BaseReader):
             is_download_from_root = False             
             for file_id in file_ids or []:
                 item = self._get_items_in_drive_with_maxretries(access_token, file_id, userprincipalname = userprincipalname, isFile=True)
-                file_metadata = self._check_and_download_file_from_onedrive(item, temp_dir, mime_types)                
+                file_metadata = self._check_approved_mimetype_and_download_file(item, temp_dir, mime_types)                
                 downloaded_files_metadata.update(file_metadata)
 
         # If a folder_path is provided, download files from the folder  
         if folder_path:
             is_download_from_root = False
-            folder_metadata=self._download_files_from_onedrive(access_token, temp_dir, folder_path, recursive, mime_types=mime_types, userprincipalname = userprincipalname, isRelativePath=True)
+            folder_metadata=self._connect_download_and_return_metadata(access_token, temp_dir, folder_path, recursive, mime_types=mime_types, userprincipalname = userprincipalname, isRelativePath=True)
             downloaded_files_metadata.update(folder_metadata)
 
         # Download files using the provided file paths
@@ -363,12 +363,12 @@ class OneDriveReader(BaseReader):
             is_download_from_root = False          
             for file_path in file_paths or []:
                 item = self._get_items_in_drive_with_maxretries(access_token, file_path, userprincipalname = userprincipalname, isFile=True, isRelativePath=True)
-                file_metadata = self._check_and_download_file_from_onedrive(item, temp_dir, mime_types)                
+                file_metadata = self._check_approved_mimetype_and_download_file(item, temp_dir, mime_types)                
                 downloaded_files_metadata.update(file_metadata)
         
         if is_download_from_root:
            # download files from root folder
-            root_folder_metadata = self._download_files_from_onedrive(access_token, temp_dir, "root", recursive, mime_types=mime_types, userprincipalname = userprincipalname)
+            root_folder_metadata = self._connect_download_and_return_metadata(access_token, temp_dir, "root", recursive, mime_types=mime_types, userprincipalname = userprincipalname)
             downloaded_files_metadata.update(root_folder_metadata)
         
         return downloaded_files_metadata
@@ -427,7 +427,7 @@ class OneDriveReader(BaseReader):
         try:
             
             with tempfile.TemporaryDirectory() as temp_dir:         
-                self._downloaded_files_metadata = self._download_files(temp_dir=temp_dir, folder_id=folder_id, file_ids=file_ids, folder_path=folder_path, file_paths=file_paths, recursive=recursive, mime_types=mime_types, userprincipalname = userprincipalname)
+                self._downloaded_files_metadata = self._init_download_and_get_metadata(temp_dir=temp_dir, folder_id=folder_id, file_ids=file_ids, folder_path=folder_path, file_paths=file_paths, recursive=recursive, mime_types=mime_types, userprincipalname = userprincipalname)
                 return self._load_documents_with_metadata(temp_dir, recursive=recursive)
         except Exception as e:
             logger.error("An error occurred while loading the data: {}".format(e), exc_info=True)
