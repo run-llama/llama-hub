@@ -93,15 +93,15 @@ The relative pathof subfolder from the root folder(Documents).
 
 For example:
 
-- The path of 1st level subfolder with name "drice co" (within root folder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is **drice%20co**.
+- The path of 1st level subfolder with name "drice co" (within root folder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is **drice%20co**
 
-- The path of 2nd level subfolder "test" (within drice co subfolder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is **drice%20co/test**.
+- The path of 2nd level subfolder "test" (within drice co subfolder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is **drice%20co/test**
 
 #### file_path
 
 The relatve path of files from the root folder(Documents).
 
-For example, the path of file "demo_doc.docx" within test subfolder from previous example with url of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test/demo_doc.docx` is **drice%20co/test/demo_doc.docx**.
+For example, the path of file "demo_doc.docx" within test subfolder from previous example with url of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test/demo_doc.docx` is **drice%20co/test/demo_doc.docx**
 
 #### OneDrive For Business Example Usage:
 
