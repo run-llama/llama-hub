@@ -1042,5 +1042,17 @@
       "pdf table",
       "pdf layout"
     ]
+  },
+  "OneDriveReader": {
+    "id": "microsoft_onedrive",
+    "author": "godwin3737",
+    "keywords": [
+      "microsoft onedrive",
+      "onedrive",
+      "onedrive personal",
+      "onedrive for business",
+      "microsoft 365",
+      "microsoft365"
+    ]
   }
 }
