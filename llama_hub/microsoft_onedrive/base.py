@@ -84,7 +84,7 @@ class OneDriveReader(BaseReader):
             logger.error(result.get("error"))
             logger.error(result.get("error_description"))
             logger.error(result.get("correlation_id"))
-            raise msal.MsalException(result.get("error"))
+            raise Exception(result.get("error"))
 
     def _construct_endpoint(
         self,
@@ -108,7 +108,7 @@ class OneDriveReader(BaseReader):
 
         if not self._is_interactive_auth and not userprincipalname:
             raise Exception(
-                "userprincipalname cannot be empty for App authentication. Provide the userprincipalname (email mostly) of user whose onderive needs to be accessed"
+                "userprincipalname cannot be empty for App authentication. Provide the userprincipalname (email mostly) of user whose OneDrive needs to be accessed"
             )
 
         endpoint = "https://graph.microsoft.com/v1.0/"
@@ -472,10 +472,10 @@ class OneDriveReader(BaseReader):
         except ImportError:
             SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
-        loader = SimpleDirectoryReader(
+        simple_loader = SimpleDirectoryReader(
             directory, file_metadata=get_metadata, recursive=recursive
         )
-        documents = loader.load_data()
+        documents = simple_loader.load_data()
         return documents
 
     def load_data(
