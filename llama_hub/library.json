@@ -1043,7 +1043,6 @@
       "pdf layout"
     ]
   },
-<<<<<<< HEAD
   "PdbAbstractReader": {
     "id": "pdb",
     "author": "joshuakto",
@@ -1054,8 +1053,6 @@
       "academic papers"
     ]
   },
-=======
->>>>>>> 0176cf2372c1995edbb5e3ec5564054a080ae0ca
   "OneDriveReader": {
     "id": "microsoft_onedrive",
     "author": "godwin3737",
