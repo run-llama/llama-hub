@@ -1042,5 +1042,15 @@
       "pdf table",
       "pdf layout"
     ]
+  },
+  "PdbAbstractReader": {
+    "id": "pdb",
+    "author": "joshuakto",
+    "keywords": [
+      "pdb",
+      "Protein Data Bank",
+      "proteins",
+      "academic papers"
+    ]
   }
 }
