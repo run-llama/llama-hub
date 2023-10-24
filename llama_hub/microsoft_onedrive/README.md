@@ -1,8 +1,11 @@
 # Microsoft OneDrive Loader
 
-This loader reads files from Microsoft OneDrive Personal [(https://onedrive.live.com/)](https://onedrive.live.com/) and Microsoft OneDrive for Business [(https://portal.office.com/onedrive)](https://portal.office.com/onedrive).
+This loader reads files from:
+- Microsoft OneDrive Personal [(https://onedrive.live.com/)](https://onedrive.live.com/) and
+- Microsoft OneDrive for Business [(https://portal.office.com/onedrive)](https://portal.office.com/onedrive).
 
 It supports recursively traversing and downloading files from subfolders and provides capablity to download only files with specific mime types. To use this loader, you need to pass in a list of file/folder id or file/folder paths.
+
 
 #### Subfolder traversing (enabled by default)
 
@@ -13,24 +16,25 @@ To disbale: `loader.load_data(recursive = False)`
 
 You can also filter the files by the mimeType e.g.: `mime_types=["application/vnd.openxmlformats-officedocument.wordprocessingml.document"]`
 
-## Authenticaton
+
+### Authenticaton
 
 OneDriveReader supports following two **MSAL authentication**:
 
-### 1. User Authentication: Browser based authentication:
+#### 1. User Authentication: Browser based authentication:
  - You need to create a app registration in Microsoft Entra (formerly Azure Active Directory)
  - For interactive authentication to work, a browser is used to authenticate, hence the registered application should have a **redirect URI** set to *'https://localhost'* under mobile and native applications.
  - This mode of authnetication is not suitable for CI/CD or other background service scenarios where manual auhtentication isnt feasible.
  - API Permission required for registered app: 
    > Microsoft Graph --> Delegated Permission -- > Files.Read.All
 
-### 2. App Authentication: Client ID & Client Secret based authentication
+#### 2. App Authentication: Client ID & Client Secret based authentication
  - You need to create a app registration in Microsoft Entra (formerly Azure Active Directory)
  - For silent authentication to work, You need to create a client secret as well for the app.
  - This mode of authnetication is not supported by Microsoft currently for OneDrive Personal, hence this can be used only for OneDrive for Business(Microsoft 365).
  - API Permission required for registered app: 
    > Microsoft Graph --> Application Permissions -- > Files.Read.All (**Grant Admin Consent**)
-  -----
+  
    > Microsoft Graph --> Application Permissions -- > User.Read.All (**Grant Admin Consent**)
 
 ## Usage
@@ -40,17 +44,19 @@ https://onedrive.live.com/
 
 > Note: If you trying to connect to OneDrive Personal you can intialize OneDriveReader with just your client_id and interactive login. Microsoft *doesn't* support App authentication for OneDrive Personal currently.
 
-### folder_id
+#### folder_id
 
 You can extract a folder_id directly from its URL.
 
 For example, the folder_id of `https://onedrive.live.com/?id=B5AF52B769DFDE4%216107&cid=0B5AF52B769DFDdRE4` is `B5AF52B769DFDE4%216107`.
 
-### file_id
+#### file_id
 
 You can extract a file_id directly from its preview URL.
 
 For example, the file_id of `https://onedrive.live.com/?cid=0B5AF52BE769DFDE4&id=B5AF52B769DFDE4%216106&parId=root&o=OneUp` is `B5AF52B769DFDE4%216106`.
+
+#### OneDrive Personal Example Usage:
 
 ```python
 from llama_index import download_loader
@@ -81,23 +87,23 @@ https://portal.office.com/onedrive
 1. Initialize OneDriveReader with correct **tenant_id**, along with a client_id and client_Secret registered for the tenant.
 2. Invoke the load_data method with **userprincipalname** (org provided email in most cases)
 
-### folder_path
+#### folder_path
 
 The relative pathof subfolder from the root folder(Documents).
 
 For example:
 
-- The path of 1st level subfolder with name "drice co" (within root folder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is `drice%20co` or `drice co`.
+- The path of 1st level subfolder with name "drice co" (within root folder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is **drice%20co**.
 
-- The path of 2nd level subfolder "test" (within drice co subfolder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is `drice%20co/test` or `drice co/test`.
+- The path of 2nd level subfolder "test" (within drice co subfolder) with URL  of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test` is **drice%20co/test**.
 
-### file_path
+#### file_path
 
 The relatve path of files from the root folder(Documents).
 
-For example, the path of file "demo_doc.docx" within test subfolder from previous example with url of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test/demo_doc.docx` is `drice%20co/test/demo_doc.docx` or `drice co/test/demo_doc.docx`.
+For example, the path of file "demo_doc.docx" within test subfolder from previous example with url of `https://foobar-my.sharepoint.com/personal/godwin_foobar_onmicrosoft_com/_layouts/15/onedrive.aspx?id=/personal/godwin_foobar_onmicrosoft_com/Documents/drice%20co/test/demo_doc.docx` is **drice%20co/test/demo_doc.docx**.
 
-
+#### OneDrive For Business Example Usage:
 
 ```python
 from llama_index import download_loader
@@ -116,11 +122,10 @@ documents = loader.load_data(folder_path="subfolder/subfolder2", userprincipalna
 documents = loader.load_data(file_ids=["subfolder/subfolder2/fileid1.pdf", "subfolder/subfolder3/fileid2.docx"], userprincipalname = "godwin@foobar.onmicrosoft.com")
 ```
 
-This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
-
-
 #### Author
 [Godwin Paul Vincent](https://github.com/godwin3737)
+
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
 
 
 
