@@ -1,4 +1,4 @@
-"""OneDrive files reader."""
+"""OneDrive files reader"""
 
 import logging
 import os
