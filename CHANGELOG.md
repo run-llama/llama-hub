@@ -1,4 +1,4 @@
-## Unreleased
+## [v0.0.39] - 2023-10-24
 
 ### New Features
 - Added smart layout aware fast PDF reader/loader (#587)
