@@ -1,3 +1,17 @@
+## Unreleased
+
+### New Features
+- Added smart layout aware fast PDF reader/loader (#587)
+- Added Protein Data Bank citation reader (#595) 
+
+### Smaller Features + Bug Fixes
+- Fix Firestore client info (#586) 
+- doc(README): remove typo (#589)
+- Add model kwargs to image loader (#588)
+- updating documentation to match method defaults (#591)
+- doc(README): Fix Grammatical Error (#593)
+- Fix import statement for CodeInterpreterToolSpec (#594) 
+
 ## [v0.0.38] - 2023-10-16
 
 ### New Features
