@@ -1076,7 +1076,7 @@
     ]
   },
   "TrafilaturaWebReader": {
-    "id": "trafilatura_web_reader",
+    "id": "web/trafilatura_web",
     "author": "NA",
     "keywords":[
       "trafilatura",
