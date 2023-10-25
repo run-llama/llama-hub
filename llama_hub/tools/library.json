@@ -102,6 +102,10 @@
     "id": "tools/slack",
     "author": "jerryjliu"
   },
+  "TavilyToolSpec": {
+    "id": "tools/tavily",
+    "author": "rotemweiss57"
+  },
   "TextToImageToolSpec": {
     "id": "tools/text_to_image",
     "author": "ajhofmann"
