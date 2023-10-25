@@ -1,6 +1,6 @@
 """Tavily tool spec."""
 
-from typing import Optional
+from typing import Optional, List
 from llama_index.readers.schema.base import Document
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
@@ -18,11 +18,7 @@ class TavilyToolSpec(BaseToolSpec):
 
         self.client = Client(api_key=api_key)
 
-    def search(
-            self,
-            query: str,
-            max_results: Optional[int] = 6
-    ) -> list[Document]:
+    def search(self, query: str, max_results: Optional[int] = 6) -> List[Document]:
         """
         Run query through Tavily Search and return metadata.
 
@@ -37,9 +33,9 @@ class TavilyToolSpec(BaseToolSpec):
 
         """
         response = self.client.search(
-            query,
-            max_results=max_results,
-            search_depth="advanced"
+            query, max_results=max_results, search_depth="advanced"
         )
-        return [Document(text=result["content"], extra_info={"url": result["url"]}) for result
-                in response["results"]]
+        return [
+            Document(text=result["content"], extra_info={"url": result["url"]})
+            for result in response["results"]
+        ]
