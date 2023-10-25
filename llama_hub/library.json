@@ -1029,6 +1029,16 @@
       "datalake"
     ]
   },
+  "OpenAlexReader": {
+    "id": "openalex",
+    "author": "shauryr",
+    "keywords": [
+      "scientific papers",
+      "openalex",
+      "open access",
+      "academic papers"
+    ]
+  },
   "PatentsviewReader": {
     "id": "patentsview",
     "author": "shao-shuai",
