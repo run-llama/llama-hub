@@ -1074,5 +1074,14 @@
       "microsoft 365",
       "microsoft365"
     ]
+  },
+  "TrafilaturaWebReader": {
+    "id": "web/trafilatura_web",
+    "author": "NA",
+    "keywords":[
+      "trafilatura",
+      "web",
+      "web reader"
+    ]
   }
 }
