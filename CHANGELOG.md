@@ -1,3 +1,13 @@
+## Unreleased
+
+### New Features
+- Added OpenAlex Reader for Scientific QA (#599)
+- Added Tavily Search API as a tool (#600)
+- Adding loader to read from OneDrive Personal and OneDrive for Business (#597)
+
+### Smaller Features + Bug Fixes
+- Update TrafilaturaWebReader in library.json (#602) 
+
 ## [v0.0.39] - 2023-10-24
 
 ### New Features
