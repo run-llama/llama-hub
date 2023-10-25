@@ -5,7 +5,7 @@ This loader will search for papers in OpenAlex and load them in llama-index. The
 ## Usage
 
 ```python
-from llama_hub.openalex_loader.base import OpenAlexReader
+from llama_hub.openalex_loader import OpenAlexReader
 
 openalex_reader = OpenAlexReader(email="shauryr@gmail.com")
 query = "biases in large language models"
