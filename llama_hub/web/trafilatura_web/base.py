@@ -1,4 +1,5 @@
 from typing import List
+from importlib.util import find_spec
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -11,6 +12,14 @@ class TrafilaturaWebReader(BaseReader):
     Requires the `trafilatura` package.
 
     """
+
+    def __init__(self) -> None:
+
+        if find_spec("trafilatura") is None:
+            raise ImportError(
+                "Missing package: trafilatura.\n"
+                "Please `pip install trafilatura` to use this Reader"
+            )
 
     def load_data(self, urls: List[str]) -> List[Document]:
         """Load data from the urls.
