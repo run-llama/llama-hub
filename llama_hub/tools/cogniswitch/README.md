@@ -28,7 +28,7 @@ visit https://www.cogniswitch.ai/developer.<br>
 ```python
 import warnings
 warnings.filterwarnings("ignore")
-from llama_hub import CogniswitchToolspec
+from llama_hub.tools import CogniswitchToolspec
 ```
 
 ### Cogniswitch Credentials and OpenAI token
