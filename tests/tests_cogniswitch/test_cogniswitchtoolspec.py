@@ -1,6 +1,6 @@
 import requests
 from unittest.mock import Mock
-from llama_hub.tools.cogniswitch.base import CogniswitchToolSpec
+from llama_hub.tools.cogniswitch import CogniswitchToolSpec
 
 # Define some sample data for testing
 sample_cs_token = "cs_token"
