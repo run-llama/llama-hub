@@ -12,10 +12,29 @@ class CogniswitchToolSpec(BaseToolSpec):
     spec_functions = ["store_data", "query_knowledge"]
 
     def __init__(self, cs_token: str, OAI_token: str, apiKey: str) -> None:
+        '''
+        Args:
+            cs_token (str): Cogniswitch token.
+            OAI_token (str): OpenAI token.
+            apiKey (str): Oauth token
+        '''
         self.cs_token = cs_token
         self.OAI_token = OAI_token
         self.apiKey = apiKey
-
+        self.source_URL_endpoint = (
+            "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeSource/url"
+        )
+        self.source_file_endpoint = (
+            "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeSource/file"
+        )
+        self.knowledge_request_endpoint = (
+            "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeRequest"
+        )
+        self.headers = {
+            "apiKey": self.apiKey,
+            "platformToken": self.cs_token,
+            "openAIToken": self.OAI_token,
+        }
     def store_data(
         self,
         url: Optional[str] = None,
@@ -27,8 +46,6 @@ class CogniswitchToolSpec(BaseToolSpec):
         Store data using the Cogniswitch service.
 
         Args:
-            cs_token (str): Cogniswitch token.
-            OAI_token (str): OpenAI token.
             url (Optional[str]): URL link.
             file (Optional[str]): file path of your file.
             the current files supported by the files are
@@ -41,15 +58,17 @@ class CogniswitchToolSpec(BaseToolSpec):
         Returns:
             dict: Response JSON from the Cogniswitch service.
         """
-        if not file:
-            api_url = (
-                "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeSource/url"
-            )
-            headers = {
-                "apiKey": self.apiKey,
-                "openAIToken": self.OAI_token,
-                "platformToken": self.cs_token,
+        if not file and not url:
+            return {
+                "message": "No input provided",
             }
+        elif file and url:
+            return {
+                "message": "Too many inputs, please provide either file or url",
+            }
+        elif url:
+            api_url = self.source_URL_endpoint
+            headers = self.headers
             files = None
             data = {
                 "url": url,
@@ -60,16 +79,10 @@ class CogniswitchToolSpec(BaseToolSpec):
                 api_url, headers=headers, verify=False, data=data, files=files
             )
 
-        if not url:
-            api_url = (
-                "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeSource/file"
-            )
+        elif file:
+            api_url = self.source_file_endpoint
 
-            headers = {
-                "apiKey": self.apiKey,
-                "openAIToken": self.OAI_token,
-                "platformToken": self.cs_token,
-            }
+            headers = self.headers
             if file is not None:
                 files = {"file": open(file, "rb")}
             else:
@@ -95,20 +108,14 @@ class CogniswitchToolSpec(BaseToolSpec):
         Send a query to the Cogniswitch service and retrieve the response.
 
         Args:
-            cs_token (str): Cogniswitch token.
-            OAI_token (str): OpenAI token.
             query (str): Query to be answered.
 
         Returns:
             dict: Response JSON from the Cogniswitch service.
         """
-        api_url = "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeRequest"
+        api_url = self.knowledge_request_endpoint
 
-        headers = {
-            "apiKey": self.apiKey,
-            "platformToken": self.cs_token,
-            "openAIToken": self.OAI_token,
-        }
+        headers = self.headers
 
         data = {"query": query}
         response = requests.post(api_url, headers=headers, verify=False, data=data)
