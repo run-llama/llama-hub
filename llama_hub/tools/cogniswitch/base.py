@@ -12,12 +12,12 @@ class CogniswitchToolSpec(BaseToolSpec):
     spec_functions = ["store_data", "query_knowledge"]
 
     def __init__(self, cs_token: str, OAI_token: str, apiKey: str) -> None:
-        '''
+        """
         Args:
             cs_token (str): Cogniswitch token.
             OAI_token (str): OpenAI token.
             apiKey (str): Oauth token
-        '''
+        """
         self.cs_token = cs_token
         self.OAI_token = OAI_token
         self.apiKey = apiKey
@@ -35,6 +35,7 @@ class CogniswitchToolSpec(BaseToolSpec):
             "platformToken": self.cs_token,
             "openAIToken": self.OAI_token,
         }
+
     def store_data(
         self,
         url: Optional[str] = None,
