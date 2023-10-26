@@ -1,4 +1,4 @@
-## Unreleased
+## [v0.0.40] - 2023-10-26
 
 ### New Features
 - Added OpenAlex Reader for Scientific QA (#599)
