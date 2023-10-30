@@ -1,12 +1,14 @@
 # LlamaHub 🦙
 
-This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/jerryjliu/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
+**Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
 
-Loaders and readers allow you to easily ingest data for search and retrieval by a large language models, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capaibility of next level large language models.
+This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
 
-For a variety of examples on data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks). You can find example Jupyter notebooks for creating data agents that can load and parse data from Google Docs, SQL Databases, Notion, Slack and also manage you Google Calendar, Gmail inbox, or read and use OpenAPI specs. 
+Loaders and readers allow you to easily ingest data for search and retrieval by a large language model, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capability of next level large language models.
 
-For an easier way to browse the integrations available, checkout the website here: https://llamahub.ai/.
+For a variety of examples of data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks). You can find example Jupyter notebooks for creating data agents that can load and parse data from Google Docs, SQL Databases, Notion, and Slack, and also manage your Google Calendar, and Gmail inbox, or read and use OpenAPI specs. 
+
+For an easier way to browse the integrations available, check out the website here: https://llamahub.ai/.
 
 <img width="1465" alt="Screenshot 2023-07-17 at 6 12 32 PM" src="https://github.com/ajhofmann/llama-hub/assets/10040285/5e344de4-4aca-4f6c-9944-46c00baa5eb2">
 
@@ -22,7 +24,7 @@ pip install llama-hub
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
@@ -38,7 +40,7 @@ from llama_index.agent import OpenAIAgent
 import openai
 openai.api_key = 'sk-api-key'
 
-from llama_hub.tools.google_calendar.base import GoogleCalendarToolSpec
+from llama_hub.tools.google_calendar import GoogleCalendarToolSpec
 tool_spec = GoogleCalendarToolSpec()
 
 agent = OpenAIAgent.from_tools(tool_spec.to_tool_list())
@@ -46,15 +48,15 @@ agent.chat('what is the first thing on my calendar today')
 agent.chat("Please create an event for tomorrow at 4pm to review pull requests")
 ```
 
-For a variety of examples on creating and using data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks).
+For a variety of examples of creating and using data agents, see the [notebooks directory](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks).
 
 ### LangChain
 
-Note: Make sure you change the description of the `Tool` to match your use-case.
+Note: Make sure you change the description of the `Tool` to match your use case.
 
 ```python
 from llama_index import GPTVectorStoreIndex
-from llama_hub.google_docs.base import GoogleDocsReader
+from llama_hub.google_docs import GoogleDocsReader
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
@@ -127,7 +129,7 @@ This will create an editable install of `llama-hub` in your venv.
 
 ### Step 1: Create a new directory
 
-For loaders, create a new directory in `llama_hub`, and for tools create a directory in `llama_hub/tools` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file, which can be empty, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
+For loaders, create a new directory in `llama_hub`, and for tools create a directory in `llama_hub/tools` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file specifying the module's public interface with `__all__`, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
 
 If you'd like, you can create the new directory and files by running the following script in the `llama_hub` directory. Just remember to put your dependencies into a `requirements.txt` file.
 
@@ -137,16 +139,16 @@ If you'd like, you can create the new directory and files by running the followi
 
 ### Step 2: Write your README
 
-Inside your new directory, create a `README.md` that mirrors that of the existing ones. It should have a summary of what your loader or tool does, its inputs, and how its used in the context of LlamaIndex and LangChain.
+Inside your new directory, create a `README.md` that mirrors that of the existing ones. It should have a summary of what your loader or tool does, its inputs, and how it is used in the context of LlamaIndex and LangChain.
 
 ### Step 3: Add your loader to the library.json file
 
-Finally, add your loader to the `llama_hub/library.json` file (for tools, add them to the `llama_hub/tools/library.json`) so that it may be used by others. As is exemplified by the current file, add in the class name of your loader or tool, along with its id, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
+Finally, add your loader to the `llama_hub/library.json` file (for tools, add them to the `llama_hub/tools/library.json`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
 
 ### Step 4: Make a Pull Request!
 
 Create a PR against the main branch. We typically review the PR within a day. To help expedite the process, it may be helpful to provide screenshots (either in the PR or in
-the README directly) showing your data loader or tool in action!
+the README directly) Show your data loader or tool in action!
 
 ## Running tests
 

@@ -1,10 +1,66 @@
-## Unreleased
+## [v0.0.41] - 2023-10-30
 
 ### New Features
+- CogniSwitch Connector (#604) 
+
+### Smaller Features + Bug Fixes
+- add docs to min_chunk_size (#607)
+- Change Tavily client name (#609)
+
+## [v0.0.40] - 2023-10-26
+
+### New Features
+- Added OpenAlex Reader for Scientific QA (#599)
+- Added Tavily Search API as a tool (#600)
+- Adding loader to read from OneDrive Personal and OneDrive for Business (#597)
+
+### Smaller Features + Bug Fixes
+- Update TrafilaturaWebReader in library.json (#602) 
+
+## [v0.0.39] - 2023-10-24
+
+### New Features
+- Added smart layout aware fast PDF reader/loader (#587)
+- Added Protein Data Bank citation reader (#595) 
+
+### Smaller Features + Bug Fixes
+- Fix Firestore client info (#586) 
+- doc(README): remove typo (#589)
+- Add model kwargs to image loader (#588)
+- updating documentation to match method defaults (#591)
+- doc(README): Fix Grammatical Error (#593)
+- Fix import statement for CodeInterpreterToolSpec (#594) 
+
+## [v0.0.38] - 2023-10-16
+
+### New Features
+- IMDB Review loader (#571) 
+- Add AWS Athena Reader (#579)
+- add PatentsviewReader for reading patent abstract (#582) 
+
+### Smaller Features + Bug Fixes
+- Add proper __init__.py files (#581)
+- Add possibility to pass model kwargs to image loader models
+
+## [v0.0.37] - 2023-10-09
+
+### New Features
+- Add Nougat OCR loader (#541)
+
+### Smaller Features + Bug Fixes
+- improve bitbucket loader and extension to skip (#576)
+
+## [v0.0.36] - 2023-10-07
+
+### New Features
+- Add RayyanLoader to fetch review articles from Rayyan (#570)
+- added bitbucket loader (#572)
 
 ### Smaller Features + Bug Fixes
 - fix: credentials path and readme improvement (#567)
 - fix: pdf google drive (#568)
+- Updating URLs in Wikipedia Loader (#569)
+
 ### [v0.0.35] - 2023-10-05
 - Loader for Macrometa GDN (#484)
 - adding boto3 minio doc loader (#497)

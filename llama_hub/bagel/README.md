@@ -8,7 +8,7 @@ The user initializes the loader with a BagelDB. They then pass in a query vector
 Here's an example usage of the BagelReader.
 
 ```python
-from llama_hub.bagel.base import BagelReader
+from llama_hub.bagel import BagelReader
 
 # The chroma reader loads data from a persisted Chroma collection.
 # This requires a collection name and a persist directory.

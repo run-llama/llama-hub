@@ -7,7 +7,7 @@ This tool fetches content from wikipedia and makes it available to the agent as 
 This tool has more extensive example usage documented in a Jupyter notebook [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks/wikipedia.ipynb)
 
 ```python
-from llama_hub.tools.wikipedia.base import WikipediaToolSpec
+from llama_hub.tools.wikipedia import WikipediaToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = WikipediaToolSpec()
@@ -20,4 +20,7 @@ agent.chat('Who is Ben Afflecks spouse?')
 `load_data`: Loads a page from wikipedia
 `search_data`: Searchs wikipedia for a query and loads all matching pages
 
-This loader is designed to be used as a way to load data as a Tool in a Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+This loader is designed to be used as a way to load data as a Tool in a Agent.
+See [this LlamaIndex tutorial][1] for examples.
+
+[1]: https://gpt-index.readthedocs.io/en/stable/examples/index_structs/knowledge_graph/KnowledgeGraphIndex_vs_VectorStoreIndex_vs_CustomIndex_combined.html#load-data-from-wikipedia

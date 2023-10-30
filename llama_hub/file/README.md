@@ -7,7 +7,7 @@ This loader takes in a local directory containing files and extracts `Document`s
 To use this loader, you simply need to instantiate the `SimpleDirectoryReader` class with a directory, along with other optional settings, such as whether to ignore hidden files. See the code for the complete list.
 
 ```python
-from llama_hub.file.base import SimpleDirectoryReader
+from llama_hub.file import SimpleDirectoryReader
 
 # other way of loading
 # from llama_index import download_loader
@@ -24,7 +24,7 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ### LlamaIndex
 
 ```python
-from llama_hub.file.base import SimpleDirectoryReader
+from llama_hub.file import SimpleDirectoryReader
 from llama_index import GPTVectorStoreIndex
 
 # other way of loading
@@ -42,7 +42,7 @@ index.query('What are these files about?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from llama_hub.file.base import SimpleDirectoryReader
+from llama_hub.file import SimpleDirectoryReader
 from llama_index import GPTVectorStoreIndex
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI

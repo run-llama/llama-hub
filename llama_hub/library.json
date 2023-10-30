@@ -987,5 +987,104 @@
   "LilacReader": {
     "id": "lilac_reader",
     "author": "nsthorat"
+  },
+  "IMDBReviews":{
+    "id": "imdb_review",
+    "author": "Athe-kunal",
+    "keywords":[
+      "movies",
+      "reviews",
+      "IMDB"
+  ]
+},
+  "PDFNougatOCR": {
+    "id": "nougat_ocr",
+    "author": "mdarshad1000",
+    "keywords": [
+      "pdf",
+      "ocr",
+      "academic papers"
+    ]
+  },
+  "BitbucketReader":{
+    "id": "bitbucket",
+    "author": "lejdiprifti",
+    "keywords":[
+      "bitbucket",
+      "project",
+      "repository"
+    ]
+  },
+  "RayyanReader": {
+    "id": "rayyan",
+    "author": "hammady",
+    "keywords": [
+      "rayyan",
+      "systematic review"
+    ]
+  },
+  "AthenaReader": {
+    "id": "athena",
+    "author": "mattick27",
+    "keywords": [
+      "aws athena",
+      "sql",
+      "datalake"
+    ]
+  },
+  "OpenAlexReader": {
+    "id": "openalex",
+    "author": "shauryr",
+    "keywords": [
+      "scientific papers",
+      "openalex",
+      "open access",
+      "academic papers"
+    ]
+  },
+  "PatentsviewReader": {
+    "id": "patentsview",
+    "author": "shao-shuai",
+    "keywords": ["patent"]
+  },
+  "SmartPDFLoader": {
+    "id": "smart_pdf_loader",
+    "author": "ansukla",
+    "keywords": [
+      "pdf",
+      "pdf table",
+      "pdf layout"
+    ]
+  },
+  "PdbAbstractReader": {
+    "id": "pdb",
+    "author": "joshuakto",
+    "keywords": [
+      "pdb",
+      "Protein Data Bank",
+      "proteins",
+      "academic papers"
+    ]
+  },
+  "OneDriveReader": {
+    "id": "microsoft_onedrive",
+    "author": "godwin3737",
+    "keywords": [
+      "microsoft onedrive",
+      "onedrive",
+      "onedrive personal",
+      "onedrive for business",
+      "microsoft 365",
+      "microsoft365"
+    ]
+  },
+  "TrafilaturaWebReader": {
+    "id": "web/trafilatura_web",
+    "author": "NA",
+    "keywords":[
+      "trafilatura",
+      "web",
+      "web reader"
+    ]
   }
 }

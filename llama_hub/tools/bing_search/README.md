@@ -11,7 +11,7 @@ This tool has a more extensive example usage documented in a Jupyter notebook [h
 Here's an example usage of the BingSearchToolSpec.
 
 ```python
-from llama_hub.tools.bing_search.base import BingSearchToolSpec
+from llama_hub.tools.bing_search import BingSearchToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = BingSearchToolSpec(api_key='your-key')

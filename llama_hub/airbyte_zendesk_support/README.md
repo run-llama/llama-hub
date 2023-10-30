@@ -12,7 +12,7 @@ The Airbyte ZendeskSupport Loader allows you to access different ZendeskSupport 
 Here's an example usage of the AirbyteZendeskSupportReader.
 
 ```python
-from llama_hub.airbyte_zendesk_support.base import AirbyteZendeskSupportReader
+from llama_hub.airbyte_zendesk_support import AirbyteZendeskSupportReader
 
 zendesk_support_config = {
     # ...

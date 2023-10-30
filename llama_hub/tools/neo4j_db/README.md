@@ -16,7 +16,7 @@ The `Neo4jQueryToolSpec` class provides a way to query a Neo4j graph database ba
 Initialize the `Neo4jQueryToolSpec` class with:
 
 ```python
-from llama_hub.tools.neo4j_db.base import Neo4jQueryToolSpec
+from llama_hub.tools.neo4j_db import Neo4jQueryToolSpec
 from llama_index.llms import OpenAI
 from llama_index.agent import OpenAIAgent
 
