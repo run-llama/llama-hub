@@ -1,3 +1,27 @@
+## [v0.0.40] - 2023-10-26
+
+### New Features
+- Added OpenAlex Reader for Scientific QA (#599)
+- Added Tavily Search API as a tool (#600)
+- Adding loader to read from OneDrive Personal and OneDrive for Business (#597)
+
+### Smaller Features + Bug Fixes
+- Update TrafilaturaWebReader in library.json (#602) 
+
+## [v0.0.39] - 2023-10-24
+
+### New Features
+- Added smart layout aware fast PDF reader/loader (#587)
+- Added Protein Data Bank citation reader (#595) 
+
+### Smaller Features + Bug Fixes
+- Fix Firestore client info (#586) 
+- doc(README): remove typo (#589)
+- Add model kwargs to image loader (#588)
+- updating documentation to match method defaults (#591)
+- doc(README): Fix Grammatical Error (#593)
+- Fix import statement for CodeInterpreterToolSpec (#594) 
+
 ## [v0.0.38] - 2023-10-16
 
 ### New Features

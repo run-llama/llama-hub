@@ -1029,6 +1029,16 @@
       "datalake"
     ]
   },
+  "OpenAlexReader": {
+    "id": "openalex",
+    "author": "shauryr",
+    "keywords": [
+      "scientific papers",
+      "openalex",
+      "open access",
+      "academic papers"
+    ]
+  },
   "PatentsviewReader": {
     "id": "patentsview",
     "author": "shao-shuai",
@@ -1051,6 +1061,27 @@
       "Protein Data Bank",
       "proteins",
       "academic papers"
+    ]
+  },
+  "OneDriveReader": {
+    "id": "microsoft_onedrive",
+    "author": "godwin3737",
+    "keywords": [
+      "microsoft onedrive",
+      "onedrive",
+      "onedrive personal",
+      "onedrive for business",
+      "microsoft 365",
+      "microsoft365"
+    ]
+  },
+  "TrafilaturaWebReader": {
+    "id": "web/trafilatura_web",
+    "author": "NA",
+    "keywords":[
+      "trafilatura",
+      "web",
+      "web reader"
     ]
   }
 }

@@ -139,5 +139,16 @@
       "neo4j",
       "cypher"
     ]
-  }
+  },
+  "CogniswitchToolSpec": {
+    "id": "tools/cogniswitch",
+    "author": "cogniswitch",
+    "keywords": [
+      "graph",
+      "knowledge graph",
+      "neural",
+      "symbolic",
+      "embedding"
+    ]
+  } 
 }
