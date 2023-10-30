@@ -18,7 +18,6 @@ class TavilyToolSpec(BaseToolSpec):
 
         self.client = TavilyClient(api_key=api_key)
 
-
     def search(self, query: str, max_results: Optional[int] = 6) -> List[Document]:
         """
         Run query through Tavily Search and return metadata.
