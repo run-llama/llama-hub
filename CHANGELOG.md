@@ -1,3 +1,12 @@
+## [v0.0.41] - 2023-10-30
+
+### New Features
+- CogniSwitch Connector (#604) 
+
+### Smaller Features + Bug Fixes
+- add docs to min_chunk_size (#607)
+- Change Tavily client name (#609)
+
 ## [v0.0.40] - 2023-10-26
 
 ### New Features
