@@ -20,7 +20,7 @@ class LilacReader(BaseReader):
         text_path: "Path" = "text",
         doc_id_path: Optional["Path"] = "doc_id",
         columns: Optional[List["ColumnId"]] = None,
-        filters: Optional[list["FilterLike"]] = None,
+        filters: Optional[List["FilterLike"]] = None,
         project_dir: Optional[str] = None,
     ) -> List[Document]:
         """
