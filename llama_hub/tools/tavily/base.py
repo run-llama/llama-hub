@@ -14,7 +14,6 @@ class TavilyToolSpec(BaseToolSpec):
 
     def __init__(self, api_key: str) -> None:
         """Initialize with parameters."""
-
         from tavily import TavilyClient
 
         self.client = TavilyClient(api_key=api_key)
