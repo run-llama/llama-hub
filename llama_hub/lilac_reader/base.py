@@ -92,7 +92,7 @@ class LilacReader(BaseReader):
             else:
                 _remove_item_path(item[path[0]], path[1:])
 
-        documents: list[Document] = []
+        documents: List[Document] = []
         for row in rows:
             text = _item_from_path(row, text_path)
             doc_id = _item_from_path(row, doc_id_path)
