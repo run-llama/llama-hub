@@ -1,3 +1,22 @@
+## [v0.0.41] - 2023-10-30
+
+### New Features
+- CogniSwitch Connector (#604) 
+
+### Smaller Features + Bug Fixes
+- add docs to min_chunk_size (#607)
+- Change Tavily client name (#609)
+
+## [v0.0.40] - 2023-10-26
+
+### New Features
+- Added OpenAlex Reader for Scientific QA (#599)
+- Added Tavily Search API as a tool (#600)
+- Adding loader to read from OneDrive Personal and OneDrive for Business (#597)
+
+### Smaller Features + Bug Fixes
+- Update TrafilaturaWebReader in library.json (#602) 
+
 ## [v0.0.39] - 2023-10-24
 
 ### New Features
