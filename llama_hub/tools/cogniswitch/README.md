@@ -55,14 +55,14 @@ toolspec = CogniswitchToolSpec(
 
 ```python
 store_response = toolspec.store_data(
-    url="https://cogniswitch.ai/dev",
+    url="https://cogniswitch.ai/developer",
     document_name="Cogniswitch dev",
     document_description="This is a cogniswitch website for developers.",
 )
 print(store_response)
 ```
 
-    {'data': {'knowledgeSourceId': 42, 'sourceType': 'https://cogniswitch.ai/dev', 'sourceURL': None, 'sourceFileName': None, 'sourceName': 'Cogniswitch dev', 'sourceDescription': 'This is a cogniswitch website for developers.', 'status': 'UPLOADED'}, 'list': None, 'message': "We're processing your content & will send you an email on completion, hang tight!", 'statusCode': 1000}
+    {'data': {'knowledgeSourceId': 43, 'sourceType': 'https://cogniswitch.ai/developer', 'sourceURL': None, 'sourceFileName': None, 'sourceName': 'Cogniswitch dev', 'sourceDescription': 'This is a cogniswitch website for developers.', 'status': 'UPLOADED'}, 'list': None, 'message': "We're processing your content & will send you an email on completion, hang tight!", 'statusCode': 1000}
     
 
 ### Use Tool Spec for answering using the query knowledge with a single call
@@ -76,3 +76,5 @@ print(answer_response)
     {'data': {'answer': 'CogniSwitch is a technology platform that enhances the reliability of Generative AI applications for enterprises. It does this by gathering and organizing knowledge from documented sources, eliminating hallucinations and bias in AI responses. The platform uses AI to automatically gather and organize knowledge, which can then be reviewed and curated by experts before being published. The CogniSwitch API enables Gen AI applications to access this knowledge as needed, ensuring reliability. It is specifically designed to complement Generative AI and offers customized solutions for different business functions within an enterprise.'}, 'list': None, 'message': None, 'statusCode': 1000}
     
 The tool is designed to store data and retrieve answers based on the knowledge provided. check out the [link](https://github.com/run-llama/llama-hub/blob/main/llama_hub/tools/notebooks/cogniswitch.ipynb) for examples.
+
+
