@@ -103,7 +103,7 @@
     "author": "jerryjliu"
   },
   "TavilyToolSpec": {
-    "id": "tools/tavily",
+    "id": "tools/tavily_research",
     "author": "rotemweiss57"
   },
   "TextToImageToolSpec": {
