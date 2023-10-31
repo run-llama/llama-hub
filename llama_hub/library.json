@@ -984,7 +984,10 @@
       "collaborators"
     ]
   },
-
+  "LilacReader": {
+    "id": "lilac_reader",
+    "author": "nsthorat"
+  },
   "IMDBReviews":{
     "id": "imdb_review",
     "author": "Athe-kunal",
