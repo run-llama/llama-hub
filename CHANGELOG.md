@@ -1,3 +1,9 @@
+## [v0.0.43] - 2023-11-1
+
+### Smaller Features + Bug Fixes
+- Update tavily requirements (#618)
+- fix tavily tool (#617)
+
 ## [v0.0.42] - 2023-10-31
 
 ### New Features
