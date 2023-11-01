@@ -1,3 +1,12 @@
+## [v0.0.42] - 2023-10-31
+
+### New Features
+- Add a Lilac dataset reader. (#563)
+
+### Smaller Features + Bug Fixes
+- Cogniswitch llama-hub corrections (#613)
+- name change and README update to Tavily (#614)
+
 ## [v0.0.41] - 2023-10-30
 
 ### New Features
