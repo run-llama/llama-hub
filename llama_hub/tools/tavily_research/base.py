@@ -14,9 +14,9 @@ class TavilyToolSpec(BaseToolSpec):
 
     def __init__(self, api_key: str) -> None:
         """Initialize with parameters."""
-        from tavily import TavilyClient
+        from tavily import Client
 
-        self.client = TavilyClient(api_key=api_key)
+        self.client = Client(api_key=api_key)
 
     def search(self, query: str, max_results: Optional[int] = 6) -> List[Document]:
         """
