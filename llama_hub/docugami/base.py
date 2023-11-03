@@ -24,6 +24,7 @@ DEFAULT_API_ENDPOINT = "https://api.docugami.com/v1preview1"
 DEFAULT_MAX_METADATA_LENGTH = 1024
 DEFAULT_MIN_CHUNK_SIZE = 32
 
+
 class DocugamiReader(BaseReader):
     """Docugami reader.
 
@@ -315,7 +316,7 @@ class DocugamiReader(BaseReader):
                         value = " ".join(
                             entry.xpath("./pr:Value", namespaces=ns)[0].itertext()
                         ).strip()
-                        metadata[heading] = value[:self.max_metadata_length]
+                        metadata[heading] = value[: self.max_metadata_length]
                     per_file_metadata[doc_id] = metadata
                 else:
                     raise Exception(
