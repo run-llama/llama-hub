@@ -21,7 +21,8 @@ TAG_KEY = "tag"
 PROJECTS_KEY = "projects"
 
 DEFAULT_API_ENDPOINT = "https://api.docugami.com/v1preview1"
-
+DEFAULT_MAX_METADATA_LENGTH = 1024
+DEFAULT_MIN_CHUNK_SIZE = 32
 
 class DocugamiReader(BaseReader):
     """Docugami reader.
@@ -36,7 +37,10 @@ class DocugamiReader(BaseReader):
     access_token: Optional[str] = os.environ.get("DOCUGAMI_API_KEY")
     """Access token for API endpoint."""
 
-    min_chunk_size: int = 32
+    max_metadata_length = DEFAULT_MAX_METADATA_LENGTH
+    """Max length of metadata values."""
+
+    min_chunk_size: int = DEFAULT_MIN_CHUNK_SIZE
     """Threshold under which chunks are appended to next chunk to avoid over-chunking."""
 
     include_xml_tags: bool = False
@@ -311,7 +315,7 @@ class DocugamiReader(BaseReader):
                         value = " ".join(
                             entry.xpath("./pr:Value", namespaces=ns)[0].itertext()
                         ).strip()
-                        metadata[heading] = value
+                        metadata[heading] = value[:self.max_metadata_length]
                     per_file_metadata[doc_id] = metadata
                 else:
                     raise Exception(
