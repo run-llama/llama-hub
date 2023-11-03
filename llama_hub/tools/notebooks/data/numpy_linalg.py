@@ -369,7 +369,7 @@ def tensorsolve(a, b, axes=None):
     for k in oldshape:
         prod *= k
 
-    if a.size != prod ** 2:
+    if a.size != prod**2:
         raise LinAlgError(
             "Input arrays must satisfy the requirement            "
             " prod(a.shape[b.ndim:]) == prod(a.shape[:b.ndim])"
