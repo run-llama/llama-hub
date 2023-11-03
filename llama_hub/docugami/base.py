@@ -3,9 +3,10 @@
 import io
 import os
 import re
-from typing import Any, Dict, List, Mapping, Optional
 
+from typing import Any, Dict, List, Mapping, Optional
 import requests
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -30,8 +31,16 @@ class DocugamiReader(BaseReader):
     """
 
     api: str = DEFAULT_API_ENDPOINT
+    """API endpoint URL"""
+
     access_token: Optional[str] = os.environ.get("DOCUGAMI_API_KEY")
-    min_chunk_size: int = 32  # appended to next chunk to avoid over-chunking
+    """Access token for API endpoint."""
+
+    min_chunk_size: int = 32
+    """Threshold under which chunks are appended to next chunk to avoid over-chunking."""
+
+    include_xml_tags: bool = False
+    """Aet to true for XML tags in chunk output text."""
 
     def _parse_dgml(
         self, document: Mapping, content: bytes, doc_metadata: Optional[Mapping] = None
@@ -46,31 +55,31 @@ class DocugamiReader(BaseReader):
             )
 
         # helpers
-        def _xpath_qname_for_chunk(chunk: Any) -> str:
-            """Get the xpath qname for a chunk."""
-            qname = f"{chunk.prefix}:{chunk.tag.split('}')[-1]}"
+        def _xpath_qname(node: Any) -> str:
+            """Get the xpath qname for a node."""
+            qname = f"{node.prefix}:{node.tag.split('}')[-1]}"
 
-            parent = chunk.getparent()
+            parent = node.getparent()
             if parent is not None:
-                doppelgangers = [x for x in parent if x.tag == chunk.tag]
+                doppelgangers = [x for x in parent if x.tag == node.tag]
                 if len(doppelgangers) > 1:
-                    idx_of_self = doppelgangers.index(chunk)
+                    idx_of_self = doppelgangers.index(node)
                     qname = f"{qname}[{idx_of_self + 1}]"
 
             return qname
 
-        def _xpath_for_chunk(chunk: Any) -> str:
-            """Get the xpath for a chunk."""
-            ancestor_chain = chunk.xpath("ancestor-or-self::*")
-            return "/" + "/".join(_xpath_qname_for_chunk(x) for x in ancestor_chain)
+        def _xpath(node: Any) -> str:
+            """Get the xpath for a node."""
+            ancestor_chain = node.xpath("ancestor-or-self::*")
+            return "/" + "/".join(_xpath_qname(x) for x in ancestor_chain)
 
         def _structure_value(node: Any) -> Optional[str]:
             """Get the structure value for a node."""
             structure = (
                 "table"
                 if node.tag == TABLE_NAME
-                else node.attrib["structure"]
-                if "structure" in node.attrib
+                else node.attrib[STRUCTURE_KEY]
+                if STRUCTURE_KEY in node.attrib
                 else None
             )
             return structure
@@ -79,14 +88,48 @@ class DocugamiReader(BaseReader):
             """Check if a node is structural."""
             return _structure_value(node) is not None
 
+        def _is_list_item_marker(node: Any) -> bool:
+            """Check if a node is a list item marker."""
+            structure = _structure_value(node)
+            return structure is not None and structure.lower() == "lim"
+
         def _is_heading(node: Any) -> bool:
             """Check if a node is a heading."""
             structure = _structure_value(node)
             return structure is not None and structure.lower().startswith("h")
 
-        def _get_text(node: Any) -> str:
+        def _get_text(nodes: List[Any]) -> str:
             """Get the text of a node."""
-            return " ".join(node.itertext()).strip()
+            text = ""
+            for node in nodes:
+                text += " ".join(node.itertext()).strip()
+            return text
+
+        def _get_simple_xml(nodes: List[Any]) -> str:
+            """Gets simplified XML without attributes or namespaces for the given node."""
+
+            # Recursive function to copy over elements to a new tree without namespaces and attributes
+            def strip_ns_and_attribs(el):
+                # Create a new element without namespace or attributes
+                stripped_el = etree.Element(etree.QName(el).localname)
+                # Copy text and tail (if any)
+                stripped_el.text = el.text
+                stripped_el.tail = el.tail
+                # Recursively apply this function to all children
+                for child in el:
+                    stripped_el.append(strip_ns_and_attribs(child))
+                return stripped_el
+
+            xml = ""
+            for node in nodes:
+                clean_root = strip_ns_and_attribs(node)
+
+                # Return the modified XML as a string
+                xml += etree.tostring(clean_root, encoding="unicode")
+
+            # remove empty non-semantic chunks from output
+            xml = xml.replace("<chunk>", "").replace("</chunk>", "")
+            return xml.strip()
 
         def _has_structural_descendant(node: Any) -> bool:
             """Check if a node has a structural descendant."""
@@ -105,15 +148,25 @@ class DocugamiReader(BaseReader):
                     leaf_nodes.extend(_leaf_structural_nodes(child))
                 return leaf_nodes
 
-        def _create_doc(node: Any, text: str) -> Document:
-            """Create a Document from a node and text."""
+        def _create_doc(main_node: Any, prepended_nodes: []) -> Document:
+            """Create a Document from a node, with possibly some prepended nodes."""
             metadata = {
-                XPATH_KEY: _xpath_for_chunk(node),
-                DOCUMENT_ID_KEY: document["id"],
-                DOCUMENT_NAME_KEY: document["name"],
-                STRUCTURE_KEY: node.attrib.get("structure", ""),
-                TAG_KEY: re.sub(r"\{.*\}", "", node.tag),
+                XPATH_KEY: _xpath(main_node),
+                DOCUMENT_ID_KEY: document[DOCUMENT_ID_KEY],
+                DOCUMENT_NAME_KEY: document[DOCUMENT_NAME_KEY],
+                STRUCTURE_KEY: main_node.attrib.get(STRUCTURE_KEY, ""),
+                TAG_KEY: re.sub(r"\{.*\}", "", main_node.tag),
             }
+
+            nodes = prepended_nodes
+            if main_node is not None:
+                nodes += main_node
+
+            text = ""
+            if self.include_xml_tags:
+                text = _get_simple_xml(nodes)
+            else:
+                text = _get_text(nodes)
 
             if doc_metadata:
                 metadata.update(doc_metadata)
@@ -129,25 +182,30 @@ class DocugamiReader(BaseReader):
         root = tree.getroot()
 
         chunks: List[Document] = []
-        prev_small_chunk_text = None
+        prepended_nodes = []
         for node in _leaf_structural_nodes(root):
-            text = _get_text(node)
-            if prev_small_chunk_text:
-                text = prev_small_chunk_text + " " + text
-                prev_small_chunk_text = None
-
-            if _is_heading(node) or len(text) < self.min_chunk_size:
-                # Save headings or other small chunks to be appended to the next chunk
-                prev_small_chunk_text = text
+            text = _get_text([node])
+            if (
+                _is_heading(node)
+                or _is_list_item_marker(node)
+                or len(text) < self.min_chunk_size
+            ):
+                # save headings, list markers, or other small chunks to be appended to the next chunk
+                prepended_nodes.append(node)
             else:
-                chunks.append(_create_doc(node, text))
+                chunks.append(_create_doc(node, prepended_nodes))
+                prepended_nodes = []
 
-        if prev_small_chunk_text and len(chunks) > 0:
-            # small chunk at the end left over, just append to last chunk
-            if not chunks[-1].text:
-                chunks[-1].text = prev_small_chunk_text
+        if prepended_nodes:
+            if not chunks:
+                # edge case, there are only prepended nodes, no chunks yet
+                chunks.append(_create_doc(None, prepended_nodes))
             else:
-                chunks[-1].text += " " + prev_small_chunk_text
+                # small chunk at the end left over, just append to last chunk
+                if not chunks[-1].text:
+                    chunks[-1].text = _get_text(prepended_nodes)
+                else:
+                    chunks[-1].text += " " + _get_text(prepended_nodes)
 
         return chunks
 
