@@ -47,6 +47,9 @@ class DocugamiReader(BaseReader):
     include_xml_tags: bool = False
     """Set to true for XML tags in chunk output text."""
 
+    sub_chunk_tables: bool = True
+    """Set to False to return tables whole without sub-chunking them."""
+
     def _parse_dgml(
         self, document: Mapping, content: bytes, doc_metadata: Optional[Mapping] = None
     ) -> List[Document]:
@@ -62,8 +65,10 @@ class DocugamiReader(BaseReader):
         # helpers
         def _xpath_qname(node: Any) -> str:
             """Get the xpath qname for a node."""
-            qname = f"{node.prefix}:{node.tag.split('}')[-1]}"
+            if not node:
+                return ""
 
+            qname = f"{node.prefix}:{node.tag.split('}')[-1]}"
             parent = node.getparent()
             if parent is not None:
                 doppelgangers = [x for x in parent if x.tag == node.tag]
@@ -75,36 +80,54 @@ class DocugamiReader(BaseReader):
 
         def _xpath(node: Any) -> str:
             """Get the xpath for a node."""
+            if not node:
+                return ""
+
             ancestor_chain = node.xpath("ancestor-or-self::*")
             return "/" + "/".join(_xpath_qname(x) for x in ancestor_chain)
 
         def _structure_value(node: Any) -> Optional[str]:
             """Get the structure value for a node."""
-            structure = (
-                "table"
-                if node.tag == TABLE_NAME
-                else node.attrib[STRUCTURE_KEY]
-                if STRUCTURE_KEY in node.attrib
-                else None
-            )
-            return structure
+            if not node or not node.attrib:
+                return None
+
+            return node.attrib.get(STRUCTURE_KEY)
 
         def _is_structural(node: Any) -> bool:
             """Check if a node is structural."""
+            if not node:
+                return False
+
             return _structure_value(node) is not None
 
         def _is_list_item_marker(node: Any) -> bool:
             """Check if a node is a list item marker."""
+            if not node:
+                return False
+
             structure = _structure_value(node)
             return structure is not None and structure.lower() == "lim"
 
         def _is_heading(node: Any) -> bool:
             """Check if a node is a heading."""
+            if not node:
+                return False
+
             structure = _structure_value(node)
             return structure is not None and structure.lower().startswith("h")
 
+        def _is_table(node: Any) -> bool:
+            """Check if a node is a table."""
+            if not node or not node.tag:
+                return False
+
+            return node.tag == TABLE_NAME
+
         def _get_text(nodes: List[Any]) -> str:
             """Get the text of a node."""
+            if not nodes:
+                return ""
+
             text = ""
             for node in nodes:
                 text += " ".join(node.itertext()).strip()
@@ -112,8 +135,11 @@ class DocugamiReader(BaseReader):
 
         def _get_simple_xml(nodes: List[Any]) -> str:
             """Gets simplified XML without attributes or namespaces for the given node."""
+            if not nodes:
+                return ""
 
-            # Recursive function to copy over elements to a new tree without namespaces and attributes
+            # Recursive function to copy over elements to a new tree without
+            # namespaces and attributes
             def strip_ns_and_attribs(el):
                 # Create a new element without namespace or attributes
                 stripped_el = etree.Element(etree.QName(el).localname)
@@ -138,14 +164,20 @@ class DocugamiReader(BaseReader):
 
         def _has_structural_descendant(node: Any) -> bool:
             """Check if a node has a structural descendant."""
+            if not node:
+                return False
+
             for child in node:
                 if _is_structural(child) or _has_structural_descendant(child):
                     return True
+
             return False
 
         def _leaf_structural_nodes(node: Any) -> List:
             """Get the leaf structural nodes of a node."""
-            if _is_structural(node) and not _has_structural_descendant(node):
+            if not self.sub_chunk_tables and _is_table(node):
+                return [node]
+            elif _is_structural(node) and not _has_structural_descendant(node):
                 return [node]
             else:
                 leaf_nodes = []
