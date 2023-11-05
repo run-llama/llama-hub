@@ -40,7 +40,7 @@ class DocugamiReader(BaseReader):
     """Threshold under which chunks are appended to next chunk to avoid over-chunking."""
 
     include_xml_tags: bool = False
-    """Aet to true for XML tags in chunk output text."""
+    """Set to true for XML tags in chunk output text."""
 
     def _parse_dgml(
         self, document: Mapping, content: bytes, doc_metadata: Optional[Mapping] = None
