@@ -2,6 +2,7 @@
 
 import io
 import os
+from pathlib import Path
 import re
 
 from typing import Any, Dict, List, Mapping, Optional
@@ -47,8 +48,8 @@ class DocugamiReader(BaseReader):
     include_xml_tags: bool = False
     """Set to true for XML tags in chunk output text."""
 
-    sub_chunk_tables: bool = True
-    """Set to False to return tables whole without sub-chunking them."""
+    sub_chunk_tables: bool = False
+    """Set to True to return sub-chunks within tables."""
 
     def _parse_dgml(
         self, document: Mapping, content: bytes, doc_metadata: Optional[Mapping] = None
@@ -220,7 +221,8 @@ class DocugamiReader(BaseReader):
 
         chunks: List[Document] = []
         prepended_nodes = []
-        for node in _leaf_structural_nodes(root):
+        nodes = _leaf_structural_nodes(root)
+        for node in nodes:
             text = _get_text([node])
             if (
                 _is_heading(node)
@@ -423,11 +425,14 @@ class DocugamiReader(BaseReader):
 
         return chunks
 
-
-if __name__ == "__main__":
-    reader = DocugamiReader()
-    print(
-        reader.load_data(
-            docset_id="ecxqpipcoe2p", document_ids=["43rj0ds7s0ur", "bpc1vibyeke2"]
-        )
-    )
+    def load_data_from_xml(self, xml_file_path: Path) -> List[Document]:
+        chunks: List[Document] = []
+        with open(xml_file_path, "rb") as file:
+            chunks += self._parse_dgml(
+                {
+                    DOCUMENT_ID_KEY: xml_file_path.name,
+                    DOCUMENT_NAME_KEY: xml_file_path.name,
+                },
+                file.read(),
+            )
+        return chunks
