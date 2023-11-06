@@ -3,15 +3,13 @@
 import io
 import os
 from pathlib import Path
-import re
 
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Dict, List, Mapping, Optional
 import requests
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-TD_NAME = "{http://www.w3.org/1999/xhtml}td"
 TABLE_NAME = "{http://www.w3.org/1999/xhtml}table"
 
 XPATH_KEY = "xpath"
@@ -34,10 +32,10 @@ class DocugamiReader(BaseReader):
     """
 
     api: str = DEFAULT_API_ENDPOINT
-    """API endpoint URL"""
+    """The Docugami API endpoint to use."""
 
     access_token: Optional[str] = os.environ.get("DOCUGAMI_API_KEY")
-    """Access token for API endpoint."""
+    """The Docugami API access token to use."""
 
     max_metadata_length = DEFAULT_MAX_METADATA_LENGTH
     """Max length of metadata values."""
@@ -51,6 +49,9 @@ class DocugamiReader(BaseReader):
     sub_chunk_tables: bool = False
     """Set to True to return sub-chunks within tables."""
 
+    whitespace_normalize_text: bool = True
+    """Set to False if you want the full whitespace formatting in the original XML doc, including indentation."""
+
     def _parse_dgml(
         self, document: Mapping, content: bytes, doc_metadata: Optional[Mapping] = None
     ) -> List[Document]:
@@ -63,190 +64,52 @@ class DocugamiReader(BaseReader):
                 "Please install it with `pip install lxml`."
             )
 
-        # helpers
-        def _xpath_qname(node: Any) -> str:
-            """Get the xpath qname for a node."""
-            if not node:
-                return ""
-
-            qname = f"{node.prefix}:{node.tag.split('}')[-1]}"
-            parent = node.getparent()
-            if parent is not None:
-                doppelgangers = [x for x in parent if x.tag == node.tag]
-                if len(doppelgangers) > 1:
-                    idx_of_self = doppelgangers.index(node)
-                    qname = f"{qname}[{idx_of_self + 1}]"
-
-            return qname
-
-        def _xpath(node: Any) -> str:
-            """Get the xpath for a node."""
-            if not node:
-                return ""
-
-            ancestor_chain = node.xpath("ancestor-or-self::*")
-            return "/" + "/".join(_xpath_qname(x) for x in ancestor_chain)
-
-        def _structure_value(node: Any) -> Optional[str]:
-            """Get the structure value for a node."""
-            if not node or not node.attrib:
-                return None
-
-            return node.attrib.get(STRUCTURE_KEY)
-
-        def _is_structural(node: Any) -> bool:
-            """Check if a node is structural."""
-            if not node:
-                return False
-
-            return _structure_value(node) is not None
-
-        def _is_list_item_marker(node: Any) -> bool:
-            """Check if a node is a list item marker."""
-            if not node:
-                return False
-
-            structure = _structure_value(node)
-            return structure is not None and structure.lower() == "lim"
-
-        def _is_heading(node: Any) -> bool:
-            """Check if a node is a heading."""
-            if not node:
-                return False
-
-            structure = _structure_value(node)
-            return structure is not None and structure.lower().startswith("h")
-
-        def _is_table(node: Any) -> bool:
-            """Check if a node is a table."""
-            if not node or not node.tag:
-                return False
-
-            return node.tag == TABLE_NAME
-
-        def _get_text(nodes: List[Any]) -> str:
-            """Get the text of a node."""
-            if not nodes:
-                return ""
-
-            text = ""
-            for node in nodes:
-                text += " ".join(node.itertext()).strip()
-            return text
-
-        def _get_simple_xml(nodes: List[Any]) -> str:
-            """Gets simplified XML without attributes or namespaces for the given node."""
-            if not nodes:
-                return ""
-
-            # Recursive function to copy over elements to a new tree without
-            # namespaces and attributes
-            def strip_ns_and_attribs(el):
-                # Create a new element without namespace or attributes
-                stripped_el = etree.Element(etree.QName(el).localname)
-                # Copy text and tail (if any)
-                stripped_el.text = el.text
-                stripped_el.tail = el.tail
-                # Recursively apply this function to all children
-                for child in el:
-                    stripped_el.append(strip_ns_and_attribs(child))
-                return stripped_el
-
-            xml = ""
-            for node in nodes:
-                clean_root = strip_ns_and_attribs(node)
-
-                # Return the modified XML as a string
-                xml += etree.tostring(clean_root, encoding="unicode")
-
-            # remove empty non-semantic chunks from output
-            xml = xml.replace("<chunk>", "").replace("</chunk>", "")
-            return xml.strip()
-
-        def _has_structural_descendant(node: Any) -> bool:
-            """Check if a node has a structural descendant."""
-            if not node:
-                return False
-
-            for child in node:
-                if _is_structural(child) or _has_structural_descendant(child):
-                    return True
-
-            return False
-
-        def _leaf_structural_nodes(node: Any) -> List:
-            """Get the leaf structural nodes of a node."""
-            if not self.sub_chunk_tables and _is_table(node):
-                return [node]
-            elif _is_structural(node) and not _has_structural_descendant(node):
-                return [node]
-            else:
-                leaf_nodes = []
-                for child in node:
-                    leaf_nodes.extend(_leaf_structural_nodes(child))
-                return leaf_nodes
-
-        def _create_doc(main_node: Any, prepended_nodes: []) -> Document:
-            """Create a Document from a node, with possibly some prepended nodes."""
-            metadata = {
-                XPATH_KEY: _xpath(main_node),
-                DOCUMENT_ID_KEY: document[DOCUMENT_ID_KEY],
-                DOCUMENT_NAME_KEY: document[DOCUMENT_NAME_KEY],
-                STRUCTURE_KEY: main_node.attrib.get(STRUCTURE_KEY, ""),
-                TAG_KEY: re.sub(r"\{.*\}", "", main_node.tag),
-            }
-
-            nodes = prepended_nodes
-            if main_node is not None:
-                nodes += main_node
-
-            text = ""
-            if self.include_xml_tags:
-                text = _get_simple_xml(nodes)
-            else:
-                text = _get_text(nodes)
-
-            if doc_metadata:
-                metadata.update(doc_metadata)
-
-            return Document(
-                text=text,
-                metadata=metadata,
-                excluded_llm_metadata_keys=[XPATH_KEY, DOCUMENT_ID_KEY, STRUCTURE_KEY],
+        try:
+            from dgml_utils.segmentation import get_leaf_structural_chunks
+        except ImportError:
+            raise ValueError(
+                "Could not import from dgml-utils python package. "
+                "Please install it with `pip install dgml-utils`."
             )
 
         # parse the tree and return chunks
         tree = etree.parse(io.BytesIO(content))
         root = tree.getroot()
 
-        chunks: List[Document] = []
-        prepended_nodes = []
-        nodes = _leaf_structural_nodes(root)
-        for node in nodes:
-            text = _get_text([node])
-            if (
-                _is_heading(node)
-                or _is_list_item_marker(node)
-                or len(text) < self.min_chunk_size
-            ):
-                # save headings, list markers, or other small chunks to be appended to the next chunk
-                prepended_nodes.append(node)
-            else:
-                chunks.append(_create_doc(node, prepended_nodes))
-                prepended_nodes = []
+        framework_chunks: List[Document] = []
+        dg_chunks = get_leaf_structural_chunks(
+            root,
+            min_chunk_size=self.min_chunk_size,
+            whitespace_normalize_text=self.whitespace_normalize_text,
+            sub_chunk_tables=self.sub_chunk_tables,
+            include_xml_tags=self.include_xml_tags,
+        )
 
-        if prepended_nodes:
-            if not chunks:
-                # edge case, there are only prepended nodes, no chunks yet
-                chunks.append(_create_doc(None, prepended_nodes))
-            else:
-                # small chunk at the end left over, just append to last chunk
-                if not chunks[-1].text:
-                    chunks[-1].text = _get_text(prepended_nodes)
-                else:
-                    chunks[-1].text += " " + _get_text(prepended_nodes)
+        for dg_chunk in dg_chunks:
+            metadata = {
+                XPATH_KEY: dg_chunk.xpath,
+                DOCUMENT_ID_KEY: document[DOCUMENT_ID_KEY],
+                DOCUMENT_NAME_KEY: document[DOCUMENT_NAME_KEY],
+                STRUCTURE_KEY: dg_chunk.structure,
+                TAG_KEY: dg_chunk.tag,
+            }
 
-        return chunks
+            if doc_metadata:
+                metadata.update(doc_metadata)
+
+            framework_chunks.append(
+                Document(
+                    text=dg_chunk.text,
+                    metadata=metadata,
+                    excluded_llm_metadata_keys=[
+                        XPATH_KEY,
+                        DOCUMENT_ID_KEY,
+                        STRUCTURE_KEY,
+                    ],
+                )
+            )
+
+        return framework_chunks
 
     def _document_details_for_docset_id(self, docset_id: str) -> List[Dict]:
         """Gets all document details for the given docset ID"""
