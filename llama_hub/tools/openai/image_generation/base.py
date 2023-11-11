@@ -7,10 +7,8 @@ import time
 from typing import Optional
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
-from PIL import Image
-from io import BytesIO
-
 DEFAULT_CACHE_DIR = "../../../img_cache"
+
 
 class OpenAIImageGenerationToolSpec(BaseToolSpec):
     """OpenAI Image Generation tool spec."""
@@ -28,14 +26,20 @@ class OpenAIImageGenerationToolSpec(BaseToolSpec):
         """Initialize with parameters."""
         self.client = OpenAI(api_key=api_key)
         self.cache_dir = cache_dir or DEFAULT_CACHE_DIR
-        
-    
+
     def get_cache_dir(self):
         return self.cache_dir
-        
+
     def save_base64_image(self, base64_str, image_name):
+        try:
+            from PIL import Image
+            from io import BytesIO
+        except ImportError:
+            raise ImportError(
+                "Please install Pillow with `pip install Pillow` to use this tool"
+            )
         cache_dir = self.cache_dir
-        
+
         # Create cache directory if it doesn't exist
         if not os.path.exists(cache_dir):
             os.makedirs(cache_dir)
@@ -76,11 +80,11 @@ class OpenAIImageGenerationToolSpec(BaseToolSpec):
             n=num_images,
             response_format="b64_json",
         )
-        
+
         image_bytes = response.data[0].b64_json
-        
+
         filename = f"{time.time()}.jpg"
-            
-        saved_image_path = self.save_base64_image(image_bytes, filename);
+
+        saved_image_path = self.save_base64_image(image_bytes, filename)
 
         return saved_image_path
