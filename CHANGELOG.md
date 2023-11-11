@@ -1,3 +1,11 @@
+## Unreleased
+
+### New Features
+
+### Smaller Features + Bug Fixes
+- Extend GoogleSheetsReader to Accept Custom Text Column Names (#620)
+- feat: sync mongo to SimpleMongoReader of llama-index (#624)
+
 ## [v0.0.43] - 2023-11-1
 
 ### Smaller Features + Bug Fixes
