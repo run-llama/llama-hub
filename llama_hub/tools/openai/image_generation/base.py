@@ -8,7 +8,7 @@ from typing import Optional
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
 DEFAULT_CACHE_DIR = "../../../img_cache"
-
+DEFAULT_SIZE = "1024x1024" # Dall-e-3 only supports 1024x1024
 
 class OpenAIImageGenerationToolSpec(BaseToolSpec):
     """OpenAI Image Generation tool spec."""
@@ -57,7 +57,6 @@ class OpenAIImageGenerationToolSpec(BaseToolSpec):
     def image_generation(
         self,
         text: str,
-        size: Optional[str] = "1024x1024",
         model: Optional[str] = "dall-e-3",
         quality: Optional[str] = "standard",
         num_images: Optional[int] = 1,
@@ -75,7 +74,7 @@ class OpenAIImageGenerationToolSpec(BaseToolSpec):
         response = self.client.images.generate(
             model=model,
             prompt=text,
-            size=size,
+            size=DEFAULT_SIZE,
             quality=quality,
             n=num_images,
             response_format="b64_json",
