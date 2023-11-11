@@ -1,3 +1,27 @@
+## [v0.0.43] - 2023-11-1
+
+### Smaller Features + Bug Fixes
+- Update tavily requirements (#618)
+- fix tavily tool (#617)
+
+## [v0.0.42] - 2023-10-31
+
+### New Features
+- Add a Lilac dataset reader. (#563)
+
+### Smaller Features + Bug Fixes
+- Cogniswitch llama-hub corrections (#613)
+- name change and README update to Tavily (#614)
+
+## [v0.0.41] - 2023-10-30
+
+### New Features
+- CogniSwitch Connector (#604) 
+
+### Smaller Features + Bug Fixes
+- add docs to min_chunk_size (#607)
+- Change Tavily client name (#609)
+
 ## [v0.0.40] - 2023-10-26
 
 ### New Features

@@ -64,6 +64,55 @@ class GoogleSheetsReader(BaseReader):
             )
         return results
 
+    def load_sheet_as_documents(
+        self, spreadsheet_id: str, sheet_name: str, text_column_name: str = "text"
+    ) -> List[Document]:
+        """Load data from a Google Sheet and convert each row into a Document.
+
+        Args:
+            spreadsheet_id (str): The ID of the spreadsheet.
+            sheet_name (str): The name of the sheet to be processed.
+            text_column_name (str): The name of the column to be used for the "text" field (default is "text").
+
+        Returns:
+            List[Document]: A list of Document objects with "text" and "meta" fields.
+        """
+        import googleapiclient.discovery as discovery
+
+        # Get the sheets service and data for the specified sheet.
+        credentials = self._get_credentials()
+        sheets_service = discovery.build("sheets", "v4", credentials=credentials)
+        sheet_data = (
+            sheets_service.spreadsheets()
+            .values()
+            .get(spreadsheetId=spreadsheet_id, range=sheet_name)
+            .execute()
+        )
+
+        # Extract the rows and header.
+        rows = sheet_data.get("values", [])
+        header = rows.pop(0) if rows else []
+
+        # Find the index of the column specified by text_column_name.
+        try:
+            text_col_index = header.index(text_column_name)
+        except ValueError:
+            raise ValueError(
+                f'The sheet must contain a column named "{text_column_name}".'
+            )
+
+        # Process each row as a Document.
+        documents = []
+        for row in rows:
+            text_value = row[text_col_index] if text_col_index < len(row) else ""
+            # Create a dictionary for the rest of the row data to be used as metadata.
+            meta = {
+                key: value for key, value in zip(header, row) if key != text_column_name
+            }
+            documents.append(Document(text=text_value, meta=meta))
+
+        return documents
+
     def _load_sheet(self, spreadsheet_id: str) -> str:
         """Load a sheet from Google Sheets.
 

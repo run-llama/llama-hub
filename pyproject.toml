@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "llama-hub"
-version = "0.0.40"
+version = "0.0.43"
 description = "A library of community-driven data loaders for LLMs. Use with LlamaIndex and/or LangChain. "
 authors = ["Jerry Liu", "Jesse Zhang"]
 # New attributes
@@ -28,7 +28,7 @@ pytest-dotenv = "0.5.2"
 pytest_httpserver = "1.0.8"
 pytest-mock = "3.11.1"
 typing-inspect = "0.8.0"
-typing_extensions = "4.5.0"
+typing_extensions = "^4.5.0"
 types-requests = "2.28.11.8"
 black = "22.12.0"
 isort = "5.11.4"

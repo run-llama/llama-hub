@@ -1,5 +1,5 @@
 # init
-from llama_hub.tools.tavily.base import (
+from llama_hub.tools.tavily_research.base import (
     TavilyToolSpec,
 )
 
