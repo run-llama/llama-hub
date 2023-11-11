@@ -3,14 +3,13 @@
 from typing import Optional
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
+
 class OpenAIImageGenerationToolSpec(BaseToolSpec):
     """OpenAI Image Generation tool spec."""
 
     spec_functions = ["image_generation"]
 
-    def __init__(
-        self, api_key: str
-    ) -> None:
+    def __init__(self, api_key: str) -> None:
         try:
             from openai import OpenAI
         except ImportError:
@@ -22,13 +21,13 @@ class OpenAIImageGenerationToolSpec(BaseToolSpec):
         self.client = OpenAI(api_key=api_key)
 
     def image_generation(
-        self, 
-        text: str, 
-        size: Optional[str] = '1024x1024', 
-        model: Optional[str] = 'dall-e-3',
-        quality: Optional[str] = 'standard',
+        self,
+        text: str,
+        size: Optional[str] = "1024x1024",
+        model: Optional[str] = "dall-e-3",
+        quality: Optional[str] = "standard",
         num_images: Optional[int] = 1,
-        response_format: Optional[str] = 'url'
+        response_format: Optional[str] = "url",
     ) -> str:
         """
         This tool accepts a natural language string and will use OpenAI's DALL-E model to generate an image.
@@ -47,12 +46,12 @@ class OpenAIImageGenerationToolSpec(BaseToolSpec):
             size=size,
             quality=quality,
             n=num_images,
-            response_format=response_format
+            response_format=response_format,
         )
-        
-        if(response_format == 'url'):
+
+        if response_format == "url":
             image = response.data[0].url
-        elif(response_format == 'b64_json'):
+        elif response_format == "b64_json":
             image = response.data[0].b64_json
-        
+
         return image
