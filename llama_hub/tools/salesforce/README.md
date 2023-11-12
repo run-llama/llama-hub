@@ -9,7 +9,7 @@ This tool is a wrapper tool using the simple salesforce library. More informatio
 Here's an example usage of the Salesforce Tool:
 
 ```python
-from llama_hub.tools.salesforce.base import SalesforceToolSpec
+from llama_hub.tools.salesforce import SalesforceToolSpec
 
 # Initialize the tool with your Salesforce credentials and other relevant details
 sf = SalesforceToolSpec(

@@ -1,6 +1,6 @@
 """News article reader using Newspaper."""
 import logging
-from typing import Any, List
+from typing import Any, List, Generator
 
 from llama_index.readers.base import BaseReader
 from llama_index.schema import Document
@@ -16,7 +16,7 @@ class NewsArticleReader(BaseReader):
 
     Args:
         text_mode (bool): Whether to load a text version or HTML version of the content (default=True).
-        use_nlp (bool): Whether to use NLP to extract additional summary and keywords (default=False).
+        use_nlp (bool): Whether to use NLP to extract additional summary and keywords (default=True).
         newspaper_kwargs: Additional keyword arguments to pass to newspaper.Article. See
             https://newspaper.readthedocs.io/en/latest/user_guide/quickstart.html#article
     """
@@ -43,8 +43,8 @@ class NewsArticleReader(BaseReader):
             List[Document]: List of documents.
 
         """
-        if not isinstance(urls, list):
-            raise ValueError("urls must be a list of strings.")
+        if not isinstance(urls, list) and not isinstance(urls, Generator):
+            raise ValueError("urls must be a list or generator.")
         documents = []
         for url in urls:
             from newspaper import Article

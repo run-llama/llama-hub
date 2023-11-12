@@ -9,7 +9,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the ZapierToolSpec.
 
 ```python
-from llama_hub.tools.zapier.base import ZapierToolSpec
+from llama_hub.tools.zapier import ZapierToolSpec
 from llama_index.agent import OpenAIAgent
 
 

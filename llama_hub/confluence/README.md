@@ -36,7 +36,7 @@ Here's an example usage of the ConfluenceReader.
 
 ```python
 
-from llama_hub.confluence.base import ConfluenceReader
+from llama_hub.confluence import ConfluenceReader
 
 token = {
     access_token: "<access_token>",

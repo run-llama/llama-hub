@@ -24,7 +24,7 @@ import time
 from uuid import uuid4
 
 from llama_index.node_parser import SimpleNodeParser
-from llama_index.readers.schema.base import Document
+from llama_index.readers.schema import Document
 from zep_python import ZepClient
 from zep_python.document import Document as ZepDocument
 

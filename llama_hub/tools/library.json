@@ -102,6 +102,10 @@
     "id": "tools/slack",
     "author": "jerryjliu"
   },
+  "TavilyToolSpec": {
+    "id": "tools/tavily_research",
+    "author": "rotemweiss57"
+  },
   "TextToImageToolSpec": {
     "id": "tools/text_to_image",
     "author": "ajhofmann"
@@ -135,5 +139,16 @@
       "neo4j",
       "cypher"
     ]
-  }
+  },
+  "CogniswitchToolSpec": {
+    "id": "tools/cogniswitch",
+    "author": "cogniswitch",
+    "keywords": [
+      "graph",
+      "knowledge graph",
+      "neural",
+      "symbolic",
+      "embedding"
+    ]
+  } 
 }

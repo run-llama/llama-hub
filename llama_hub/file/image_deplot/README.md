@@ -8,7 +8,7 @@ To use this loader, you need to pass in a `Path` to a local file.
 
 ```python
 from pathlib import Path
-from llama_hub.file.image_deplot.base import ImageTabularChartReader
+from llama_hub.file.image_deplot import ImageTabularChartReader
 
 loader = ImageTabularChartReader()
 documents = loader.load_data(file=Path('./image.png'))

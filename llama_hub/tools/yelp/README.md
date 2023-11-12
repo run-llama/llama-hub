@@ -9,7 +9,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the YelpToolSpec.
 
 ```python
-from llama_hub.tools.yelp.base import YelpToolSpec
+from llama_hub.tools.yelp import YelpToolSpec
 
 
 tool_spec = YelpToolSpec(api_key='your-key', client_id='your-id')

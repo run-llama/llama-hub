@@ -12,7 +12,7 @@ This tool is not recommended to be used in a production setting, and would requi
 Here's an example usage of the CodeInterpreterToolSpec.
 
 ```python
-from llama_hub.tools.tool_spec.code_interpreter.base import CodeInterpreterToolSpec
+from llama_hub.tools.code_interpreter import CodeInterpreterToolSpec
 from llama_index.agent import OpenAIAgent
 
 code_spec = CodeInterpreterToolSpec()

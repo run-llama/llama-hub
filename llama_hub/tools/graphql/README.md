@@ -11,7 +11,7 @@ Here's an example usage of the GraphQLToolSpec.
 This tool works best when the Agent has access to the GraphQL schema for the server. See [here](https://github.com/emptycrown/llama-hub/tree/main/llama_hub/tools/notebooks/shopify.ipynb) for an example of using a tool with a file loader to create even more powerful Agents.
 
 ```python
-from llama_hub.tools.graphql.base import GraphQLToolSpec
+from llama_hub.tools.graphql import GraphQLToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = GraphQLToolSpec(

@@ -9,7 +9,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the PythonFileToolSpec.
 
 ```python
-from llama_hub.tools.python_file.base import PythonFileToolSpec
+from llama_hub.tools.python_file import PythonFileToolSpec
 from llama_index.agent import OpenAIAgent
 
 pyfile = PythonFileToolSpec('./numpy_linalg.py')
