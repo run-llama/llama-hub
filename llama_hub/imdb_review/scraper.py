@@ -55,6 +55,7 @@ def scrape_data(revs):
         contents (str): the review of the movie
         rating (str): The ratinng given by the user
         title (str): the title of the review
+        link(str): the link of the review
     """
 
     try:
@@ -75,7 +76,10 @@ def scrape_data(revs):
         title = revs.find_element(By.CLASS_NAME, "title").text.strip()
     except NoSuchElementException:
         title = ""
-
+    try:
+        link = revs.find_element(By.CLASS_NAME, "title").get_attribute("href")
+    except NoSuchElementException:
+        link = ""
     try:
         rating = revs.find_element(
             By.CLASS_NAME, "rating-other-user-rating"
@@ -87,7 +91,7 @@ def scrape_data(revs):
     contents.replace("//", "")
     date = revs.find_element(By.CLASS_NAME, "review-date").text
     contents = clean_text(contents)
-    return date, contents, rating, title
+    return date, contents, rating, title, link
 
 
 def main_scraper(
@@ -105,6 +109,7 @@ def main_scraper(
         reviews_title (List): list of title of each review
         reviews_comment (List): list of comment of each review
         reviews_rating (List):  list of ratings of each review
+        reviews_link (List):  list of links of each review
     """
     ia = imdb.Cinemagoer()
     movies = ia.search_movie(movie_name)
@@ -148,13 +153,15 @@ def main_scraper(
     reviews_comment = []
     reviews_rating = []
     reviews_title = []
+    reviews_link = []
     for result in results:
-        date, contents, rating, title = result
+        date, contents, rating, title, link = result
         reviews_date.append(date)
 
         reviews_comment.append(contents)
         reviews_rating.append(rating)
         reviews_title.append(title)
+        reviews_link.append(link)
 
         # driver.quit()
     if generate_csv:
@@ -167,8 +174,9 @@ def main_scraper(
         df["review_title"] = reviews_title
         df["review_comment"] = reviews_comment
         df["review_rating"] = reviews_rating
+        df["review_link"] = reviews_link
 
         # print(df)
         df.to_csv(f"movie_reviews/{movie_name}.csv", index=False)
 
-    return reviews_date, reviews_title, reviews_comment, reviews_rating
+    return reviews_date, reviews_title, reviews_comment, reviews_rating, reviews_link
