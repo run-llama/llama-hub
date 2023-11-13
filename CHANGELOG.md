@@ -1,10 +1,11 @@
 ## Unreleased
 
-### New Features
+### [v0.0.44] - 2023-11-13
 
 ### Smaller Features + Bug Fixes
 - Extend GoogleSheetsReader to Accept Custom Text Column Names (#620)
 - feat: sync mongo to SimpleMongoReader of llama-index (#624)
+- Adding moview reviews link for IMDB loader (#630)
 
 ## [v0.0.43] - 2023-11-1
 
