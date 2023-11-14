@@ -15,13 +15,13 @@ class GmailOpenAIAgentPack(BaseLlamaPack):
         except ImportError:
             raise ImportError("llama_hub not installed.")
 
-        self._tool_spec = GmailToolSpec(**gmail_tool_kwargs)
-        self._agent = OpenAIAgent.from_tools()
+        self.tool_spec = GmailToolSpec(**gmail_tool_kwargs)
+        self.agent = OpenAIAgent.from_tools()
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
-        return {"gmail_tool": self._tool_spec, "agent": self._agent}
+        return {"gmail_tool": self.tool_spec, "agent": self.agent}
 
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
-        return self._agent.chat(*args, **kwargs)
+        return self.agent.chat(*args, **kwargs)
