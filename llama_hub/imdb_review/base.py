@@ -29,16 +29,24 @@ class IMDBReviews(BaseReader):
         Returns:
             List[Document]: document object in llama index with date and rating as extra information
         """
-        reviews_date, reviews_title, reviews_comment, reviews_rating = main_scraper(
-            self.movie_name_year, self.webdriver_engine, self.generate_csv
-        )
+        (
+            reviews_date,
+            reviews_title,
+            reviews_comment,
+            reviews_rating,
+            reviews_link,
+        ) = main_scraper(self.movie_name_year, self.webdriver_engine, self.generate_csv)
 
         all_docs = []
         for i in range(len(reviews_date)):
             all_docs.append(
                 Document(
                     text=reviews_title[i] + " " + reviews_comment[i],
-                    extra_info={"date": reviews_date[i], "rating": reviews_rating[i]},
+                    extra_info={
+                        "date": reviews_date[i],
+                        "rating": reviews_rating[i],
+                        "link": reviews_link[i],
+                    },
                 )
             )
         return all_docs

@@ -14,7 +14,9 @@ def import_loader(reader_str: str) -> Type[BaseReader]:
     """Import or download loader."""
 
     # read library json file
-    json_dict = json.load(open(LIBRARY_JSON_PATH, "r"))
+    with open(LIBRARY_JSON_PATH, "r") as json_file:
+        json_dict = json.load(json_file)
+
     dir_name = str(json_dict[reader_str]["id"])
 
     fmt_dir_name = dir_name.replace("/", ".")
