@@ -4,12 +4,22 @@ This LlamaPack inserts your data into chroma and insantiates an auto-retriever, 
 
 ## Usage
 
-```
+You can download the pack to a the `./chroma_pack` directory:
+
+```python
 from llama_index.llama_packs import download_llama_pack
 
 # download and install dependencies
-ChromaAutoretrievalPack = download_llama_pack("ChromaAutoretrievalPack")
+ChromaAutoretrievalPack = download_llama_pack(
+  "ChromaAutoretrievalPack", "./chroma_pack"
+)
+```
 
+From here, you can use the pack, or inspect and modify the pack in `./chroma_pack`.
+
+Then, you can set up the pack like so:
+
+```python
 # setup pack arguments
 from llama_index.vector_stores.types import MetadataInfo, VectorStoreInfo
 
@@ -38,7 +48,17 @@ chroma_pack = ChromaAutoretrievalPack(
   nodes=nodes,
   client=client
 )
+```
 
+The `run()` function is a light wrapper around `query_engine.query()`.
+
+```python
+response = chroma_pack.run("Tell me a bout a Music celebritiy.")
+```
+
+You can also use modules individually.
+
+```python
 # use the retreiver
 retriever = chroma_pack.retriever
 nodes = retriever.retrieve("query_str")

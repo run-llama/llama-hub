@@ -4,14 +4,30 @@ Create an OpenAI agent pre-loaded with a tool to interact with Gmail. The tool u
 
 ## Usage
 
-```
+You can download the pack to a the `./gmail_pack` directory:
+
+```python
 from llama_index.llama_packs import download_llama_pack
 
 # download and install dependencies
-GmailOpenAIAgentPack = download_llama_pack("GmailOpenAIAgentPack")
+GmailOpenAIAgentPack = download_llama_pack(
+  "GmailOpenAIAgentPack", "./gmail_pack"
+)
 
 gmail_agent_pack = GmailOpenAIAgentPack()
+```
 
+From here, you can use the pack, or inspect and modify the pack in `./gmail_pack`.
+
+The `run()` function is a light wrapper around `agent.chat()`.
+
+```python
+response = gmail_agent_pack.run("What is my most recent email?")
+```
+
+You can also use modules individually.
+
+```python
 # Use the agent
 agent = gmail_agent_pack.agent
 response = agent.chat("What is my most recent email?")
