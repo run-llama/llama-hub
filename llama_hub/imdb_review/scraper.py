@@ -175,8 +175,8 @@ def main_scraper(
                 EC.element_to_be_clickable((By.CLASS_NAME, "ipl-load-more__button"))
             )
             load_button.click()
-        except Exception as e:
-            print(f"Load more operation complete")
+        except Exception:
+            print("Load more operation complete")
             break
 
     driver.execute_script("window.scrollTo(0, 100);")
