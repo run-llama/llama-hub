@@ -35,7 +35,7 @@ from llama_index import VectorStoreIndex
 
 IMDBReviewsloader = download_loader('IMDBReviews')
 
-loader = IMDBReviewsloader(movie_name_year="The Social Network 2010",webdriver_engine='edge')
+loader = IMDBReviewsloader(movie_name_year="The Social Network 2010",webdriver_engine='edge',generate_csv=False,multithreading=False)
 docs = loader.load_data()
 
 index = VectorStoreIndex.from_documents(documents)
@@ -60,7 +60,7 @@ from langchain.chat_models import ChatOpenAI
 
 IMDBReviewsloader = download_loader('IMDBReviews')
 
-loader = IMDBReviewsloader(movie_name_year="The Social Network 2010",webdriver_engine='edge')
+loader = IMDBReviewsloader(movie_name_year="The Social Network 2010",webdriver_engine='edge',generate_csv=False,multithreading=False)
 docs = loader.load_data()
 tools = [
     Tool(
