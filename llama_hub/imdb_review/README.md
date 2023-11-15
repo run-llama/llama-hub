@@ -23,6 +23,14 @@ IMDBReviewsloader = download_loader('IMDBReviews')
 loader = IMDBReviews(movie_name_year="The Social Network 2010",webdriver_engine='edge')
 docs = loader.load_data()
 ```
+The metadata has the following information
+* date of the review (date)
+* title of the review (title)
+* rating of the review (rating)
+* link of the review (link)
+* whether the review is spoiler or not (spoiler)
+* number of people found the review helpful (found_helpful)
+* total number of votes (total)
 
 It will download the files inside the folder `movie_reviews` with the filename as the movie name
 
