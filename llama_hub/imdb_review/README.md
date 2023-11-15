@@ -11,6 +11,8 @@ pip install -r requirements.txt
 The IMDB downloader takes in two attributes
 * movie_name_year: The name of the movie or series and year
 * webdriver_engine: To use edge, google or gecko (mozilla) webdriver
+* generate_csv: Whether to generate csv file
+* multithreading: whether to use multithreading or not
 
 ## Usage
 ```python
