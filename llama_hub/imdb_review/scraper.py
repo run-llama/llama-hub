@@ -13,7 +13,6 @@ try:
     from selenium.webdriver.support.ui import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
     import imdb
-
 except ImportError:
     print("There is an import error")
 
@@ -61,44 +60,18 @@ def scrape_data(revs):
     """
 
     try:
-        # if_spoiler = revs.find_element(By.CLASS_NAME, "spoiler-warning")
-        spolier_btn = revs.find_element(By.CLASS_NAME, "ipl-expander")
-        spolier_btn.click()
-        contents = revs.find_element(
-            By.CLASS_NAME, "content"
-        ).text
-        vote_text = revs.find_element(
-            By.CLASS_NAME, 'actions text-muted'
-        ).text
-        print(f"Spoilers: {vote_text}")
-        # print("Spoiler")
-        # print(contents)
-        # print("="*100)
+        spoiler_btn = revs.find_element(By.CLASS_NAME, "ipl-expander")
+        spoiler_btn.click()
+        spoiler = True
+        contents = revs.find_element(By.CLASS_NAME, "content").text
     except NoSuchElementException:
-        contents = revs.find_element(By.CLASS_NAME, "content")
-        try:
-            next_element = revs.find_element(By.XPATH, 'following-sibling::*[@class="gradient-expander  show-more"]')
-            next_element.click()
-        except Exception as e:
-            print(e)
-            print("Not clicked")
-            pass
-        
-        vote_text = revs.find_element(
-           By.CLASS_NAME, 'actions text-muted'
-        ).text
-        print(f"Not Spoilers: {vote_text}")
-        contents = contents.text
-        # vote_text = "hello"
-        # print(f"Not spoliers; {vote_text}")
-        # print(f"Not spoiler")
-        # print(contents)
-        # print("="*100)
+        spoiler = False
+        # try:
+        #     footer.click()
+        # except: pass
+        contents = revs.find_element(By.CLASS_NAME, "content").text
         if contents == "":
-            print('Here')
-            contents = revs.find_element(
-                By.CLASS_NAME, "text show-more__control"
-            ).text
+            contents = revs.find_element(By.CLASS_NAME, "text show-more__control").text
 
     try:
         title = revs.find_element(By.CLASS_NAME, "title").text.strip()
@@ -113,25 +86,34 @@ def scrape_data(revs):
             By.CLASS_NAME, "rating-other-user-rating"
         ).text.split("/")[0]
     except NoSuchElementException:
-        rating = ""
-   
-        
-    found_helpful,total = 0,0
-    pattern = r"(\d+)\s*out\s*of\s*(\d+) found this helpful"
-    vote_text = "hello"
-    match = re.search(pattern, vote_text)
-    if match:
-        # Extract the two numerical figures
-        found_helpful = match.group(1)
-        total = match.group(2)
-   
-    # print(found_helpful,total)
+        rating = 0.0
+
     re.sub("\n", " ", contents)
     re.sub("\t", " ", contents)
     contents.replace("//", "")
     date = revs.find_element(By.CLASS_NAME, "review-date").text
     contents = clean_text(contents)
-    return date, contents, rating, title, link, found_helpful, total
+    return date, contents, rating, title, link, spoiler
+
+
+def process_muted_text(mute_text: str) -> (float,float):
+    """Post processing the muted text
+
+    Args:
+        mute_text (str): text on how many people people found it helpful
+
+    Returns:
+        found_helpful (float): Number of people found the review helpful
+        total (float): Number of people voted
+    """
+    found_helpful, total = 0, 0
+    pattern = r"(\d+)\s*out\s*of\s*(\d+) found this helpful"
+    match = re.search(pattern, mute_text)
+    if match:
+        # Extract the two numerical figures
+        found_helpful = match.group(1)
+        total = match.group(2)
+    return found_helpful, total
 
 
 def main_scraper(
@@ -193,7 +175,6 @@ def main_scraper(
                 EC.element_to_be_clickable((By.CLASS_NAME, "ipl-load-more__button"))
             )
             load_button.click()
-            break
         except Exception as e:
             print(f"Load more operation complete")
             break
@@ -201,6 +182,9 @@ def main_scraper(
     driver.execute_script("window.scrollTo(0, 100);")
 
     rev_containers = driver.find_elements(By.CLASS_NAME, "review-container")
+    muted_text = driver.find_elements(By.CLASS_NAME, "text-muted")
+    muted_text = [process_muted_text(mtext.text) for mtext in muted_text]
+    assert len(rev_containers) == len(muted_text), "Same length"
 
     reviews_date = []
     reviews_comment = []
@@ -209,13 +193,13 @@ def main_scraper(
     reviews_link = []
     reviews_found_helpful = []
     reviews_total_votes = []
-
+    reviews_if_spoiler = []
     if multithreading:
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             results = executor.map(scrape_data, rev_containers)
 
         for res in results:
-            date, contents, rating, title, link, found_helpful, total = res
+            date, contents, rating, title, link, found_helpful, total, spoiler = res
             reviews_date.append(date)
 
             reviews_comment.append(contents)
@@ -224,17 +208,20 @@ def main_scraper(
             reviews_link.append(link)
             reviews_found_helpful.append(found_helpful)
             reviews_total_votes.append(total)
+            reviews_if_spoiler.append(spoiler)
     else:
-        for rev in rev_containers:
-            date, contents, rating, title, link, found_helpful, total = scrape_data(rev)
+        for idx, rev in enumerate(rev_containers):
+            date, contents, rating, title, link, spoiler = scrape_data(rev)
+            found_helpful, total = muted_text[idx]
             reviews_date.append(date)
-
+            # time.sleep(0.2)
             reviews_comment.append(contents)
-            reviews_rating.append(rating)
+            reviews_rating.append(float(rating))
             reviews_title.append(title)
             reviews_link.append(link)
-            reviews_found_helpful.append(found_helpful)
-            reviews_total_votes.append(total)
+            reviews_found_helpful.append(float(found_helpful))
+            reviews_total_votes.append(float(total))
+            reviews_if_spoiler.append(spoiler)
 
     print(f"Number of reviews scraped: {len(reviews_date)}")
     if generate_csv:
@@ -247,6 +234,7 @@ def main_scraper(
                 "review_rating",
                 "review_helpful",
                 "review_total_votes",
+                "reviews_if_spoiler",
             ]
         )
 
@@ -257,8 +245,7 @@ def main_scraper(
         df["review_link"] = reviews_link
         df["review_helpful"] = reviews_found_helpful
         df["review_total_votes"] = reviews_total_votes
-
-        # print(df)
+        df["reviews_if_spoiler"] = reviews_if_spoiler
         df.to_csv(f"movie_reviews/{movie_name}.csv", index=False)
 
     return (
@@ -269,4 +256,5 @@ def main_scraper(
         reviews_link,
         reviews_found_helpful,
         reviews_total_votes,
+        reviews_if_spoiler,
     )

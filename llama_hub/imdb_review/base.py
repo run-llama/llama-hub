@@ -50,6 +50,7 @@ class IMDBReviews(BaseReader):
             reviews_link,
             review_helpful,
             review_total_votes,
+            review_if_spoiler,
         ) = main_scraper(
             self.movie_name_year,
             self.webdriver_engine,
@@ -69,6 +70,7 @@ class IMDBReviews(BaseReader):
                         "link": reviews_link[i],
                         "found_helpful_votes": review_helpful[i],
                         "total_votes": review_total_votes[i],
+                        "spolier": review_if_spoiler[i],
                     },
                 )
             )
