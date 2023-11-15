@@ -96,7 +96,7 @@ def scrape_data(revs):
     return date, contents, rating, title, link, spoiler
 
 
-def process_muted_text(mute_text: str) -> (float,float):
+def process_muted_text(mute_text: str) -> (float, float):
     """Post processing the muted text
 
     Args:
