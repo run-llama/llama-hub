@@ -7,8 +7,6 @@
 - fIMDB Movie reviews bug fixes and feature addition (#636)
 - replace s/gpt_index/llama_index references in READMEs (#635) 
 
-## Unreleased
-
 ### [v0.0.44] - 2023-11-13
 
 ### Smaller Features + Bug Fixes
