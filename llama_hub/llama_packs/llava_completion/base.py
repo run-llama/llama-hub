@@ -17,8 +17,8 @@ class LlavaCompletionPack(BaseLlamaPack):
         """Init params."""        
         import os
 
-        if os.environ["REPLICATE_API_TOKEN"] == "":
-            raise ValueError("Replicate API Token is missing.")
+        if not os.environ.get("REPLICATE_API_TOKEN", None):
+            raise ValueError("Replicate API Token is missing or blank.")
 
         self.image_url = image_url  
 
