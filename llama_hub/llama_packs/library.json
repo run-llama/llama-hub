@@ -8,5 +8,10 @@
     "id": "llama_packs/chroma_autoretrieval",
     "author": "logan-markewich",
     "keywords": ["chroma", "retrieval", "vector"]
+  },
+  "ZephyrQueryEnginePack": {
+    "id": "llama_packs/zephyr_query_engine",
+    "author": "logan-markewich",
+    "keywords": ["zephyr", "local", "query", "engine", "index", "huggingface"]
   }
 } 
