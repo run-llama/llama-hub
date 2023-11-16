@@ -196,6 +196,15 @@
       "seo"
     ]
   },
+  "SitemapIndexReader": {
+    "id": "web/sitemap_index",
+    "author": "kapil-malik",
+    "keywords": [
+      "sitemap-index",
+      "website",
+      "seo"
+    ]
+  },
   "DatabaseReader": {
     "id": "database",
     "author": "kevinqz",
