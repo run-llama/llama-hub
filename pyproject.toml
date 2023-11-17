@@ -21,6 +21,8 @@ atlassian-python-api = "*"
 html2text = "*"
 psutil = "*"
 retrying = "*"
+requests = ">=2.28.1"
+xmltodict = ">=0.12.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "7.2.1"

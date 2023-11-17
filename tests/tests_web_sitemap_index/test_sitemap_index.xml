@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://gpt-index.readthedocs.io/en/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://gpt-index.readthedocs.io/fr/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://gpt-index.readthedocs.io/jp/sitemap.xml</loc>
+  </sitemap>
+</sitemapindex>
