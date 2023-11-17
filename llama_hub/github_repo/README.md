@@ -25,7 +25,7 @@ loader = GithubRepositoryReader(
     github_client,
     owner =                  "jerryjliu",
     repo =                   "llama_index",
-    filter_directories =     (["gpt_index", "docs"], GithubRepositoryReader.FilterType.INCLUDE),
+    filter_directories =     (["llama_index", "docs"], GithubRepositoryReader.FilterType.INCLUDE),
     filter_file_extensions = ([".py"], GithubRepositoryReader.FilterType.INCLUDE),
     verbose =                True,
     concurrent_requests =    10,
@@ -41,7 +41,7 @@ for doc in docs:
 
 ## Examples
 
-This loader designed to be used as a way to load data into [Llama Index](https://github.com/jerryjliu/llama_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader designed to be used as a way to load data into [Llama Index](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
 ### Llama Index
 
@@ -70,7 +70,7 @@ if docs is None:
         github_client,
         owner =                  "jerryjliu",
         repo =                   "llama_index",
-        filter_directories =     (["gpt_index", "docs"], GithubRepositoryReader.FilterType.INCLUDE),
+        filter_directories =     (["llama_index", "docs"], GithubRepositoryReader.FilterType.INCLUDE),
         filter_file_extensions = ([".py"], GithubRepositoryReader.FilterType.INCLUDE),
         verbose =                True,
         concurrent_requests =    10,

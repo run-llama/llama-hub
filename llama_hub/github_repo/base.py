@@ -129,7 +129,7 @@ class GithubRepositoryReader(BaseReader):
         """
         Check if a tree object should be allowed based on the directories.
 
-        :param `tree_obj_path`: path of the tree object i.e. 'gpt_index/readers'
+        :param `tree_obj_path`: path of the tree object i.e. 'llama_index/readers'
 
         :return: True if the tree object should be allowed, False otherwise
         """
@@ -171,7 +171,7 @@ class GithubRepositoryReader(BaseReader):
         """
         Check if a tree object should be allowed based on the file extensions.
 
-        :param `tree_obj_path`: path of the tree object i.e. 'gpt_index/indices'
+        :param `tree_obj_path`: path of the tree object i.e. 'llama_index/indices'
 
         :return: True if the tree object should be allowed, False otherwise
         """
@@ -542,7 +542,7 @@ if __name__ == "__main__":
     reader1 = GithubRepositoryReader(
         github_client=github_client,
         owner="jerryjliu",
-        repo="gpt_index",
+        repo="llama_index",
         use_parser=False,
         verbose=True,
         filter_directories=(
