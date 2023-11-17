@@ -24,7 +24,7 @@ class ChatGPTPluginToolSpec(BaseToolSpec):
         self, manifest: Optional[dict] = None, manifest_url: Optional[str] = None
     ):
         import yaml
-        
+
         if manifest and manifest_url:
             raise ValueError("You cannot provide both a manifest and a manifest_url")
         elif manifest:

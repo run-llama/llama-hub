@@ -19,7 +19,7 @@ class OpenAPIToolSpec(BaseToolSpec):
 
     def __init__(self, spec: Optional[dict] = None, url: Optional[str] = None):
         import yaml
-        
+
         if spec and url:
             raise ValueError("Only provide one of OpenAPI dict or url")
         elif spec:
