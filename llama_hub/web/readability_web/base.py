@@ -2,7 +2,7 @@ import unicodedata
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Literal, Optional, cast
 
-from llama_index.langchain_helpers.text_splitter import TextSplitter
+from llama_index.node_parser.interface import TextSplitter
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 

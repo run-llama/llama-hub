@@ -3,7 +3,6 @@
 from typing import List, Optional
 
 import requests
-import yaml
 from llama_index.readers.schema.base import Document
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
@@ -24,6 +23,8 @@ class ChatGPTPluginToolSpec(BaseToolSpec):
     def __init__(
         self, manifest: Optional[dict] = None, manifest_url: Optional[str] = None
     ):
+        import yaml
+
         if manifest and manifest_url:
             raise ValueError("You cannot provide both a manifest and a manifest_url")
         elif manifest:

@@ -1,5 +1,12 @@
 ## Unreleased
 
+### [v0.0.45] - 2023-11-16
+
+### Smaller Features + Bug Fixes
+- Updated init file (#633)
+- fIMDB Movie reviews bug fixes and feature addition (#636)
+- replace s/gpt_index/llama_index references in READMEs (#635) 
+
 ### [v0.0.44] - 2023-11-13
 
 ### Smaller Features + Bug Fixes
