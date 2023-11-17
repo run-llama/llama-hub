@@ -16,7 +16,7 @@ class GmailOpenAIAgentPack(BaseLlamaPack):
             raise ImportError("llama_hub not installed.")
 
         self.tool_spec = GmailToolSpec(**gmail_tool_kwargs)
-        self.agent = OpenAIAgent.from_tools()
+        self.agent = OpenAIAgent.from_tools(self.tool_spec.to_tool_list())
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
