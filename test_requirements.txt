@@ -13,6 +13,7 @@ llama-index>=0.6.9
 atlassian-python-api
 html2text
 olefile
+google-api-python-client>=2.108.0
 
 # hotfix
 psutil
