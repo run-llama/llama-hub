@@ -303,6 +303,14 @@
       "video"
     ]
   },
+  "YoutubeChannelTranscriptReader": {
+    "id": "youtube_channel_transcript",
+    "author": "kapil-malik",
+    "keywords": [
+      "video",
+      "youtube"
+    ]
+  },
   "MakeWrapper": {
     "id": "make_com"
   },

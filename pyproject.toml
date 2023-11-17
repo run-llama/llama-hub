@@ -21,6 +21,7 @@ atlassian-python-api = "*"
 html2text = "*"
 psutil = "*"
 retrying = "*"
+google-api-python-client = ">=2.108.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "7.2.1"

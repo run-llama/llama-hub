@@ -1,0 +1,2 @@
+youtube_transcript_api~=0.5.0
+google-api-python-client>=2.108.0
