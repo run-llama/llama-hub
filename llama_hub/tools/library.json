@@ -150,5 +150,16 @@
       "symbolic",
       "embedding"
     ]
-  } 
+  },
+  "OpenAIImageGenerationToolSpec": {
+    "id": "tools/openai/image_generation",
+    "author": "manelferreira_",
+    "keywords": [
+      "image",
+      "vision",
+      "cv",
+      "openai",
+      "gpt-3"
+    ]
+  }
 }

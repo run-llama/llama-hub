@@ -501,7 +501,6 @@ class OneDriveReader(BaseReader):
             List[Document]: A list of documents.
         """
         try:
-
             with tempfile.TemporaryDirectory() as temp_dir:
                 self._downloaded_files_metadata = self._init_download_and_get_metadata(
                     temp_dir=temp_dir,
