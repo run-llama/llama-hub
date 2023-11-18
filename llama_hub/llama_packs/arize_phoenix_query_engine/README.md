@@ -11,22 +11,17 @@
 </center>
 <h1 align="center">Arize-Phoenix LlamaPack</h1>
 
-This LlamaPack instruments your LlamaIndex application for LLM application tracing with [Phoenix](https://github.com/Arize-ai/phoenix), an open-source LLM observability product from [Arize AI](https://arize.com/).
+This LlamaPack instruments your LlamaIndex app for LLM tracing with [Phoenix](https://github.com/Arize-ai/phoenix), an open-source LLM observability library from [Arize AI](https://phoenix.arize.com/).
 
 ## Install and Import Dependencies
-
-Install dependencies.
 
 
 ```python
 !pip install "arize-phoenix[llama-index]" llama-hub html2text
 ```
 
-Import libraries.
-
 
 ```python
-import getpass
 import os
 
 from llama_hub.llama_packs.arize_phoenix_query_engine import ArizePhoenixQueryEnginePack
@@ -35,32 +30,24 @@ from llama_index.readers import SimpleWebPageReader
 from tqdm.auto import tqdm
 ```
 
-This LlamaPack builds an index over a list of input nodes using the OpenAI API. Configure your OpenAI API key.
+Configure your OpenAI API key.
 
 
 ```python
-if not (openai_api_key := os.getenv("OPENAI_API_KEY")):
-    openai_api_key = getpass("🔑 Enter your OpenAI API key: ")
-os.environ["OPENAI_API_KEY"] = openai_api_key
+os.environ["OPENAI_API_KEY"] = "copy-your-openai-api-key-here"
 ```
 
-Parse your documents into a list of nodes. In this example, use nodes from a Paul Graham essay as input.
+Parse your documents into a list of nodes and pass to your LlamaPack. In this example, use nodes from a Paul Graham essay as input.
 
 
 ```python
 documents = SimpleWebPageReader().load_data(
     [
-        "http://raw.githubusercontent.com/jerryjliu/llama_index/main/examples/paul_graham_essay/data/paul_graham_essay.txt"
+        "https://raw.githubusercontent.com/jerryjliu/llama_index/adb054429f642cc7bbfcb66d4c232e072325eeab/examples/paul_graham_essay/data/paul_graham_essay.txt"
     ]
 )
 parser = SentenceSplitter()
 nodes = parser.get_nodes_from_documents(documents)
-```
-
-Define your LlamaPack.
-
-
-```python
 phoenix_pack = ArizePhoenixQueryEnginePack(nodes=nodes)
 ```
 
