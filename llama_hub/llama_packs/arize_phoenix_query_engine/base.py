@@ -17,10 +17,9 @@ if TYPE_CHECKING:
 class ArizePhoenixQueryEnginePack(BaseLlamaPack):
     """
     The Arize-Phoenix LlamaPack show how to instrument your LlamaIndex query
-    engine for tracing and observability for your LLM application. It launches
-    Phoenix in the background, builds an index over an input list of nodes, and
-    instantiates and instruments a query engine over that index so that trace
-    data from each query is sent to Phoenix.
+    engine with tracing. It launches Phoenix in the background, builds an index
+    over an input list of nodes, and instantiates and instruments a query engine
+    over that index so that trace data from each query is sent to Phoenix.
 
     Note: Using this LlamaPack requires that your OpenAI API key is set via the
     OPENAI_API_KEY environment variable.
