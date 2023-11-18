@@ -14,7 +14,6 @@ class TrafilaturaWebReader(BaseReader):
     """
 
     def __init__(self) -> None:
-
         if find_spec("trafilatura") is None:
             raise ImportError(
                 "Missing package: trafilatura.\n"

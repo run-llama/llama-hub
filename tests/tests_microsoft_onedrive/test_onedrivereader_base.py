@@ -12,7 +12,6 @@ else:
 
 
 def test_onedrivereader_init():
-
     client_id = "test_client_id"
     client_secret = "test_client_secret"
     tenant_id = "test_tenant_id"
