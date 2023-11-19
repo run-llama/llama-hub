@@ -15,7 +15,7 @@ To run this app locally, first install its dependencies via `pip install -r requ
 
 Deploy this app for free on Streamlit Community Cloud by following the instructions [here](https://docs.streamlit.io/streamlit-community-cloud/deploy-your-app).
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://llamapack.streamlit.app/))
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://llamapack.streamlit.app/)
 
 ## Get an OpenAI API key
 
