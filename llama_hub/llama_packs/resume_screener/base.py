@@ -1,7 +1,10 @@
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.readers import PDFReader
+from llama_index.llms.base import LLM
+from llama_index.llms import OpenAI
+from llama_index import ServiceContext
 from llama_index.schema import NodeWithScore
 from llama_index.response_synthesizers import TreeSummarize
 
@@ -38,9 +41,11 @@ def _format_criteria_str(criteria: List[str]) -> str:
     return criteria_str
 
 class ResumeScreenerPack(BaseLlamaPack):
-    def __init__(self, job_description: str, criteria: List[str]) -> None:
+    def __init__(self, job_description: str, criteria: List[str], llm: Optional[LLM] = None) -> None:
         self.reader = PDFReader()
-        self.synthesizer = TreeSummarize(output_cls=ResumeScreenerDecision)
+        llm = llm or OpenAI(model='gpt-4')
+        service_context = ServiceContext.from_defaults(llm=llm)
+        self.synthesizer = TreeSummarize(output_cls=ResumeScreenerDecision, service_context=service_context)
         criteria_str = _format_criteria_str(criteria)
         self.query = QUERY_TEMPLATE.format(job_description=job_description, criteria_str=criteria_str)
 
