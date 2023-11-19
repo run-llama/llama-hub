@@ -19,6 +19,8 @@ You can get your own OpenAI API key by following the following instructions:
 1. Go to https://platform.openai.com/account/api-keys.
 2. Click on the `+ Create new secret key` button.
 3. Next, enter an identifier name (optional) and click on the `Create secret key` button.
+   
+Use Streamlit's [secrets management feature](https://docs.streamlit.io/streamlit-community-cloud/deploy-your-app/secrets-management) to add your OpenAI API key to your Streamlit app.
 
 ## Try out the app
 
