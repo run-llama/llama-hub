@@ -14,47 +14,50 @@ You job is to decide if the candidate pass the resume screen given the job descr
 ### Job Description
 {job_description}
 
-### Criteria
+### Screening Criteria
 {criteria_str}
 """
 
-
-
 class CriteriaDecision(BaseModel):
     """The decision made based on a single criteria"""
-    decision: Field(type=bool, description="The decision made based on the criteria")
-    reasoning: Field(type=str, description="The reasoning behind the decision")
+    decision: bool = Field(description="The decision made based on the criteria")
+    reasoning: str = Field(description="The reasoning behind the decision")
 
 
 class ResumeScreenerDecision(BaseModel):
     """The decision made by the resume screener"""
-    criteria_decisions: Field(type=List[CriteriaDecision], description="The decisions made based on the criteria")
-    overall_reasoning: Field(type=str, description="The reasoning behind the overall decision")
-    overall_decision: Field(type=bool, description="The overall decision made based on the criteria")
+    criteria_decisions: List[CriteriaDecision] = Field( description="The decisions made based on the criteria")
+    overall_reasoning: str = Field(description="The reasoning behind the overall decision")
+    overall_decision: bool = Field(description="The overall decision made based on the criteria")
 
+
+def _format_criteria_str(criteria: List[str]) -> str:
+    criteria_str = ""
+    for criterion in criteria:
+        criteria_str += f"- {criterion}\n"
+    return criteria_str
 
 class ResumeScreenerPack(BaseLlamaPack):
     def __init__(self, job_description: str, criteria: List[str]) -> None:
         self.reader = PDFReader()
-        self.synthesizer = TreeSummarize()
-
-        criteria_str = ""
-        for criterion in criteria:
-            criteria_str += f"- {criterion}\n"
+        self.synthesizer = TreeSummarize(output_cls=ResumeScreenerDecision)
+        criteria_str = _format_criteria_str(criteria)
         self.query = QUERY_TEMPLATE.format(job_description=job_description, criteria_str=criteria_str)
 
     def get_modules(self) -> Dict[str, Any]:
+        """Get modules."""
         return {
             "reader": self.reader,
             "synthesizer": self.synthesizer
         }
     
     def run(self, resume_path: str, *args: Any, **kwargs: Any) -> Any:
+        """Run pack."""
         docs = self.reader.load_data(Path(resume_path))
         output = self.synthesizer.synthesize(
             query=self.query,
             nodes=[NodeWithScore(node=doc, score=1.0) for doc in docs],
         )
-        return output
+        return output.response
     
 

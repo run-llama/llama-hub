@@ -31,8 +31,6 @@ resume_screener = ResumeScreenerPack(
 )
 ```
 
-The `run()` function is a light wrapper around `llm.complete()`.
-
 ```python
 response = resume_screener.run(resume_path="resume.pdf")
 print(response.overall_decision)
