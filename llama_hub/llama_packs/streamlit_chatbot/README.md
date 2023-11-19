@@ -11,6 +11,10 @@ Build a chatbot powered by LlamaIndex that augments GPT 3.5 with the contents of
 
 ## Demo App
 
+To run this app locally, first install its dependencies via `pip install -r requirements.txt` and run the app via `streamlit run streamlit_app.py`
+
+Deploy this app for free on Streamlit Community Cloud by following the instructions [here](https://docs.streamlit.io/streamlit-community-cloud/deploy-your-app).
+
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://llamapack.streamlit.app/))
 
 ## Get an OpenAI API key
