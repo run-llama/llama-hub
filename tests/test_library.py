@@ -94,7 +94,9 @@ def test_llama_packs_library_matches() -> None:
         readme_file = entry_dir / "README.md"
         assert readme_file.exists()
 
-        spec = util.spec_from_file_location("custom_llama_pack", location=str(entry_file))
+        spec = util.spec_from_file_location(
+            "custom_llama_pack", location=str(entry_file)
+        )
         if spec is None:
             raise ValueError(f"Could not find file: {str(entry_file)}.")
         module = util.module_from_spec(spec)
