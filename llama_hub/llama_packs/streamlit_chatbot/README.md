@@ -1,31 +1,30 @@
-# 💬🦙 Chat with Snowflake's Wikipedia page, powered by LlamaIndex
+# Steamlit Chatbot Pack
 
-Build a chatbot powered by LlamaIndex that augments GPT 3.5 with the contents of Snowflake's Wikipedia page (or your own data).
-
-## Overview of the App
+Build a chatbot powered by LlamaIndex that augments an LLM with the contents of Snowflake's Wikipedia page (or your own data).
 
 <img src="app.png" width="75%">
 
 - Takes user queries via Streamlit's `st.chat_input` and displays both user queries and model responses with `st.chat_message`
 - Uses LlamaIndex to load and index data and create a chat engine that will retrieve context from that data to respond to each user query
+- UI will stream each answer from the LLM
 
-## Demo App
+## Usage
 
-To run this app locally, first install its dependencies via `pip install -r requirements.txt` and run the app via `streamlit run streamlit_app.py`
+You can download the pack to a `./streamlit_chatbot_pack` directory:
 
-Deploy this app for free on Streamlit Community Cloud by following the instructions [here](https://docs.streamlit.io/streamlit-community-cloud/deploy-your-app).
+```python
+from llama_index.llama_packs import download_llama_pack
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://llamapack.streamlit.app/)
+# download and install dependencies
+StreamlitChatPack = download_llama_pack(
+  "StreamlitChatPack", "./streamlit_chatbot_pack"
+)
+```
 
-## Get an OpenAI API key
+From here, you can inspect and modify the pack in `./llava_pack`.
 
-You can get your own OpenAI API key by following the following instructions:
-1. Go to https://platform.openai.com/account/api-keys.
-2. Click on the `+ Create new secret key` button.
-3. Next, enter an identifier name (optional) and click on the `Create secret key` button.
-   
-Use Streamlit's [secrets management feature](https://docs.streamlit.io/streamlit-community-cloud/deploy-your-app/secrets-management) to add your OpenAI API key to your Streamlit app.
+To run the app directly, use in your terminal:
 
-## Try out the app
-
-Once the app is loaded, enter your question about Snowflake (or choose from the example questions) and wait for a response.
+```bash
+streamlit run ./streamlit_chatbot_pack/base.py
+```

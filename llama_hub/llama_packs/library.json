@@ -18,5 +18,10 @@
     "id": "llama_packs/llava_completion",
     "author": "wenqiglantz",
     "keywords": ["llava", "multimodal", "image"]
-  }
+  },
+  "StreamlitChatPack": {
+    "id": "llama_packs/streamlit_chatbot",
+    "author": "carolinedlu",
+    "keywords": ["streamlit", "chatbot", "wikipedia", "snowflake"]
+  } 
 } 
