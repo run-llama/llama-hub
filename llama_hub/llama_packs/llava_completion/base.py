@@ -6,6 +6,7 @@ from typing import Any, Dict
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.llms import Replicate
 
+
 class LlavaCompletionPack(BaseLlamaPack):
     """Llava Completion pack."""
 
@@ -14,13 +15,13 @@ class LlavaCompletionPack(BaseLlamaPack):
         image_url: str,
         **kwargs: Any,
     ) -> None:
-        """Init params."""        
+        """Init params."""
         import os
 
         if not os.environ.get("REPLICATE_API_TOKEN", None):
             raise ValueError("Replicate API Token is missing or blank.")
 
-        self.image_url = image_url  
+        self.image_url = image_url
 
         self.llm = Replicate(
             model="yorickvp/llava-13b:2facb4a474a0462c15041b78b1ad70952ea46b5ec6ad29583c0b29dbd4249591",

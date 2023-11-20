@@ -33,14 +33,18 @@ class ChromaAutoretrievalPack(BaseLlamaPack):
         chroma_collection = chroma_client.get_or_create_collection(collection_name)
 
         self._vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-        
+
         if nodes is not None:
             self._storage_context = StorageContext.from_defaults(
                 vector_store=self._vector_store
             )
-            self._index = VectorStoreIndex(nodes, storage_context=self._storage_context, **kwargs)
+            self._index = VectorStoreIndex(
+                nodes, storage_context=self._storage_context, **kwargs
+            )
         else:
-            self._index = VectorStoreIndex.from_vector_store(self._vector_store, **kwargs)
+            self._index = VectorStoreIndex.from_vector_store(
+                self._vector_store, **kwargs
+            )
             self._storage_context = self._index.storage_context
 
         self.retriever = VectorIndexAutoRetriever(
