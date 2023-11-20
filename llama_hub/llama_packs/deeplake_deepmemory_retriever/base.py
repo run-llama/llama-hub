@@ -45,7 +45,7 @@ class DeepMemoryRetrieverPack(BaseLlamaPack):
         self.retriever = self._index.as_retriever(
             similarity_top_k=top_k, vector_store_kwargs={"deep_memory": True}
         )
-        self.query_engine = RetrieverQueryEngine(self.retriever)
+        self.query_engine = RetrieverQueryEngine.from_args(retriever=self.retriever)
         
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""

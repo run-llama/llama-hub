@@ -1,6 +1,7 @@
 # DeepLake DeepMemory Pack
 
 This LlamaPack inserts your multimodal data (texts, images) into deeplake and insantiates an deeplake retriever, which will use clip for embedding images and GPT4-V during runtime.
+
 ## Usage
 
 You can download the pack to a `./deeplake_multimodal_pack` directory:
@@ -9,7 +10,7 @@ You can download the pack to a `./deeplake_multimodal_pack` directory:
 from llama_hub.llama_packs import download_llama_pack
 
 # download and install dependencies
-DeepLakeMultimodalRetreiver = download_llama_pack(
+DeepLakeMultimodalRetriever = download_llama_pack(
   "DeepLakeMultimodalRetrieverPack", "./deeplake_multimodal_pack"
 )
 ```
@@ -22,30 +23,31 @@ Then, you can set up the pack like so:
 # setup pack arguments
 from llama_index.vector_stores.types import MetadataInfo, VectorStoreInfo
 
+# collection of image and text nodes
 nodes = [...]
 
 # create the pack
-deelake_pack = DeepLakeMultimodalRetreiver(
-  collection_name="test",
-  vector_store_info=vector_store_index 
+deeplake_pack = DeepLakeMultimodalRetriever(
   nodes=nodes,
+  dataset_path="llama_index",
+  overwrite=False
 )
 ```
 
 The `run()` function is a light wrapper around `SimpleMultiModalQueryEngine`.
 
 ```python
-response = deelake_pack.run("Tell me a bout a Music celebritiy.")
+response = deeplake_pack.run("Tell me a bout a Music celebritiy.")
 ```
 
 You can also use modules individually.
 
 ```python
 # use the retreiver
-retriever = deelake_pack.retriever
+retriever = deeplake_pack.retriever
 nodes = retriever.retrieve("query_str")
 
 # use the query engine
-query_engine = deelake_pack.query_engine
+query_engine = deeplake_pack.query_engine
 response = query_engine.query("query_str")
 ```

@@ -1,6 +1,6 @@
 # DeepLake DeepMemory Pack
 
-This LlamaPack inserts your data into deeplake and insantiates an deepmemory retriever, which will use deepmemory during runtime to increase RAG's retrieval accuracy (recall)
+This LlamaPack inserts your data into deeplake and insantiates a [deepmemory](https://docs.activeloop.ai/performance-features/deep-memory) retriever, which will use deepmemory during runtime to increase RAG's retrieval accuracy (recall).
 
 ## Usage
 
@@ -10,8 +10,8 @@ You can download the pack to a `./deepmemory_pack` directory:
 from llama_hub.llama_packs import download_llama_pack
 
 # download and install dependencies
-DeepMemoryRetreiver = download_llama_pack(
-  "DeepMemoryRetreiverPack", "./deepmemory_pack"
+DeepMemoryRetriever = download_llama_pack(
+  "DeepMemoryRetrieverPack", "./deepmemory_pack"
 )
 ```
 
@@ -26,9 +26,9 @@ from llama_index.vector_stores.types import MetadataInfo, VectorStoreInfo
 nodes = [...]
 
 # create the pack
-deepmemory_pack = DeepMemoryRetreiver(
-  collection_name="test",
-  vector_store_info=vector_store_index 
+deepmemory_pack = DeepMemoryRetriever(
+  dataset_path="llama_index",
+  overwrite=False, 
   nodes=nodes,
 )
 ```
