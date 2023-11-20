@@ -1,16 +1,15 @@
 # Waii Tool
 
-This tool connects to Waii-managed database, which allows generic SQL queries, do performance analyze, describe a SQL query, and more.
+This tool connects to database connections managed by Waii, which allows generic SQL queries, do performance analyze, describe a SQL query, and more.
 
 ## Usage
 
-First you need to create a waii.ai account, you request an account from [here](https://waii.io/).
+First you need to create a waii.ai account, you request an account from [here](https://waii.ai/).
 
 Initialize the tool with your account credentials:
 
 ```python
 from llama_hub.tools.waii import WaiiToolSpec
-
 
 waii_tool = WaiiToolSpec(
     url="https://tweakit.waii.ai/api/",
@@ -34,7 +33,6 @@ The tools available are:
 - `get_semantic_contexts`: Get semantic contexts of a SQL query
 - `generate_query_only`: Generate SQL query only (not run it)
 - `run_query`: Run a SQL query
-
 
 You can also load the data directly call `load_data`
 

@@ -1,18 +1,34 @@
 """Waii Tool."""
 import json
-from typing import List
+from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_index.response_synthesizers import TreeSummarize
 from llama_index.tools.tool_spec.base import BaseToolSpec
 from waii_sdk_py import WAII
-from waii_sdk_py.query import *
+from waii_sdk_py.query import (
+    QueryGenerationRequest,
+    RunQueryRequest,
+    DescribeQueryRequest,
+    QueryPerformanceRequest,
+    DiffQueryRequest,
+    TranscodeQueryRequest,
+)
 
 
 class WaiiToolSpec(BaseToolSpec, BaseReader):
-    spec_functions = ["get_answer", "describe_query", "performance_analyze", "diff_query", "describe_dataset",
-                      "transcode", "get_semantic_contexts", "generate_query_only", "run_query"]
+    spec_functions = [
+        "get_answer",
+        "describe_query",
+        "performance_analyze",
+        "diff_query",
+        "describe_dataset",
+        "transcode",
+        "get_semantic_contexts",
+        "generate_query_only",
+        "run_query",
+    ]
 
     def __init__(
         self,
@@ -34,8 +50,12 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
-        query = WAII.Query.generate(QueryGenerationRequest(ask=ask), verbose=self.verbose).query
-        documents = WAII.Query.run(RunQueryRequest(query=query), verbose=self.verbose).rows
+        query = WAII.Query.generate(
+            QueryGenerationRequest(ask=ask), verbose=self.verbose
+        ).query
+        documents = WAII.Query.run(
+            RunQueryRequest(query=query), verbose=self.verbose
+        ).rows
         return [Document(text=str(doc)) for doc in documents]
 
     def _get_summarization(self, original_ask: str, documents):
@@ -50,7 +70,7 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
             texts.append(t)
             n_chars += len(t)
 
-        summarizer = TreeSummarize(verbose=True)
+        summarizer = TreeSummarize(verbose=self.verbose)
         response = summarizer.get_response(original_ask, texts)
         return response
 
@@ -76,7 +96,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the query.
         """
-        query = WAII.Query.generate(QueryGenerationRequest(ask=ask), verbose=self.verbose).query
+        query = WAII.Query.generate(
+            QueryGenerationRequest(ask=ask), verbose=self.verbose
+        ).query
         return query
 
     def run_query(self, sql: str):
@@ -89,8 +111,12 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the summarization of the answer.
         """
-        documents = WAII.Query.run(RunQueryRequest(query=sql), verbose=self.verbose).rows
-        return self._get_summarization("run query", [Document(text=str(doc)) for doc in documents])
+        documents = WAII.Query.run(
+            RunQueryRequest(query=sql), verbose=self.verbose
+        ).rows
+        return self._get_summarization(
+            "run query", [Document(text=str(doc)) for doc in documents]
+        )
 
     def describe_query(self, question: str, query: str):
         """
@@ -120,7 +146,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
             str: A string containing the summarization of the answer.
         """
 
-        result = WAII.Query.analyze_performance(QueryPerformanceRequest(query_id=query_uuid))
+        result = WAII.Query.analyze_performance(
+            QueryPerformanceRequest(query_id=query_uuid)
+        )
         result = json.dumps(result.dict(), indent=2)
         return result
 
@@ -136,11 +164,18 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
             str: A string containing the summarization of the answer.
         """
 
-        result = WAII.Query.diff(DiffQueryRequest(query=current_query, previous_query=previous_query))
+        result = WAII.Query.diff(
+            DiffQueryRequest(query=current_query, previous_query=previous_query)
+        )
         result = json.dumps(result.dict(), indent=2)
         return self._get_summarization("get diff summary", [Document(text=result)])
 
-    def describe_dataset(self, ask: str, schema_name: Optional[str] = None, table_name: Optional[str] = None):
+    def describe_dataset(
+        self,
+        ask: str,
+        schema_name: Optional[str] = None,
+        table_name: Optional[str] = None,
+    ):
         """
         Describe a dataset (no matter if it is a table or schema), returning the summarization of the answer.
         Example questions like: "describe the dataset", "what the schema is about", "example question for the table xxx", etc.
@@ -164,7 +199,10 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         for c in catalog.catalogs:
             for s in c.schemas:
                 for t in s.tables:
-                    if schema_name is not None and schema_name.lower() != t.name.schema_name.lower():
+                    if (
+                        schema_name is not None
+                        and schema_name.lower() != t.name.schema_name.lower()
+                    ):
                         continue
                     if table_name is not None:
                         if table_name.lower() != t.name.table_name.lower():
@@ -177,12 +215,20 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
             schemas[schema].tables = None
 
         # generate response
-        response = self._get_summarization(ask + ", use the provided information to get comprehensive summarization",
-                                           [Document(text=str(schemas[schema])) for schema in schemas] + [
-                                               Document(text=str(tables[table])) for table in tables])
+        response = self._get_summarization(
+            ask + ", use the provided information to get comprehensive summarization",
+            [Document(text=str(schemas[schema])) for schema in schemas]
+            + [Document(text=str(tables[table])) for table in tables],
+        )
         return response
 
-    def transcode(self, instruction: Optional[str] = "", source_dialect: Optional[str] = None, source_query: Optional[str] = None, target_dialect: Optional[str] = None):
+    def transcode(
+        self,
+        instruction: Optional[str] = "",
+        source_dialect: Optional[str] = None,
+        source_query: Optional[str] = None,
+        target_dialect: Optional[str] = None,
+    ):
         """
         Transcode a sql query from one dialect to another, returning generated query
 
@@ -196,7 +242,14 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
             str: A string containing the generated query.
         """
 
-        result = WAII.Query.transcode(TranscodeQueryRequest(ask=instruction, source_dialect=source_dialect, source_query=source_query, target_dialect=target_dialect))
+        result = WAII.Query.transcode(
+            TranscodeQueryRequest(
+                ask=instruction,
+                source_dialect=source_dialect,
+                source_query=source_query,
+                target_dialect=target_dialect,
+            )
+        )
         return result.query
 
     def get_semantic_contexts(self):
