@@ -10,7 +10,7 @@ from llama_index.llms import OpenAI
 
 
 class StreamlitChatPack(BaseLlamaPack):
-    """Llava Completion pack."""
+    """Streamlit chatbot pack."""
 
     def __init__(
         self,
