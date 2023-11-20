@@ -100,4 +100,4 @@ class StreamlitChatPack(BaseLlamaPack):
 
 
 if __name__ == "__main__":
-    StreamlitChatPack().run()
+    StreamlitChatPack(run_from_main=True).run()
