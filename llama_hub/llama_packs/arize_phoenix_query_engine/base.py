@@ -2,7 +2,6 @@
 Arize-Phoenix LlamaPack.
 """
 
-from types import ModuleType
 from typing import TYPE_CHECKING, Any, Dict, List
 
 from llama_index import set_global_handler
@@ -37,9 +36,15 @@ class ArizePhoenixQueryEnginePack(BaseLlamaPack):
             nodes (List[TextNode]): An input list of nodes over which the index
             will be built.
         """
+        try:
+            import phoenix as px
+        except ImportError:
+            raise ImportError(
+                "The arize-phoenix package could not be found. "
+                "Please install with `pip install arize-phoenix`."
+            )
+        self._session: "PhoenixSession" = px.launch_app()
         set_global_handler("arize_phoenix")
-        phoenix = _import_phoenix()
-        self._session: PhoenixSession = phoenix.launch_app()
         self._index = VectorStoreIndex(nodes, **kwargs)
         self._query_engine = self._index.as_query_engine()
 
@@ -66,25 +71,3 @@ class ArizePhoenixQueryEnginePack(BaseLlamaPack):
             Any: A response from the query engine.
         """
         return self._query_engine.query(*args, **kwargs)
-
-
-def _import_phoenix() -> ModuleType:
-    """
-    Imports the arize-phoenix module or raises an ImportError if it cannot be
-    found.
-
-    Raises:
-        ImportError: If the arize-phoenix package could not be found.
-
-    Returns:
-        ModuleType: The arize-phoenix module.
-    """
-    try:
-        import phoenix
-
-        return phoenix
-    except ImportError:
-        raise ImportError(
-            "The arize-phoenix package could not be found. "
-            "Please install with `pip install arize-phoenix`."
-        )
