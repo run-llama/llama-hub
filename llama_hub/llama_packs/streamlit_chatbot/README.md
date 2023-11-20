@@ -21,7 +21,7 @@ StreamlitChatPack = download_llama_pack(
 )
 ```
 
-From here, you can inspect and modify the pack in `./llava_pack`.
+From here, you can inspect and modify the pack in `./streamlit_chatbot_pack`.
 
 To run the app directly, use in your terminal:
 
