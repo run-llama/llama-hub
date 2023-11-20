@@ -18,5 +18,15 @@
     "id": "llama_packs/llava_completion",
     "author": "wenqiglantz",
     "keywords": ["llava", "multimodal", "image"]
+  },
+  "DeepMemoryRetrieverPack": {
+    "id": "llama_packs/deeplake_deepmemory_retriever",
+    "author": "AdkSarsen",
+    "keywords": ["deeplake", "deepmemory", "retriever"]
+  },
+  "DeepLakeMultimodalRetrieverPack": {
+    "id": "llama_packs/deeplake_multimodal_retrieval",
+    "author": "AdkSarsen",
+    "keywords": ["deeplake", "multimodal", "retriever"]
   }
 } 
