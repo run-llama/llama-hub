@@ -19,6 +19,11 @@
     "author": "wenqiglantz",
     "keywords": ["llava", "multimodal", "image"]
   },
+  "ResumeScreenerPack": {
+    "id": "llama_packs/resume_screener",
+    "author": "Disiok",
+    "keywords": ["pdf", "resume", "document", "structured output"]
+  },
   "DeepMemoryRetrieverPack": {
     "id": "llama_packs/deeplake_deepmemory_retriever",
     "author": "AdkSarsen",
