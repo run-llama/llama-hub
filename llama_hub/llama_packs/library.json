@@ -18,5 +18,10 @@
     "id": "llama_packs/llava_completion",
     "author": "wenqiglantz",
     "keywords": ["llava", "multimodal", "image"]
+  },
+  "ResumeScreenerPack": {
+    "id": "llama_packs/resume_screener",
+    "author": "Disiok",
+    "keywords": ["pdf", "resume", "document", "structured output"]
   }
 } 
