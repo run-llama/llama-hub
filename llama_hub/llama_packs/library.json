@@ -23,5 +23,25 @@
     "id": "llama_packs/resume_screener",
     "author": "Disiok",
     "keywords": ["pdf", "resume", "document", "structured output"]
+  },
+  "DeepMemoryRetrieverPack": {
+    "id": "llama_packs/deeplake_deepmemory_retriever",
+    "author": "AdkSarsen",
+    "keywords": ["deeplake", "deepmemory", "retriever"]
+  },
+  "DeepLakeMultimodalRetrieverPack": {
+    "id": "llama_packs/deeplake_multimodal_retrieval",
+    "author": "AdkSarsen",
+    "keywords": ["deeplake", "multimodal", "retriever"]
+  },
+  "StreamlitChatPack": {
+    "id": "llama_packs/streamlit_chatbot",
+    "author": "carolinedlu",
+    "keywords": ["streamlit", "chatbot", "wikipedia", "snowflake"]
+  },
+  "RedisIngestionPipelinePack": {
+    "id": "llama_packs/redis_ingestion_pipeline",
+    "author": "logan-markewich",
+    "keywords": ["redis", "ingestion", "pipeline", "index"]
   }
 } 
