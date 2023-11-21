@@ -9,11 +9,6 @@
     "author": "logan-markewich",
     "keywords": ["chroma", "retrieval", "vector"]
   },
-  "GradioReActAgentPack": {
-    "id": "llama_packs/gradio_react_agent_chatbot",
-    "author": "andrei-fajardo",
-    "keywords": ["gradio", "chatbot", "multimodal", "wikipedia", "rag"]
-  },
   "ZephyrQueryEnginePack": {
     "id": "llama_packs/zephyr_query_engine",
     "author": "logan-markewich",
@@ -63,5 +58,10 @@
     "id": "llama_packs/trulens_eval_packs",
     "author": "joshreini1",
     "keywords": ["trulens", "helpful", "eval"]
+  },
+  "GradioReactAgentChatbotPack": {
+    "id": "llama_packs/gradio_react_agent_chatbot",
+    "author": "andrei-fajardo",
+    "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
   }
 } 

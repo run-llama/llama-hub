@@ -99,16 +99,23 @@ class GradioReActAgentPack(BaseLlamaPack):
         import gradio as gr
 
         demo = gr.Blocks(
-            css="#box { height: 420px; overflow-y: scroll !important}")
+            theme="gstaff/xkcd",
+            css="#box { height: 420px; overflow-y: scroll !important}"
+        )
         with demo:
             gr.Markdown(
                 "# Gradio ReActAgent Powered by LlamaIndex and LlamaHub 🦙\n"
+                "This Gradio app is powered by LlamaIndex's `ReActAgent` with\n"
+                "OpenAI's GPT-4-Turbo as the LLM. The tools are listed below.\n"
                 "## Tools\n"
                 "- [ArxivToolSpec](https://llamahub.ai/l/tools-arxiv)\n"
                 "- [WikipediaToolSpec](https://llamahub.ai/l/tools-wikipedia)"
             )
             with gr.Row():
-                chat_window = gr.Chatbot(label="Message History", scale=3)
+                chat_window = gr.Chatbot(
+                    label="Message History",
+                    scale=3,
+                )
                 console = gr.HTML(elem_id="box")
             with gr.Row():
                 message = gr.Textbox(label="Write A Message", scale=4)

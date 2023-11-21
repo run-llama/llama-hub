@@ -1,30 +1,33 @@
-# Steamlit Chatbot Pack
+# Gradio ReActAgent Chatbot Pack
 
-Build a chatbot powered by LlamaIndex that augments an LLM with the contents of Snowflake's Wikipedia page (or your own data).
+Create a ReActAgent Chatbot equipped with two LlamaHub tools, namely: 
+[ArxivToolSpec](https://llamahub.ai/l/tools-arxiv) and Wikipedia tool and
+[WikipediaToolSpec](https://llamahub.ai/l/tools-wikipedia).
 
-<img src="app.png" width="75%">
+<img src="gradio-react-agent.png" width="75%">
 
-- Takes user queries via Streamlit's `st.chat_input` and displays both user queries and model responses with `st.chat_message`
-- Uses LlamaIndex to load and index data and create a chat engine that will retrieve context from that data to respond to each user query
-- UI will stream each answer from the LLM
+This pack's Gradio app is built with Gradio `Blocks`. User messages are submitted
+via a `TextBox` Block, which are then handled by a LlamaIndex `ReActAgent` to generate a
+response (calling required tools). The result is then sent to a `Chatbot` Block —
+additionally the agent's thoughts are captured in an `HTML` Block.
 
 ## Usage
 
-You can download the pack to a `./streamlit_chatbot_pack` directory:
+You can download the pack to a `./gradio_react_agent_chatbot` directory:
 
 ```python
 from llama_index.llama_packs import download_llama_pack
 
 # download and install dependencies
-StreamlitChatPack = download_llama_pack(
-  "StreamlitChatPack", "./streamlit_chatbot_pack"
+GradioReactAgentPack = download_llama_pack(
+  "GradioReactAgentPack", "./gradio_react_agent_pack"
 )
 ```
 
-From here, you can inspect and modify the pack in `./streamlit_chatbot_pack`.
+From here, you can inspect and modify the pack in `./gradio_react_agent_pack`.
 
 To run the app directly, use in your terminal:
 
 ```bash
-streamlit run ./streamlit_chatbot_pack/base.py
+python ./gradio_react_agent_pack/base.py
 ```
