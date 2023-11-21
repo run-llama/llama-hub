@@ -31,7 +31,7 @@ class Capturing(list):
 
     def __exit__(self, *args):
         self.extend(self._stringio.getvalue().splitlines())
-        del self._stringio    # free up some memory
+        del self._stringio  # free up some memory
         sys.stdout = self._stdout
 
 
@@ -47,9 +47,7 @@ class GradioReActAgentPack(BaseLlamaPack):
         try:
             from ansi2html import Ansi2HTMLConverter
         except ImportError as err:
-            raise ImportError(
-                "Please install ansi2html via `pip install ansi2html`"
-            )
+            raise ImportError("Please install ansi2html via `pip install ansi2html`")
 
         tools = []
         for t in tools_list:
@@ -62,11 +60,10 @@ class GradioReActAgentPack(BaseLlamaPack):
         self.llm = OpenAI(model="gpt-4-1106-preview", max_tokens=2000)
         self.agent = ReActAgent.from_tools(
             tools=functools.reduce(
-                lambda x, y: x.to_tool_list() + y.to_tool_list(),
-                self.tools
+                lambda x, y: x.to_tool_list() + y.to_tool_list(), self.tools
             ),
             llm=self.llm,
-            verbose=True
+            verbose=True,
         )
 
         self.thoughts = ""
@@ -81,7 +78,9 @@ class GradioReActAgentPack(BaseLlamaPack):
         to the history."""
         return "", history + [(user_message, "")]
 
-    def _generate_response(self, chat_history: List[Tuple[str, str]]) -> Tuple[str, List[Tuple[str, str]]]:
+    def _generate_response(
+        self, chat_history: List[Tuple[str, str]]
+    ) -> Tuple[str, List[Tuple[str, str]]]:
         """Generate the response from agent, and capture the stdout of the
         ReActAgent's thoughts.
         """
@@ -105,7 +104,7 @@ class GradioReActAgentPack(BaseLlamaPack):
 
         demo = gr.Blocks(
             theme="gstaff/xkcd",
-            css="#box { height: 420px; overflow-y: scroll !important}"
+            css="#box { height: 420px; overflow-y: scroll !important}",
         )
         with demo:
             gr.Markdown(
@@ -130,17 +129,13 @@ class GradioReActAgentPack(BaseLlamaPack):
                 self._handle_user_message,
                 [message, chat_window],
                 [message, chat_window],
-                queue=False
+                queue=False,
             ).then(
                 self._generate_response,
                 chat_window,
                 [chat_window, console],
             )
-            clear.click(
-                self._reset_chat,
-                None,
-                [message, chat_window, console]
-            )
+            clear.click(self._reset_chat, None, [message, chat_window, console])
 
         demo.launch(server_name="0.0.0.0", server_port=8080)
 
