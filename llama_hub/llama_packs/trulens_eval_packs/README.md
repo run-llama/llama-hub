@@ -6,7 +6,7 @@ The best way to support TruLens is to give us a ⭐ on [GitHub](https://www.gith
 
 TruLens provides three Llamma Packs for LLM app observability:
 
-- The first is the **RAG Triad Pack** (context relevance, groundedness, answer relevance).
+- The first is the **RAG Triad Pack** (context relevance, groundedness, answer relevance). This triad holds the key to detecting hallucination.
 
 - Second, is the **Harmless Pack** including moderation and safety evaluations like criminality, violence and more.
 
