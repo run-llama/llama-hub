@@ -151,3 +151,4 @@ tru = modules["session"]
 
 tru.get_leaderboard(app_ids=["Query Engine v1: Helpful Evals"])
 ```
+Check out the [TruLens documentation](https://www.trulens.org/trulens_eval/install/) for more information!
