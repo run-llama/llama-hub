@@ -6,7 +6,7 @@ Create a ReActAgent Chatbot equipped with two LlamaHub tools, namely:
 
 <img src="gradio-react-agent.png" width="75%">
 
-This pack's Gradio app is built with Gradio `Blocks`. User messages are submitted
+This pack's Gradio app is built using Gradio `Blocks`. User messages are submitted
 via a `TextBox` Block, which are then handled by a LlamaIndex `ReActAgent` to generate a
 response (calling required tools). The result is then sent to a `Chatbot` Block —
 additionally the agent's thoughts are captured in an `HTML` Block.
