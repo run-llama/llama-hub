@@ -43,5 +43,20 @@
     "id": "llama_packs/redis_ingestion_pipeline",
     "author": "logan-markewich",
     "keywords": ["redis", "ingestion", "pipeline", "index"]
+  },
+  "TruLensRAGTriadPack": {
+    "id": "llama_packs/trulens_eval_packs",
+    "author": "joshreini1",
+    "keywords": ["trulens", "rag", "triad", "eval"]
+  },
+  "TruLensHarmlessPack": {
+    "id": "llama_packs/trulens_eval_packs",
+    "author": "joshreini1",
+    "keywords": ["trulens", "harmless", "eval"]
+  },
+  "TruLensHelpfulPack": {
+    "id": "llama_packs/trulens_eval_packs",
+    "author": "joshreini1",
+    "keywords": ["trulens", "helpful", "eval"]
   }
 } 
