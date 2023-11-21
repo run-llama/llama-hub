@@ -9,6 +9,11 @@
     "author": "logan-markewich",
     "keywords": ["chroma", "retrieval", "vector"]
   },
+  "GradioChatPack": {
+    "id": "llama_packs/gradio_chatbot",
+    "author": "andrei-fajardo",
+    "keywords": ["gradio", "chatbot", "multimodal", "wikipedia", "rag"]
+  },
   "ZephyrQueryEnginePack": {
     "id": "llama_packs/zephyr_query_engine",
     "author": "logan-markewich",
