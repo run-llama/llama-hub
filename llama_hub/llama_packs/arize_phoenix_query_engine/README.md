@@ -13,18 +13,25 @@
 
 This LlamaPack instruments your LlamaIndex app for LLM tracing with [Phoenix](https://github.com/Arize-ai/phoenix), an open-source LLM observability library from [Arize AI](https://phoenix.arize.com/).
 
-## Install and Import Dependencies
+## Usage
 
+You can download the pack to a the `./arize_pack` directory:
 
 ```python
-!pip install "arize-phoenix[llama-index]" llama-hub html2text
+from llama_index.llama_packs import download_llama_pack
+
+# download and install dependencies
+ArizePhoenixQueryEnginePack = download_llama_pack(
+  "ArizePhoenixQueryEnginePack", "./arize_pack"
+)
 ```
+
+You can then inspect the files at `./arize_pack` or continue on to use the module.
 
 
 ```python
 import os
 
-from llama_hub.llama_packs.arize_phoenix_query_engine import ArizePhoenixQueryEnginePack
 from llama_index.node_parser import SentenceSplitter
 from llama_index.readers import SimpleWebPageReader
 from tqdm.auto import tqdm
