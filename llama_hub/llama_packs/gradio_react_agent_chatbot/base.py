@@ -8,8 +8,6 @@ from llama_hub.tools.arxiv import ArxivToolSpec
 from llama_hub.tools.wikipedia import WikipediaToolSpec
 import functools
 
-from ansi2html import Ansi2HTMLConverter
-
 from io import StringIO
 import sys
 
@@ -46,6 +44,13 @@ class GradioReActAgentPack(BaseLlamaPack):
         **kwargs: Any,
     ) -> None:
         """Init params."""
+        try:
+            from ansi2html import Ansi2HTMLConverter
+        except ImportError as err:
+            raise ImportError(
+                "Please install ansi2html via `pip install ansi2html`"
+            )
+
         tools = []
         for t in tools_list:
             try:
