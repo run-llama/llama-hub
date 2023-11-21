@@ -1,15 +1,8 @@
-<div align="center">
-    <img alt="TruLens logo" src="https://www.trulens.org/assets/images/Neural_Network_Explainability.png" width="200"/>
-    <br>
-    <a href="https://www.trulens.org/trulens_eval/install/">Docs</a>
-    |
-    <a href="https://github.com/truera/trulens">GitHub</a>
-    |
-    <a href="https://communityinviter.com/apps/aiqualityforum/josh">Community</a>
-    <h1>TruLens-Eval LlamaPack</h1>
-</div>
+![TruLens](https://www.trulens.org/assets/images/Neural_Network_Explainability.png)
 
-This LlamaPack establishes RAG-Triad Evaluations and logging for your LlamaIndex app with [TruLens](https://github.com/truera/trulens), an open-source LLM observability library from [TruEra](https://www.truera.com/).
+The best way to support TruLens is to give us a ⭐ on [GitHub](https://www.github.com/truera/trulens) and join our [slack community](https://communityinviter.com/apps/aiqualityforum/josh)!
+
+This LlamaPack establishes RAG-Triad Evaluations and logging for your LlamaIndex app with [TruLens](https://www.trulens.org/), an open-source LLM observability library from [TruEra](https://www.truera.com/).
 
 ## Install and Import Dependencies
 
