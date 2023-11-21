@@ -6,51 +6,51 @@ The best way to support TruLens is to give us a ⭐ on [GitHub](https://www.gith
 
 TruLens provides three Llamma Packs for LLM app observability:
 
-- The first is the **RAG Triad Pack** (context relevance, groundedness, answer relevance). This triad holds the key to detecting hallucination.
+- The first is the **TruLensRAGTriadPack** (context relevance, groundedness, answer relevance). This triad holds the key to detecting hallucination.
 
-- Second, is the **Harmless Pack** including moderation and safety evaluations like criminality, violence and more.
+- Second, is the **TruLensHarmlessPack** including moderation and safety evaluations like criminality, violence and more.
 
-- Last is the **Helpful Pack**, including evaluations like conciseness and language match.
+- Last is the **TruLensHelpfulPack**, including evaluations like conciseness and language match.
 
 No matter which TruLens LlamaPack you choose, all three provide evaluation and tracking for your LlamaIndex app with [TruLens](https://github.com/truera/trulens), an open-source LLM observability library from [TruEra](https://www.truera.com/).
 
-## Install and Import Dependencies
+## Using the TruLens RAG Triad Pack
+
+You can download each pack to a `./trulens_pack` directory:
 
 ```python
-!pip install trulens-eval llama-hub html2text
+from llama_index.llama_packs import download_llama_pack
 
+# download and install dependencies
+TruLensRAGTriadPack = download_llama_pack(
+  "TruLensRAGTriadPack", "./trulens_pack"
+)
+```
+
+From here, you can use the pack, or inspect and modify the pack in `./trulens_pack`.
+
+Then, you can set up the pack like so:
+
+```python
 import os
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
-from llama_hub.llama_packs.trulens_rag_triad_query_engine import TruLensRAGTriadPack, TruLensHarmlessPack, TruLensHelpfulPack
+from tqdm.auto import tqdm
 from llama_index.node_parser import SentenceSplitter
 from llama_index.readers import SimpleWebPageReader
-from tqdm.auto import tqdm
-```
 
-## Set required API keys
-
-```python
-os.environ["OPENAI_API_KEY"] = "sk-..."
-```
-
-## Create Llama-Index App
-Parse your documents into a list of nodes and pass to your LlamaPack. In this example, use nodes from a Paul Graham essay as input.
-
-```python
 documents = SimpleWebPageReader(
     html_to_text=True
 ).load_data(["http://paulgraham.com/worked.html"])
 
-parser = SentenceSplitter()
-nodes = parser.get_nodes_from_documents(documents)
+splitter = SentenceSplitter()
+nodes = splitter.get_nodes_from_documents(documents)
+
+trulens_ragtriad_pack = TruLensRAGTriadPack(nodes=nodes, app_id="Query Engine v1: RAG Triad Evals")
 ```
 
-## Start the TruLens RAG Triad Pack.
-```python
-trulens_ragtriad_pack = TruLensRAGTriadPack(nodes=nodes, app_id = "Query Engine v1: RAG Triad Evals")
-```
+Then run your queries and evaluate!
 
-## Run the TruLens RAG Triad Pack
 ```python
 queries = [
     "What did Paul Graham do growing up?",
@@ -84,7 +84,7 @@ tru_query_engine = modules["tru_query_engine"]
 tru.get_leaderboard(app_ids=["Query Engine v1: RAG Triad Evals"])
 ```
 
-## Start the TruLens Harmless Pack.
+## Using the TruLens Harmless Pack
 This pack requires both OpenAI and Huggingface keys. Configure your OpenAI and Huggingface API keys.
 
 ```python
@@ -93,6 +93,11 @@ os.environ["HUGGINGFACE_API_KEY"] = "hf_..."
 ```
 
 ```python
+# download and install dependencies
+TruLensHarmlessPack = download_llama_pack(
+  "TruLensHarmlessPack", "./trulens_pack"
+)
+
 trulens_harmless_pack = TruLensHarmlessPack(nodes=nodes, app_id = "Query Engine v1: Harmless Evals")
 ```
 
@@ -121,7 +126,7 @@ tru = modules["session"]
 tru.get_leaderboard(app_ids=["Query Engine v1: Harmless Evals"])
 ```
 
-## Start the TruLens Helpful Pack.
+## Using the TruLens Helpful Pack
 This pack requires both OpenAI and Huggingface keys. Configure your OpenAI and Huggingface API keys.
 
 ```python
@@ -130,6 +135,10 @@ os.environ["HUGGINGFACE_API_KEY"] = "hf_..."
 ```
 
 ```python
+TruLensHelpfulPack = download_llama_pack(
+  "TruLensHelpfulPack", "./trulens_pack"
+)
+
 trulens_pack = TruLensHelpfulPack(nodes=nodes, app_id = "Query Engine v1: Helpful Evals")
 ```
 

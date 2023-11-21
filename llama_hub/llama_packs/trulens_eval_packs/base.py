@@ -143,7 +143,6 @@ class TruLensHarmlessPack(BaseLlamaPack):
             from trulens_eval import Tru, TruLlama
             from trulens_eval import Feedback
             from trulens_eval.feedback.provider.openai import OpenAI
-            from trulens_eval.feedback.provider.hugs import Huggingface
         except ImportError:
             raise ImportError(
                 "The trulens-eval package could not be found. "
@@ -159,7 +158,6 @@ class TruLensHarmlessPack(BaseLlamaPack):
 
         # Initialize provider class
         provider = OpenAI()
-        hugs_provider = Huggingface()
 
         # LLM-based feedback functions
         f_controversiality = Feedback(
