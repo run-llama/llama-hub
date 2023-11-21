@@ -2,3 +2,4 @@ llama-hub
 gradio
 wikipedia
 openai
+arxiv

@@ -9,8 +9,8 @@
     "author": "logan-markewich",
     "keywords": ["chroma", "retrieval", "vector"]
   },
-  "GradioChatPack": {
-    "id": "llama_packs/gradio_chatbot",
+  "GradioReActAgentPack": {
+    "id": "llama_packs/gradio_react_agent_chatbot",
     "author": "andrei-fajardo",
     "keywords": ["gradio", "chatbot", "multimodal", "wikipedia", "rag"]
   },
