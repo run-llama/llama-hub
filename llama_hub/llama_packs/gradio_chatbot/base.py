@@ -34,9 +34,10 @@ class GradioChatPack(BaseLlamaPack):
         return {}
     
     def _generate_response(self, query: str, chat_history: List[Tuple[str, str]]) -> Tuple[str, List[Tuple[str,str]]]:
-        response = self.chat_engine.query(query)
+        response = self.chat_engine.chat(query)
         chat_history.append((query, response.response))
-        return "", response.response
+        print(f"response: {response.response}", flush=True)
+        return "", chat_history
 
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
