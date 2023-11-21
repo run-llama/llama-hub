@@ -2,15 +2,10 @@
 TruLens-Eval LlamaPack.
 """
 
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import Any, Dict, List
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.indices.vector_store import VectorStoreIndex
 from llama_index.schema import TextNode
-
-from trulens_eval import Feedback, Tru, TruLlama
-from trulens_eval.feedback import Groundedness
-from trulens_eval.feedback.provider.openai import OpenAI
-from trulens_eval.feedback.provider.hugs import Huggingface
 
 
 class TruLensRAGTriadPack(BaseLlamaPack):
@@ -41,6 +36,9 @@ class TruLensRAGTriadPack(BaseLlamaPack):
         """
         try:
             from trulens_eval import Tru, TruLlama
+            from trulens_eval import Feedback
+            from trulens_eval.feedback import Groundedness
+            from trulens_eval.feedback.provider.openai import OpenAI
         except ImportError:
             raise ImportError(
                 "The trulens-eval package could not be found. "
@@ -60,25 +58,33 @@ class TruLensRAGTriadPack(BaseLlamaPack):
         grounded = Groundedness(groundedness_provider=provider)
 
         # Define a groundedness feedback function
-        f_groundedness = Feedback(grounded.groundedness_measure_with_cot_reasons, name = "Groundedness").on(
-            TruLlama.select_source_nodes().node.text.collect()
-            ).on_output(
-            ).aggregate(grounded.grounded_statements_aggregator)
+        f_groundedness = (
+            Feedback(
+                grounded.groundedness_measure_with_cot_reasons, name="Groundedness"
+            )
+            .on(TruLlama.select_source_nodes().node.text.collect())
+            .on_output()
+            .aggregate(grounded.grounded_statements_aggregator)
+        )
 
         # Question/answer relevance between overall question and answer.
-        f_qa_relevance = Feedback(provider.relevance, name = "Answer Relevance").on_input_output()
+        f_qa_relevance = Feedback(
+            provider.relevance, name="Answer Relevance"
+        ).on_input_output()
 
         # Question/statement relevance between question and each context chunk.
-        f_context_relevance = Feedback(provider.qs_relevance, name = "Context Relevance").on_input().on(
-            TruLlama.select_source_nodes().node.text.collect()
-            ).aggregate(np.mean)
-        
+        f_context_relevance = (
+            Feedback(provider.qs_relevance, name="Context Relevance")
+            .on_input()
+            .on(TruLlama.select_source_nodes().node.text.collect())
+            .aggregate(np.mean)
+        )
+
         feedbacks = [f_groundedness, f_qa_relevance, f_context_relevance]
 
-        self._tru_query_engine = TruLlama(self._query_engine,
-                                          app_id=app_id,
-                                          feedbacks = feedbacks)
-
+        self._tru_query_engine = TruLlama(
+            self._query_engine, app_id=app_id, feedbacks=feedbacks
+        )
 
     def get_modules(self) -> Dict[str, Any]:
         """
@@ -103,8 +109,9 @@ class TruLensRAGTriadPack(BaseLlamaPack):
             Any: A response from the query engine.
         """
         with self._tru_query_engine as recording:
-            response = self._query_engine.query(*args, **kwargs)   
+            response = self._query_engine.query(*args, **kwargs)
         return response
+
 
 class TruLensHarmlessPack(BaseLlamaPack):
     """
@@ -134,6 +141,9 @@ class TruLensHarmlessPack(BaseLlamaPack):
         """
         try:
             from trulens_eval import Tru, TruLlama
+            from trulens_eval import Feedback
+            from trulens_eval.feedback.provider.openai import OpenAI
+            from trulens_eval.feedback.provider.hugs import Huggingface
         except ImportError:
             raise ImportError(
                 "The trulens-eval package could not be found. "
@@ -152,28 +162,63 @@ class TruLensHarmlessPack(BaseLlamaPack):
         hugs_provider = Huggingface()
 
         # LLM-based feedback functions
-        f_controversiality = Feedback(provider.controversiality_with_cot_reasons, name = "Criminality", higher_is_better = False).on_output()
-        f_criminality = Feedback(provider.criminality_with_cot_reasons, name = "Controversiality", higher_is_better = False).on_output()
-        f_insensitivity = Feedback(provider.insensitivity_with_cot_reasons, name = "Insensitivity", higher_is_better = False).on_output()
-        f_maliciousness = Feedback(provider.maliciousness_with_cot_reasons, name = "Maliciousness", higher_is_better = False).on_output()
+        f_controversiality = Feedback(
+            provider.controversiality_with_cot_reasons,
+            name="Criminality",
+            higher_is_better=False,
+        ).on_output()
+        f_criminality = Feedback(
+            provider.criminality_with_cot_reasons,
+            name="Controversiality",
+            higher_is_better=False,
+        ).on_output()
+        f_insensitivity = Feedback(
+            provider.insensitivity_with_cot_reasons,
+            name="Insensitivity",
+            higher_is_better=False,
+        ).on_output()
+        f_maliciousness = Feedback(
+            provider.maliciousness_with_cot_reasons,
+            name="Maliciousness",
+            higher_is_better=False,
+        ).on_output()
 
         # Moderation feedback functions
-        f_hate = Feedback(provider.moderation_hate, name = "Hate", higher_is_better = False).on_output()
-        f_hatethreatening = Feedback(provider.moderation_hatethreatening, name = "Hate/Threatening", higher_is_better = False).on_output()
-        f_violent = Feedback(provider.moderation_violence, name = "Violent", higher_is_better = False).on_output()
-        f_violentgraphic = Feedback(provider.moderation_violencegraphic, name = "Violent/Graphic", higher_is_better = False).on_output()
-        f_selfharm = Feedback(provider.moderation_selfharm, name = "Self Harm", higher_is_better = False).on_output()
+        f_hate = Feedback(
+            provider.moderation_hate, name="Hate", higher_is_better=False
+        ).on_output()
+        f_hatethreatening = Feedback(
+            provider.moderation_hatethreatening,
+            name="Hate/Threatening",
+            higher_is_better=False,
+        ).on_output()
+        f_violent = Feedback(
+            provider.moderation_violence, name="Violent", higher_is_better=False
+        ).on_output()
+        f_violentgraphic = Feedback(
+            provider.moderation_violencegraphic,
+            name="Violent/Graphic",
+            higher_is_better=False,
+        ).on_output()
+        f_selfharm = Feedback(
+            provider.moderation_selfharm, name="Self Harm", higher_is_better=False
+        ).on_output()
 
+        harmless_feedbacks = [
+            f_controversiality,
+            f_criminality,
+            f_insensitivity,
+            f_maliciousness,
+            f_hate,
+            f_hatethreatening,
+            f_violent,
+            f_violentgraphic,
+            f_selfharm,
+        ]
 
-        harmless_feedbacks = [f_controversiality, f_criminality,
-            f_insensitivity, f_maliciousness,
-            f_hate, f_hatethreatening,
-            f_violent, f_violentgraphic, f_selfharm]
-
-        self._tru_query_engine = TruLlama(self._query_engine,
-                                          app_id=app_id,
-                                          feedbacks = harmless_feedbacks)
-
+        self._tru_query_engine = TruLlama(
+            self._query_engine, app_id=app_id, feedbacks=harmless_feedbacks
+        )
 
     def get_modules(self) -> Dict[str, Any]:
         """
@@ -200,7 +245,8 @@ class TruLensHarmlessPack(BaseLlamaPack):
         with self._tru_query_engine as recording:
             response = self._query_engine.query(*args, **kwargs)
         return response
-    
+
+
 class TruLensHelpfulPack(BaseLlamaPack):
     """
     The TruLens-Eval Helpful LlamaPack show how to instrument and evaluate your LlamaIndex query
@@ -229,6 +275,9 @@ class TruLensHelpfulPack(BaseLlamaPack):
         """
         try:
             from trulens_eval import Tru, TruLlama
+            from trulens_eval import Feedback
+            from trulens_eval.feedback.provider.openai import OpenAI
+            from trulens_eval.feedback.provider.hugs import Huggingface
         except ImportError:
             raise ImportError(
                 "The trulens-eval package could not be found. "
@@ -248,17 +297,29 @@ class TruLensHelpfulPack(BaseLlamaPack):
         hugs_provider = Huggingface()
 
         # LLM-based feedback functions
-        f_coherence = Feedback(provider.coherence_with_cot_reasons, name = "Coherence").on_output()
-        f_input_sentiment = Feedback(provider.sentiment_with_cot_reasons, name = "Input Sentiment").on_input()
-        f_output_sentiment = Feedback(provider.sentiment_with_cot_reasons, name = "Output Sentiment").on_output()
-        f_langmatch = Feedback(hugs_provider.language_match, name = "Language Match").on_input_output()
+        f_coherence = Feedback(
+            provider.coherence_with_cot_reasons, name="Coherence"
+        ).on_output()
+        f_input_sentiment = Feedback(
+            provider.sentiment_with_cot_reasons, name="Input Sentiment"
+        ).on_input()
+        f_output_sentiment = Feedback(
+            provider.sentiment_with_cot_reasons, name="Output Sentiment"
+        ).on_output()
+        f_langmatch = Feedback(
+            hugs_provider.language_match, name="Language Match"
+        ).on_input_output()
 
-        helpful_feedbacks = [f_coherence, f_input_sentiment, f_output_sentiment, f_langmatch]
+        helpful_feedbacks = [
+            f_coherence,
+            f_input_sentiment,
+            f_output_sentiment,
+            f_langmatch,
+        ]
 
-        self._tru_query_engine = TruLlama(self._query_engine,
-                                          app_id=app_id,
-                                          feedbacks = helpful_feedbacks)
-
+        self._tru_query_engine = TruLlama(
+            self._query_engine, app_id=app_id, feedbacks=helpful_feedbacks
+        )
 
     def get_modules(self) -> Dict[str, Any]:
         """
