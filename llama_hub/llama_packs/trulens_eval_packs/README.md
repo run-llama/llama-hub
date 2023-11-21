@@ -4,7 +4,15 @@
 
 The best way to support TruLens is to give us a ⭐ on [GitHub](https://www.github.com/truera/trulens) and join our [slack community](https://communityinviter.com/apps/aiqualityforum/josh)!
 
-This LlamaPack establishes RAG-Triad Evaluations and logging for your LlamaIndex app with [TruLens](https://www.trulens.org/), an open-source LLM observability library from [TruEra](https://www.truera.com/).
+TruLens provides three Llamma Packs for LLM app observability:
+
+- The first is the **RAG Triad Pack** (context relevance, groundedness, answer relevance).
+
+- Second, is the **Harmless Pack** including moderation and safety evaluations like criminality, violence and more.
+
+- Last is the **Helpful Pack**, including evaluations like conciseness and language match.
+
+No matter which TruLens LlamaPack you choose, all three provide evaluation and tracking for your LlamaIndex app with [TruLens](https://github.com/truera/trulens), an open-source LLM observability library from [TruEra](https://www.truera.com/).
 
 ## Install and Import Dependencies
 
