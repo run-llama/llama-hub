@@ -108,7 +108,7 @@ class TruLensRAGTriadPack(BaseLlamaPack):
         Returns:
             Any: A response from the query engine.
         """
-        with self._tru_query_engine as recording:
+        with self._tru_query_engine as _:
             response = self._query_engine.query(*args, **kwargs)
         return response
 
@@ -153,8 +153,6 @@ class TruLensHarmlessPack(BaseLlamaPack):
         self._tru.run_dashboard()
         self._index = VectorStoreIndex(nodes, **kwargs)
         self._query_engine = self._index.as_query_engine()
-
-        import numpy as np
 
         # Initialize provider class
         provider = OpenAI()
@@ -240,7 +238,7 @@ class TruLensHarmlessPack(BaseLlamaPack):
         Returns:
             Any: A response from the query engine.
         """
-        with self._tru_query_engine as recording:
+        with self._tru_query_engine as _:
             response = self._query_engine.query(*args, **kwargs)
         return response
 
@@ -286,8 +284,6 @@ class TruLensHelpfulPack(BaseLlamaPack):
         self._tru.run_dashboard()
         self._index = VectorStoreIndex(nodes, **kwargs)
         self._query_engine = self._index.as_query_engine()
-
-        import numpy as np
 
         # Initialize provider class
         provider = OpenAI()
