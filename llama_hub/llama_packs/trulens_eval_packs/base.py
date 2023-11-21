@@ -337,6 +337,6 @@ class TruLensHelpfulPack(BaseLlamaPack):
         Returns:
             Any: A response from the query engine.
         """
-        with self._tru_query_engine as recording:
+        with self._tru_query_engine as _:
             response = self._query_engine.query(*args, **kwargs)
         return response
