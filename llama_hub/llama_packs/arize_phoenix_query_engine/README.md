@@ -13,7 +13,17 @@
 
 This LlamaPack instruments your LlamaIndex app for LLM tracing with [Phoenix](https://github.com/Arize-ai/phoenix), an open-source LLM observability library from [Arize AI](https://phoenix.arize.com/).
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack ArizePhoenixQueryEnginePack --download-dir ./arize_pack
+```
+
+You can then inspect the files at `./arize_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a the `./arize_pack` directory:
 

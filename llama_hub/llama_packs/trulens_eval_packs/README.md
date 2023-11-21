@@ -14,7 +14,17 @@ TruLens provides three Llamma Packs for LLM app observability:
 
 No matter which TruLens LlamaPack you choose, all three provide evaluation and tracking for your LlamaIndex app with [TruLens](https://github.com/truera/trulens), an open-source LLM observability library from [TruEra](https://www.truera.com/).
 
-## Installing the TruLens RAG Triad Pack
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack TruLensRAGTriadPack --download-dir ./trulens_pack
+```
+
+You can then inspect the files at `./trulens_pack` and use them as a template for your own project.
+
+## Code Usage
 
 You can download each pack to a `./trulens_pack` directory:
 
@@ -28,8 +38,6 @@ TruLensRAGTriadPack = download_llama_pack(
 ```
 
 From here, you can use the pack, or inspect and modify the pack in `./trulens_pack`.
-
-## Usage
 
 Then, you can set up the pack like so:
 

@@ -2,7 +2,17 @@
 
 Create a query engine using completely local and private models -- `HuggingFaceH4/zephyr-7b-beta` for the LLM and `BAAI/bge-base-en-v1.5` for embeddings.
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack ZephyrQueryEnginePack --download-dir ./zephyr_pack
+```
+
+You can then inspect the files at `./zephyr_pack` and use them as a template for your own project.
+
+## Code Usage
 
 You can download the pack to a the `./zephyr_pack` directory:
 

@@ -2,8 +2,17 @@
 
 This LlamaPack loads a resume file, and review it against a user specified job description and screening criteria.
 
+## CLI Usage
 
-## Usage
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack ResumeScreenerPack --download-dir ./resume_screener_pack
+```
+
+You can then inspect the files at `./resume_screener_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a `./resume_screener_pack` directory:
 

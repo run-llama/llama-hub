@@ -2,7 +2,17 @@
 
 This LlamaPack inserts your data into deeplake and insantiates a [deepmemory](https://docs.activeloop.ai/performance-features/deep-memory) retriever, which will use deepmemory during runtime to increase RAG's retrieval accuracy (recall).
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack DeepMemoryRetrieverPack --download-dir ./deepmemory_pack
+```
+
+You can then inspect the files at `./deepmemory_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a `./deepmemory_pack` directory:
 

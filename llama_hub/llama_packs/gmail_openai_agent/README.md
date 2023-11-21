@@ -2,7 +2,17 @@
 
 Create an OpenAI agent pre-loaded with a tool to interact with Gmail. The tool used is the [Gmail LlamaHub tool](https://llamahub.ai/l/tools-gmail).
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack GmailOpenAIAgentPack --download-dir ./gmail_pack
+```
+
+You can then inspect the files at `./gmail_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a the `./gmail_pack` directory:
 

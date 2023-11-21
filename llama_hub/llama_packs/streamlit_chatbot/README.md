@@ -8,20 +8,15 @@ Build a chatbot powered by LlamaIndex that augments an LLM with the contents of 
 - Uses LlamaIndex to load and index data and create a chat engine that will retrieve context from that data to respond to each user query
 - UI will stream each answer from the LLM
 
-## Usage
+## CLI Usage
 
-You can download the pack to a `./streamlit_chatbot_pack` directory:
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
-```python
-from llama_index.llama_packs import download_llama_pack
-
-# download and install dependencies
-StreamlitChatPack = download_llama_pack(
-  "StreamlitChatPack", "./streamlit_chatbot_pack"
-)
+```bash
+llamaindex-cli download-llamapack StreamlitChatPack --download-dir ./streamlit_chatbot_pack
 ```
 
-From here, you can inspect and modify the pack in `./streamlit_chatbot_pack`.
+You can then inspect the files at `./streamlit_chatbot_pack` and use them as a template for your own project!
 
 To run the app directly, use in your terminal:
 

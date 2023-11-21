@@ -2,7 +2,17 @@
 
 This LlamaPack inserts your multimodal data (texts, images) into deeplake and insantiates an deeplake retriever, which will use clip for embedding images and GPT4-V during runtime.
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack DeepLakeMultimodalRetrieverPack --download-dir ./deeplake_multimodal_pack
+```
+
+You can then inspect the files at `./deeplake_multimodal_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a `./deeplake_multimodal_pack` directory:
 

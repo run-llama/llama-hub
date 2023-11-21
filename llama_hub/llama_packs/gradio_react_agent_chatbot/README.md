@@ -11,20 +11,15 @@ via a `TextBox` Block, which are then handled by a LlamaIndex `ReActAgent` to ge
 response (calling required tools). The result is then sent to a `Chatbot` Block —
 additionally the agent's thoughts are captured in an `HTML` Block.
 
-## Usage
+## CLI Usage
 
-You can download the pack to a `./gradio_react_agent_chatbot` directory:
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
-```python
-from llama_index.llama_packs import download_llama_pack
-
-# download and install dependencies
-GradioReactAgentPack = download_llama_pack(
-  "GradioReactAgentPack", "./gradio_react_agent_pack"
-)
+```bash
+llamaindex-cli download-llamapack GradioReactAgentPack --download-dir ./gradio_react_agent_chatbot
 ```
 
-From here, you can inspect and modify the pack in `./gradio_react_agent_pack`.
+You can then inspect the files at `./gradio_react_agent_chatbot` and use them as a template for your own project!
 
 To run the app directly, use in your terminal:
 

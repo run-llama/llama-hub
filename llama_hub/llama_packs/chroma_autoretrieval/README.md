@@ -2,7 +2,17 @@
 
 This LlamaPack inserts your data into chroma and insantiates an auto-retriever, which will use the LLM at runtime to set metadata filtering, top-k, and query string.
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack ChromaAutoretrievalPack --download-dir ./chroma_pack
+```
+
+You can then inspect the files at `./chroma_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a the `./chroma_pack` directory:
 

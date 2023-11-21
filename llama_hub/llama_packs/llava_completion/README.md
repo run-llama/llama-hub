@@ -2,7 +2,17 @@
 
 This LlamaPack creates the LLaVA multimodal model, and runs its `complete` endpoint to execute queries.
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack LlavaCompletionPack --download-dir ./llava_pack
+```
+
+You can then inspect the files at `./llava_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a `./llava_pack` directory:
 

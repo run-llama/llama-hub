@@ -2,7 +2,17 @@
 
 This LlamaPack creates an [ingestion pipeline](https://docs.llamaindex.ai/en/stable/module_guides/loading/ingestion_pipeline/root.html), with both a cache and vector store backed by Redis.
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack RedisIngestionPipelinePack --download-dir ./redis_ingestion_pack
+```
+
+You can then inspect the files at `./redis_ingestion_pack` and use them as a template for your own project!
+
+## Code Usage
 
 You can download the pack to a `./redis_ingestion_pack` directory:
 
