@@ -64,12 +64,12 @@
     "author": "andrei-fajardo",
     "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
   },
-  "WeaviateSubQuestion": {
+  "WeaviateSubQuestionPack": {
     "id": "llama_packs/sub_question_weaviate",
     "author": "erika-cardenas",
     "keywords": ["weaviate", "query", "index"]
   },
-  "WeaviateRetryEngine": {
+  "WeaviateRetryEnginePack": {
     "id": "llama_packs/retry_engine_weaviate",
     "author": "erika-cardenas",
     "keywords": ["weaviate", "retry", "engine"]

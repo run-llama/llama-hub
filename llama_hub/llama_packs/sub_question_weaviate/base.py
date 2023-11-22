@@ -13,7 +13,7 @@ from llama_index.tools import QueryEngineTool, ToolMetadata
 from llama_index.query_engine import SubQuestionQueryEngine
 
 
-class WeaviateSubQuestion(BaseLlamaPack):
+class WeaviateSubQuestionPack(BaseLlamaPack):
     """Weaviate Sub-Question query engine pack."""
 
     def __init__(

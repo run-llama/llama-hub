@@ -15,7 +15,7 @@ from llama_index.query_engine.retry_query_engine import (
 )
 
 
-class WeaviateRetryEngine(BaseLlamaPack):
+class WeaviateRetryEnginePack(BaseLlamaPack):
     """Weaviate Retry query engine pack."""
 
     def __init__(
