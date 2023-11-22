@@ -46,7 +46,7 @@ You can then inspect the files at `./tsv_pack` and use them as a template for yo
 You can download the pack to a the `./tsv_pack` directory:
 
 ```python
-from llama_hub.llama_packs import download_llama_pack
+from llama_hub.llama_pack import download_llama_pack
 
 # download and install dependencies
 TimescaleVectorAutoretrievalPack = download_llama_pack(

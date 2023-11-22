@@ -17,7 +17,7 @@ You can then inspect the files at `./gmail_pack` and use them as a template for 
 You can download the pack to a the `./gmail_pack` directory:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 GmailOpenAIAgentPack = download_llama_pack(

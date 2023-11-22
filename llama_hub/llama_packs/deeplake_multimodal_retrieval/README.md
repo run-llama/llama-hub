@@ -17,7 +17,7 @@ You can then inspect the files at `./deeplake_multimodal_pack` and use them as a
 You can download the pack to a `./deeplake_multimodal_pack` directory:
 
 ```python
-from llama_hub.llama_packs import download_llama_pack
+from llama_hub.llama_pack import download_llama_pack
 
 # download and install dependencies
 DeepLakeMultimodalRetriever = download_llama_pack(

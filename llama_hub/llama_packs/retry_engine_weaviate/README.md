@@ -16,7 +16,7 @@ You can then inspect the files at `./weaviate_pack` and use them as a template f
 You can download the pack to a the `./weaviate_pack` directory:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
  WeaviateRetryQueryEnginePack = download_llama_pack(
