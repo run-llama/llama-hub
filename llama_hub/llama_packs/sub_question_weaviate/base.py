@@ -19,7 +19,6 @@ class WeaviateSubQuestionPack(BaseLlamaPack):
     def __init__(
         self,
         collection_name: str,
-        vector_store_info: VectorStoreInfo,
         host: str,
         auth_client_secret: str,
         nodes: Optional[List[TextNode]] = None,
