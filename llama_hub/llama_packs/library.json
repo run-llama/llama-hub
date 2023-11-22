@@ -83,5 +83,10 @@
     "id": "llama_packs/timescale_vector_autoretrieval",
     "author": "cevian",
     "keywords": ["timescale", "vector", "autoretrieval", "index"]
+  },
+  "ArizePhoenixQueryEnginePack": {
+    "id": "llama_packs/arize_phoenix_query_engine",
+    "author": "axiomofjoy",
+    "keywords": ["arize", "phoenix", "query", "engine", "index"]
   }
 } 

@@ -8,7 +8,6 @@ from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import TextNode
 from llama_index.storage.storage_context import StorageContext
 from llama_index.vector_stores.weaviate import WeaviateVectorStore
-from llama_index.vector_stores.types import VectorStoreInfo
 from llama_index.tools import QueryEngineTool, ToolMetadata
 from llama_index.query_engine import SubQuestionQueryEngine
 
@@ -19,7 +18,6 @@ class WeaviateSubQuestionPack(BaseLlamaPack):
     def __init__(
         self,
         collection_name: str,
-        vector_store_info: VectorStoreInfo,
         host: str,
         auth_client_secret: str,
         nodes: Optional[List[TextNode]] = None,
