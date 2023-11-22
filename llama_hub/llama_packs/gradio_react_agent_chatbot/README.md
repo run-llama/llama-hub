@@ -16,7 +16,7 @@ additionally the agent's thoughts are captured in an `HTML` Block.
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamapack GradioReactAgentPack --download-dir ./gradio_react_agent_chatbot
+llamaindex-cli download-llamapack GradioReActAgentPack --download-dir ./gradio_react_agent_chatbot
 ```
 
 You can then inspect the files at `./gradio_react_agent_chatbot` and use them as a template for your own project!
