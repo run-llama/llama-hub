@@ -64,6 +64,11 @@
     "author": "andrei-fajardo",
     "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
   },
+  "GradioAgentChatPack": {
+    "id": "llama_packs/gradio_agent_chat",
+    "author": "andrei-fajardo",
+    "keywords": ["gradio", "agent", "chatbot", "tools"] 
+  },
   "WeaviateSubQuestionPack": {
     "id": "llama_packs/sub_question_weaviate",
     "author": "erika-cardenas",
