@@ -17,7 +17,7 @@ You can then inspect the files at `./resume_screener_pack` and use them as a tem
 You can download the pack to a `./resume_screener_pack` directory:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 ResumeScreenerPack = download_llama_pack(

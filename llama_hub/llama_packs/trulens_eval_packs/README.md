@@ -29,7 +29,7 @@ You can then inspect the files at `./trulens_pack` and use them as a template fo
 You can download each pack to a `./trulens_pack` directory:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 TruLensRAGTriadPack = download_llama_pack(

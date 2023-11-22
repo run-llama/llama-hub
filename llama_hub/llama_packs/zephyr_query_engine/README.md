@@ -17,7 +17,7 @@ You can then inspect the files at `./zephyr_pack` and use them as a template for
 You can download the pack to a the `./zephyr_pack` directory:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 ZephyrQueryEnginePack = download_llama_pack(

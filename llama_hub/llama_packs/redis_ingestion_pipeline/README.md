@@ -17,7 +17,7 @@ You can then inspect the files at `./redis_ingestion_pack` and use them as a tem
 You can download the pack to a `./redis_ingestion_pack` directory:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 RedisIngestionPipelinePack = download_llama_pack(
