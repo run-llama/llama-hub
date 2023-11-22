@@ -2,7 +2,7 @@
 
 **Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
 
-This is a simple library of all the data loaders / readers / tools that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index) and [LangChain](https://github.com/hwchase17/langchain).
+This is a simple library of all the data loaders / readers / tools / llama-packs that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index), [LangChain](https://github.com/hwchase17/langchain) and more!.
 
 Loaders and readers allow you to easily ingest data for search and retrieval by a large language model, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capability of next level large language models.
 
@@ -93,9 +93,28 @@ index.query('Where did the author go to school?')
 
 ```
 
-## How to add a loader or tool
+## LLama-Pack Usage
 
-Adding a loader or tool simply requires forking this repo and making a Pull Request. The Llama Hub website will update automatically. However, please keep in mind the following guidelines when making your PR.
+Llama-packs can be downloaded using the `llamaindex-cli` tool that comes with `llama-index`:
+
+```bash
+llamaindex-cli download-llamapack ZephyrQueryEnginePack --download-dir ./zephyr_pack
+```
+
+Or with the `download_llama_pack` function directly:
+
+```python
+from llama_index.llama_packs import download_llama_pack
+
+# download and install dependencies
+LlavaCompletionPack = download_llama_pack(
+  "LlavaCompletionPack", "./llava_pack"
+)
+```
+
+## How to add a loader/tool/llama-pack
+
+Adding a loader/tool/llama-pack simply requires forking this repo and making a Pull Request. The Llama Hub website will update automatically when a new `llama-hub` release is made. However, please keep in mind the following guidelines when making your PR.
 
 ### Step 0: Setup virtual environment, install Poetry and dependencies
 
@@ -129,7 +148,7 @@ This will create an editable install of `llama-hub` in your venv.
 
 ### Step 1: Create a new directory
 
-For loaders, create a new directory in `llama_hub`, and for tools create a directory in `llama_hub/tools` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file specifying the module's public interface with `__all__`, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
+For loaders, create a new directory in `llama_hub`, for tools create a directory in `llama_hub/tools`, and for llama-packs create a directory in `llama_hub/llama_packs` It can be nested within another, but name it something unique because the name of the directory will become the identifier for your loader (e.g. `google_docs`). Inside your new directory, create a `__init__.py` file specifying the module's public interface with `__all__`, a `base.py` file which will contain your loader implementation, and, if needed, a `requirements.txt` file to list the package dependencies of your loader. Those packages will automatically be installed when your loader is used, so no need to worry about that anymore!
 
 If you'd like, you can create the new directory and files by running the following script in the `llama_hub` directory. Just remember to put your dependencies into a `requirements.txt` file.
 
@@ -143,7 +162,7 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 
 ### Step 3: Add your loader to the library.json file
 
-Finally, add your loader to the `llama_hub/library.json` file (for tools, add them to the `llama_hub/tools/library.json`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
+Finally, add your loader to the `llama_hub/library.json` file (or for the equivilant `library.json` under `tools/` or `llama-packs/`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
 
 ### Step 4: Make a Pull Request!
 
