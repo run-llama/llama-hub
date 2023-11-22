@@ -69,7 +69,6 @@
     "author": "andrei-fajardo",
     "keywords": ["gradio", "agent", "chatbot", "tools"] 
   },
-  }
   "WeaviateSubQuestionPack": {
     "id": "llama_packs/sub_question_weaviate",
     "author": "erika-cardenas",
