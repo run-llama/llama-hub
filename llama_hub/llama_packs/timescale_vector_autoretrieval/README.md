@@ -31,7 +31,17 @@ Timescale Vector is cloud PostgreSQL for AI that scales with you from POC to pro
 ### How to access Timescale Vector
 Llama index users get a 90-day free trial for Timescale Vector. [Sign up here](https://console.cloud.timescale.com/signup?utm_campaign=vectorlaunch&utm_source=llamaindex&utm_medium=referral) for a free cloud vector database.
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack TimescaleVectorAutoretrievalPack --download-dir ./tsv_pack
+```
+
+You can then inspect the files at `./tsv_pack` and use them as a template for your own project.
+
+## Code Usage
 
 You can download the pack to a the `./tsv_pack` directory:
 

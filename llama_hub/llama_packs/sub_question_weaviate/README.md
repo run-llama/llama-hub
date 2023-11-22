@@ -2,7 +2,17 @@
 This LlamaPack inserts your data into [Weaviate](https://weaviate.io/developers/weaviate) and uses the [Sub-Question Query Engine](https://gpt-index.readthedocs.io/en/latest/examples/query_engine/sub_question_query_engine.html) for your RAG application. 
 
 
-## Usage
+## CLI Usage
+
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamapack WeaviateSubQuestion --download-dir ./weaviate_pack
+```
+
+You can then inspect the files at `./weaviate_pack` and use them as a template for your own project.
+
+## Code Usage
 
 You can download the pack to a the `./weaviate_pack` directory:
 
