@@ -63,5 +63,15 @@
     "id": "llama_packs/gradio_react_agent_chatbot",
     "author": "andrei-fajardo",
     "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
+  },
+  "WeaviateSubQuestion": {
+    "id": "llama_packs/sub_question_weaviate",
+    "author": "erika-cardenas",
+    "keywords": ["weaviate", "query", "index"]
+  },
+  "WeaviateRetryEngine": {
+    "id": "llama_packs/retry_engine_weaviate",
+    "author": "erika-cardenas",
+    "keywords": ["weaviate", "retry", "engine"]
   }
 } 
