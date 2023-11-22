@@ -59,7 +59,7 @@
     "author": "joshreini1",
     "keywords": ["trulens", "helpful", "eval"]
   },
-  "GradioReactAgentChatbotPack": {
+  "GradioReActAgentPack": {
     "id": "llama_packs/gradio_react_agent_chatbot",
     "author": "andrei-fajardo",
     "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
