@@ -6,15 +6,6 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_index.response_synthesizers import TreeSummarize
 from llama_index.tools.tool_spec.base import BaseToolSpec
-from waii_sdk_py import WAII
-from waii_sdk_py.query import (
-    QueryGenerationRequest,
-    RunQueryRequest,
-    DescribeQueryRequest,
-    QueryPerformanceRequest,
-    DiffQueryRequest,
-    TranscodeQueryRequest,
-)
 
 
 class WaiiToolSpec(BaseToolSpec, BaseReader):
@@ -37,6 +28,8 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         database_key: Optional[str] = None,
         verbose: Optional[bool] = False,
     ) -> None:
+        from waii_sdk_py import WAII
+
         WAII.initialize(url=url, api_key=api_key)
         WAII.Database.activate_connection(key=database_key)
         self.verbose = verbose
@@ -50,6 +43,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import QueryGenerationRequest, RunQueryRequest
+
         query = WAII.Query.generate(
             QueryGenerationRequest(ask=ask), verbose=self.verbose
         ).query
@@ -96,6 +92,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the query.
         """
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import QueryGenerationRequest
+
         query = WAII.Query.generate(
             QueryGenerationRequest(ask=ask), verbose=self.verbose
         ).query
@@ -111,6 +110,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the summarization of the answer.
         """
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import RunQueryRequest
+
         documents = WAII.Query.run(
             RunQueryRequest(query=sql), verbose=self.verbose
         ).rows
@@ -129,7 +131,8 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the summarization of the answer.
         """
-
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import DescribeQueryRequest
         result = WAII.Query.describe(DescribeQueryRequest(query=query))
         result = json.dumps(result.dict(), indent=2)
         response = self._get_summarization(question, [Document(text=result)])
@@ -145,6 +148,8 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the summarization of the answer.
         """
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import QueryPerformanceRequest
 
         result = WAII.Query.analyze_performance(
             QueryPerformanceRequest(query_id=query_uuid)
@@ -153,6 +158,8 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         return result
 
     def diff_query(self, previous_query: str, current_query: str):
+
+
         """
         Diff two sql queries, returning the summarization of the answer
 
@@ -163,6 +170,8 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the summarization of the answer.
         """
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import DiffQueryRequest
 
         result = WAII.Query.diff(
             DiffQueryRequest(query=current_query, previous_query=previous_query)
@@ -189,6 +198,7 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the summarization of the answer.
         """
+        from waii_sdk_py import WAII
 
         catalog = WAII.Database.get_catalogs()
 
@@ -242,6 +252,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
             str: A string containing the generated query.
         """
 
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import TranscodeQueryRequest
+
         result = WAII.Query.transcode(
             TranscodeQueryRequest(
                 ask=instruction,
@@ -257,4 +270,6 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Get all pre-defined semantic contexts
         :return:
         """
+        from waii_sdk_py import WAII
+
         return WAII.SemanticContext.get_semantic_context().semantic_context
