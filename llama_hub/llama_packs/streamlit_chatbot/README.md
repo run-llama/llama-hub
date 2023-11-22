@@ -21,5 +21,6 @@ You can then inspect the files at `./streamlit_chatbot_pack` and use them as a t
 To run the app directly, use in your terminal:
 
 ```bash
+export OPENAI_API_KEY="sk-..."
 streamlit run ./streamlit_chatbot_pack/base.py
 ```

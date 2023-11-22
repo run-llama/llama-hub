@@ -24,5 +24,6 @@ You can then inspect the files at `./gradio_react_agent_chatbot` and use them as
 To run the app directly, use in your terminal:
 
 ```bash
+export OPENAI_API_KEY="sk-...
 python ./gradio_react_agent_pack/base.py
 ```
