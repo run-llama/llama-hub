@@ -133,6 +133,7 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         """
         from waii_sdk_py import WAII
         from waii_sdk_py.query import DescribeQueryRequest
+
         result = WAII.Query.describe(DescribeQueryRequest(query=query))
         result = json.dumps(result.dict(), indent=2)
         response = self._get_summarization(question, [Document(text=result)])
@@ -158,8 +159,6 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         return result
 
     def diff_query(self, previous_query: str, current_query: str):
-
-
         """
         Diff two sql queries, returning the summarization of the answer
 
