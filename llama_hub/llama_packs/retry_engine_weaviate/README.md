@@ -7,7 +7,7 @@ This LlamaPack inserts your data into [Weaviate](https://weaviate.io/developers/
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamapack WeaviateRetryQueryEnginePack --download-dir ./weaviate_pack
+llamaindex-cli download-llamapack WeaviateRetryEnginePack --download-dir ./weaviate_pack
 ```
 
 You can then inspect the files at `./weaviate_pack` and use them as a template for your own project.
@@ -19,8 +19,8 @@ You can download the pack to a the `./weaviate_pack` directory:
 from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
- WeaviateRetryQueryEnginePack = download_llama_pack(
-  "WeaviateRetryQueryEnginePack", "./weaviate_pack"
+ WeaviateRetryEnginePack = download_llama_pack(
+  "WeaviateRetryEnginePack", "./weaviate_pack"
 )
 ```
 
