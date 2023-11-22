@@ -78,5 +78,10 @@
     "id": "llama_packs/voyage_query_engine",
     "author": "Liuhong99",
     "keywords": ["voyage", "query", "retrieval", "embeddings"]
+  },
+  "TimescaleVectorAutoretrievalPack": {
+    "id": "llama_packs/timescale_vector_autoretrieval",
+    "author": "cevian",
+    "keywords": ["timescale", "vector", "autoretrieval", "index"]
   }
 } 
