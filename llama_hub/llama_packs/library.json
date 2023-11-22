@@ -73,5 +73,10 @@
     "id": "llama_packs/retry_engine_weaviate",
     "author": "erika-cardenas",
     "keywords": ["weaviate", "retry", "engine"]
+  },
+  "VoyageQueryEnginePack": {
+    "id": "llama_packs/voyage_query_engine",
+    "author": "Liuhong99",
+    "keywords": ["voyage", "query", "retrieval", "embeddings"]
   }
 } 

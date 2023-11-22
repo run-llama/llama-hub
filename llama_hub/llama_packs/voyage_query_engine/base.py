@@ -6,14 +6,14 @@ from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import Document
 import os
 
+
 class VoyageQueryEnginePack(BaseLlamaPack):
     def __init__(self, documents: List[Document]) -> None:
-        
-        llm = OpenAI(model='gpt-4')
-        embed_model = VoyageEmbedding(model_name="voyage-01", voyage_api_key=os.environ['VOYAGE_API_KEY'])
-        service_context = ServiceContext.from_defaults(
-            llm=llm, embed_model=embed_model
+        llm = OpenAI(model="gpt-4")
+        embed_model = VoyageEmbedding(
+            model_name="voyage-01", voyage_api_key=os.environ["VOYAGE_API_KEY"]
         )
+        service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
         self.llm = llm
         self.index = VectorStoreIndex.from_documents(
             documents, service_context=service_context
