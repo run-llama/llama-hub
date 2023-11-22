@@ -34,7 +34,8 @@ class TimescaleVectorAutoretrievalPack(BaseLlamaPack):
         self._vector_store = TimescaleVectorStore.from_params(
             service_url=service_url,
             table_name=table_name,
-            time_partition_interval=time_partition_interval)
+            time_partition_interval=time_partition_interval,
+        )
 
         if nodes is not None:
             self._storage_context = StorageContext.from_defaults(

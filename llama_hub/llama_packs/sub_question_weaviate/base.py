@@ -5,7 +5,6 @@ from typing import Any, Dict, List, Optional
 
 from llama_index.indices.vector_store import VectorStoreIndex
 from llama_index.llama_pack.base import BaseLlamaPack
-from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.schema import TextNode
 from llama_index.storage.storage_context import StorageContext
 from llama_index.vector_stores.weaviate import WeaviateVectorStore
