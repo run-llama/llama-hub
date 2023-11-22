@@ -7,7 +7,7 @@ This LlamaPack inserts your data into [Weaviate](https://weaviate.io/developers/
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamapack WeaviateSubQuestion --download-dir ./weaviate_pack
+llamaindex-cli download-llamapack WeaviateSubQuestionPack --download-dir ./weaviate_pack
 ```
 
 You can then inspect the files at `./weaviate_pack` and use them as a template for your own project.
@@ -21,7 +21,7 @@ from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
  WeaviateSubQuestionPack = download_llama_pack(
-  "WeaviateSubQuestion", "./weaviate_pack"
+  "WeaviateSubQuestionPack", "./weaviate_pack"
 )
 ```
 
