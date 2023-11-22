@@ -30,8 +30,6 @@ class WeaviateSubQuestion(BaseLlamaPack):
 
         self.client: Client = Client(host, auth_client_secret=auth_client_secret)
 
-        import weaviate
-
         weaviate_client = self.client
         weaviate_collection = weaviate_client.get_or_create_collection(collection_name)
 

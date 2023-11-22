@@ -46,14 +46,14 @@ class GradioReActAgentPack(BaseLlamaPack):
         """Init params."""
         try:
             from ansi2html import Ansi2HTMLConverter
-        except ImportError as err:
+        except ImportError:
             raise ImportError("Please install ansi2html via `pip install ansi2html`")
 
         tools = []
         for t in tools_list:
             try:
                 tools.append(SUPPORTED_TOOLS[t]())
-            except KeyError as err:
+            except KeyError:
                 raise KeyError(f"Tool {t} is not supported.")
         self.tools = tools
 
