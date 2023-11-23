@@ -1,15 +1,4 @@
-<center>
-    <p style="text-align:center">
-        <img alt="phoenix logo" src="https://storage.googleapis.com/arize-assets/phoenix/assets/phoenix-logo-light.svg" width="200"/>
-        <br>
-        <a href="https://docs.arize.com/phoenix/">Docs</a>
-        |
-        <a href="https://github.com/Arize-ai/phoenix">GitHub</a>
-        |
-        <a href="https://join.slack.com/t/arize-ai/shared_invite/zt-1px8dcmlf-fmThhDFD_V_48oU7ALan4Q">Community</a>
-    </p>
-</center>
-<h1 align="center">Arize-Phoenix LlamaPack</h1>
+# Arize-Phoenix LlamaPack
 
 This LlamaPack instruments your LlamaIndex app for LLM tracing with [Phoenix](https://github.com/Arize-ai/phoenix), an open-source LLM observability library from [Arize AI](https://phoenix.arize.com/).
 

@@ -3,19 +3,6 @@
 Create a LlamaIndex Agent (i.e., `BaseAgent`) and quickly chat with it using
 this pack's Gradio Chatbot interface.
 
-<p text-align="center">
-  <figure>
-    <img src="chat-with-your-agent-dark.png" width="75%" />
-    <figcaption>Dark mode</figcaption>
-  </figure>
-</p>
-<p text-align="center">
-  <figure>
-    <img src="chat-with-your-agent-light.png" width="75%" />
-    <figcaption>Light  mode</figcaption>
-  </figure>
-</p>
-
 ## Usage
 
 You can download the pack to a `./gradio_agent_chat_pack` directory:
