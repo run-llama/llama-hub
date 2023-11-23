@@ -1086,5 +1086,14 @@
       "web",
       "web reader"
     ]
+  },
+  "NCBI": {
+    "id": "ncbi",
+    "author": "acpguedes"
+    "keywords":[
+      "ncbi",
+      "annotation",
+      "genome"
+    ]
   }
 }
