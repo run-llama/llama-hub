@@ -152,7 +152,7 @@
     ]
   },
   "OpenAIImageGenerationToolSpec": {
-    "id": "tools/openai/image_generation",
+    "id": "tools/openai_image_generation",
     "author": "manelferreira_",
     "keywords": [
       "image",
