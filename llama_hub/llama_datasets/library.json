@@ -1,6 +1,6 @@
 {
     "PaulGrahamEssayDataset": {
-      "id": "datasets/",
+      "id": "llama_datasets/",
       "author": "andrei-fajardo",
       "keywords": ["rag"]
     }
