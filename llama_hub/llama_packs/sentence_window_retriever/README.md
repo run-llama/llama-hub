@@ -35,11 +35,9 @@ Then, you can set up the pack like so:
 
 ```python
 # create the pack
+# get documents from any data loader
 sentence_window_retriever_pack = SentenceWindowRetrieverPack(
-  nodes,
-  chunk_size=256,
-  vector_similarity_top_k=2,
-  bm25_similarity_top_k=2
+  documents,
 )
 ```
 
