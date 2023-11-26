@@ -1086,5 +1086,14 @@
       "web",
       "web reader"
     ]
+  },
+  "EarningCallTranscripts":{
+    "id":"earninc_call_transcripts",
+    "author": "Athe-kunal",
+    "keywords": [
+      "Finance",
+      "Investor",
+      "Earning calls"
+    ]
   }
 }
