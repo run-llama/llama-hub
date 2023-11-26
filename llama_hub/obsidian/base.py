@@ -7,9 +7,11 @@ with each Document containing text from under an Obsidian header.
 """
 import os
 from pathlib import Path
-from typing import Any, List
+from typing import Any, List, TYPE_CHECKING
 
-from langchain.docstore.document import Document as LCDocument
+if TYPE_CHECKING:
+    from langchain.docstore.document import Document as LCDocument
+
 from llama_index.readers.base import BaseReader
 from llama_index.readers.file.markdown_reader import MarkdownReader
 from llama_index.readers.schema.base import Document
@@ -39,7 +41,7 @@ class ObsidianReader(BaseReader):
                     docs.extend(content)
         return docs
 
-    def load_langchain_documents(self, **load_kwargs: Any) -> List[LCDocument]:
+    def load_langchain_documents(self, **load_kwargs: Any) -> List["LCDocument"]:
         """Load data in LangChain document format."""
         docs = self.load_data(**load_kwargs)
         return [d.to_langchain_format() for d in docs]

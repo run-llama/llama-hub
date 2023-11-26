@@ -1,0 +1,97 @@
+{
+  "GmailOpenAIAgentPack": {
+    "id": "llama_packs/gmail_openai_agent",
+    "author": "logan-markewich",
+    "keywords": ["math", "science", "research"]
+  },
+  "ChromaAutoretrievalPack": {
+    "id": "llama_packs/chroma_autoretrieval",
+    "author": "logan-markewich",
+    "keywords": ["chroma", "retrieval", "vector"]
+  },
+  "ZephyrQueryEnginePack": {
+    "id": "llama_packs/zephyr_query_engine",
+    "author": "logan-markewich",
+    "keywords": ["zephyr", "local", "query", "engine", "index", "huggingface"]
+  },
+  "LlavaCompletionPack": {
+    "id": "llama_packs/llava_completion",
+    "author": "wenqiglantz",
+    "keywords": ["llava", "multimodal", "image"]
+  },
+  "ResumeScreenerPack": {
+    "id": "llama_packs/resume_screener",
+    "author": "Disiok",
+    "keywords": ["pdf", "resume", "document", "structured output"]
+  },
+  "DeepMemoryRetrieverPack": {
+    "id": "llama_packs/deeplake_deepmemory_retriever",
+    "author": "AdkSarsen",
+    "keywords": ["deeplake", "deepmemory", "retriever"]
+  },
+  "DeepLakeMultimodalRetrieverPack": {
+    "id": "llama_packs/deeplake_multimodal_retrieval",
+    "author": "AdkSarsen",
+    "keywords": ["deeplake", "multimodal", "retriever"]
+  },
+  "StreamlitChatPack": {
+    "id": "llama_packs/streamlit_chatbot",
+    "author": "carolinedlu",
+    "keywords": ["streamlit", "chatbot", "wikipedia", "snowflake"]
+  },
+  "RedisIngestionPipelinePack": {
+    "id": "llama_packs/redis_ingestion_pipeline",
+    "author": "logan-markewich",
+    "keywords": ["redis", "ingestion", "pipeline", "index"]
+  },
+  "TruLensRAGTriadPack": {
+    "id": "llama_packs/trulens_eval_packs",
+    "author": "joshreini1",
+    "keywords": ["trulens", "rag", "triad", "eval"]
+  },
+  "TruLensHarmlessPack": {
+    "id": "llama_packs/trulens_eval_packs",
+    "author": "joshreini1",
+    "keywords": ["trulens", "harmless", "eval"]
+  },
+  "TruLensHelpfulPack": {
+    "id": "llama_packs/trulens_eval_packs",
+    "author": "joshreini1",
+    "keywords": ["trulens", "helpful", "eval"]
+  },
+  "GradioReActAgentPack": {
+    "id": "llama_packs/gradio_react_agent_chatbot",
+    "author": "andrei-fajardo",
+    "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
+  },
+  "GradioAgentChatPack": {
+    "id": "llama_packs/gradio_agent_chat",
+    "author": "andrei-fajardo",
+    "keywords": ["gradio", "agent", "chatbot", "tools"] 
+  },
+  "WeaviateSubQuestionPack": {
+    "id": "llama_packs/sub_question_weaviate",
+    "author": "erika-cardenas",
+    "keywords": ["weaviate", "query", "index"]
+  },
+  "WeaviateRetryEnginePack": {
+    "id": "llama_packs/retry_engine_weaviate",
+    "author": "erika-cardenas",
+    "keywords": ["weaviate", "retry", "engine"]
+  },
+  "VoyageQueryEnginePack": {
+    "id": "llama_packs/voyage_query_engine",
+    "author": "Liuhong99",
+    "keywords": ["voyage", "query", "retrieval", "embeddings"]
+  },
+  "TimescaleVectorAutoretrievalPack": {
+    "id": "llama_packs/timescale_vector_autoretrieval",
+    "author": "cevian",
+    "keywords": ["timescale", "vector", "autoretrieval", "index"]
+  },
+  "ArizePhoenixQueryEnginePack": {
+    "id": "llama_packs/arize_phoenix_query_engine",
+    "author": "axiomofjoy",
+    "keywords": ["arize", "phoenix", "query", "engine", "index"]
+  }
+} 
