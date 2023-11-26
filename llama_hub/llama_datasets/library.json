@@ -2,7 +2,8 @@
     "PaulGrahamEssayDataset": {
       "id": "llama_datasets/paul_graham_essay",
       "author": "andrei-fajardo",
-      "keywords": ["rag"]
+      "keywords": ["rag"],
+      "extra_files": ["source.txt"]
     }
   } 
   
