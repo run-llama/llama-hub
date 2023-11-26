@@ -122,7 +122,7 @@ def main_scraper(
     generate_csv: bool = False,
     multithreading: bool = False,
     max_workers: int = 0,
-    reviews_folder: str = "movie_reviews"
+    reviews_folder: str = "movie_reviews",
 ):
     """The main helper function to scrape data
 

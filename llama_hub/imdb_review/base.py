@@ -15,7 +15,7 @@ class IMDBReviews(BaseReader):
         generate_csv: bool = False,
         multithreading: bool = False,
         max_workers: int = 0,
-        reviews_folder: str = "movie_reviews"
+        reviews_folder: str = "movie_reviews",
     ):
         """Get the IMDB reviews of a movie
 
@@ -37,6 +37,7 @@ class IMDBReviews(BaseReader):
         self.multithreading = multithreading
         self.max_workers = max_workers
         self.reviews_folder = reviews_folder
+
     def load_data(self) -> List[Document]:
         """scrapes the data from the IMDB website movie reviews
 
@@ -58,7 +59,7 @@ class IMDBReviews(BaseReader):
             self.generate_csv,
             self.multithreading,
             self.max_workers,
-            self.reviews_folder
+            self.reviews_folder,
         )
 
         all_docs = []
