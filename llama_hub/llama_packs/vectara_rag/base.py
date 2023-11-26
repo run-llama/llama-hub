@@ -24,11 +24,14 @@ class VectaraRagPack(BaseLlamaPack):
         n_sentences_after = kwargs.get("n_sentences_after", 2)
         vectara_query_mode = kwargs.get("vectara_query_mode", "default")
         vectara_kwargs = kwargs.get("vectara_kwargs", {})
-        if 'summary_enabled' not in vectara_kwargs:
-            vectara_kwargs['summary_enabled'] = True
+        if "summary_enabled" not in vectara_kwargs:
+            vectara_kwargs["summary_enabled"] = True
         self._query_engine = self._index.as_query_engine(
-            similarity_top_k=similarity_top_k, n_sentences_before=n_sentences_before, n_sentences_after=n_sentences_after, 
-            vectara_query_mode=vectara_query_mode, vectara_kwargs=vectara_kwargs
+            similarity_top_k=similarity_top_k,
+            n_sentences_before=n_sentences_before,
+            n_sentences_after=n_sentences_after,
+            vectara_query_mode=vectara_query_mode,
+            vectara_kwargs=vectara_kwargs,
         )
 
     def get_modules(self) -> Dict[str, Any]:
