@@ -10,6 +10,9 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.storage import StorageContext
 from llama_index.readers.file.flat_reader import FlatReader
 from pathlib import Path
+from typing import Optional
+import os
+import pickle
 
 
 class EmbeddedTablesUnstructuredRetrieverPack(BaseLlamaPack):
@@ -25,13 +28,21 @@ class EmbeddedTablesUnstructuredRetrieverPack(BaseLlamaPack):
     def __init__(
         self,
         html_path: str,
+        nodes_save_path: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         """Init params."""
         self.reader = FlatReader()
+
         docs = self.reader.load_data(Path(html_path))
+
         self.node_parser = UnstructuredElementNodeParser()
-        raw_nodes = self.node_parser.get_nodes_from_documents(docs)
+        if nodes_save_path is None or not os.path.exists(nodes_save_path):
+            raw_nodes = self.node_parser.get_nodes_from_documents(docs)
+            pickle.dump(raw_nodes, open(nodes_save_path, "wb"))
+        else:
+            raw_nodes = pickle.load(open(nodes_save_path, "rb"))
+
         base_nodes, node_mappings = self.node_parser.get_base_nodes_and_mappings(
             raw_nodes
         )

@@ -40,8 +40,9 @@ class RecursiveRetrieverSmallToBigPack(BaseLlamaPack):
             llm=self.llm, embed_model=self.embed_model
         )
         # build graph of smaller chunks pointing to bigger parent chunks
+        # make chunk overlap 0
         sub_chunk_sizes = [128, 256, 512]
-        sub_node_parsers = [SentenceSplitter(chunk_size=c) for c in sub_chunk_sizes]
+        sub_node_parsers = [SentenceSplitter(chunk_size=c, chunk_overlap=0) for c in sub_chunk_sizes]
 
         all_nodes = []
         for base_node in base_nodes:
