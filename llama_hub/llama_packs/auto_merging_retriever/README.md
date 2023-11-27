@@ -44,7 +44,7 @@ auto_merging_retriever_pack = AutoMergingRetrieverPack(
 The `run()` function is a light wrapper around `query_engine.query()`.
 
 ```python
-response = auto_merging_retriever_pack.run("Tell me a bout a Music celebritiy.")
+response = auto_merging_retriever_pack.run("Tell me about what the author did growing up.")
 ```
 
 You can also use modules individually.

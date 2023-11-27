@@ -105,7 +105,7 @@
     "keywords": ["hybrid", "fusion", "retriever"]
   },
   "QueryRewritingRetrieverPack": {
-    "id": "llama_packs/query_rewriting_retriever",
+    "id": "llama_packs/fusion_retriever/query_rewrite",
     "author": "jerryjliu",
     "keywords": ["query", "rewriting", "retriever"]
   },
