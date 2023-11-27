@@ -1,7 +1,7 @@
 """Hybrid Fusion Retriever Pack."""
 
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from llama_index.indices.vector_store import VectorStoreIndex
 from llama_index.llama_pack.base import BaseLlamaPack

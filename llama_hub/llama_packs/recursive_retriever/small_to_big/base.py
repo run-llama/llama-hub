@@ -2,12 +2,10 @@
 
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.llms import OpenAI
-from llama_index.embeddings import HuggingFaceEmbedding
 from llama_index.node_parser import SentenceSplitter
 from typing import List, Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import Document, IndexNode
-from llama_index.postprocessor import MetadataReplacementPostProcessor
 from llama_index.embeddings import resolve_embed_model
 from llama_index.retrievers import RecursiveRetriever
 from llama_index.query_engine import RetrieverQueryEngine
@@ -42,7 +40,9 @@ class RecursiveRetrieverSmallToBigPack(BaseLlamaPack):
         # build graph of smaller chunks pointing to bigger parent chunks
         # make chunk overlap 0
         sub_chunk_sizes = [128, 256, 512]
-        sub_node_parsers = [SentenceSplitter(chunk_size=c, chunk_overlap=0) for c in sub_chunk_sizes]
+        sub_node_parsers = [
+            SentenceSplitter(chunk_size=c, chunk_overlap=0) for c in sub_chunk_sizes
+        ]
 
         all_nodes = []
         for base_node in base_nodes:

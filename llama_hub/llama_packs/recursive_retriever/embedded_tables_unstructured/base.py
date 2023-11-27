@@ -1,13 +1,11 @@
 """Embedded Tables Retriever w/ Unstructured.IO."""
 
-from llama_index import ServiceContext, VectorStoreIndex
-from llama_index.llms import OpenAI
+from llama_index import VectorStoreIndex
 from llama_index.node_parser import UnstructuredElementNodeParser
-from typing import List, Dict, Any
+from typing import Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.retrievers import RecursiveRetriever
 from llama_index.query_engine import RetrieverQueryEngine
-from llama_index.storage import StorageContext
 from llama_index.readers.file.flat_reader import FlatReader
 from pathlib import Path
 from typing import Optional

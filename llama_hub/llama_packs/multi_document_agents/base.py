@@ -2,17 +2,9 @@
 
 from llama_index import ServiceContext, VectorStoreIndex, SummaryIndex
 from llama_index.llms import OpenAI
-from llama_index.node_parser import (
-    HierarchicalNodeParser,
-    get_leaf_nodes,
-)
 from typing import List, Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import Document
-from llama_index.retrievers.auto_merging_retriever import AutoMergingRetriever
-from llama_index.query_engine import RetrieverQueryEngine
-from llama_index.storage.docstore import SimpleDocumentStore
-from llama_index.storage import StorageContext
 from llama_index.node_parser import SentenceSplitter
 from llama_index.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent import OpenAIAgent, FnRetrieverOpenAIAgent

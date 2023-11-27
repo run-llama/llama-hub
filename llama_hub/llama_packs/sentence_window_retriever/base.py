@@ -1,12 +1,11 @@
 """Sentence window retriever."""
 
-from llama_index import ServiceContext, set_global_service_context, VectorStoreIndex
+from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.llms import OpenAI
-from llama_index.embeddings import OpenAIEmbedding, HuggingFaceEmbedding
+from llama_index.embeddings import HuggingFaceEmbedding
 from llama_index.node_parser import (
     SentenceWindowNodeParser,
 )
-from llama_index.text_splitter import SentenceSplitter
 from typing import List, Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import Document
