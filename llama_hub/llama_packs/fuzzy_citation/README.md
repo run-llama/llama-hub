@@ -2,9 +2,9 @@
 
 Creates and runs a `CustomQueryEngine` -- `FuzzCitationQueryEngine` -- which post-processes response objects to identify source sentences using fuzzy matching. 
 
-The identified sentences are available in the `response.metadata` dictionary, containing a mapping of `text_chunk` -> `{"start_char_idx": idx, "end_char_idx": idx, "node" node}`. The start/end idxs represent the character indexes in the node text that the text chunk comes from.
+The identified sentences are available in the `response.metadata` dictionary, containing a mapping of `(response_sentence, source_chunk)` -> `{"start_char_idx": idx, "end_char_idx": idx, "node" node}`. The start/end idxs represent the character indexes in the node text that the source chunk comes from.
 
-The fuzzy matching uses `fuzz.token_set_ratio()` to compare sentences. The default threshold score is 50.
+The fuzzy matching uses `fuzz.ratio()` to compare sentences. The default threshold score is 50.
 
 ## CLI Usage
 
