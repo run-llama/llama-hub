@@ -18,13 +18,14 @@ from llama_index.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent import OpenAIAgent, FnRetrieverOpenAIAgent
 from llama_index.objects import ObjectIndex, SimpleToolNodeMapping
 
+
 class MultiDocumentAgentsPack(BaseLlamaPack):
     """Multi-document Agents pack.
 
     Given a set of documents, build our multi-document agents architecture.
     - setup a document agent over agent doc (capable of QA and summarization)
     - setup a top-level agent over doc agents
-    
+
     """
 
     def __init__(
@@ -53,14 +54,10 @@ class MultiDocumentAgentsPack(BaseLlamaPack):
             all_nodes.extend(nodes)
 
             # build vector index
-            vector_index = VectorStoreIndex(
-                nodes, service_context=self.service_context
-            )
+            vector_index = VectorStoreIndex(nodes, service_context=self.service_context)
 
             # build summary index
-            summary_index = SummaryIndex(
-                nodes, service_context=self.service_context
-            )
+            summary_index = SummaryIndex(nodes, service_context=self.service_context)
             # define query engines
             vector_query_engine = vector_index.as_query_engine()
             summary_query_engine = summary_index.as_query_engine()
@@ -137,7 +134,6 @@ class MultiDocumentAgentsPack(BaseLlamaPack):
         """,
             verbose=True,
         )
-                    
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""

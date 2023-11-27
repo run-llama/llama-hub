@@ -2,9 +2,7 @@
 
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.llms import OpenAI
-from llama_index.node_parser import (
-    UnstructuredElementNodeParser
-)
+from llama_index.node_parser import UnstructuredElementNodeParser
 from typing import List, Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.retrievers import RecursiveRetriever
@@ -13,14 +11,15 @@ from llama_index.storage import StorageContext
 from llama_index.readers.file.flat_reader import FlatReader
 from pathlib import Path
 
+
 class EmbeddedTablesUnstructuredRetrieverPack(BaseLlamaPack):
     """Embedded Tables + Unstructured.io Retriever pack.
 
-    Use unstructured.io to parse out embedded tables from an HTML document, build 
+    Use unstructured.io to parse out embedded tables from an HTML document, build
     a node graph, and then run our recursive retriever against that.
 
     **NOTE**: must take in a single HTML file.
-    
+
     """
 
     def __init__(
@@ -46,7 +45,6 @@ class EmbeddedTablesUnstructuredRetrieverPack(BaseLlamaPack):
             verbose=True,
         )
         self.query_engine = RetrieverQueryEngine.from_args(self.recursive_retriever)
-        
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""

@@ -12,6 +12,7 @@ from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import Document
 from llama_index.postprocessor import MetadataReplacementPostProcessor
 
+
 class SentenceWindowRetrieverPack(BaseLlamaPack):
     """Sentence Window Retriever pack.
 
@@ -19,7 +20,7 @@ class SentenceWindowRetrieverPack(BaseLlamaPack):
     build a vector index over the input nodes,
     then after retrieval insert the text into the output nodes
     before synthesis.
-    
+
     """
 
     def __init__(
@@ -35,7 +36,6 @@ class SentenceWindowRetrieverPack(BaseLlamaPack):
             original_text_metadata_key="original_text",
         )
 
-
         self.llm = OpenAI(model="gpt-3.5-turbo", temperature=0.1)
         self.embed_model = HuggingFaceEmbedding(
             model_name="sentence-transformers/all-mpnet-base-v2", max_length=512
@@ -46,14 +46,17 @@ class SentenceWindowRetrieverPack(BaseLlamaPack):
         )
         # extract nodes
         nodes = self.node_parser.get_nodes_from_documents(docs)
-        self.sentence_index = VectorStoreIndex(nodes, service_context=self.service_context)
-        self.postprocessor = MetadataReplacementPostProcessor(target_metadata_key="window")
+        self.sentence_index = VectorStoreIndex(
+            nodes, service_context=self.service_context
+        )
+        self.postprocessor = MetadataReplacementPostProcessor(
+            target_metadata_key="window"
+        )
         self.query_engine = self.sentence_index.as_query_engine(
             similarity_top_k=2,
             # the target key defaults to `window` to match the node_parser's default
             node_postprocessors=[self.postprocessor],
         )
-        
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""

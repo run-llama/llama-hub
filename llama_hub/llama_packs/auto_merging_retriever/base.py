@@ -14,12 +14,13 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.storage import StorageContext
 
+
 class AutoMergingRetrieverPack(BaseLlamaPack):
     """Auto-merging Retriever pack.
 
-    Build a hiearchical node graph from a set of documents, and 
+    Build a hiearchical node graph from a set of documents, and
     run our auto-merging retriever.
-    
+
     """
 
     def __init__(

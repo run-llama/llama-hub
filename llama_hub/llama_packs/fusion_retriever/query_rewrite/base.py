@@ -14,11 +14,11 @@ from llama_index.retrievers import BM25Retriever, QueryFusionRetriever
 class QueryRewritingRetrieverPack(BaseLlamaPack):
     """Query rewriting retriever pack.
 
-    Given input nodes, build a vector index. 
+    Given input nodes, build a vector index.
 
     Then rewrite the query into multiple queries and
     rerank the results.
-    
+
     """
 
     def __init__(
@@ -34,7 +34,9 @@ class QueryRewritingRetrieverPack(BaseLlamaPack):
         """Init params."""
         service_context = ServiceContext.from_defaults(chunk_size=chunk_size)
         index = VectorStoreIndex(nodes, service_context=service_context)
-        self.vector_retriever = index.as_retriever(similarity_top_k=vector_similarity_top_k)
+        self.vector_retriever = index.as_retriever(
+            similarity_top_k=vector_similarity_top_k
+        )
 
         self.fusion_retriever = QueryFusionRetriever(
             [self.vector_retriever],

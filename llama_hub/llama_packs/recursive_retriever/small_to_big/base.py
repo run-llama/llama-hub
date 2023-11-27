@@ -3,9 +3,7 @@
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.llms import OpenAI
 from llama_index.embeddings import HuggingFaceEmbedding
-from llama_index.node_parser import (
-    SentenceSplitter
-)
+from llama_index.node_parser import SentenceSplitter
 from typing import List, Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import Document, IndexNode
@@ -14,13 +12,14 @@ from llama_index.embeddings import resolve_embed_model
 from llama_index.retrievers import RecursiveRetriever
 from llama_index.query_engine import RetrieverQueryEngine
 
+
 class RecursiveRetrieverSmallToBigPack(BaseLlamaPack):
     """Small-to-big retrieval (with recursive retriever).
 
     Given input documents, and an initial set of "parent" chunks,
     subdivide each chunk further into "child" chunks.
     Link each child chunk to its parent chunk, and index the child chunks.
-    
+
     """
 
     def __init__(
@@ -62,7 +61,9 @@ class RecursiveRetrieverSmallToBigPack(BaseLlamaPack):
         self.vector_index_chunk = VectorStoreIndex(
             all_nodes, service_context=self.service_context
         )
-        vector_retriever_chunk = self.vector_index_chunk.as_retriever(similarity_top_k=2)
+        vector_retriever_chunk = self.vector_index_chunk.as_retriever(
+            similarity_top_k=2
+        )
         self.recursive_retriever = RecursiveRetriever(
             "vector",
             retriever_dict={"vector": vector_retriever_chunk},
@@ -72,7 +73,6 @@ class RecursiveRetrieverSmallToBigPack(BaseLlamaPack):
         self.query_engine = RetrieverQueryEngine.from_args(
             self.recursive_retriever, service_context=self.service_context
         )
-        
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""

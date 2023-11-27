@@ -15,7 +15,7 @@ class HybridFusionRetrieverPack(BaseLlamaPack):
     """Hybrid fusion retriever pack.
 
     Ensembles vector and bm25 retrievers using fusion.
-    
+
     """
 
     def __init__(
@@ -26,14 +26,16 @@ class HybridFusionRetrieverPack(BaseLlamaPack):
         vector_similarity_top_k: int = 2,
         bm25_similarity_top_k: int = 2,
         fusion_similarity_top_k: int = 2,
-        num_queries: int =4,
+        num_queries: int = 4,
         **kwargs: Any,
     ) -> None:
         """Init params."""
         service_context = ServiceContext.from_defaults(chunk_size=chunk_size)
         index = VectorStoreIndex(nodes, service_context=service_context)
 
-        self.vector_retriever = index.as_retriever(similarity_top_k=vector_similarity_top_k)
+        self.vector_retriever = index.as_retriever(
+            similarity_top_k=vector_similarity_top_k
+        )
 
         self.bm25_retriever = BM25Retriever.from_defaults(
             docstore=index.docstore, similarity_top_k=bm25_similarity_top_k
