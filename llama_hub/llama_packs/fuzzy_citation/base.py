@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.node_parser.text.utils import split_by_sentence_tokenizer
@@ -116,7 +116,7 @@ class FuzzyCitationEnginePack(BaseLlamaPack):
     ) -> None:
         """Init params."""
         try:
-            from thefuzz import fuzz
+            from thefuzz import fuzz  # noqa: F401
         except ImportError:
             raise ImportError(
                 "Please run `pip install thefuzz` to use the fuzzy citation engine."
