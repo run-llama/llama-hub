@@ -25,10 +25,12 @@ MOCK_OAUTH = {
 class TestConfluenceReader:
     def setup_method(self):
         import sys
+
         sys.modules["atlassian"] = unittest.mock.MagicMock()
 
     def teardown_method(self):
         import sys
+
         del sys.modules["atlassian"]
 
     def test_confluence_reader_initialization(self, mock_confluence):
