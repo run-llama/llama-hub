@@ -1,4 +1,4 @@
-# Multi-document Agents Pack
+# Multi-Document Agents Pack
 
 This LlamaPack provides an example of our multi-document agents.
 
@@ -7,6 +7,8 @@ of documents, the pack will build our multi-document agents architecture.
 - setup a document agent over agent doc (capable of QA and summarization)
 - setup a top-level agent over doc agents
 - During query-time, do "tool retrieval" to return the set of relevant candidate documents, and then do retrieval within each document.
+
+Check out the [notebook here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/multi_document_agents/multi_document_agents.ipynb).
 
 ## CLI Usage
 

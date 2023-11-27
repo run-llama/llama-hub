@@ -6,6 +6,8 @@ This specific template shows the e2e process of building this. It loads
 a document, builds a hierarchical node graph (with bigger parent nodes and smaller
 child nodes).
 
+Check out the [notebook here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/recursive_retriever/small_to_big/small_to_big.ipynb).
+
 ## CLI Usage
 
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:

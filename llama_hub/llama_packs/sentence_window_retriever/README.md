@@ -6,6 +6,8 @@ This specific template shows the e2e process of building this. It loads
 a document, chunks it up, adds surrounding context as metadata to each chunk,
 and during retrieval inserts the context back into each chunk for response synthesis.
 
+Check out the [notebook here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/sentence_window_retriever/sentence_window.ipynb).
+
 ## CLI Usage
 
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:

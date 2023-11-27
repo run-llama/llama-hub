@@ -3,6 +3,8 @@ This LlamaPack provides an example of our hybrid fusion retriever method.
 
 This specific template fuses results from our vector retriever and bm25 retriever; of course, you can provide any template you want.
 
+Check out the [notebook here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/fusion_retriever/hybrid_fusion/hybrid_fusion.ipynb).
+
 ## CLI Usage
 
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:

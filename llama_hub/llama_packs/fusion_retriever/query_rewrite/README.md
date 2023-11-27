@@ -3,6 +3,8 @@ This LlamaPack provides an example of query rewriting through our fusion retriev
 
 This specific template takes in a single retriever, and generates multiple queries against the retriever, and then fuses the results together.
 
+Check out the [notebook here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/fusion_retriever/query_rewrite/query_rewrite.ipynb).
+
 ## CLI Usage
 
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
