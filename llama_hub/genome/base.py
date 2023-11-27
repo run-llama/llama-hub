@@ -55,7 +55,7 @@ class GenomeAnnotationReader(BaseReader):
                 )
                 annotation_text = handle.read()
                 handle.close()
-                annotations.append(annotation_text)
+                annotations.append(Document(text=annotation_text))
 
             return annotations
 
