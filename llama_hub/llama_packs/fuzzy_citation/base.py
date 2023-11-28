@@ -59,7 +59,7 @@ class FuzzyCitationQueryEngine(CustomQueryEngine):
             # concat nearby sentences
             top_chunks = defaultdict(list)
             prev_idx = -1
-            for (response_sent_idx, node_sent_idx) in sorted(top_sentences.keys()):
+            for response_sent_idx, node_sent_idx in sorted(top_sentences.keys()):
                 if prev_idx == -1:
                     top_chunks[response_sent_idx].append(
                         top_sentences[(response_sent_idx, node_sent_idx)]
