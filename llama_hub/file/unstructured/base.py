@@ -16,7 +16,21 @@ class UnstructuredReader(BaseReader):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Init params."""
-        super().__init__(*args, **kwargs)
+        super().__init__(*args)  # not passing kwargs to parent bc it cannot accept it
+
+        self.api = False  # we default to local
+        if "url" in kwargs:
+            self.server_url = str(kwargs["url"])
+            self.api = True  # is url was set, switch to api
+        else:
+            self.server_url = "http://localhost:8000"
+
+        if "api" in kwargs:
+            self.api = kwargs["api"]
+
+        self.api_key = ""
+        if "api_key" in kwargs:
+            self.api_key = kwargs["api_key"]
 
         # Prerequisite for Unstructured.io to work
         import nltk
@@ -24,24 +38,72 @@ class UnstructuredReader(BaseReader):
         nltk.download("punkt")
         nltk.download("averaged_perceptron_tagger")
 
+    """ Loads data usin Unstructured.io py
+    
+        Depending on the constructin if url is set or api = True
+        it'll parse file using API call, else parse it locally
+        extra_info is extended by the returned metadata if 
+        split_documents is True
+        
+        Returns list of documents  
+    """
+
     def load_data(
         self,
         file: Path,
         extra_info: Optional[Dict] = None,
         split_documents: Optional[bool] = False,
     ) -> List[Document]:
-        """Parse file."""
-        from unstructured.partition.auto import partition
+        """If api is set, parse through api"""
+        if self.api:
+            from unstructured.partition.api import partition_via_api
 
-        elements = partition(str(file))
-        text_chunks = [" ".join(str(el).split()) for el in elements]
-
-        if split_documents:
-            return [
-                Document(text=chunk, extra_info=extra_info or {})
-                for chunk in text_chunks
-            ]
+            elements = partition_via_api(
+                filename=str(file),
+                api_key=self.api_key,
+                api_url=self.server_url + "/general/v0/general",
+            )
         else:
-            return [
-                Document(text="\n\n".join(text_chunks), extra_info=extra_info or {})
-            ]
+            """Parse file locally"""
+            from unstructured.partition.auto import partition
+
+            elements = partition(filename=str(file))
+
+        """ Process elements """
+        docs = []
+        if split_documents:
+            for node in elements:
+                metadata = {}
+                if hasattr(node, "metadata"):
+                    """Load metadata fields"""
+                    for field, val in vars(node.metadata).items():
+                        if field == "_known_field_names":
+                            continue
+                        # removing coordinates because it does not serialize
+                        # and dont want to bother with it
+                        if field == "coordinates":
+                            continue
+                        # removing bc it might cause interference
+                        if field == "parent_id":
+                            continue
+                        metadata[field] = val
+
+                if extra_info is not None:
+                    metadata.update(extra_info)
+
+                metadata["filename"] = str(file)
+                docs.append(Document(text=node.text, extra_info=metadata))
+
+        else:
+            text_chunks = [" ".join(str(el).split()) for el in elements]
+
+            metadata = {}
+
+            if extra_info is not None:
+                metadata.update(extra_info)
+
+            metadata["filename"] = str(file)
+            # Create a single document by joining all the texts
+            docs.append(Document(text="\n\n".join(text_chunks), extra_info=metadata))
+
+        return docs
