@@ -2,7 +2,7 @@
 from typing import Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 import asyncio
-from llama_index.multi_modal_llms import OpenAIMultiModal
+from llama_index.multi_modal_llms.openai import OpenAIMultiModal
 from llama_index import SimpleDirectoryReader
 from pydantic import BaseModel, Field
 from llama_index.output_parsers import PydanticOutputParser
