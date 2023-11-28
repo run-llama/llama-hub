@@ -6,7 +6,7 @@ from llama_index.multi_modal_llms.openai import OpenAIMultiModal
 from llama_index import SimpleDirectoryReader
 from pydantic import BaseModel, Field
 from llama_index.output_parsers import PydanticOutputParser
-from llama_index.program import MultiModalLLMCompletionProgram
+from llama_index.program.multi_modal_llm_program import MultiModalLLMCompletionProgram
 
 
 async def _screenshot_page(
