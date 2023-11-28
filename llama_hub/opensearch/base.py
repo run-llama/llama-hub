@@ -1,6 +1,6 @@
 """Opensearch reader over REST api.
 
-This only uses the basic search api, so it will work with Elasticsearch and Opensearch.
+This only uses the basic search api, so it will work Opensearch.
 
 """
 
