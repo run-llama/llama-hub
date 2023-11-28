@@ -17,7 +17,7 @@ class GenomeAnnotationReader(BaseReader):
             email,
             rettype='gb', 
             retmode='text'
-    ):
+    ) -> List[Document] :
         """Load genebank genome annotation NCBI's nuccore database.
 
         Args:
@@ -39,7 +39,7 @@ class GenomeAnnotationReader(BaseReader):
 
             if len(record["IdList"]) == 0:
                 print(f"No records found for species: {species}")
-                return None
+                return []
 
             # Fetch the genome annotation record
             genome_id = record["IdList"]
@@ -50,7 +50,7 @@ class GenomeAnnotationReader(BaseReader):
                 handle = Entrez.efetch(
                     db="nuccore", 
                     id=id, 
-                    rettype=rettype, 
+                    rett+-ype=rettype, 
                     retmode=retmode
                 )
                 annotation_text = handle.read()
@@ -61,7 +61,7 @@ class GenomeAnnotationReader(BaseReader):
 
         except Exception as e:
             print(f"An error occurred: {e}")
-            return None
+            return []
 
 if __name__ == "__main__":
     reader = GenomeAnnotationReader()
