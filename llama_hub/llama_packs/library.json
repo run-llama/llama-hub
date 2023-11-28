@@ -94,6 +94,11 @@
     "author": "axiomofjoy",
     "keywords": ["arize", "phoenix", "query", "engine", "index"]
   },
+  "FuzzyCitationEnginePack": {
+    "id": "llama_packs/fuzzy_citation",
+    "author": "logan-markewich",
+    "keywords": ["fuzzy", "citation", "engine", "index", "query", "cite"]
+  },
   "AutoMergingRetrieverPack": {
     "id": "llama_packs/auto_merging_retriever",
     "author": "jerryjliu",

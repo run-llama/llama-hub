@@ -177,27 +177,6 @@ files = [
 ]
 
 [[package]]
-name = "atlassian-python-api"
-version = "3.39.0"
-description = "Python Atlassian REST API Wrapper"
-category = "dev"
-optional = false
-python-versions = "*"
-files = [
-    {file = "atlassian-python-api-3.39.0.tar.gz", hash = "sha256:69c556b2485224fdc8b4ff1c071d68c81de6c65526a418fb81d99cc34a5d288c"},
-]
-
-[package.dependencies]
-deprecated = "*"
-oauthlib = "*"
-requests = "*"
-requests_oauthlib = "*"
-six = "*"
-
-[package.extras]
-kerberos = ["requests-kerberos"]
-
-[[package]]
 name = "attrs"
 version = "23.1.0"
 description = "Classes Without Boilerplate"
@@ -1066,23 +1045,6 @@ files = [
 ]
 
 [[package]]
-name = "oauthlib"
-version = "3.2.2"
-description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca"},
-    {file = "oauthlib-3.2.2.tar.gz", hash = "sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918"},
-]
-
-[package.extras]
-rsa = ["cryptography (>=3.0.0)"]
-signals = ["blinker (>=1.4.0)"]
-signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
-
-[[package]]
 name = "openai"
 version = "1.3.5"
 description = "The official Python library for the openai API"
@@ -1719,25 +1681,6 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
-name = "requests-oauthlib"
-version = "1.3.1"
-description = "OAuthlib authentication support for Requests."
-category = "dev"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-files = [
-    {file = "requests-oauthlib-1.3.1.tar.gz", hash = "sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"},
-    {file = "requests_oauthlib-1.3.1-py2.py3-none-any.whl", hash = "sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5"},
-]
-
-[package.dependencies]
-oauthlib = ">=3.0.0"
-requests = ">=2.0.0"
-
-[package.extras]
-rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
-
-[[package]]
 name = "retrying"
 version = "1.3.4"
 description = "Retrying"
@@ -2286,4 +2229,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.12"
-content-hash = "e991615daaeb7db658a739edb297077c5abb464b0933c96ad88185acaded67b9"
+content-hash = "51eaf36a146fc742b28b52507ea1372a7ae61d34cf0d6db466a28785c71e9a94"
