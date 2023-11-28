@@ -28,6 +28,6 @@ jobs:
       - name: Install deps
         run: |
           poetry install
-          pip install -r test_requirements.txt
+          poetry run pip install -r test_requirements.txt
       - name: Run testing
         run: poetry run pytest tests
