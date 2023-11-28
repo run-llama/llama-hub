@@ -1087,8 +1087,8 @@
       "web reader"
     ]
   },
-  "EarningCallTranscripts":{
-    "id":"earning_calls_transcripts",
+  "EarningsCallTranscript":{
+    "id":"earnings_call_transcript",
     "author": "Athe-kunal",
     "keywords": [
       "Finance",

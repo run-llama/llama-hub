@@ -38,7 +38,7 @@ def extract_speakers(cont: str) -> List[str]:
 
 
 @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(2))
-def get_earning_transcripts(quarter: str, ticker: str, year: int):
+def get_earnings_transcript(quarter: str, ticker: str, year: int):
     """Get the earnings transcripts
 
     Args:

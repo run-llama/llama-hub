@@ -19,9 +19,9 @@ The Earning call transcripts takes in three arguments
 ```python
 from llama_index import download_loader
 
-IMDBReviewsloader = download_loader('EarningCallTranscripts')
+IMDBReviewsloader = download_loader('EarningsCallTranscript')
 
-loader = EarningCallTranscripts(2023,'AAPL','Q3')
+loader = EarningsCallTranscript(2023,'AAPL','Q3')
 docs = loader.load_data()
 ```
 
@@ -37,12 +37,11 @@ The metadata of the transcripts are the following
 #### Llama Index
 ```python
 from llama_index import download_loader
-from llama_index import GPTVectorStoreIndex, download_loader
-from llama_index import VectorStoreIndex
+from llama_index import VectorStoreIndex, download_loader
 
-IMDBReviewsloader = download_loader('EarningCallTranscripts')
+EarningsCallTranscript = download_loader('EarningsCallTranscript')
 
-loader = EarningCallTranscripts(2023,'AAPL','Q3')
+loader = EarningsCallTranscript(2023,'AAPL','Q3')
 docs = loader.load_data()
 
 index = VectorStoreIndex.from_documents(documents)
@@ -64,9 +63,9 @@ from langchain.agents import initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.llms import OpenAI
 
-IMDBReviewsloader = download_loader('EarningCallTranscripts')
+EarningsCallTranscript = download_loader('EarningsCallTranscript')
 
-loader = EarningCallTranscripts(2023,'AAPL','Q3')
+loader = EarningsCallTranscript(2023,'AAPL','Q3')
 docs = loader.load_data()
 
 tools = [

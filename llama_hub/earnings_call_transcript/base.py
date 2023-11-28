@@ -4,12 +4,12 @@ from datetime import datetime
 from typing import List
 
 try:
-    from llama_hub.earning_calls_transcripts.utils import get_earning_transcripts
+    from llama_hub.earnings_call_transcript.utils import get_earnings_transcript
 except ImportError:
-    from utils import get_earning_transcripts
+    from utils import get_earnings_transcript
 
 
-class EarningCallTranscripts(BaseReader):
+class EarningsCallTranscript(BaseReader):
     def __init__(self, year: int, ticker: str, quarter: str):
         """Get the earning call transcripts for a given company, in a given year and quarter
 
@@ -32,7 +32,7 @@ class EarningCallTranscripts(BaseReader):
         self.quarter = quarter
 
     def load_data(self) -> List[Document]:
-        resp_dict, speakers_list = get_earning_transcripts(
+        resp_dict, speakers_list = get_earnings_transcript(
             self.quarter, self.ticker, self.year
         )
         return Document(
