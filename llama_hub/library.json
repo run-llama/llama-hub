@@ -1087,8 +1087,8 @@
       "web reader"
     ]
   },
-  "NCBI": {
-    "id": "ncbi",
+  "GenomeAnnotationReader": {
+    "id": "genome",
     "author": "acpguedes"
     "keywords":[
       "ncbi",
