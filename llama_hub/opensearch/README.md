@@ -5,7 +5,7 @@ The user initializes the loader with an Opensearch index. They then pass in a fi
 
 ## Usage
 
-Here's an example usage of the ElasticsearchReader to load 100 documents.
+Here's an example usage of the OpensearchReader to load 100 documents.
 
 ```python
 from llama_index import download_loader
@@ -20,7 +20,7 @@ reader = OpensearchReader(
 )
 
 query = {
-    'size': 10,
+    'size': 100,
     'query': {
         'match_all': {}
     }
