@@ -1086,5 +1086,9 @@
       "web",
       "web reader"
     ]
+  },
+  "OpensearchReader": {
+    "id": "opensearch",
+    "author": "chnsagitchen"
   }
 }

@@ -21,6 +21,7 @@ html2text = "*"
 psutil = "*"
 retrying = "*"
 pyaml = "^23.9.7"
+opensearch-py = "^2.4.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "7.2.1"
