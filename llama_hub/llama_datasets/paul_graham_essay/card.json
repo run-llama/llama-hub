@@ -11,13 +11,13 @@
         {
             "name": "llamaindex",
             "config": {
-                "chunk_size": 1024,
+                "chunkSize": 1024,
                 "llm": "gpt-3.5-turbo",
-                "similarity_top_k": 2,
-                "embed_model": "text-embedding-ada-002"
+                "similarityTopK": 2,
+                "embedModel": "text-embedding-ada-002"
             },
             "metrics": {
-                "context_similarity": 0.934,
+                "contextSimilarity": 0.934,
                 "correctness": 4.239,
                 "faithfulness": 0.977,
                 "relevancy": 0.977
