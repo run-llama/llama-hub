@@ -1,6 +1,6 @@
 """Chroma Reader."""
 
-from typing import Any
+from typing import Any, Dict
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -27,7 +27,8 @@ class ChromaReader(BaseReader):
         from chromadb.config import Settings
 
         if (collection_name is None) or (persist_directory is None):
-            raise ValueError("Please provide a collection name and persist directory.")
+            raise ValueError(
+                "Please provide a collection name and persist directory.")
 
         self._client = chromadb.Client(
             Settings(is_persistent=True, persist_directory=persist_directory)
@@ -38,17 +39,25 @@ class ChromaReader(BaseReader):
         self,
         query_vector: Any,
         limit: int = 10,
+        where: Dict = None,
+        where_document: Dict = None,
     ) -> Any:
         """Load data from Chroma.
 
         Args:
             query_vector (Any): Query
             limit (int): Number of results to return.
+            where (Dict): Metadata where filter.
+            where_document (Dict): Document where filter.
 
         Returns:
             List[Document]: A list of documents.
         """
-        results = self._collection.query(query_embeddings=query_vector, n_results=limit)
+        results = self._collection.query(
+            query_embeddings=query_vector,
+            n_results=limit,
+            where=where,
+            where_document=where_document)
 
         documents = []
         for result in zip(results["ids"], results["documents"], results["embeddings"]):
