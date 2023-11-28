@@ -7,7 +7,7 @@ This loader is an asynchronous web scraper that fetches the text from static web
 To use this loader, you need to pass in an array of URLs.
 
 ```python
-from llama_hub.web.async_web import AsyncWebPageReader
+from llama_hub.web.async_web.base import AsyncWebPageReader
 
 # for jupyter notebooks uncomment the following two lines of code:
 # import nest_asyncio
