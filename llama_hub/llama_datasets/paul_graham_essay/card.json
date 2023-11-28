@@ -5,7 +5,7 @@
     "containsExamplesByHumans": false,
     "containsExamplesByAI": true,
     "sourceUrls": [
-        "http://www.paulgraham.com/articles.html",
+        "http://www.paulgraham.com/articles.html"
     ],
     "baselines": [
         {
