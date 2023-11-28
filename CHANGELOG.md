@@ -1,13 +1,26 @@
+# ChangeLog
+
 ## Unreleased
 
-### [v0.0.45] - 2023-11-16
+## [v0.0.48] - 2023-11-27
+
+### New Features
+- Add some advanced retrieval llama packs  (#659)
+
+## [v0.0.46] - 2023-11-22
+
+### New Features
+- Add Llama Packs (#646)
+- Unstructured.IO API support (#648)
+
+## [v0.0.45] - 2023-11-16
 
 ### Smaller Features + Bug Fixes
 - Updated init file (#633)
 - fIMDB Movie reviews bug fixes and feature addition (#636)
 - replace s/gpt_index/llama_index references in READMEs (#635) 
 
-### [v0.0.44] - 2023-11-13
+## [v0.0.44] - 2023-11-13
 
 ### Smaller Features + Bug Fixes
 - Extend GoogleSheetsReader to Accept Custom Text Column Names (#620)

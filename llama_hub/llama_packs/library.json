@@ -93,5 +93,50 @@
     "id": "llama_packs/arize_phoenix_query_engine",
     "author": "axiomofjoy",
     "keywords": ["arize", "phoenix", "query", "engine", "index"]
+  },
+  "FuzzyCitationEnginePack": {
+    "id": "llama_packs/fuzzy_citation",
+    "author": "logan-markewich",
+    "keywords": ["fuzzy", "citation", "engine", "index", "query", "cite"]
+  },
+  "AutoMergingRetrieverPack": {
+    "id": "llama_packs/auto_merging_retriever",
+    "author": "jerryjliu",
+    "keywords": ["auto", "merging", "retriever", "index", "automerging"]
+  },
+  "HybridFusionRetrieverPack": {
+    "id": "llama_packs/fusion_retriever/hybrid_fusion",
+    "author": "jerryjliu",
+    "keywords": ["hybrid", "fusion", "retriever"]
+  },
+  "QueryRewritingRetrieverPack": {
+    "id": "llama_packs/fusion_retriever/query_rewrite",
+    "author": "jerryjliu",
+    "keywords": ["query", "rewriting", "retriever"]
+  },
+  "MultiDocumentAgentsPack": {
+    "id": "llama_packs/multi_document_agents",
+    "author": "jerryjliu",
+    "keywords": ["multi", "document", "agents"]
+  },
+  "EmbeddedTablesUnstructuredRetrieverPack": {
+    "id": "llama_packs/recursive_retriever/embedded_tables_unstructured",
+    "author": "jerryjliu",
+    "keywords": ["embedded", "tables", "unstructured", "retriever"]
+  },
+  "RecursiveRetrieverSmallToBigPack": {
+    "id": "llama_packs/recursive_retriever/small_to_big",
+    "author": "jerryjliu",
+    "keywords": ["recursive", "retriever", "small", "big"]
+  },
+  "SentenceWindowRetrieverPack": {
+    "id": "llama_packs/sentence_window_retriever",
+    "author": "jerryjliu",
+    "keywords": ["sentence", "window", "retriever"]
+  },
+  "AmazonProductExtractionPack": {
+    "id": "llama_packs/amazon_product_extraction",
+    "author": "jerryjliu",
+    "keywords": ["amazon", "product", "extraction"]
   }
 } 
