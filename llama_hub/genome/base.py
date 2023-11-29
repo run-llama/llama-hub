@@ -1,8 +1,9 @@
 """Genome reader."""
 
-from typing import List, Optional
+from typing import List
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+
 
 class GenomeAnnotationReader(BaseReader):
     """Genome Reader.
@@ -11,13 +12,7 @@ class GenomeAnnotationReader(BaseReader):
 
     """
 
-    def load_data(
-            self, 
-            species, 
-            email,
-            rettype='gb', 
-            retmode='text'
-    ) -> List[Document] :
+    def load_data(self, species, email, rettype="gb", retmode="text") -> List[Document]:
         """Load genebank genome annotation NCBI's nuccore database.
 
         Args:
@@ -30,10 +25,7 @@ class GenomeAnnotationReader(BaseReader):
 
         try:
             # Search for the species
-            handle = Entrez.esearch(
-                db="nuccore", 
-                term=f'{species} [Organism]'
-            )
+            handle = Entrez.esearch(db="nuccore", term=f"{species} [Organism]")
             record = Entrez.read(handle)
             handle.close()
 
@@ -46,12 +38,9 @@ class GenomeAnnotationReader(BaseReader):
 
             annotations = []
 
-            for id in genome_id  :
+            for id in genome_id:
                 handle = Entrez.efetch(
-                    db="nuccore", 
-                    id=id, 
-                    rettype=rettype, 
-                    retmode=retmode
+                    db="nuccore", id=id, rettype=rettype, retmode=retmode
                 )
                 annotation_text = handle.read()
                 handle.close()
@@ -63,8 +52,7 @@ class GenomeAnnotationReader(BaseReader):
             print(f"An error occurred: {e}")
             return []
 
+
 if __name__ == "__main__":
     reader = GenomeAnnotationReader()
     print(reader.load_data())
-
-    
