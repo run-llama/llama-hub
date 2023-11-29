@@ -1089,7 +1089,7 @@
   },
   "GenomeAnnotationReader": {
     "id": "genome",
-    "author": "acpguedes"
+    "author": "acpguedes",
     "keywords":[
       "ncbi",
       "annotation",
