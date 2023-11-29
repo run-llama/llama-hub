@@ -50,7 +50,7 @@ class GenomeAnnotationReader(BaseReader):
                 handle = Entrez.efetch(
                     db="nuccore", 
                     id=id, 
-                    rett+-ype=rettype, 
+                    rettype=rettype, 
                     retmode=retmode
                 )
                 annotation_text = handle.read()
