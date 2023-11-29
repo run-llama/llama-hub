@@ -1,5 +1,17 @@
 # ChangeLog
 
+## Unreleased
+
+### New Features
+- New data loader - Opensearch (#672)
+- AddMainContentExtractorReader (#679)
+
+### Smaller Features + Bug Fixes
+- Image reader was ignoring metadata. Added metadata to loaded ImageDocument (#668)
+- Add Cypher validation to Neo4j db tool (#660)
+- feat: Improvements to Chroma loader (#673)
+- Adding Earning Call transcripts of US based companies (#658)
+
 ## [v0.0.50] - 2023-11-28
 
 ### New Features
