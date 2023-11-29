@@ -29,7 +29,7 @@ documents = reader.load_data(
 
 ```python
 
-    from llama_index import GPTVectorStoreIndex, download_loader
+    from llama_index import VectorStoreIndex, download_loader
     from langchain.chains.conversation.memory import ConversationBufferMemory
     from langchain.agents import Tool, AgentExecutor, load_tools, initialize_agent
 
@@ -42,7 +42,7 @@ documents = reader.load_data(
 
     documents = az_loader.load_data(query, field_name)
 
-    index = GPTVectorStoreIndex.from_documents(documents, service_context=service_context)
+    index = VectorStoreIndex.from_documents(documents, service_context=service_context)
 
     tools = [
         Tool(

@@ -40,7 +40,7 @@ This loader can be used with both Langchain and LlamaIndex.
 
 ### LlamaIndex
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 from llama_index import VectorStoreIndex
 
 IMDBReviewsloader = download_loader('IMDBReviews')

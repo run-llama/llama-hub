@@ -22,13 +22,13 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ### LlamaIndex
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 SimpleWebPageReader = download_loader("SimpleWebPageReader")
 
 loader = SimpleWebPageReader()
 documents = loader.load_data(urls=['https://google.com'])
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('What language is on this website?')
 ```
 
@@ -37,7 +37,7 @@ index.query('What language is on this website?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
@@ -46,7 +46,7 @@ SimpleWebPageReader = download_loader("SimpleWebPageReader")
 
 loader = SimpleWebPageReader()
 documents = loader.load_data(urls=['https://google.com'])
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 
 tools = [
     Tool(

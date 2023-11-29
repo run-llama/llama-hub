@@ -25,7 +25,7 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 
 ```python
 from llama_hub.file import SimpleDirectoryReader
-from llama_index import GPTVectorStoreIndex
+from llama_index import VectorStoreIndex
 
 # other way of loading
 # from llama_index import download_loader
@@ -33,7 +33,7 @@ from llama_index import GPTVectorStoreIndex
 
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('What are these files about?')
 ```
 
@@ -43,7 +43,7 @@ Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
 from llama_hub.file import SimpleDirectoryReader
-from llama_index import GPTVectorStoreIndex
+from llama_index import VectorStoreIndex
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
@@ -54,7 +54,7 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 
 tools = [
     Tool(
