@@ -138,5 +138,10 @@
     "id": "llama_packs/amazon_product_extraction",
     "author": "jerryjliu",
     "keywords": ["amazon", "product", "extraction"]
+  },
+  "RagEvaluatorPack": {
+    "id": "llama_packs/rag_evaluator",
+    "author": "andrei-fajardo",
+    "keywords": ["rag", "evaluation", "benchmarks"]
   }
 } 
