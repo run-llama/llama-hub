@@ -94,6 +94,11 @@
     "author": "axiomofjoy",
     "keywords": ["arize", "phoenix", "query", "engine", "index"]
   },
+  "FuzzyCitationEnginePack": {
+    "id": "llama_packs/fuzzy_citation",
+    "author": "logan-markewich",
+    "keywords": ["fuzzy", "citation", "engine", "index", "query", "cite"]
+  },
   "AutoMergingRetrieverPack": {
     "id": "llama_packs/auto_merging_retriever",
     "author": "jerryjliu",
@@ -128,5 +133,10 @@
     "id": "llama_packs/sentence_window_retriever",
     "author": "jerryjliu",
     "keywords": ["sentence", "window", "retriever"]
+  },
+  "AmazonProductExtractionPack": {
+    "id": "llama_packs/amazon_product_extraction",
+    "author": "jerryjliu",
+    "keywords": ["amazon", "product", "extraction"]
   }
 } 

@@ -177,27 +177,6 @@ files = [
 ]
 
 [[package]]
-name = "atlassian-python-api"
-version = "3.39.0"
-description = "Python Atlassian REST API Wrapper"
-category = "dev"
-optional = false
-python-versions = "*"
-files = [
-    {file = "atlassian-python-api-3.39.0.tar.gz", hash = "sha256:69c556b2485224fdc8b4ff1c071d68c81de6c65526a418fb81d99cc34a5d288c"},
-]
-
-[package.dependencies]
-deprecated = "*"
-oauthlib = "*"
-requests = "*"
-requests_oauthlib = "*"
-six = "*"
-
-[package.extras]
-kerberos = ["requests-kerberos"]
-
-[[package]]
 name = "attrs"
 version = "23.1.0"
 description = "Classes Without Boilerplate"
@@ -412,14 +391,14 @@ files = [
 
 [[package]]
 name = "dataclasses-json"
-version = "0.6.2"
+version = "0.6.3"
 description = "Easily serialize dataclasses to and from JSON."
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "dataclasses_json-0.6.2-py3-none-any.whl", hash = "sha256:71816ced3d0f55a2c5bc1a813ace1b8d4234e79a08744269a7cf84d6f7c06e99"},
-    {file = "dataclasses_json-0.6.2.tar.gz", hash = "sha256:1b934c1bd63e775880946b8361a902d7de86e894bab8098eab27c010f95724d1"},
+    {file = "dataclasses_json-0.6.3-py3-none-any.whl", hash = "sha256:4aeb343357997396f6bca1acae64e486c3a723d8f5c76301888abeccf0c45176"},
+    {file = "dataclasses_json-0.6.3.tar.gz", hash = "sha256:35cb40aae824736fdf959801356641836365219cfe14caeb115c39136f775d2a"},
 ]
 
 [package.dependencies]
@@ -776,14 +755,14 @@ files = [
 
 [[package]]
 name = "llama-index"
-version = "0.9.8"
+version = "0.9.8.post1"
 description = "Interface between LLMs and your data"
 category = "main"
 optional = false
 python-versions = ">=3.8.1,<3.12"
 files = [
-    {file = "llama_index-0.9.8-py3-none-any.whl", hash = "sha256:fe7f8b33e9ac989c554262cd5efbfae61d3ec588cc60f2836b0f7150f2857604"},
-    {file = "llama_index-0.9.8.tar.gz", hash = "sha256:9c3ef82487411173f6f7c87f4ec99e70045ce81ba12663a3573bcd2171900d8b"},
+    {file = "llama_index-0.9.8.post1-py3-none-any.whl", hash = "sha256:e93515654b1c9d37563bf122b51bd9a2aa5d46979a1f7c950a45fe22713f37cd"},
+    {file = "llama_index-0.9.8.post1.tar.gz", hash = "sha256:8a3d9b04a1e62038a80a8ac13549eecc0389afb9523caaf3f7785c9f0e999173"},
 ]
 
 [package.dependencies]
@@ -1064,23 +1043,6 @@ files = [
     {file = "numpy-1.24.4-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:e98f220aa76ca2a977fe435f5b04d7b3470c0a2e6312907b37ba6068f26787f2"},
     {file = "numpy-1.24.4.tar.gz", hash = "sha256:80f5e3a4e498641401868df4208b74581206afbee7cf7b8329daae82676d9463"},
 ]
-
-[[package]]
-name = "oauthlib"
-version = "3.2.2"
-description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca"},
-    {file = "oauthlib-3.2.2.tar.gz", hash = "sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918"},
-]
-
-[package.extras]
-rsa = ["cryptography (>=3.0.0)"]
-signals = ["blinker (>=1.4.0)"]
-signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
 [[package]]
 name = "openai"
@@ -1719,25 +1681,6 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
-name = "requests-oauthlib"
-version = "1.3.1"
-description = "OAuthlib authentication support for Requests."
-category = "dev"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-files = [
-    {file = "requests-oauthlib-1.3.1.tar.gz", hash = "sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"},
-    {file = "requests_oauthlib-1.3.1-py2.py3-none-any.whl", hash = "sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5"},
-]
-
-[package.dependencies]
-oauthlib = ">=3.0.0"
-requests = ">=2.0.0"
-
-[package.extras]
-rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
-
-[[package]]
 name = "retrying"
 version = "1.3.4"
 description = "Retrying"
@@ -2286,4 +2229,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.12"
-content-hash = "32e2c0e144e7fc7d8ee92408d7a10f7e50643b35dc4b06f463a0479c63ae7bca"
+content-hash = "51eaf36a146fc742b28b52507ea1372a7ae61d34cf0d6db466a28785c71e9a94"

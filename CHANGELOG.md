@@ -1,6 +1,15 @@
 # ChangeLog
 
-## Unreleased
+## [v0.0.50] - 2023-11-28
+
+### New Features
+- add amazon product extraction (#670)
+- Add Waii connector (#647)
+
+## [v0.0.49] - 2023-11-27
+
+### New Features
+- Citation LlamaPack (#666)
 
 ## [v0.0.48] - 2023-11-27
 

@@ -1087,6 +1087,15 @@
       "web reader"
     ]
   },
+  "EarningsCallTranscript":{
+    "id":"earnings_call_transcript",
+    "author": "Athe-kunal",
+    "keywords": [
+      "Finance",
+      "Investor",
+      "Earning calls"
+    ]
+  },
   "OpensearchReader": {
     "id": "opensearch",
     "author": "chnsagitchen"

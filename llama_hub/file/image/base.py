@@ -117,5 +117,6 @@ class ImageReader(BaseReader):
             ImageDocument(
                 text=text_str,
                 image=image_str,
+                extra_info=extra_info or {},
             )
         ]

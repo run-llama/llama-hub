@@ -122,6 +122,7 @@ def main_scraper(
     generate_csv: bool = False,
     multithreading: bool = False,
     max_workers: int = 0,
+    reviews_folder: str = "movie_reviews",
 ):
     """The main helper function to scrape data
 
@@ -225,7 +226,7 @@ def main_scraper(
 
     print(f"Number of reviews scraped: {len(reviews_date)}")
     if generate_csv:
-        os.makedirs("movie_reviews", exist_ok=True)
+        os.makedirs(reviews_folder, exist_ok=True)
         df = pd.DataFrame(
             columns=[
                 "review_date",
@@ -246,7 +247,7 @@ def main_scraper(
         df["review_helpful"] = reviews_found_helpful
         df["review_total_votes"] = reviews_total_votes
         df["reviews_if_spoiler"] = reviews_if_spoiler
-        df.to_csv(f"movie_reviews/{movie_name}.csv", index=False)
+        df.to_csv(f"{reviews_folder}/{movie_name}.csv", index=False)
 
     return (
         reviews_date,
