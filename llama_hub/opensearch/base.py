@@ -22,13 +22,15 @@ class OpensearchReader(BaseReader):
         basic_auth (set): basic authentication username password
     """
 
-    def __init__(self, host: str, port: int, index: str, basic_auth: Optional[set] = None):
+    def __init__(
+        self, host: str, port: int, index: str, basic_auth: Optional[set] = None
+    ):
         """Initialize with parameters."""
         from opensearchpy import OpenSearch
 
         self._opster_client = OpenSearch(
-            hosts=[{'host': host, 'port': port}],
-            http_compress=True, # enables gzip compression for request bodies
+            hosts=[{"host": host, "port": port}],
+            http_compress=True,  # enables gzip compression for request bodies
             http_auth=basic_auth,
             use_ssl=True,
             verify_certs=False,
@@ -41,7 +43,7 @@ class OpensearchReader(BaseReader):
         self,
         field: str,
         query: Optional[dict] = None,
-        embedding_field: Optional[str] = None
+        embedding_field: Optional[str] = None,
     ) -> List[Document]:
         """Read data from the Opensearch index.
 
