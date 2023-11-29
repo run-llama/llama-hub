@@ -1,6 +1,9 @@
-# Gmail OpenAI Agent Pack
+# Retrieval-Augmented Generation (RAG) Evaluation Pack
 
-Create an OpenAI agent pre-loaded with a tool to interact with Gmail. The tool used is the [Gmail LlamaHub tool](https://llamahub.ai/l/tools-gmail).
+Get benchmark scores on your own RAG pipeline (i.e. `BaseQueryEngine`) on a RAG 
+dataset (i.e., `BaseLlamaDataset`). Specifically this pack takes in as input a
+query engine and a `LabelledRagDataset`, which can also be downloaded from
+[llama-hub](https://llamahub.ai).
 
 ## CLI Usage
 
