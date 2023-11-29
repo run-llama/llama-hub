@@ -48,7 +48,7 @@ ll.start_server(project_dir='./data')
 ### Lilac => LlamaIndex Documents
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 LilacReader = download_loader('LilacReader')
 
@@ -58,7 +58,7 @@ documents = loader.load_data(
     # The name of your dataset in the project dir.
     dataset='local/arxiv-karpathy')
 
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 
 index.query("How are ImageNet labels validated?")
 ```

@@ -15,7 +15,7 @@ import os
 MakeWrapper = download_loader('MakeWrapper')
 
 # load index from disk
-index = GPTVectorStoreIndex.load_from_disk('../vector_indices/index_simple.json')
+index = VectorStoreIndex.load_from_disk('../vector_indices/index_simple.json')
 
 # query index
 query_str = "What did the author do growing up?"

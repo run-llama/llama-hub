@@ -1,6 +1,10 @@
-# Trafilatura Website Loader
+# MainContentExtractor Website Loader
 
-This loader is a web scraper that fetches the text from static websites using the `trafilatura` Python package.
+This loader is a web scraper that fetches the text from static websites using the `MainContentExtractor` Python package.
+
+For information on how to extract main content, README in the following github repository
+
+[HawkClaws/main_content_extractor](https://github.com/HawkClaws/main_content_extractor)
 
 ## Usage
 
@@ -9,24 +13,22 @@ To use this loader, you need to pass in an array of URLs.
 ```python
 from llama_index import download_loader
 
-TrafilaturaWebReader = download_loader("TrafilaturaWebReader")
+MainContentExtractorReader = download_loader("MainContentExtractorReader")
 
-loader = TrafilaturaWebReader()
+loader = MainContentExtractorReader()
 documents = loader.load_data(urls=['https://google.com'])
 ```
 
 ## Examples
-
-This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
 ### LlamaIndex
 
 ```python
 from llama_index import VectorStoreIndex, download_loader
 
-TrafilaturaWebReader = download_loader("TrafilaturaWebReader")
+MainContentExtractorReader = download_loader("MainContentExtractorReader")
 
-loader = TrafilaturaWebReader()
+loader = MainContentExtractorReader()
 documents = loader.load_data(urls=['https://google.com'])
 index = VectorStoreIndex.from_documents(documents)
 index.query('What language is on this website?')
@@ -42,9 +44,9 @@ from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
-TrafilaturaWebReader = download_loader("TrafilaturaWebReader")
+MainContentExtractorReader = download_loader("MainContentExtractorReader")
 
-loader = TrafilaturaWebReader()
+loader = MainContentExtractorReader()
 documents = loader.load_data(urls=['https://google.com'])
 index = VectorStoreIndex.from_documents(documents)
 

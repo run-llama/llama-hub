@@ -21,7 +21,12 @@ reader = ChromaReader(
 
 query_vector=[n1, n2, n3, ...]
 
-documents = reader.load_data(collection_name="demo", query_vector=query_vector, limit=5)
+where={"metadata_field": "metadata_value"}
+where_document={"$contains":"word"}
+
+documents = reader.load_data(collection_name="demo", query_vector=query_vector, limit=5, where=where, where_document=where_document)
 ```
 
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+
+> **Note**: For more information on metadata and document filters `where` and `where_document` check official ChromaDB documentation [here](https://docs.trychroma.com/reference/Collection#query) and examples [here](https://github.com/chroma-core/chroma/blob/main/examples/basic_functionality/where_filtering.ipynb)
