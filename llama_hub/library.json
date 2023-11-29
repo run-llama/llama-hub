@@ -1086,5 +1086,13 @@
       "web",
       "web reader"
     ]
+  },
+  "StripeDocsReader": {
+    "id": "stripe_docs",
+    "author": "amorriscode",
+    "keywords":[
+      "stripe",
+      "documentation"
+    ]
   }
 }
