@@ -1,6 +1,4 @@
-# Paul Graham Essay
-
-A `LlamaDataset` based on the Paul Graham Essay document.
+# Paul Graham Essay Dataset
 
 ## CLI Usage
 
