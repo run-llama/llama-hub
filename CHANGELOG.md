@@ -2,7 +2,10 @@
 
 ## Unreleased
 
+## [v0.0.51] - 2023-11-29
+
 ### New Features
+- New category `LlamaDatasets` (#669)
 - New data loader - Opensearch (#672)
 - AddMainContentExtractorReader (#679)
 
