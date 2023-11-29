@@ -121,6 +121,15 @@
     "id": "file/markdown",
     "author": "hursh-desai"
   },
+  "MainContentExtractorReader": {
+    "id": "web/main_content_extractor",
+    "author": "HawkClaws",
+    "keywords":[
+      "main content extractor",
+      "web",
+      "web reader"
+    ]
+  },
   "AudioTranscriber": {
     "id": "file/audio",
     "author": "ravi03071991"
