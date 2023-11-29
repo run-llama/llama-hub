@@ -2,6 +2,10 @@
 
 This loader is a web scraper that fetches the text from static websites using the `MainContentExtractor` Python package.
 
+For information on how to extract main content, README in the following github repository
+
+[HawkClaws/main_content_extractor](https://github.com/HawkClaws/main_content_extractor)
+
 ## Usage
 
 To use this loader, you need to pass in an array of URLs.
