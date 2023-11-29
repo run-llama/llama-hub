@@ -1,5 +1,4 @@
 from typing import Optional, List
-import asyncio
 from tqdm.asyncio import tqdm_asyncio
 from llama_index.query_engine import BaseQueryEngine
 from llama_index.llama_dataset import BaseLlamaDataset, BaseLlamaPredictionDataset
@@ -12,20 +11,25 @@ from llama_index.evaluation import (
     FaithfulnessEvaluator,
     RelevancyEvaluator,
     SemanticSimilarityEvaluator,
-    EvaluationResult
+    EvaluationResult,
 )
 import json
 import pandas as pd
 from llama_index.evaluation.notebook_utils import (
     get_eval_results_df,
 )
-
 import pandas as pd
 import nest_asyncio
 
 
 class RagEvaluatorPack(BaseLlamaPack):
-    """A pack for performing evaluation with your own RAG pipeline."""
+    """A pack for performing evaluation with your own RAG pipeline.
+
+    Args:
+        query_engine: The RAG pipeline to evaluate.
+        rag_dataset: The BaseLlamaDataset to evaluate on.
+        judge_llm: The LLM to use as the evaluator.
+    """
 
     def __init__(
         self,
@@ -43,11 +47,14 @@ class RagEvaluatorPack(BaseLlamaPack):
             self.judge_llm = judge_llm
 
     async def _amake_predictions(self):
-        self.prediction_dataset: BaseLlamaPredictionDataset = await self.rag_dataset.amake_predictions_with(
-            query_engine=self.query_engine, show_progress=True
+        self.prediction_dataset: BaseLlamaPredictionDataset = (
+            await self.rag_dataset.amake_predictions_with(
+                query_engine=self.query_engine, show_progress=True
+            )
         )
 
     def _prepare_judges(self):
+        """Construct the evaluators."""
         judges = {}
         judges["correctness"] = CorrectnessEvaluator(
             service_context=ServiceContext.from_defaults(
@@ -70,6 +77,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         return judges
 
     def _evaluate_example_prediction_tasks(self, judges, example, prediction):
+        """Collect the co-routines."""
         correctness_task = judges["correctness"].aevaluate(
             query=example.query,
             response=prediction.response,
@@ -94,7 +102,6 @@ class RagEvaluatorPack(BaseLlamaPack):
             reference="\n".join(example.reference_contexts),
         )
 
-
         return (
             correctness_task,
             relevancy_task,
@@ -103,6 +110,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
 
     def _save_evaluations(self, evals):
+        """Save evaluation json object."""
         # saving evaluations
         evaluations_objects = {
             "context_similarity": [e.dict() for e in evals["context_similarity"]],
@@ -115,6 +123,7 @@ class RagEvaluatorPack(BaseLlamaPack):
             json.dump(evaluations_objects, json_file)
 
     def _prepare_and_save_benchmark_results(self, evals):
+        """Get mean score across all of the evaluated examples-predictions."""
         _, mean_correctness_df = get_eval_results_df(
             ["base_rag"] * len(evals["correctness"]),
             evals["correctness"],
@@ -154,6 +163,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         return mean_scores_df
 
     async def _amake_evaluations(self):
+        """Async make evaluations."""
         judges = self._prepare_judges()
 
         evals = {
@@ -176,10 +186,17 @@ class RagEvaluatorPack(BaseLlamaPack):
                 judges=judges, example=example, prediction=prediction
             )
 
-            tasks += [correctness_task, relevancy_task, faithfulness_task, semantic_similarity_task]
+            tasks += [
+                correctness_task,
+                relevancy_task,
+                faithfulness_task,
+                semantic_similarity_task,
+            ]
 
         eval_results: List[EvaluationResult] = await tqdm_asyncio.gather(*tasks)
 
+        # since final result of eval_results respects order of inputs
+        # just take appropriate slices
         evals["correctness"] = eval_results[::4]
         evals["relevancy"] = eval_results[1::4]
         evals["faithfulness"] = eval_results[2::4]
