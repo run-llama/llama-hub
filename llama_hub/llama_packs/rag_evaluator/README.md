@@ -17,23 +17,27 @@ You can then inspect the files at `./rag_evaluator_pack` and use them as a templ
 
 ## Code Usage
 
-You can download the pack to a the `./rag_evaluator_pack` directory:
+You can download the pack to the `./rag_evaluator_pack` directory through python
+code as well. The sample script below demonstrates how to construct `RagEvaluatorPack`
+using a `LabelledRagDataset` downloaded from `llama-hub` and a simple RAG pipeline
+built off of its source documents.
 
 ```python
 from llama_index.llama_dataset import download_llama_dataset
 from llama_index.llama_pack import download_llama_pack
 from llama_index import VectorStoreIndex
 
-# download a rag_dataset from llama-hub
+# download a LabelledRagDataset from llama-hub
 rag_dataset, documents = download_llama_dataset(
     "PaulGrahamEssayDataset", "./paul_graham"
 )
 
-# default will use OpenAI GPT-4
+# build a basic RAG pipeline off of the source documents
 index = VectorStoreIndex.from_documents(documents=documents)
 query_engine = index.as_query_engine()
 
-# download and install dependencies
+# Time to benchmark/evaluate this RAG pipeline
+# Download and install dependencies
 RagEvaluatorPack = download_llama_pack(
   "RagEvaluatorPack", "./rag_evaluator_pack"
 )
@@ -49,7 +53,7 @@ benchmark_df = rag_evaluator_pack.run()
 print(benchmark_df)
 ```
 
-**Sample Output**
+**Output**
 ```
 rag                            base_rag
 metrics                                
@@ -62,5 +66,8 @@ mean_context_similarity_score  0.945952
 Note that `rag_evaluator_pack.run()` will also save two files in the same directory
 in which the pack was invoked:
 
-1. `benchmark.csv` - CSV format of the benchmark scores.
-2. `_evaluations.json` - A JSON filed containing the evaluation results for all predictions (made by the `query_engine`) on each example (of the `rag_dataset`).
+```
+.
+├── benchmark.csv (CSV format of the benchmark scores)
+└── _evaluations.json (raw evaluation results for all examples & predictions)
+```
