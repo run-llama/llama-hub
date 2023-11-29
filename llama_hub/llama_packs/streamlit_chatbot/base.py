@@ -15,11 +15,11 @@ class StreamlitChatPack(BaseLlamaPack):
     def __init__(
         self,
         wikipedia_page: str = "Snowflake Inc.",
-        ran_from_main: bool = False,
+        run_from_main: bool = False,
         **kwargs: Any,
     ) -> None:
         """Init params."""
-        if not ran_from_main:
+        if not run_from_main:
             raise ValueError(
                 "Please run this llama-pack directly with "
                 "`streamlit run [download_dir]/streamlit_chatbot/base.py`"
