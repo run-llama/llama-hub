@@ -1095,5 +1095,9 @@
       "Investor",
       "Earning calls"
     ]
+  },
+  "OpensearchReader": {
+    "id": "opensearch",
+    "author": "chnsagitchen"
   }
 }
