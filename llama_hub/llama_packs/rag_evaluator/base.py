@@ -39,7 +39,7 @@ class RagEvaluatorPack(BaseLlamaPack):
             assert isinstance(judge_llm, LLM)
             self.judge_llm = judge_llm
 
-    async def _make_predictions(self):
+    async def _amake_predictions(self):
         self.prediction_dataset: BaseLlamaPredictionDataset = await self.rag_dataset.amake_predictions_with(
             query_engine=self.query_engine, show_progress=True
         )
@@ -66,7 +66,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
         return judges
 
-    async def _evaluate_example_prediction(self, judges, example, prediction):
+    async def _aevaluate_example_prediction(self, judges, example, prediction):
         correctness_result = await judges["correctness"].aevaluate(
             query=example.query,
             response=prediction.response,
@@ -148,7 +148,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         mean_scores_df.to_csv("benchmark.csv")
         return mean_scores_df
 
-    async def _make_evaluations(self):
+    async def _amake_evaluations(self):
         judges = self._prepare_judges()
 
         evals = {
@@ -166,7 +166,7 @@ class RagEvaluatorPack(BaseLlamaPack):
                 relevancy_result,
                 faithfulness_result,
                 semantic_similarity_result,
-            ) = self._evaluate_example_prediction(
+            ) = await self._aevaluate_example_prediction(
                 judges=judges, example=example, prediction=prediction
             )
 
@@ -180,6 +180,6 @@ class RagEvaluatorPack(BaseLlamaPack):
         return benchmark_df
 
     async def run(self):
-        await self._make_predictions()
-        benchmark_df = await self._make_evaluations()
+        await self._amake_predictions()
+        benchmark_df = await self._amake_evaluations()
         return benchmark_df
