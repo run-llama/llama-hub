@@ -1,4 +1,6 @@
-from typing import Optional
+from typing import Optional, List
+import asyncio
+from tqdm.asyncio import tqdm_asyncio
 from llama_index.query_engine import BaseQueryEngine
 from llama_index.llama_dataset import BaseLlamaDataset, BaseLlamaPredictionDataset
 from llama_index.llama_pack.base import BaseLlamaPack
@@ -10,6 +12,7 @@ from llama_index.evaluation import (
     FaithfulnessEvaluator,
     RelevancyEvaluator,
     SemanticSimilarityEvaluator,
+    EvaluationResult
 )
 import json
 import pandas as pd
@@ -66,35 +69,37 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
         return judges
 
-    async def _aevaluate_example_prediction(self, judges, example, prediction):
-        correctness_result = await judges["correctness"].aevaluate(
+    def _evaluate_example_prediction_tasks(self, judges, example, prediction):
+        correctness_task = judges["correctness"].aevaluate(
             query=example.query,
             response=prediction.response,
             reference=example.reference_answer,
         )
 
-        relevancy_result = await judges["relevancy"].aevaluate(
+        relevancy_task = judges["relevancy"].aevaluate(
             query=example.query,
             response=prediction.response,
             contexts=prediction.contexts,
         )
 
-        faithfulness_result = await judges["faithfulness"].aevaluate(
+        faithfulness_task = judges["faithfulness"].aevaluate(
             query=example.query,
             response=prediction.response,
             contexts=prediction.contexts,
         )
 
-        semantic_similarity_result = await judges["semantic_similarity"].aevaluate(
+        semantic_similarity_task = judges["semantic_similarity"].aevaluate(
             query=example.query,
             response="\n".join(prediction.contexts),
             reference="\n".join(example.reference_contexts),
         )
+
+
         return (
-            correctness_result,
-            relevancy_result,
-            faithfulness_result,
-            semantic_similarity_result,
+            correctness_task,
+            relevancy_task,
+            faithfulness_task,
+            semantic_similarity_task,
         )
 
     def _save_evaluations(self, evals):
@@ -158,22 +163,27 @@ class RagEvaluatorPack(BaseLlamaPack):
             "context_similarity": [],
         }
 
+        tasks = []
         for example, prediction in tqdm.tqdm(
             zip(self.rag_dataset.examples, self.prediction_dataset.predictions)
         ):
             (
-                correctness_result,
-                relevancy_result,
-                faithfulness_result,
-                semantic_similarity_result,
-            ) = await self._aevaluate_example_prediction(
+                correctness_task,
+                relevancy_task,
+                faithfulness_task,
+                semantic_similarity_task,
+            ) = self._evaluate_example_prediction_tasks(
                 judges=judges, example=example, prediction=prediction
             )
 
-            evals["correctness"].append(correctness_result)
-            evals["relevancy"].append(relevancy_result)
-            evals["faithfulness"].append(faithfulness_result)
-            evals["context_similarity"].append(semantic_similarity_result)
+            tasks += [correctness_task, relevancy_task, faithfulness_task, semantic_similarity_task]
+
+        eval_results: List[EvaluationResult] = await tqdm_asyncio.gather(*tasks)
+
+        evals["correctness"] = eval_results[::4]
+        evals["relevancy"] = eval_results[1::4]
+        evals["faithfulness"] = eval_results[2::4]
+        evals["context_similarity"] = eval_results[3::4]
 
         self._save_evaluations(evals=evals)
         benchmark_df = self._prepare_and_save_benchmark_results(evals=evals)
