@@ -35,12 +35,10 @@ class StripeDocsReader(BaseReader):
         self._limit = limit
 
     def _load_url(self, url: str) -> str:
-        url_request = urllib.request.urlopen(url)
-
-        return url_request.read()
+        return urllib.request.urlopen(url)
 
     def _load_sitemap(self) -> str:
-        return self._load_url(STRIPE_SITEMAP_URL)
+        return self._load_url(STRIPE_SITEMAP_URL).read()
 
     def _parse_sitemap(
         self, raw_sitemap: str, filters: list[str] = DEFAULT_FILTERS
@@ -54,13 +52,19 @@ class StripeDocsReader(BaseReader):
             sitemap_partition_urls.append(loc)
 
         for sitemap_partition_url in sitemap_partition_urls:
-            urls = self._load_url(sitemap_partition_url).split(" ")
+            # Read the HTML for the sitemap partition
+            html = self._load_url(sitemap_partition_url).readlines()
 
-            for url in urls:
-                contains_filter = any(filter in url for filter in filters)
+            # Iterate through every line in the sitemap partition
+            for line in html:
+                print("LINE {line}")
+                urls = line.split(" ")
 
-                if contains_filter:
-                    sitemap.append(url)
+                for url in urls:
+                    contains_filter = any(filter in url for filter in filters)
+
+                    if contains_filter:
+                        sitemap_urls.append(url)
 
         return sitemap_urls
 

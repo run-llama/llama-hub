@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://stripe.com/sitemap/partition-0.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://stripe.com/sitemap/partition-1.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://stripe.com/sitemap/partition-2.xml</loc>
+  </sitemap>
+</sitemapindex>
