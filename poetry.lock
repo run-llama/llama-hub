@@ -727,13 +727,13 @@ files = [
 
 [[package]]
 name = "llama-index"
-version = "0.9.8.post1"
+version = "0.9.9"
 description = "Interface between LLMs and your data"
 optional = false
 python-versions = ">=3.8.1,<3.12"
 files = [
-    {file = "llama_index-0.9.8.post1-py3-none-any.whl", hash = "sha256:e93515654b1c9d37563bf122b51bd9a2aa5d46979a1f7c950a45fe22713f37cd"},
-    {file = "llama_index-0.9.8.post1.tar.gz", hash = "sha256:8a3d9b04a1e62038a80a8ac13549eecc0389afb9523caaf3f7785c9f0e999173"},
+    {file = "llama_index-0.9.9-py3-none-any.whl", hash = "sha256:e5ffd1543167b22efcb4866c2fe633634ec63ab277c06eb110751a2301513693"},
+    {file = "llama_index-0.9.9.tar.gz", hash = "sha256:3f13cdbe196fd4e99d6a91440c1f7d5d63ea5a9778a6b80ce46deb3b7abc4338"},
 ]
 
 [package.dependencies]
@@ -760,7 +760,7 @@ typing-inspect = ">=0.8.0"
 langchain = ["langchain (>=0.0.303)"]
 local-models = ["optimum[onnxruntime] (>=1.13.2,<2.0.0)", "sentencepiece (>=0.1.99,<0.2.0)", "transformers[torch] (>=4.34.0,<5.0.0)"]
 postgres = ["asyncpg (>=0.28.0,<0.29.0)", "pgvector (>=0.1.0,<0.2.0)", "psycopg-binary (>=3.1.12,<4.0.0)"]
-query-tools = ["guidance (>=0.0.64,<0.0.65)", "jsonpath-ng (>=1.6.0,<2.0.0)", "lm-format-enforcer (>=0.4.3,<0.5.0)", "rank-bm25 (>=0.2.2,<0.3.0)", "scikit-learn (<1.3.0)", "spacy (>=3.7.1,<4.0.0)"]
+query-tools = ["guidance (>=0.0.64,<0.0.65)", "jsonpath-ng (>=1.6.0,<2.0.0)", "lm-format-enforcer (>=0.4.3,<0.5.0)", "rank-bm25 (>=0.2.2,<0.3.0)", "scikit-learn", "spacy (>=3.7.1,<4.0.0)"]
 
 [[package]]
 name = "markupsafe"
