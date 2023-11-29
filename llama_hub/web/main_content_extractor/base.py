@@ -34,10 +34,13 @@ class MainContentExtractorReader(BaseReader):
             raise ValueError("urls must be a list of strings.")
 
         from main_content_extractor import MainContentExtractor
+
         documents = []
         for url in urls:
             response = requests.get(url).text
-            response = MainContentExtractor.extract(response, output_format=self.text_format, include_links=False)
+            response = MainContentExtractor.extract(
+                response, output_format=self.text_format, include_links=False
+            )
 
             documents.append(Document(text=response))
 
