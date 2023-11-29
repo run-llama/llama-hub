@@ -33,7 +33,6 @@ class RagEvaluatorPack(BaseLlamaPack):
         nest_asyncio.apply()
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
-        self.prediction_dataset: Optional[BaseLlamaPredictionDataset] = None
         if judge_llm is None:
             self.judge_llm = OpenAI(temperature=0, model="gpt-4")
         else:
@@ -41,7 +40,7 @@ class RagEvaluatorPack(BaseLlamaPack):
             self.judge_llm = judge_llm
 
     async def _make_predictions(self):
-        self.prediction_dataset = await self.rag_dataset.amake_predictions_with(
+        self.prediction_dataset: BaseLlamaPredictionDataset = await self.rag_dataset.amake_predictions_with(
             query_engine=self.query_engine, show_progress=True
         )
 
@@ -181,5 +180,6 @@ class RagEvaluatorPack(BaseLlamaPack):
         return benchmark_df
 
     async def run(self):
+        await self._make_predictions()
         benchmark_df = await self._make_evaluations()
         return benchmark_df
