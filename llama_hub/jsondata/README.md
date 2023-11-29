@@ -8,7 +8,7 @@ To use this loader, you need to pass in Json data in a Python dictionary.
 
 ```python
 import requests
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 headers = {
     "Authorization": "your_api_token"
 }
@@ -17,7 +17,7 @@ data = requests.get("your-api-url", headers=headers).json()
 JsonDataReader = download_loader("JsonDataReader")
 loader = JsonDataReader()
 documents = loader.load_data(data)
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query("Question about your data")
 ```
 
