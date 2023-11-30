@@ -1,4 +1,4 @@
-# Braintrust Coda Dataset
+# Braintrust Coda Help Desk Dataset
 
 [![Braintrust (346 x 40 px)](https://github.com/nerdai/llama-hub/assets/92402603/a99bddf3-0eab-42e8-8c53-8432da8299d3)](https://www.braintrustdata.com/)
 
