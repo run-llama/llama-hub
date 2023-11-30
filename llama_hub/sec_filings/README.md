@@ -92,7 +92,7 @@ This loader is can be used with both Langchain and LlamaIndex.
 
 ### LlamaIndex
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 from llama_index import SimpleDirectoryReader
 
 SECFilingsLoader = download_loader('SECFilingsLoader')
@@ -101,7 +101,7 @@ loader = SECFilingsLoader(tickers=['TSLA'],amount=3,filing_type="10-K")
 loader.load_data()
 
 documents = SimpleDirectoryReader("data\TSLA\2022").load_data()
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('What are the risk factors of Tesla for the year 2022?')
 
 ```

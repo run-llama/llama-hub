@@ -3,6 +3,8 @@ from llama_index.llms.base import LLM, ChatMessage, MessageRole
 from llama_index.tools.tool_spec.base import BaseToolSpec
 from importlib.util import find_spec
 
+from llama_hub.tools.neo4j_db.query_validator import CypherQueryCorrector, Schema
+
 
 class Neo4jQueryToolSpec(BaseToolSpec):
     """
@@ -11,7 +13,9 @@ class Neo4jQueryToolSpec(BaseToolSpec):
 
     spec_functions = ["run_request"]
 
-    def __init__(self, url, user, password, database, llm: LLM):
+    def __init__(
+        self, url, user, password, database, llm: LLM, validate_cypher: bool = False
+    ):
         """
         Initializes the Neo4jSchemaWiseQuery object.
 
@@ -20,6 +24,8 @@ class Neo4jQueryToolSpec(BaseToolSpec):
             user (str): Username for the Neo4j database.
             password (str): Password for the Neo4j database.
             llm (obj): A language model for generating Cypher queries.
+            validate_cypher (bool): Validate relationship directions in
+                the generated Cypher statement. Default: False
         """
         if find_spec("neo4j") is None:
             raise ImportError(
@@ -30,6 +36,13 @@ class Neo4jQueryToolSpec(BaseToolSpec):
             url=url, username=user, password=password, database=database
         )
         self.llm = llm
+        self.cypher_query_corrector = None
+        if validate_cypher:
+            corrector_schema = [
+                Schema(el["start"], el["type"], el["end"])
+                for el in self.graph_store.structured_schema.get("relationships")
+            ]
+            self.cypher_query_corrector = CypherQueryCorrector(corrector_schema)
 
     def get_system_message(self):
         """
@@ -107,6 +120,9 @@ class Neo4jQueryToolSpec(BaseToolSpec):
 
         # Construct Cypher statement
         cypher = self.construct_cypher_query(question, history)
+        # Validate Cypher statement
+        if self.cypher_query_corrector:
+            cypher = self.cypher_query_corrector(cypher)
         print(cypher)
         try:
             return self.query_graph_db(cypher)

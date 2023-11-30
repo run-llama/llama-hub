@@ -23,13 +23,13 @@ pip install llama-hub
 ### LlamaIndex
 
 ```python
-from llama_index import GPTVectorStoreIndex
+from llama_index import VectorStoreIndex
 from llama_hub.google_docs import GoogleDocsReader
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
 documents = loader.load_data(document_ids=gdoc_ids)
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('Where did the author go to school?')
 ```
 
@@ -55,7 +55,7 @@ For a variety of examples of creating and using data agents, see the [notebooks 
 Note: Make sure you change the description of the `Tool` to match your use case.
 
 ```python
-from llama_index import GPTVectorStoreIndex
+from llama_index import VectorStoreIndex
 from llama_hub.google_docs import GoogleDocsReader
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
@@ -81,14 +81,14 @@ You can also use the loaders with `download_loader` from LlamaIndex in a single 
 For example, see the code snippets below using the Google Docs Loader.
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 GoogleDocsReader = download_loader('GoogleDocsReader')
 
 gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
 documents = loader.load_data(document_ids=gdoc_ids)
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('Where did the author go to school?')
 
 ```
