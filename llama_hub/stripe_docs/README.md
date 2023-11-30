@@ -7,10 +7,16 @@ It is based on the [Async Website Loader](https://llamahub.ai/l/web-async_web).
 ## Usage
 
 ```python
+from llama_index import VectorStoreIndex
 from llama_hub.stripe_docs import StripeDocsReader
 
 loader = StripeDocsReader()
 documents = loader.load_data()
+
+index = VectorStoreIndex.from_documents(documents)
+
+query_engine = index.as_query_engine()
+query_engine.query("How do I accept payments on my website?")
 ```
 
 The `StripeDocsReader` allows you to return plain text docs by setting `html_to_text=True`. You can also adjust the maximum concurrent requests by setting `limit=10`.
