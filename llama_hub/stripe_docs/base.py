@@ -35,10 +35,10 @@ class StripeDocsReader(BaseReader):
         self._limit = limit
 
     def _load_url(self, url: str) -> str:
-        return urllib.request.urlopen(url)
+        return urllib.request.urlopen(url).read()
 
     def _load_sitemap(self) -> str:
-        return self._load_url(STRIPE_SITEMAP_URL).read()
+        return self._load_url(STRIPE_SITEMAP_URL)
 
     def _parse_sitemap(
         self, raw_sitemap: str, filters: list[str] = DEFAULT_FILTERS
@@ -52,19 +52,22 @@ class StripeDocsReader(BaseReader):
             sitemap_partition_urls.append(loc)
 
         for sitemap_partition_url in sitemap_partition_urls:
-            # Read the HTML for the sitemap partition
-            html = self._load_url(sitemap_partition_url).readlines()
+            raw_sitemap_partition = self._load_url(sitemap_partition_url)
+            sitemap_partition = ET.fromstring(raw_sitemap_partition)
 
-            # Iterate through every line in the sitemap partition
-            for line in html:
-                print("LINE {line}")
-                urls = line.split(" ")
+            loc = (
+                sitemap_partition.find(f"{{{XML_SITEMAP_SCHEMA}}}url")
+                .find(f"{{{XML_SITEMAP_SCHEMA}}}loc")
+                .text
+            )
 
-                for url in urls:
-                    contains_filter = any(filter in url for filter in filters)
+            for url in sitemap_partition.findall(f"{{{XML_SITEMAP_SCHEMA}}}url"):
+                loc = url.find(f"{{{XML_SITEMAP_SCHEMA}}}loc").text
 
-                    if contains_filter:
-                        sitemap_urls.append(url)
+                contains_filter = any(filter in loc for filter in filters)
+
+                if contains_filter:
+                    sitemap_urls.append(loc)
 
         return sitemap_urls
 

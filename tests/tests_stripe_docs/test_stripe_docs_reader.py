@@ -9,8 +9,8 @@ from llama_hub.stripe_docs import StripeDocsReader
 MOCK_URL = "https://stripe.com/sitemap/sitemap.xml"
 
 
-def get_sitemap():
-    f = open("tests/tests_stripe_docs/test_stripe_sitemap.xml", "r")
+def get_sitemap(file: str):
+    f = open(file, "r")
     return f.read()
 
 
@@ -37,10 +37,16 @@ class TestSitemapReader(unittest.TestCase):
             # mock url calls
             mock_response = mock_urlopen.return_value
             mock_response.read.side_effect = [
-                get_sitemap(),
-                "https://stripe.com/docs/acceptable-verification-documents",
-                "https://stripe.com/docs/payments/account/checklist https://stripe.com/docs/baas/start-integration/sample-app",
-                "https://stripe.com/docs/billing/subscriptions/cancel https://stripe.com/docs/billing/migration/strong-customer-authentication",
+                get_sitemap("tests/tests_stripe_docs/test_stripe_sitemap.xml"),
+                get_sitemap(
+                    "tests/tests_stripe_docs/test_stripe_sitemap_partition_0.xml"
+                ),
+                get_sitemap(
+                    "tests/tests_stripe_docs/test_stripe_sitemap_partition_1.xml"
+                ),
+                get_sitemap(
+                    "tests/tests_stripe_docs/test_stripe_sitemap_partition_2.xml"
+                ),
             ]
 
             mock_load_data.side_effect = dummy_load_pages
@@ -61,7 +67,7 @@ class TestSitemapReader(unittest.TestCase):
             mock_urlopen.assert_has_calls(mock_urlopen_calls)
 
             assert mock_load_data.call_count == 1
-            assert len(documents) == 5
+            assert len(documents) == 1264
 
     @patch("llama_hub.web.async_web.base.AsyncWebPageReader.load_data")
     def test_sitemap_reader_load_data_with_filter(self, mock_load_data):
@@ -71,16 +77,22 @@ class TestSitemapReader(unittest.TestCase):
             # mock url calls
             mock_response = mock_urlopen.return_value
             mock_response.read.side_effect = [
-                get_sitemap(),
-                "https://stripe.com/docs/acceptable-verification-documents",
-                "https://stripe.com/docs/payments/account/checklist https://stripe.com/docs/baas/start-integration/sample-app",
-                "https://stripe.com/docs/billing/subscriptions/cancel https://stripe.com/docs/billing/migration/strong-customer-authentication",
+                get_sitemap("tests/tests_stripe_docs/test_stripe_sitemap.xml"),
+                get_sitemap(
+                    "tests/tests_stripe_docs/test_stripe_sitemap_partition_0.xml"
+                ),
+                get_sitemap(
+                    "tests/tests_stripe_docs/test_stripe_sitemap_partition_1.xml"
+                ),
+                get_sitemap(
+                    "tests/tests_stripe_docs/test_stripe_sitemap_partition_2.xml"
+                ),
             ]
 
             mock_load_data.side_effect = dummy_load_pages
 
             documents = stripe_docs_reader.load_data(
-                filters=["/billing"],
+                filters=["/docs/billing"],
             )
 
             mock_urlopen_calls = [
@@ -98,12 +110,12 @@ class TestSitemapReader(unittest.TestCase):
 
             assert mock_load_data.call_count == 1
 
-            assert len(documents) == 2
+            assert len(documents) == 66
             assert (
                 documents[0].extra_info["Source"]
-                == "https://stripe.com/docs/billing/subscriptions/cancel"
+                == "https://stripe.com/docs/billing/billing-apis"
             )
             assert (
                 documents[1].extra_info["Source"]
-                == "https://stripe.com/docs/billing/migration/strong-customer-authentication"
+                == "https://stripe.com/docs/billing/collection-method"
             )
