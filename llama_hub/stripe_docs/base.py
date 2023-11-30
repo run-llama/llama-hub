@@ -52,15 +52,9 @@ class StripeDocsReader(BaseReader):
             sitemap_partition_urls.append(loc)
 
         for sitemap_partition_url in sitemap_partition_urls:
-            raw_sitemap_partition = self._load_url(sitemap_partition_url)
-            sitemap_partition = ET.fromstring(raw_sitemap_partition)
+            sitemap_partition = ET.fromstring(self._load_url(sitemap_partition_url))
 
-            loc = (
-                sitemap_partition.find(f"{{{XML_SITEMAP_SCHEMA}}}url")
-                .find(f"{{{XML_SITEMAP_SCHEMA}}}loc")
-                .text
-            )
-
+            # Find all <url /> and iterate through them
             for url in sitemap_partition.findall(f"{{{XML_SITEMAP_SCHEMA}}}url"):
                 loc = url.find(f"{{{XML_SITEMAP_SCHEMA}}}loc").text
 
