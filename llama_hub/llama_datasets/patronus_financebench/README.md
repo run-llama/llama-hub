@@ -1,5 +1,8 @@
 # Patronus AI FinanceBench Dataset
 
+[![patronus-ai-logo (200 x 40 px)](https://github.com/nerdai/llama-hub/assets/92402603/62a6df3f-57a3-4d68-917b-b0947392efcd)](https://www.patronus.ai/)
+
+
 This dataset is a subset of the original FinanceBench dataset. In particular, to
 make this benchmark more computationally efficient, we only keep the documents for
 which there are 2 or more questions. Such filtering, reduced the total unique pdf
