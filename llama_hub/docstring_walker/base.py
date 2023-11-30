@@ -1,7 +1,5 @@
 import ast
 import os
-import networkx as nx
-import networkx as nx
 import logging
 
 from llama_index import Document
@@ -21,41 +19,8 @@ class DocstringWalker(BaseReader):
     Recursively walks a directory and extracts docstrings from each Python module - starting from the module
     itself, then classes, then functions. Builds a graph of dependencies between the extracted docstrings.
     """
-    
-    def __init__(
-        self, 
-        code_dir: str,
-        skip_initpy: bool = True,
-        fail_on_malformed_files: bool = False):
-        """
-        Initialize the DocstringWalker object.
-
-        Parameters
-        ----------
-            code_dir : str 
-                The directory path to the code files.
-            skip_initpy : bool
-                Whether to skip the __init__.py files. Defaults to True.
-            fail_on_malformed_files : bool
-                Whether to fail on malformed files. Defaults to False - in this case, the malformed files are skipped
-                and a warning is logged.
-        """
-        if not os.path.exists(code_dir):
-            raise ValueError(f"Directory {code_dir} does not exist.")
-        self.code_dir = code_dir
-        self.skip_initpy = skip_initpy
-        self.fail_on_malformed_files = fail_on_malformed_files
-        self.code_graph_ = None
-        
-    @property
-    def code_graph(self) -> nx.Graph:
-        """The dependency graph between the loaded documents.
-        The graph is built after loading the data from the specified directory, 
-        so first you have to call the load_data method.
-        """
-        return self.code_graph_
-    
-    def load_data(self, *args, **kwargs) -> List[Document]:
+      
+    def load_data(self, code_dir: str, skip_initpy: bool = True, fail_on_malformed_files: bool = False) -> List[Document]:
         """
         Load data from the specified code directory.
         Additionally, after loading the data, build a dependency graph between the loaded documents.
@@ -64,10 +29,13 @@ class DocstringWalker(BaseReader):
 
         Parameters
         ----------
-        *args : Any
-            Additional positional arguments.
-        **load_kwargs : Any
-            Additional keyword arguments.
+        code_dir : str 
+            The directory path to the code files.
+        skip_initpy : bool
+            Whether to skip the __init__.py files. Defaults to True.
+        fail_on_malformed_files : bool
+            Whether to fail on malformed files. Defaults to False - in this case, the malformed files are skipped
+            and a warning is logged.
 
         Returns
         -------
@@ -75,15 +43,23 @@ class DocstringWalker(BaseReader):
             A list of loaded documents.
         """
 
-        llama_docs, code_graph = self.process_directory()
-        self.code_graph_ = code_graph
+        llama_docs = self.process_directory(code_dir, skip_initpy, fail_on_malformed_files)
         return llama_docs
     
    
-    def process_directory(self) -> Tuple[List[Document], nx.Graph]:
+    def process_directory(self, code_dir: str, skip_initpy: bool = True, fail_on_malformed_files: bool = False) -> List[Document]:
         """
         Process a directory and extract information from Python files.
-
+        Parameters
+        ----------
+        code_dir : str 
+            The directory path to the code files.
+        skip_initpy : bool
+            Whether to skip the __init__.py files. Defaults to True.
+        fail_on_malformed_files : bool
+            Whether to fail on malformed files. Defaults to False - in this case, the malformed files are skipped
+            and a warning is logged.
+            
         Returns
         -------
         Tuple[List[Document], nx.Graph]
@@ -91,25 +67,24 @@ class DocstringWalker(BaseReader):
             The Document objects represent the extracted information from Python files in the directory.
             The Graph object represents the dependency graph between the extracted documents.
         """    
-        G = nx.Graph()
         llama_docs = []
-        for root, _, files in os.walk(self.code_dir):
+        for root, _, files in os.walk(code_dir):
             for file in files:
                 if file.endswith(".py"):
-                    if self.skip_initpy and file == "__init__.py":
+                    if skip_initpy and file == "__init__.py":
                         continue
                     module_name = file.replace(".py", "")
                     module_path = os.path.join(root, file)
                     try:
-                        doc = self.parse_module(module_name, module_path, G)
+                        doc = self.parse_module(module_name, module_path)
                         llama_docs.append(doc)
                     except Exception as e:
-                        if self.fail_on_malformed_files:
+                        if fail_on_malformed_files:
                             raise e
                         else:
                             log.warning(f"Failed to parse file {module_path}. Skipping. Error: {e}")
                             continue
-        return llama_docs, G
+        return llama_docs
 
 
     def read_module_text(self, path: str) -> str:
@@ -130,7 +105,7 @@ class DocstringWalker(BaseReader):
         return text
 
 
-    def parse_module(self, module_name: str, path: str, G: nx.Graph) -> Document:
+    def parse_module(self, module_name: str, path: str) -> Document:
         """Function for parsing a single Python module.
 
         Parameters
@@ -139,8 +114,6 @@ class DocstringWalker(BaseReader):
             A module name.
         path : str
             Path to the module.
-        G : nx.Graph
-            A networkx Graph object.
 
         Returns
         -------
@@ -150,19 +123,18 @@ class DocstringWalker(BaseReader):
         module_text = self.read_module_text(path)
         module = ast.parse(module_text)
         module_docstring = ast.get_docstring(module)
-        G.add_node(module_name, docstring=module_docstring, kind="module")
         module_text = f"Module name: {module_name} \n Docstring: {module_docstring}"
         sub_texts = []
         for elem in module.body:
             if type(elem) in TYPES_TO_PROCESS:
-                sub_text = self.process_elem(elem, module_name, G)
+                sub_text = self.process_elem(elem, module_name)
                 sub_texts.append(sub_text)
         module_text += "\n".join(sub_texts)
         document = Document(text=module_text)
         return document
 
 
-    def process_class(self, class_node: ast.ClassDef, parent_node: str, graph: nx.Graph):
+    def process_class(self, class_node: ast.ClassDef, parent_node: str):
         """
         Process a class node in the AST and add relevant information to the graph.
 
@@ -172,8 +144,6 @@ class DocstringWalker(BaseReader):
             The class node to process. It represents a class definition in the abstract syntax tree (AST).
         parent_node : str 
             The name of the parent node. It specifies the name of the parent node in the graph.
-        graph : nx.Graph
-            The graph to add the information to. It is a NetworkX graph object used to store the processed information.
 
         Returns:
         ----------
@@ -183,17 +153,15 @@ class DocstringWalker(BaseReader):
         """
         cls_name = class_node.name
         cls_docstring = ast.get_docstring(class_node)
-        graph.add_node(cls_name, docstring=cls_docstring, kind="module")
-        graph.add_edge(parent_node, cls_name, kind='in_module')
 
         text = f"\n Class name: {cls_name} \n Docstring: {cls_docstring}"
         sub_texts = []
         for elem in class_node.body:
-            sub_text = self.process_elem(elem, cls_name, graph)
+            sub_text = self.process_elem(elem, cls_name)
             sub_texts.append(sub_text)
         return text + "\n".join(sub_texts)
 
-    def process_function(self, func_node: ast.FunctionDef, parent_node: str, graph: nx.Graph) -> str:
+    def process_function(self, func_node: ast.FunctionDef, parent_node: str) -> str:
         """
         Process a function node in the AST and add it to the graph. Build node text.
 
@@ -203,8 +171,6 @@ class DocstringWalker(BaseReader):
             The function node to process.
         parent_node : str
             The name of the parent node.
-        graph : nx.Graph
-            The graph to add the function node to.
 
         Returns
         -------
@@ -213,18 +179,16 @@ class DocstringWalker(BaseReader):
         """
         func_name = func_node.name
         func_docstring = ast.get_docstring(func_node)
-        graph.add_node(func_name, docstring=func_docstring, kind="function")
-        graph.add_edge(parent_node, func_name, kind='contains')
 
         text = f"\n Function name: {func_name}, In: {parent_node} \n Docstring: {func_docstring}"
         sub_texts = []
         for elem in func_node.body:
-            sub_text = self.process_elem(elem, func_name, graph)
+            sub_text = self.process_elem(elem, func_name)
             sub_texts.append(sub_text)
         return text+ "\n".join(sub_texts)
 
 
-    def process_elem(self, elem, parent_node: str, graph: nx.Graph) -> str:
+    def process_elem(self, elem, parent_node: str) -> str:
         """
         Process an element in the abstract syntax tree (AST).
 
@@ -239,8 +203,8 @@ class DocstringWalker(BaseReader):
             str: The result of processing the element.
         """
         if type(elem) == ast.FunctionDef:
-            return self.process_function(elem, parent_node, graph)
+            return self.process_function(elem, parent_node)
         elif type(elem) == ast.ClassDef:
-            return self.process_class(elem, parent_node, graph)
+            return self.process_class(elem, parent_node)
         else:
             return ""
