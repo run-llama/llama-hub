@@ -1,0 +1,28 @@
+{
+    "name": "Braintrust Coda",
+    "description": "<FILL-IN>",
+    "numberObservations": 100,
+    "containsExamplesByHumans": false,
+    "containsExamplesByAI": true,
+    "sourceUrls": [
+        "https://gist.githubusercontent.com/wong-codaio/b8ea0e087f800971ca5ec9eef617273e/raw/39f8bd2ebdecee485021e20f2c1d40fd649a4c77/articles.json"
+    ],
+    "baselines": [
+        {
+            "name": "llamaindex",
+            "config": {
+                "chunkSize": 1024,
+                "llm": "gpt-3.5-turbo",
+                "similarityTopK": 2,
+                "embedModel": "text-embedding-ada-002"
+            },
+            "metrics": {
+                "contextSimilarity": 0.955,
+                "correctness": 4.320,
+                "faithfulness": 0.900,
+                "relevancy": 0.930
+            },
+            "codeUrl": "https://github.com/run-llama/llama_datasets/blob/main/baselines/paul_graham_essay/llamaindex_baseline.py"
+        }
+    ]
+}

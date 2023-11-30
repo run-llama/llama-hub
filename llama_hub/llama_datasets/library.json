@@ -4,5 +4,11 @@
     "author": "andrei-fajardo",
     "keywords": ["rag"],
     "extra_files": ["source.txt"]
+  },
+  "BraintrustCodaDataset": {
+    "id": "llama_datasets/braintrust_coda",
+    "author": "andrei-fajardo",
+    "keywords": ["rag"],
+    "extra_files": ["section_0", "section_1", "section_2", "section_3", "section_4", "section_5", "section_6", "section_7", "section_8", "section_9", "section_10", "section_11", "section_12", "section_13", "section_14", "section_15", "section_16", "section_17", "section_18", "section_19", "section_20", "section_21", "section_22", "section_23", "section_24", "section_25", "section_26", "section_27", "section_28", "section_29", "section_30", "section_31", "section_32", "section_33", "section_34", "section_35", "section_36", "section_37", "section_38", "section_39", "section_40", "section_41", "section_42", "section_43", "section_44", "section_45", "section_46", "section_47", "section_48", "section_49"]
   }
 }
