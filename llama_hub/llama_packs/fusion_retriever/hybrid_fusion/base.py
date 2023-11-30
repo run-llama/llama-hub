@@ -1,11 +1,10 @@
 """Hybrid Fusion Retriever Pack."""
-
-
+import os
 from typing import Any, Dict, List
 
 from llama_index.indices.vector_store import VectorStoreIndex
 from llama_index.llama_pack.base import BaseLlamaPack
-from llama_index.schema import TextNode
+from llama_index.schema import TextNode, Document
 from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.indices.service_context import ServiceContext
 from llama_index.retrievers import BM25Retriever, QueryFusionRetriever
@@ -19,19 +18,39 @@ class HybridFusionRetrieverPack(BaseLlamaPack):
     """
 
     def __init__(
-        self,
-        nodes: List[TextNode] = None,
-        chunk_size: int = 256,
-        mode: str = "reciprocal_rerank",
-        vector_similarity_top_k: int = 2,
-        bm25_similarity_top_k: int = 2,
-        fusion_similarity_top_k: int = 2,
-        num_queries: int = 4,
-        **kwargs: Any,
+            self,
+            nodes: List[TextNode] = None,
+            chunk_size: int = 256,
+            mode: str = "reciprocal_rerank",
+            vector_similarity_top_k: int = 2,
+            bm25_similarity_top_k: int = 2,
+            fusion_similarity_top_k: int = 2,
+            num_queries: int = 4,
+            documents: List[Document] = None,
+            cache_dir: str = None,
+            **kwargs: Any,
     ) -> None:
         """Init params."""
         service_context = ServiceContext.from_defaults(chunk_size=chunk_size)
-        index = VectorStoreIndex(nodes, service_context=service_context)
+        if cache_dir is not None and os.path.exists(cache_dir):
+            # Load from cache
+            from llama_index import StorageContext, load_index_from_storage
+            # rebuild storage context
+            storage_context = StorageContext.from_defaults(
+                persist_dir=cache_dir)
+            # load index
+            index = load_index_from_storage(storage_context)
+        elif documents is not None:
+            index = VectorStoreIndex.from_documents(
+                documents=documents, service_context=service_context
+            )
+            # Cache the index
+            index.storage_context.persist()
+        else:
+            index = VectorStoreIndex(nodes, service_context=service_context)
+
+        if cache_dir is not None:
+            index.storage_context.persist(persist_dir=cache_dir)
 
         self.vector_retriever = index.as_retriever(
             similarity_top_k=vector_similarity_top_k
