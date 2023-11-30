@@ -17,7 +17,7 @@ convenient `RagEvaluatorPack` llamapack to run your own LlamaIndex RAG pipeline
 with the llamadataset.
 
 ```python
-from llama_index.llama_datasets import download_llama_datasets
+from llama_index.llama_dataset import download_llama_dataset
 from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies for rag evaluator pack
@@ -27,7 +27,7 @@ RagEvaluatorPack = download_llama_pack(
 rag_evaluator_pack = RagEvaluatorPack()
 
 # download and install dependencies for benchmark dataset
-paul_graham_qa_data = download_llama_datasets(
+rag_dataset, documents = download_llama_dataset(
   "BraintrustCodaDataset", "./data"
 )
 
