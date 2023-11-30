@@ -1,16 +1,19 @@
-# Braintrust Coda Help Desk Dataset
+# Patronus AI FinanceBench Dataset
 
-[![Braintrust (346 x 40 px)](https://github.com/nerdai/llama-hub/assets/92402603/a99bddf3-0eab-42e8-8c53-8432da8299d3)](https://www.braintrustdata.com/)
+[![patronus-ai-logo (200 x 40 px)](https://github.com/nerdai/llama-hub/assets/92402603/62a6df3f-57a3-4d68-917b-b0947392efcd)](https://www.patronus.ai/)
 
-_This dataset was kindly provided by Kenny Wong and Ankur Goyal._
 
+This dataset is a subset of the original FinanceBench dataset. In particular, to
+make this benchmark more computationally efficient, we only keep the documents for
+which there are 2 or more questions. Such filtering, reduced the total unique pdf
+documents from 98 to 32.
 
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset BraintrustCodaHelpDeskDataset --download-dir ./data
+llamaindex-cli download-llamadataset PatronusAIFinanceBenchDataset --download-dir ./data
 ```
 
 You can then inspect the files at `./data`.
@@ -34,7 +37,7 @@ rag_evaluator_pack = RagEvaluatorPack()
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "BraintrustCodaHelpDeskDataset", "./data"
+  "PatronusAIFinanceBenchDataset", "./data"
 )
 
 # build basic RAG system
