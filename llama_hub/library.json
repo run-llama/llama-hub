@@ -1108,5 +1108,15 @@
   "OpensearchReader": {
     "id": "opensearch",
     "author": "chnsagitchen"
+  },
+  "DocstringWalker": {
+    "id": "docstring_walker",
+    "author": "Filip Wojcik",
+    "keywords": [
+      "docstring",
+      "python",
+      "code",
+      "source code"
+    ]
   }
 }
