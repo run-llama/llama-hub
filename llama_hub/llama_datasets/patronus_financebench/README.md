@@ -1,4 +1,9 @@
-# Paul Graham Essay Dataset
+# Patronus AI FinanceBench Dataset
+
+This dataset is a subset of the original FinanceBench dataset. In particular, to
+make this benchmark more computationally efficient, we only keep the documents for
+which there are 2 or more questions. Such filtering, reduced the total unique pdf
+documents from 98 to 32.
 
 ## CLI Usage
 
@@ -39,4 +44,3 @@ index = VectorStoreIndex.from_documents(documents=documents)
 query_engine = VectorStoreIndex.as_query_engine()  # previously defined, not shown here
 rag_evaluate_pack.run(dataset=paul_graham_qa_data, query_engine=query_engine)
 ```
-
