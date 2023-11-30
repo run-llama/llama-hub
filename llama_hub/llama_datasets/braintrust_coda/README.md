@@ -19,6 +19,7 @@ with the llamadataset.
 ```python
 from llama_index.llama_dataset import download_llama_dataset
 from llama_index.llama_pack import download_llama_pack
+from llama_index import VectorStoreIndex
 
 # download and install dependencies for rag evaluator pack
 RagEvaluatorPack = download_llama_pack(
