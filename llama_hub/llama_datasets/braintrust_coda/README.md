@@ -10,7 +10,7 @@ _This dataset was kindly provided by Kenny Wong and Ankur Goyal._
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset BraintrustCodaDataset --download-dir ./data
+llamaindex-cli download-llamadataset BraintrustCodaHelpDeskDataset --download-dir ./data
 ```
 
 You can then inspect the files at `./data`.
@@ -34,7 +34,7 @@ rag_evaluator_pack = RagEvaluatorPack()
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "BraintrustCodaDataset", "./data"
+  "BraintrustCodaHelpDeskDataset", "./data"
 )
 
 # build basic RAG system
