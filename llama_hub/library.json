@@ -1103,7 +1103,7 @@
       "stripe",
       "documentation"
     ]
-},
+  },
   "EarningsCallTranscript":{
     "id":"earnings_call_transcript",
     "author": "Athe-kunal",
