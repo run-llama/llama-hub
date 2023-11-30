@@ -4,5 +4,11 @@
     "author": "andrei-fajardo",
     "keywords": ["rag"],
     "extra_files": ["source.txt"]
+  },
+  "BraintrustCodaDataset": {
+    "id": "llama_datasets/braintrust_coda",
+    "author": "kenny-wong",
+    "keywords": ["rag"],
+    "extra_files": ["section_0.md", "section_1.md", "section_2.md", "section_3.md", "section_4.md", "section_5.md", "section_6.md", "section_7.md", "section_8.md", "section_9.md", "section_10.md", "section_11.md", "section_12.md", "section_13.md", "section_14.md", "section_15.md", "section_16.md", "section_17.md", "section_18.md", "section_19.md", "section_20.md", "section_21.md", "section_22.md", "section_23.md", "section_24.md", "section_25.md", "section_26.md", "section_27.md", "section_28.md", "section_29.md", "section_30.md", "section_31.md", "section_32.md", "section_33.md", "section_34.md", "section_35.md", "section_36.md", "section_37.md", "section_38.md", "section_39.md", "section_40.md", "section_41.md", "section_42.md", "section_43.md", "section_44.md", "section_45.md", "section_46.md", "section_47.md", "section_48.md", "section_49.md"]
   }
 }

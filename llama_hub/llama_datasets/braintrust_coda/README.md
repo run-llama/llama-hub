@@ -1,11 +1,16 @@
-# Paul Graham Essay Dataset
+# Braintrust Coda Dataset
+
+[![Braintrust (346 x 40 px)](https://github.com/nerdai/llama-hub/assets/92402603/a99bddf3-0eab-42e8-8c53-8432da8299d3)](https://www.braintrustdata.com/)
+
+_This dataset was kindly provided by Kenny Wong and Ankur Goyal._
+
 
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset PaulGrahamEssayDataset --download-dir ./data
+llamaindex-cli download-llamadataset BraintrustCodaDataset --download-dir ./data
 ```
 
 You can then inspect the files at `./data`.
@@ -29,7 +34,7 @@ rag_evaluator_pack = RagEvaluatorPack()
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "PaulGrahamEssayDataset", "./data"
+  "BraintrustCodaDataset", "./data"
 )
 
 # build basic RAG system
@@ -39,4 +44,3 @@ index = VectorStoreIndex.from_documents(documents=documents)
 query_engine = VectorStoreIndex.as_query_engine()  # previously defined, not shown here
 rag_evaluate_pack.run(dataset=paul_graham_qa_data, query_engine=query_engine)
 ```
-
