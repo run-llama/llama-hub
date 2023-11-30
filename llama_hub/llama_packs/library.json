@@ -62,12 +62,12 @@
   "GradioReActAgentPack": {
     "id": "llama_packs/gradio_react_agent_chatbot",
     "author": "andrei-fajardo",
-    "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
+    "keywords": ["gradio", "react-agent", "chatbot", "tools"]
   },
   "GradioAgentChatPack": {
     "id": "llama_packs/gradio_agent_chat",
     "author": "andrei-fajardo",
-    "keywords": ["gradio", "agent", "chatbot", "tools"] 
+    "keywords": ["gradio", "agent", "chatbot", "tools"]
   },
   "WeaviateSubQuestionPack": {
     "id": "llama_packs/sub_question_weaviate",
@@ -138,5 +138,10 @@
     "id": "llama_packs/amazon_product_extraction",
     "author": "jerryjliu",
     "keywords": ["amazon", "product", "extraction"]
+  },
+  "RagEvaluatorPack": {
+    "id": "llama_packs/rag_evaluator",
+    "author": "andrei-fajardo",
+    "keywords": ["rag", "evaluation", "benchmarks"]
   }
-} 
+}
