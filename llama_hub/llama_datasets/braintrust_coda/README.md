@@ -1,5 +1,10 @@
 # Braintrust Coda Dataset
 
+[![braintrust-logo (200 x 50 px)](https://github.com/nerdai/llama-hub/assets/92402603/1fcc1b64-1a55-4644-9a8c-3cf492cf6aa1)](https://www.braintrustdata.com/)
+
+_This dataset was kindly provided by Kenny Wong and Ankur Goyal._
+
+
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
