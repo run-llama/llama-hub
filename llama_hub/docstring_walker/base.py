@@ -123,7 +123,7 @@ class DocstringWalker(BaseReader):
         module_text = self.read_module_text(path)
         module = ast.parse(module_text)
         module_docstring = ast.get_docstring(module)
-        module_text = f"Module name: {module_name} \n Docstring: {module_docstring}"
+        module_text = f"Module name: {module_name} \n Docstring: {module_docstring} \n"
         sub_texts = []
         for elem in module.body:
             if type(elem) in TYPES_TO_PROCESS:
