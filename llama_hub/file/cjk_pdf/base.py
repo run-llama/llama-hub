@@ -39,8 +39,8 @@ class CJKPDFReader(BaseReader):
         retstr = StringIO()
         # Create a text converter
         codec = "utf-8"
-        laparams = LAParams()
-        device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+
+        device = TextConverter(rsrcmgr, retstr, codec=codec)
         # Create a PDF interpreter
         interpreter = PDFPageInterpreter(rsrcmgr, device)
         # Open the PDF file
