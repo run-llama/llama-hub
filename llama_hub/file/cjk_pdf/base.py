@@ -29,7 +29,6 @@ class CJKPDFReader(BaseReader):
         from io import StringIO
 
         from pdfminer.converter import TextConverter
-        from pdfminer.layout import LAParams
         from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
         from pdfminer.pdfpage import PDFPage
 
