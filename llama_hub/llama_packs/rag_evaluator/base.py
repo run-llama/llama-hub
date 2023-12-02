@@ -80,10 +80,10 @@ class RagEvaluatorPack(BaseLlamaPack):
             service_context=ServiceContext.from_defaults()
         )
         return judges
-    
+
     async def _anone(self) -> None:
         """A dummy async method that returns None.
-        
+
         NOTE: this is used to handle case when creating async tasks for evaluating
         predictions where contexts do not exist.
         """
