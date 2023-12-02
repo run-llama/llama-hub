@@ -61,12 +61,12 @@
   },
   "GradioReActAgentPack": {
     "id": "llama_packs/gradio_react_agent_chatbot",
-    "author": "andrei-fajardo",
+    "author": "nerdai",
     "keywords": ["gradio", "react-agent", "chatbot", "tools"]
   },
   "GradioAgentChatPack": {
     "id": "llama_packs/gradio_agent_chat",
-    "author": "andrei-fajardo",
+    "author": "nerdai",
     "keywords": ["gradio", "agent", "chatbot", "tools"]
   },
   "WeaviateSubQuestionPack": {
@@ -141,7 +141,7 @@
   },
   "RagEvaluatorPack": {
     "id": "llama_packs/rag_evaluator",
-    "author": "andrei-fajardo",
+    "author": "nerdai",
     "keywords": ["rag", "evaluation", "benchmarks"]
   }
 }
