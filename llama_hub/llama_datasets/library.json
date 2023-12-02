@@ -2,19 +2,16 @@
   "PaulGrahamEssayDataset": {
     "id": "llama_datasets/paul_graham_essay",
     "author": "andrei-fajardo",
-    "keywords": ["rag"],
-    "extra_files": ["source.txt"]
+    "keywords": ["rag"]
   },
   "BraintrustCodaHelpDeskDataset": {
     "id": "llama_datasets/braintrust_coda",
     "author": "kenny-wong",
-    "keywords": ["rag"],
-    "extra_files": ["section_0.md", "section_1.md", "section_2.md", "section_3.md", "section_4.md", "section_5.md", "section_6.md", "section_7.md", "section_8.md", "section_9.md", "section_10.md", "section_11.md", "section_12.md", "section_13.md", "section_14.md", "section_15.md", "section_16.md", "section_17.md", "section_18.md", "section_19.md", "section_20.md", "section_21.md", "section_22.md", "section_23.md", "section_24.md", "section_25.md", "section_26.md", "section_27.md", "section_28.md", "section_29.md", "section_30.md", "section_31.md", "section_32.md", "section_33.md", "section_34.md", "section_35.md", "section_36.md", "section_37.md", "section_38.md", "section_39.md", "section_40.md", "section_41.md", "section_42.md", "section_43.md", "section_44.md", "section_45.md", "section_46.md", "section_47.md", "section_48.md", "section_49.md"]
+    "keywords": ["rag", "help desk"]
   },
   "PatronusAIFinanceBenchDataset": {
     "id": "llama_datasets/patronus_financebench",
     "author": "anand",
-    "keywords": ["rag"],
-    "extra_files": ["-6927891925076153667.pdf", "-7202804836132812435.pdf", "5420696008997632157.pdf", "-1259278093432956000.pdf", "8255010981931466649.pdf", "3640927171460586089.pdf", "2285064414955059570.pdf", "-952231812766963598.pdf", "7585536068186288071.pdf", "-8614230448635868.pdf", "2373172441154640167.pdf", "5778020429057004799.pdf", "-6705194003955227682.pdf", "-5211952102302999032.pdf", "-1487443078825766914.pdf", "-2391628177033683478.pdf", "1442095295620132897.pdf", "8356595383350674852.pdf", "1492918447230031624.pdf", "-285462274670044281.pdf", "7373122028475438887.pdf", "5236576729232243478.pdf", "6400658416673335614.pdf", "-496066814727482612.pdf", "6473351792252921673.pdf", "2963986444829225983.pdf", "6926845495504563703.pdf", "-5969702240604939055.pdf", "-6546882555099552907.pdf", "-1994176231209798888.pdf", "4523106881982950725.pdf", "-6730121070246638068.pdf"]
+    "keywords": ["rag", "finance"]
   }
 }
