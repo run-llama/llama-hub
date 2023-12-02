@@ -44,12 +44,10 @@ class HybridFusionRetrieverPack(BaseLlamaPack):
             index = VectorStoreIndex.from_documents(
                 documents=documents, service_context=service_context
             )
-            # Cache the index
-            index.storage_context.persist()
         else:
             index = VectorStoreIndex(nodes, service_context=service_context)
 
-        if cache_dir is not None:
+        if cache_dir is not None and not os.path.exists(cache_dir):
             index.storage_context.persist(persist_dir=cache_dir)
 
         self.vector_retriever = index.as_retriever(
