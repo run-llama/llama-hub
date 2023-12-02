@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import patch, call
 
-import pytest
 from llama_index.readers.schema.base import Document
 
 from llama_hub.stripe_docs import StripeDocsReader
