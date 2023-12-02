@@ -22,7 +22,7 @@
                 "faithfulness": 0.755,
                 "relevancy": 0.684
             },
-            "codeUrl": "https://github.com/run-llama/llama_datasets/blob/main/baselines/patronus_financebench/llamaindex_baseline.py"
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/patronus_financebench/llamaindex_baseline.py"
         }
     ]
 }
