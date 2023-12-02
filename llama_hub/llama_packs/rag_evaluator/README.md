@@ -1,7 +1,7 @@
 # Retrieval-Augmented Generation (RAG) Evaluation Pack
 
-Get benchmark scores on your own RAG pipeline (i.e. `BaseQueryEngine`) on a RAG 
-dataset (i.e., `BaseLlamaDataset`). Specifically this pack takes in as input a
+Get benchmark scores on your own RAG pipeline (i.e. `QueryEngine`) on a RAG
+dataset (i.e., `LabelledRagDataset`). Specifically this pack takes in as input a
 query engine and a `LabelledRagDataset`, which can also be downloaded from
 [llama-hub](https://llamahub.ai).
 
@@ -53,8 +53,9 @@ benchmark_df = rag_evaluator_pack.run()
 print(benchmark_df)
 ```
 
-**Output**
-```
+`Output:`
+
+```text
 rag                            base_rag
 metrics                                
 mean_correctness_score         4.511364
@@ -66,7 +67,7 @@ mean_context_similarity_score  0.945952
 Note that `rag_evaluator_pack.run()` will also save two files in the same directory
 in which the pack was invoked:
 
-```
+```bash
 .
 ├── benchmark.csv (CSV format of the benchmark scores)
 └── _evaluations.json (raw evaluation results for all examples & predictions)
