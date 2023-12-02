@@ -202,7 +202,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         mean_scores_df.to_csv("benchmark.csv")
         return mean_scores_df
 
-    async def _make_evaluations(self):
+    def _make_evaluations(self):
         """Sync make evaluations."""
         judges = self._prepare_judges()
 
