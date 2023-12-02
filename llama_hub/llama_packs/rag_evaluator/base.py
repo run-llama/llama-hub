@@ -80,6 +80,14 @@ class RagEvaluatorPack(BaseLlamaPack):
             service_context=ServiceContext.from_defaults()
         )
         return judges
+    
+    async def _anone(self) -> None:
+        """A dummy async method that returns None.
+        
+        NOTE: this is used to handle case when creating async tasks for evaluating
+        predictions where contexts do not exist.
+        """
+        return None
 
     def _create_async_evaluate_example_prediction_tasks(
         self, judges, example, prediction
@@ -103,11 +111,14 @@ class RagEvaluatorPack(BaseLlamaPack):
             contexts=prediction.contexts,
         )
 
-        semantic_similarity_task = judges["semantic_similarity"].aevaluate(
-            query=example.query,
-            response="\n".join(prediction.contexts),
-            reference="\n".join(example.reference_contexts),
-        )
+        if example.reference_contexts and prediction.contexts:
+            semantic_similarity_task = judges["semantic_similarity"].aevaluate(
+                query=example.query,
+                response="\n".join(prediction.contexts),
+                reference="\n".join(example.reference_contexts),
+            )
+        else:
+            semantic_similarity_task = self._anone()
 
         return (
             correctness_task,
@@ -136,11 +147,14 @@ class RagEvaluatorPack(BaseLlamaPack):
             contexts=prediction.contexts,
         )
 
-        semantic_similarity_result = judges["semantic_similarity"].evaluate(
-            query=example.query,
-            response="\n".join(prediction.contexts),
-            reference="\n".join(example.reference_contexts),
-        )
+        if example.reference_contexts and prediction.contexts:
+            semantic_similarity_result = judges["semantic_similarity"].evaluate(
+                query=example.query,
+                response="\n".join(prediction.contexts),
+                reference="\n".join(example.reference_contexts),
+            )
+        else:
+            semantic_similarity_result = None
 
         return (
             correctness_result,

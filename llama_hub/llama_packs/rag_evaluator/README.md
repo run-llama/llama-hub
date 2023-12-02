@@ -49,7 +49,7 @@ rag_evaluator_pack = RagEvaluatorPack(
 )
 
 # PERFORM EVALUATION
-benchmark_df = rag_evaluator_pack.run()
+benchmark_df = rag_evaluator_pack.run()  # async arun() also supported
 print(benchmark_df)
 ```
 
