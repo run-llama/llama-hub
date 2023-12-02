@@ -1,6 +1,7 @@
 """Snowflake Query Engine Pack."""
 
-import os, json
+import os
+import json
 from typing import Any, Dict, List
 
 def snowflake_sqlalchemy_20_monkey_patches():
@@ -28,7 +29,7 @@ def snowflake_sqlalchemy_20_monkey_patches():
 # workaround for https://github.com/snowflakedb/snowflake-sqlalchemy/issues/380.
 try:
     snowflake_sqlalchemy_20_monkey_patches()
-except Exception as e:
+except Exception:
     raise ImportError("Please run `pip install snowflake-sqlalchemy`")
 
 from sqlalchemy import create_engine
