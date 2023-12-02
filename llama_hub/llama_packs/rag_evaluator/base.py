@@ -3,6 +3,7 @@ from tqdm.asyncio import tqdm_asyncio
 from llama_index.query_engine import BaseQueryEngine
 from llama_index.llama_dataset import BaseLlamaDataset, BaseLlamaPredictionDataset
 from llama_index.llama_pack.base import BaseLlamaPack
+from llama_index.evaluation.base import EvaluationResult
 import tqdm
 from llama_index.llms import OpenAI, LLM
 from llama_index import ServiceContext
@@ -81,13 +82,25 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
         return judges
 
-    async def _anone(self) -> None:
+    async def _areturn_null_eval_result(self, query) -> EvaluationResult:
         """A dummy async method that returns None.
 
         NOTE: this is used to handle case when creating async tasks for evaluating
         predictions where contexts do not exist.
         """
-        return None
+        return EvaluationResult(
+            query=query,
+        )
+    
+    def _return_null_eval_result(self, query) -> EvaluationResult:
+        """A dummy async method that returns None.
+
+        NOTE: this is used to handle case when creating async tasks for evaluating
+        predictions where contexts do not exist.
+        """
+        return EvaluationResult(
+            query=query,
+        )
 
     def _create_async_evaluate_example_prediction_tasks(
         self, judges, example, prediction
@@ -118,7 +131,9 @@ class RagEvaluatorPack(BaseLlamaPack):
                 reference="\n".join(example.reference_contexts),
             )
         else:
-            semantic_similarity_task = self._anone()
+            semantic_similarity_task = self._areturn_null_eval_result(
+                query=example.query
+            )
 
         return (
             correctness_task,
@@ -154,7 +169,9 @@ class RagEvaluatorPack(BaseLlamaPack):
                 reference="\n".join(example.reference_contexts),
             )
         else:
-            semantic_similarity_result = None
+            semantic_similarity_result = self._return_null_eval_result(
+                query=example.query
+            )
 
         return (
             correctness_result,
