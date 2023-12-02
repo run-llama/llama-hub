@@ -8,7 +8,7 @@ from llama_index import VectorStoreIndex
 async def main():
     # DOWNLOAD LLAMADATASET
     rag_dataset, documents = download_llama_dataset(
-      "BraintrustCodaHelpDeskDataset", "./braintrust_codahdd"
+        "BraintrustCodaHelpDeskDataset", "./braintrust_codahdd"
     )
 
     # BUILD BASIC RAG PIPELINE
@@ -16,15 +16,11 @@ async def main():
     query_engine = index.as_query_engine()
 
     # EVALUATE WITH PACK
-    RagEvaluatorPack = download_llama_pack(
-      "RagEvaluatorPack", "./pack_stuff"
-    )
-    rag_evaluator = RagEvaluatorPack(
-        query_engine=query_engine,
-        rag_dataset=rag_dataset
-    )
+    RagEvaluatorPack = download_llama_pack("RagEvaluatorPack", "./pack_stuff")
+    rag_evaluator = RagEvaluatorPack(query_engine=query_engine, rag_dataset=rag_dataset)
     benchmark_df = await rag_evaluator.arun()
     print(benchmark_df)
+
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
