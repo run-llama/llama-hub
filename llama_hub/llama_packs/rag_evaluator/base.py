@@ -1,3 +1,4 @@
+import asyncio
 from typing import Optional, List
 from tqdm.asyncio import tqdm_asyncio
 from llama_index.query_engine import BaseQueryEngine
@@ -19,7 +20,6 @@ from llama_index.evaluation.notebook_utils import (
     get_eval_results_df,
 )
 import pandas as pd
-import nest_asyncio
 
 
 class RagEvaluatorPack(BaseLlamaPack):
@@ -37,7 +37,6 @@ class RagEvaluatorPack(BaseLlamaPack):
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
     ):
-        nest_asyncio.apply()
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
         if judge_llm is None:
@@ -76,7 +75,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
         return judges
 
-    def _evaluate_example_prediction_tasks(self, judges, example, prediction):
+    def _create_async_evaluate_example_prediction_tasks(self, judges, example, prediction):
         """Collect the co-routines."""
         correctness_task = judges["correctness"].aevaluate(
             query=example.query,
@@ -182,7 +181,7 @@ class RagEvaluatorPack(BaseLlamaPack):
                 relevancy_task,
                 faithfulness_task,
                 semantic_similarity_task,
-            ) = self._evaluate_example_prediction_tasks(
+            ) = self._create_async_evaluate_example_prediction_tasks(
                 judges=judges, example=example, prediction=prediction
             )
 
@@ -206,7 +205,11 @@ class RagEvaluatorPack(BaseLlamaPack):
         benchmark_df = self._prepare_and_save_benchmark_results(evals=evals)
         return benchmark_df
 
-    async def run(self):
+    def run(self):
+        benchmark_df = asyncio.run(self.arun())
+        return benchmark_df
+
+    async def arun(self):
         await self._amake_predictions()
         benchmark_df = await self._amake_evaluations()
         return benchmark_df
