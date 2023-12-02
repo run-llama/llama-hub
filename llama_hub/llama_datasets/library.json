@@ -1,7 +1,7 @@
 {
   "PaulGrahamEssayDataset": {
     "id": "llama_datasets/paul_graham_essay",
-    "author": "andrei-fajardo",
+    "author": "nerdai",
     "keywords": ["rag"]
   },
   "BraintrustCodaHelpDeskDataset": {
