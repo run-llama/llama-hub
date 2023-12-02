@@ -1,7 +1,7 @@
 """Snowflake Query Engine Pack."""
 
 import os, json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 def snowflake_sqlalchemy_20_monkey_patches():
     import sqlalchemy.util.compat
