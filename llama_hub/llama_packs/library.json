@@ -84,6 +84,11 @@
     "author": "Liuhong99",
     "keywords": ["voyage", "query", "retrieval", "embeddings"]
   },
+  "VectaraRagPack": {
+    "id": "llama_packs/vectara_rag",
+    "author": "ofermend",
+    "keywords": ["vectara", "rag", "retrieval", "embeddings"]
+  },
   "TimescaleVectorAutoretrievalPack": {
     "id": "llama_packs/timescale_vector_autoretrieval",
     "author": "cevian",

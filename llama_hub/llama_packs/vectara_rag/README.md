@@ -30,7 +30,7 @@ Feel free to inspect the files at `./vectara_rag_pack` and use them as a templat
 You can download the pack to a `./vectara_rag_pack` directory:
 
 ```python
-from llama_hub.llama_pack import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 VectaraIndex = download_llama_pack(
   "VectaraRagPack", "./vectara_rag_pack"
 )
@@ -52,20 +52,20 @@ vectara_pack = VectaraRagPack()
 ```
 
 Additional optional arguments:
-* similarity_top_k: determines the number of results to return. Defaults to 5.
-* n_sentences_before and n_sentences_after: determine the number of sentences before/after the 
+* `similarity_top_k`: determines the number of results to return. Defaults to 5.
+* `n_sentences_before` and `n_sentences_after`: determine the number of sentences before/after the 
   matching fact to use with the summarization LLM. defaults to 2.
-* vectara_query_mode: 'default' or 'mmr'
-* vectara_kwargs: additional parameters for the Vectara Index
-  * summary_enabled: whether to generate summaries or not. Defaults to True.
+* `vectara_query_mode`: 'default' or 'mmr'
+* `vectara_kwargs`: additional parameters for the Vectara Index
+  * `summary_enabled`: whether to generate summaries or not. Defaults to True.
   * When summary_enabled is True, you can set the following:
-    * summary_response_lang: language to use for summary generation. defaults to "eng".
-    * summary_num_results: number of results to use for summary generation. Defaults to 7.
-    * summary_prompt_name: name of the prompt to use for summary generation. 
-      Defaults to vectara-summary-ext-v1.2.0.
+    * `summary_response_lang`: language to use for summary generation. defaults to "eng".
+    * `summary_num_results`: number of results to use for summary generation. Defaults to 7.
+    * `summary_prompt_name`: name of the prompt to use for summary generation. 
+      Defaults to 'vectara-summary-ext-v1.2.0'.
   * when query mode is "mmr", you can set the following:
-    * mmr_k: number of results to fetch for MMR, defaults to 50
-    * mmr_diversity_bias: number between 0 and 1 that determines the degree
+    * `mmr_k`: number of results to fetch for MMR, defaults to 50
+    * `mmr_diversity_bias`: number between 0 and 1 that determines the degree
       of diversity among the results with 0 corresponding
       to minimum diversity and 1 to maximum diversity. Defaults to 0.3.
 

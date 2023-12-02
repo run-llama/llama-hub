@@ -15,14 +15,13 @@ class VectaraRagPack(BaseLlamaPack):
         self,
         verbose: bool = True,
         nodes: Optional[List[TextNode]] = None,
+        similarity_top_k: int = 5,
+        n_sentences_before: int = 2,
+        n_sentences_after: int = 2,
+        vectara_query_mode: str = "default",
         **kwargs: Any,
     ):
         self._index = VectaraIndex(nodes, verbose=verbose, **kwargs)
-
-        similarity_top_k = kwargs.get("similarity_top_k", 5)
-        n_sentences_before = kwargs.get("n_sentences_before", 2)
-        n_sentences_after = kwargs.get("n_sentences_after", 2)
-        vectara_query_mode = kwargs.get("vectara_query_mode", "default")
         vectara_kwargs = kwargs.get("vectara_kwargs", {})
         if "summary_enabled" not in vectara_kwargs:
             vectara_kwargs["summary_enabled"] = True
