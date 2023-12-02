@@ -91,7 +91,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         return EvaluationResult(
             query=query,
         )
-    
+
     def _return_null_eval_result(self, query) -> EvaluationResult:
         """A dummy async method that returns None.
 
