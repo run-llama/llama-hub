@@ -46,6 +46,7 @@ class RagEvaluatorPack(BaseLlamaPack):
             self.judge_llm = judge_llm
 
     async def _amake_predictions(self):
+        """Async make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             await self.rag_dataset.amake_predictions_with(
                 query_engine=self.query_engine, show_progress=True
@@ -53,6 +54,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
 
     def _make_predictions(self):
+        """Sync make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             self.rag_dataset.make_predictions_with(
                 query_engine=self.query_engine, show_progress=True
