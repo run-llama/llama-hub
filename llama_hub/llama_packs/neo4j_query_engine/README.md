@@ -1,6 +1,13 @@
 # Neo4j Query Engine Pack
 
-This LlamaPack creates a Neo4j query engine, and executes its `query` function.
+This LlamaPack creates a Neo4j query engine, and executes its `query` function. This pack offers the option of creating multiple types of query engines, namely:
+* Knowledge graph vector-based entity retrieval (default if no query engine type option is provided)
+* Knowledge graph keyword-based entity retrieval
+* Knowledge graph hybrid entity retrieval
+* Raw vector index retrieval
+* Custom combo query engine (vector similarity + KG entity retrieval)
+* KnowledgeGraphQueryEngine
+* KnowledgeGraphRAGRetriever
 
 ## CLI Usage
 
