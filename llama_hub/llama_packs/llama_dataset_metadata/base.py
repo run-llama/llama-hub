@@ -201,9 +201,32 @@ class LlamaDatasetMetadataPack(BaseLlamaPack):
     submitting a llamadataset: card.json and README.md.
     """
 
-    def run(self, index, benchmark_df, rag_dataset, name, description, baseline_name):
+    def run(
+        self,
+        index: BaseIndex,
+        benchmark_df: pd.DataFrame,
+        rag_dataset: LabelledRagDataset,
+        name: str,
+        description: str,
+        baseline_name: str,
+        source_urls: Optional[List[str]] = None,
+        code_url: Optional[str] = None,
+    ):
         """Main usage for a llamapack. This will build the card.json and README.md
         and save them to local disk.
+
+        Args:
+            index (BaseIndex): the index from which query_engine is derived and
+                used in the rag evaluation.
+            benchmark_df (pd.DataFrame): the benchmark dataframe after using
+                RagEvaluatorPack
+            rag_dataset (LabelledRagDataset): the LabelledRagDataset used for
+                evaluations
+            name (str): The name of the new dataset e.g., "Paul Graham Essay Dataset"
+            baseline_name (str): The name of the baseline e.g., "llamaindex"
+            description (str): The description of the new dataset.
+            source_urls (Optional[List[str]], optional): _description_. Defaults to None.
+            code_url (Optional[str], optional): _description_. Defaults to None.
         """
         readme_obj = Readme(name=name)
         card_obj = DatasetCard.from_rag_evaluation(
@@ -213,6 +236,8 @@ class LlamaDatasetMetadataPack(BaseLlamaPack):
             name=name,
             description=description,
             baseline_name=baseline_name,
+            source_urls=source_urls,
+            code_url=code_url,
         )
 
         # save card.json
