@@ -13,8 +13,8 @@ from llama_index.download.module import LLAMA_HUB_URL
 
 
 class Readme(BaseModel):
-    """A simple class for creating a README.md string.
-    """
+    """A simple class for creating a README.md string."""
+
     name: str
     _readme_template_path: str = "/llama_datasets/template_README.md"
 
@@ -46,6 +46,7 @@ def to_camel(string: str) -> str:
 
 class BaseMetadata(BaseModel):
     """Base Metadata class."""
+
     class Config:
         alias_generator = to_camel
         allow_population_by_field_name = True
@@ -54,6 +55,7 @@ class BaseMetadata(BaseModel):
 
 class BaselineConfig(BaseMetadata):
     """Baseline config data class."""
+
     chunk_size: int
     llm: str
     similarity_top_k: int
@@ -62,6 +64,7 @@ class BaselineConfig(BaseMetadata):
 
 class BaselineMetrics(BaseMetadata):
     """Baseline metrics data class."""
+
     context_similarity: Optional[float]
     correctness: float
     faithfulness: float
@@ -70,6 +73,7 @@ class BaselineMetrics(BaseMetadata):
 
 class Baseline(BaseMetadata):
     """Baseline data class."""
+
     name: str
     config: BaselineConfig
     metrics: BaselineMetrics
@@ -78,6 +82,7 @@ class Baseline(BaseMetadata):
 
 class DatasetCard(BaseMetadata):
     """A pydantic BaseModel representing DatasetCard."""
+
     name: str
     description: str
     number_observations: int
@@ -195,6 +200,7 @@ class LlamaDatasetMetadataPack(BaseLlamaPack):
     """A llamapack for creating and saving the necessary metadata files for
     submitting a llamadataset: card.json and README.md.
     """
+
     def run(self, index, benchmark_df, rag_dataset, name, description, baseline_name):
         """Main usage for a llamapack. This will build the card.json and README.md
         and save them to local disk.
