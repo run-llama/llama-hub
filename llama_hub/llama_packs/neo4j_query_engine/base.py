@@ -28,6 +28,7 @@ class Neo4jQueryEngineType(str, Enum):
     KG_QE = "KnowledgeGraphQueryEngine"
     KG_RAG_RETRIEVER = "KnowledgeGraphRAGRetriever"
 
+
 class Neo4jQueryEnginePack(BaseLlamaPack):
     """Neo4j Query Engine pack."""
 
@@ -42,15 +43,17 @@ class Neo4jQueryEnginePack(BaseLlamaPack):
         **kwargs: Any,
     ) -> None:
         """Init params."""
-        
+
         neo4j_graph_store = Neo4jGraphStore(
-            username = username,
-            password = password,
-            url = url,
-            database = database,
+            username=username,
+            password=password,
+            url=url,
+            database=database,
         )
 
-        neo4j_storage_context = StorageContext.from_defaults(graph_store=neo4j_graph_store)
+        neo4j_storage_context = StorageContext.from_defaults(
+            graph_store=neo4j_graph_store
+        )
 
         # define LLM
         self.llm = OpenAI(temperature=0.1, model="gpt-3.5-turbo")
@@ -64,17 +67,16 @@ class Neo4jQueryEnginePack(BaseLlamaPack):
             include_embeddings=True,
         )
 
-        #create node parser to parse nodes from document
+        # create node parser to parse nodes from document
         node_parser = SentenceSplitter(chunk_size=512)
 
         # use transforms directly
         nodes = node_parser(docs)
         print(f"loaded nodes with {len(nodes)} nodes")
 
-        #based on the nodes and service_context, create index
+        # based on the nodes and service_context, create index
         vector_index = VectorStoreIndex(
-            nodes=nodes,
-            service_context=self.service_context
+            nodes=nodes, service_context=self.service_context
         )
 
         if query_engine_type == Neo4jQueryEngineType.KG_KEYWORD:
@@ -102,13 +104,15 @@ class Neo4jQueryEnginePack(BaseLlamaPack):
 
         elif query_engine_type == Neo4jQueryEngineType.RAW_VECTOR_KG_COMBO:
             from llama_index.query_engine import RetrieverQueryEngine
-            
+
             # create neo4j custom retriever
             neo4j_vector_retriever = VectorIndexRetriever(index=vector_index)
             neo4j_kg_retriever = KGTableRetriever(
                 index=neo4j_index, retriever_mode="keyword", include_text=False
             )
-            neo4j_custom_retriever = CustomRetriever(neo4j_vector_retriever, neo4j_kg_retriever)
+            neo4j_custom_retriever = CustomRetriever(
+                neo4j_vector_retriever, neo4j_kg_retriever
+            )
 
             # create neo4j response synthesizer
             neo4j_response_synthesizer = get_response_synthesizer(
@@ -153,7 +157,6 @@ class Neo4jQueryEnginePack(BaseLlamaPack):
             # KG vector-based entity retrieval
             self.query_engine = neo4j_index.as_query_engine()
 
-
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
         return {
@@ -171,6 +174,7 @@ from llama_index import QueryBundle
 from llama_index.schema import NodeWithScore
 from llama_index.retrievers import BaseRetriever, VectorIndexRetriever, KGTableRetriever
 from typing import List
+
 
 class CustomRetriever(BaseRetriever):
     """Custom retriever that performs both Vector search and Knowledge Graph search"""
@@ -208,4 +212,3 @@ class CustomRetriever(BaseRetriever):
 
         retrieve_nodes = [combined_dict[rid] for rid in retrieve_ids]
         return retrieve_nodes
-    
