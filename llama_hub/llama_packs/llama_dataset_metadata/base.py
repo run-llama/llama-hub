@@ -13,6 +13,8 @@ from llama_index.download.module import LLAMA_HUB_URL
 
 
 class Readme(BaseModel):
+    """A simple class for creating a README.md string.
+    """
     name: str
     _readme_template_path: str = "/llama_datasets/template_README.md"
 
@@ -37,11 +39,13 @@ class Readme(BaseModel):
 
 
 def to_camel(string: str) -> str:
+    """Converts a given string to camel casing."""
     string_split = string.split("_")
     return string_split[0] + "".join(word.capitalize() for word in string_split[1:])
 
 
 class BaseMetadata(BaseModel):
+    """Base Metadata class."""
     class Config:
         alias_generator = to_camel
         allow_population_by_field_name = True
@@ -49,6 +53,7 @@ class BaseMetadata(BaseModel):
 
 
 class BaselineConfig(BaseMetadata):
+    """Baseline config data class."""
     chunk_size: int
     llm: str
     similarity_top_k: int
@@ -56,6 +61,7 @@ class BaselineConfig(BaseMetadata):
 
 
 class BaselineMetrics(BaseMetadata):
+    """Baseline metrics data class."""
     context_similarity: Optional[float]
     correctness: float
     faithfulness: float
@@ -63,6 +69,7 @@ class BaselineMetrics(BaseMetadata):
 
 
 class Baseline(BaseMetadata):
+    """Baseline data class."""
     name: str
     config: BaselineConfig
     metrics: BaselineMetrics
@@ -70,6 +77,7 @@ class Baseline(BaseMetadata):
 
 
 class DatasetCard(BaseMetadata):
+    """A pydantic BaseModel representing DatasetCard."""
     name: str
     description: str
     number_observations: int
@@ -80,6 +88,11 @@ class DatasetCard(BaseMetadata):
 
     @staticmethod
     def _format_metric(val: float):
+        """Formats a metric to 3 decimal places.
+
+        Args:
+            val (float): the value to format.
+        """
         return float("{:,.3f}".format(val))
 
     @classmethod
@@ -93,7 +106,25 @@ class DatasetCard(BaseMetadata):
         description: str,
         source_urls: Optional[List[str]] = None,
         code_url: Optional[str] = None,
-    ):
+    ) -> "DatasetCard":
+        """Convenience contstructor method for building a DatasetCard.
+
+        Args:
+            index (BaseIndex): the index from which query_engine is derived and
+                used in the rag evaluation.
+            benchmark_df (pd.DataFrame): the benchmark dataframe after using
+                RagEvaluatorPack
+            rag_dataset (LabelledRagDataset): the LabelledRagDataset used for
+                evaluations
+            name (str): The name of the new dataset e.g., "Paul Graham Essay Dataset"
+            baseline_name (str): The name of the baseline e.g., "llamaindex"
+            description (str): The description of the new dataset.
+            source_urls (Optional[List[str]], optional): _description_. Defaults to None.
+            code_url (Optional[str], optional): _description_. Defaults to None.
+
+        Returns:
+            DatasetCard
+        """
 
         # extract metadata from rag_dataset
         num_observations = len(rag_dataset.examples)
@@ -161,7 +192,13 @@ class DatasetCard(BaseMetadata):
 
 
 class LlamaDatasetMetadataPack(BaseLlamaPack):
+    """A llamapack for creating and saving the necessary metadata files for
+    submitting a llamadataset: card.json and README.md.
+    """
     def run(self, index, benchmark_df, rag_dataset, name, description, baseline_name):
+        """Main usage for a llamapack. This will build the card.json and README.md
+        and save them to local disk.
+        """
         readme_obj = Readme(name=name)
         card_obj = DatasetCard.from_rag_evaluation(
             index=index,
