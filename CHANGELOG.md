@@ -17,6 +17,7 @@
 
 ### Smaller Features + Bug Fixes
 
+- Update main README to include info on llama-datasets (#711)
 - Add missing README to `LlamaDatasetMetadataPack` (#708)
 - Image reader was ignoring metadata. Added metadata to loaded ImageDocument (#668)
 - Add Cypher validation to Neo4j db tool (#660)
