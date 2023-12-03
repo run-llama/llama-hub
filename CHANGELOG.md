@@ -4,6 +4,7 @@
 
 ### New Features
 
+- Add README template for Datasets (#702)
 - Modify RagEvaluatorPack to handle missing reference_contexts (#698)
 - Add async and sync run methods to RagEvaluatorPack (#697)
 - Add Patronus AI Finance Bench Mini Dataset (#688)
