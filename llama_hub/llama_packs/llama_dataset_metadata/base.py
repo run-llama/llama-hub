@@ -1,6 +1,6 @@
 from llama_index.llama_pack.base import BaseLlamaPack
-from card import DatasetCard
-from readme import Readme
+from llama_hub.llama_packs.llama_dataset_metadata.card import DatasetCard
+from llama_hub.llama_packs.llama_dataset_metadata.readme import Readme
 import json
 
 
