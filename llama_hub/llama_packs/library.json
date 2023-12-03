@@ -143,5 +143,11 @@
     "id": "llama_packs/rag_evaluator",
     "author": "nerdai",
     "keywords": ["rag", "evaluation", "benchmarks"]
+  },
+  "LlamaDatasetMetadataPack": {
+    "id": "llama_packs/llama_dataset_metadata",
+    "author": "nerdai",
+    "keywords": ["llamadataset", "rag", "evaluation", "submission"],
+    "extra_files": ["card.py", "readme.py"]
   }
 }
