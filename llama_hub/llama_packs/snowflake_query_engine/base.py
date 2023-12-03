@@ -4,6 +4,7 @@ import os
 import json
 from typing import Any, Dict, List
 
+
 def snowflake_sqlalchemy_20_monkey_patches():
     import sqlalchemy.util.compat
 
@@ -26,6 +27,7 @@ def snowflake_sqlalchemy_20_monkey_patches():
 
     snowflake.sqlalchemy.snowdialect.SnowflakeDialect.has_table = has_table
 
+
 # workaround for https://github.com/snowflakedb/snowflake-sqlalchemy/issues/380.
 try:
     snowflake_sqlalchemy_20_monkey_patches()
@@ -37,12 +39,13 @@ from llama_index import SQLDatabase, ServiceContext
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.indices.struct_store.sql_query import NLSQLTableQueryEngine
 
+
 class SnowflakeQueryEnginePack(BaseLlamaPack):
-    """Snowflake query engine pack. 
-    
-    It uses snowflake-sqlalchemy to connect to Snowflake, then calls 
+    """Snowflake query engine pack.
+
+    It uses snowflake-sqlalchemy to connect to Snowflake, then calls
     NLSQLTableQueryEngine to query data.
-    
+
     """
 
     def __init__(
@@ -56,15 +59,17 @@ class SnowflakeQueryEnginePack(BaseLlamaPack):
             raise ValueError("OpenAI API Token is missing or blank.")
 
         # Check if credentials file exists
-        if not os.path.exists('credentials.json'):
-            raise FileNotFoundError("The 'credentials.json' file is mandatory for connecting to Snowflake.")
+        if not os.path.exists("credentials.json"):
+            raise FileNotFoundError(
+                "The 'credentials.json' file is mandatory for connecting to Snowflake."
+            )
 
         # connect to Snowflake
-        with open('credentials.json') as f:
+        with open("credentials.json") as f:
             connection_parameters = json.load(f)
 
         snowflake_uri = f"snowflake://{connection_parameters['user']}:{connection_parameters['password']}@{connection_parameters['account']}/{connection_parameters['database']}/{connection_parameters['schema']}?warehouse={connection_parameters['warehouse']}&role={connection_parameters['role']}"
-        
+
         engine = create_engine(snowflake_uri)
 
         self._sql_database = SQLDatabase(engine)
@@ -75,8 +80,8 @@ class SnowflakeQueryEnginePack(BaseLlamaPack):
         self.query_engine = NLSQLTableQueryEngine(
             sql_database=self._sql_database,
             tables=self.tables,
-            service_context=self._service_context
-        )    
+            service_context=self._service_context,
+        )
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
