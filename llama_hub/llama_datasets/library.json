@@ -16,7 +16,7 @@
   },
   "BlockchainSolanaDataset": {
     "id": "llama_datasets/blockchain_solana",
-    "author": "alex",
+    "author": "CalculusC",
     "keywords": ["rag", "cryptocurrency"]
   }
 }
