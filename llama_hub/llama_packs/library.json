@@ -143,5 +143,10 @@
     "id": "llama_packs/rag_evaluator",
     "author": "andrei-fajardo",
     "keywords": ["rag", "evaluation", "benchmarks"]
-  }
+  },
+  "Neo4jQueryEnginePack": {
+    "id": "llama_packs/neo4j_query_engine",
+    "author": "wenqiglantz",
+    "keywords": ["neo4j", "knowledge graph", "query engine"]
+  }  
 }
