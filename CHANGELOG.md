@@ -4,6 +4,7 @@
 
 ### New Features
 
+- Add `LlamaDatasetMetadataPack` (#707)
 - Add README template for Datasets (#702)
 - Modify RagEvaluatorPack to handle missing reference_contexts (#698)
 - Add async and sync run methods to RagEvaluatorPack (#697)
