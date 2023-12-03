@@ -41,7 +41,7 @@ python ./panel_chat_pack/base.py
 ## 🎓 Learn More
 
 - [`GithubRepositoryReader`](https://llamahub.ai/l/github_repo)
-- [GPTVectorStoreIndex](https://docs.llamaindex.ai/en/stable/changes/deprecated_terms.html#gptvectorstoreindex)
+- [`GPTVectorStoreIndex`](https://docs.llamaindex.ai/en/stable/changes/deprecated_terms.html#gptvectorstoreindex)
 - [Panel Chat Components](https://panel.holoviz.org/reference/index.html#chat)
 - [Panel Chat Examples](https://github.com/holoviz-topics/panel-chat-examples)
 
@@ -52,7 +52,7 @@ python ./panel_chat_pack/base.py
 
 ## 📈 Potential Improvements
 
-- [ ] Multi-user support
+- [ ] Improved Multi-user support
   - [ ] Loading queue: Users should not be able to download the same repository at the same time.
 - [ ] Service Context
   - [ ] Enable users to define the service context including `model`, `temperature` etc.
