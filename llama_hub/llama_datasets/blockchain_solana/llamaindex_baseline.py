@@ -8,7 +8,7 @@ from llama_index import VectorStoreIndex
 async def main():
     # DOWNLOAD LLAMADATASET
     rag_dataset, documents = download_llama_dataset(
-        "PatronusAIFinanceBenchDataset", "./patronus_financebench"
+        "BlockchainSolanaDataset", "./blockchain_solana"
     )
 
     # BUILD BASIC RAG PIPELINE
