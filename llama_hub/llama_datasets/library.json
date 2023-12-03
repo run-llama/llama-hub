@@ -1,7 +1,7 @@
 {
   "PaulGrahamEssayDataset": {
     "id": "llama_datasets/paul_graham_essay",
-    "author": "andrei-fajardo",
+    "author": "nerdai",
     "keywords": ["rag"]
   },
   "BraintrustCodaHelpDeskDataset": {
@@ -13,5 +13,10 @@
     "id": "llama_datasets/patronus_financebench",
     "author": "anand",
     "keywords": ["rag", "finance"]
+  },
+  "BlockchainSolanaDataset": {
+    "id": "llama_datasets/blockchain_solana",
+    "author": "CalculusC",
+    "keywords": ["rag", "cryptocurrency"]
   }
 }

@@ -3,10 +3,21 @@
 ## Unreleased
 
 ### New Features
+
+- Add `LlamaDatasetMetadataPack` (#707)
+- Add README template for Datasets (#702)
+- Modify RagEvaluatorPack to handle missing reference_contexts (#698)
+- Add async and sync run methods to RagEvaluatorPack (#697)
+- Add Patronus AI Finance Bench Mini Dataset (#688)
+- Add Braintrust Coda HelpDesk dataset (#686)
+- Add RagEvaluatorPack (#683)
 - New data loader - Opensearch (#672)
 - AddMainContentExtractorReader (#679)
+- Add `Datasets` structure with initial PaulGrahamEssayDataset (#669)
 
 ### Smaller Features + Bug Fixes
+
+- Add missing README to `LlamaDatasetMetadataPack` (#708)
 - Image reader was ignoring metadata. Added metadata to loaded ImageDocument (#668)
 - Add Cypher validation to Neo4j db tool (#660)
 - feat: Improvements to Chroma loader (#673)

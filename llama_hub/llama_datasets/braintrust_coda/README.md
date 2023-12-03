@@ -4,7 +4,6 @@
 
 _This dataset was kindly provided by Kenny Wong and Ankur Goyal._
 
-
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
@@ -30,7 +29,7 @@ documents = SimpleDirectoryReader(
 
 You can download the dataset to a directory, say `./data` directly in Python
 as well. From there, you can use the convenient `RagEvaluatorPack` llamapack to
-run your own LlamaIndex RAG pipeline with the `llamadataset``.
+run your own LlamaIndex RAG pipeline with the `llamadataset`.
 
 ```python
 from llama_index.llama_dataset import download_llama_dataset
@@ -54,5 +53,5 @@ rag_evaluator_pack = RagEvaluatorPack(
     rag_dataset=rag_dataset,
     query_engine=query_engine
 )
-benchmark_df = await rag_evaluate_pack.arun()
+benchmark_df = rag_evaluate_pack.run()  # async arun() supported as well
 ```
