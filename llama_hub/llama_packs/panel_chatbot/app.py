@@ -1,3 +1,4 @@
+"""Provides a ChatBot UI for a Github Repository. Powered by Llama Index and Panel"""
 import os
 import pickle
 from pathlib import Path
@@ -9,9 +10,10 @@ from llama_index import GPTVectorStoreIndex, download_loader
 
 from llama_hub.github_repo import GithubClient, GithubRepositoryReader
 
+# needed because both Panel and GithubRepositoryReader starts up the ioloop
 nest_asyncio.apply()
 
-CACHE_PATH = Path(".cache")
+CACHE_PATH = Path(".cache/panel_chatbot")
 CACHE_PATH.mkdir(parents=True, exist_ok=True)
 
 CHAT_GPT_LOGO = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/512px-ChatGPT_logo.svg.png"
@@ -48,11 +50,9 @@ pn.chat.ChatMessage.default_avatars.update(
 )
 pn.chat.ChatMessage.show_reaction_icons = False
 
-LLAMA_FROM = "#6366f1"
-LLAMA_TO = "#ec4899"
-ACCENT = "#ec4899"  # purple
+ACCENT = "#ec4899"
 
-CSS_FIXES_TO_BE_UPSTREAMED = """
+CSS_FIXES_TO_BE_UPSTREAMED_TO_PANEL = """
 #sidebar {
     padding-left: 5px !important;
     background-color: var(--panel-surface-color);
@@ -60,6 +60,9 @@ CSS_FIXES_TO_BE_UPSTREAMED = """
 .pn-wrapper {
     height: calc( 100vh - 150px);
 }
+.bk-active.bk-btn-primary {border-color: var(--accent-fill-active)}
+.bk-btn-primary:hover {border-color: var(--accent-fill-hover)}
+.bk-btn-primary {border-color: var(--accent-fill-rest)}
 """
 
 
@@ -68,14 +71,12 @@ def _split_and_clean(cstext):
 
 
 class IndexLoader(pn.viewable.Viewer):
+    """The IndexLoader enables the user to interactively create a GPTVectorStoreIndex from a
+    github repository of choice"""
+
     value: GPTVectorStoreIndex = param.ClassSelector(class_=GPTVectorStoreIndex)
 
     status = param.String(constant=True, doc="A status message")
-    reload = param.Boolean(
-        default=False,
-        label="Full Reload",
-        doc="If not checked we will reuse an existing index if possible",
-    )
 
     owner: str = param.String(
         default="holoviz", doc="The repository owner. For example 'holoviz'"
@@ -94,13 +95,21 @@ class IndexLoader(pn.viewable.Viewer):
         doc="A comma separated list of file extensions to include. For example '.py,.md,.ipynb'",
     )
 
-    _load = param.Event(label="LOAD")
+    _load = param.Event(
+        label="LOAD",
+        doc="Loads the repository index from the cache if it exists and otherwise from scratch",
+    )
+    _reload = param.Event(
+        default=False,
+        label="RELOAD ALL",
+        doc="Loads the repository index from scratch",
+    )
 
-    def __init__(self, load=True):
+    def __init__(self):
         super().__init__()
 
-        if load:
-            self.load()
+        if self.index_exists:
+            pn.state.execute(self.load)
         else:
             self._update_status(INDEX_NOT_LOADED)
 
@@ -116,7 +125,13 @@ class IndexLoader(pn.viewable.Viewer):
                 disabled=self._is_loading,
                 loading=self._is_loading,
             ),
-            self.param.reload,
+            pn.widgets.Button.from_param(
+                self.param._reload,
+                button_type="primary",
+                button_style="outline",
+                disabled=self._is_loading,
+                loading=self._is_loading,
+            ),
             pn.pane.Markdown("### Status", margin=(3, 5)),
             pn.pane.Str(self.param.status),
         )
@@ -136,16 +151,14 @@ class IndexLoader(pn.viewable.Viewer):
         return uid
 
     @property
-    def _docs_path(self):
+    def _cached_docs_path(self):
         return CACHE_PATH / f"docs_{self._unique_id}.pickle"
 
     @property
-    def _index_path(self):
+    def _cached_index_path(self):
         return CACHE_PATH / f"index_{self._unique_id}.pickle"
 
-    def _download_docs(self):
-        print("Downloading docs ...")
-
+    async def _download_docs(self):
         download_loader("GithubRepositoryReader")
 
         github_client = GithubClient(os.getenv("GITHUB_TOKEN"))
@@ -170,9 +183,9 @@ class IndexLoader(pn.viewable.Viewer):
         )
         return loader.load_data(branch="main")
 
-    def _get_docs(self):
-        docs_path = self._docs_path
-        index_path = self._index_path
+    async def _get_docs(self):
+        docs_path = self._cached_docs_path
+        index_path = self._cached_index_path
 
         if docs_path.exists():
             self._update_status(LOADING_EXISTING_DOCS)
@@ -180,7 +193,7 @@ class IndexLoader(pn.viewable.Viewer):
                 return pickle.load(f)
 
         self._update_status(LOADING_NEW_DOCS)
-        docs = self._download_docs()
+        docs = await self._download_docs()
 
         with docs_path.open("wb") as f:
             pickle.dump(docs, f, pickle.HIGHEST_PROTOCOL)
@@ -190,12 +203,11 @@ class IndexLoader(pn.viewable.Viewer):
 
         return docs
 
-    def _create_index(self, docs):
-        print("Creating index ...")
-        return GPTVectorStoreIndex.from_documents(docs)
+    async def _create_index(self, docs):
+        return GPTVectorStoreIndex.from_documents(docs, use_async=True)
 
-    def _get_index(self, index):
-        index_path = self._index_path
+    async def _get_index(self, index):
+        index_path = self._cached_index_path
 
         if index_path.exists():
             self._update_status(LOADING_EXISTING_INDEX)
@@ -203,7 +215,7 @@ class IndexLoader(pn.viewable.Viewer):
                 return pickle.load(f)
 
         self._update_status(LOADING_NEW_INDEX)
-        index = self._create_index(index)
+        index = await self._create_index(index)
 
         with index_path.open("wb") as f:
             pickle.dump(index, f, pickle.HIGHEST_PROTOCOL)
@@ -218,19 +230,25 @@ class IndexLoader(pn.viewable.Viewer):
         return self.status in [INDEX_LOADED, INDEX_NOT_LOADED]
 
     @param.depends("_load", watch=True)
-    def load(self):
+    async def load(self):
+        """Loads the repository index either from the cache or by downloading from
+        the repository"""
         self._update_status("Loading ...")
         self.value = None
 
-        if self.reload:
-            if self._docs_path.exists():
-                self._docs_path.unlink()
-            if self._index_path.exists():
-                self._index_path.unlink()
-
-        docs = self._get_docs()
-        self.value = self._get_index(docs)
+        docs = await self._get_docs()
+        self.value = await self._get_index(docs)
         self._update_status(INDEX_LOADED)
+
+    @param.depends("_reload", watch=True)
+    async def reload(self):
+        self._update_status("Deleteing cached index ...")
+        if self._cached_docs_path.exists():
+            self._cached_docs_path.unlink()
+        if self._cached_index_path.exists():
+            self._cached_index_path.unlink()
+
+        await self.load()
 
     def _update_status(self, text):
         with param.edit_constant(self):
@@ -239,16 +257,19 @@ class IndexLoader(pn.viewable.Viewer):
 
     @param.depends("owner", "repo")
     def github_url(self):
+        """Returns a html string with a link to the github repository"""
         text = f"{self.owner}/{self.repo}"
         href = f"https://github.com/{text}"
         return f"<a href='{href}' target='_blank'>{text}</a>"
 
     @property
     def index_exists(self):
-        return self._docs_path.exists() and self._index_path.exists()
+        """Returns True if the index already exists"""
+        return self._cached_docs_path.exists() and self._cached_index_path.exists()
 
 
 def powered_by():
+    """Returns a component describing the frameworks powering the chat ui"""
     params = {"height": 40, "sizing_mode": "fixed", "margin": (0, 10)}
     return pn.Column(
         pn.pane.Markdown("### AI Powered By", margin=(10, 5, 10, 0)),
@@ -261,7 +282,8 @@ def powered_by():
     )
 
 
-async def main_component(index: GPTVectorStoreIndex, index_loader: IndexLoader):
+async def chat_component(index: GPTVectorStoreIndex, index_loader: IndexLoader):
+    """Returns the chat component powering the main area of the application"""
     if not index:
         return pn.Column(
             pn.chat.ChatMessage(
@@ -303,10 +325,24 @@ async def main_component(index: GPTVectorStoreIndex, index_loader: IndexLoader):
     return chat_interface
 
 
-def create_app():
-    pn.extension(sizing_mode="stretch_width", raw_css=[CSS_FIXES_TO_BE_UPSTREAMED])
+def settings_components(index_loader: IndexLoader):
+    """Returns a list of the components to add to the sidebar"""
+    return [
+        pn.pane.Image(CUTE_LLAMA, height=250, align="center", margin=(10, 5, 25, 5)),
+        "## Github Repository",
+        index_loader,
+        powered_by(),
+    ]
 
-    index_loader = IndexLoader(load=False)
+
+def create_chat_ui():
+    """Returns the Chat UI"""
+    pn.extension(
+        sizing_mode="stretch_width", raw_css=[CSS_FIXES_TO_BE_UPSTREAMED_TO_PANEL]
+    )
+
+    index_loader = IndexLoader()
+
     pn.state.location.sync(
         index_loader,
         parameters={
@@ -317,24 +353,14 @@ def create_app():
         },
     )
 
-    if index_loader.index_exists:
-        index_loader.load()
-
-    i_chat_interface = pn.bind(
-        main_component, index=index_loader.param.value, index_loader=index_loader
+    bound_chat_interface = pn.bind(
+        chat_component, index=index_loader.param.value, index_loader=index_loader
     )
 
     return pn.template.FastListTemplate(
         title="Chat with GitHub",
-        sidebar=[
-            pn.pane.Image(
-                CUTE_LLAMA, height=250, align="center", margin=(10, 5, 25, 5)
-            ),
-            "## Github Repository",
-            index_loader,
-            powered_by(),
-        ],
-        main=[i_chat_interface],
+        sidebar=settings_components(index_loader),
+        main=[bound_chat_interface],
         accent=ACCENT,
         main_max_width="1000px",
         main_layout=None,
@@ -342,4 +368,4 @@ def create_app():
 
 
 if pn.state.served:
-    create_app().servable()
+    create_chat_ui().servable()

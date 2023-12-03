@@ -1,3 +1,4 @@
+"""Provides the PanelChatPack"""
 from typing import Dict, Any
 import os
 from llama_index.llama_pack.base import BaseLlamaPack
@@ -18,18 +19,24 @@ class PanelChatPack(BaseLlamaPack):
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
         for variable in ENVIRONMENT_VARIABLES:
-            if not variable in os.environ:
+            if variable not in os.environ:
                 raise ValueError(f"{variable} is not set")
 
         import panel as pn
-        from app import create_app
 
         if __name__ == "__main__":
-            pn.serve(create_app)
+            # 'pytest tests' will fail if app is imported elsewhere
+            from app import create_chat_ui
+
+            pn.serve(create_chat_ui)
         elif __name__.startswith("bokeh"):
-            create_app().servable()
+            from app import create_chat_ui
+
+            create_chat_ui().servable()
         else:
-            print("Please run this file with 'python' or serve it with 'panel serve'")
+            print(
+                "To serve the Panel ChatBot please run this file with 'panel serve' or 'python'"
+            )
 
 
 PanelChatPack().run()

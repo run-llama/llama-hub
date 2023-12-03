@@ -54,10 +54,9 @@ python ./panel_chat_pack/base.py
 
 - [ ] Multi-user support
   - [ ] Loading queue: Users should not be able to download the same repository at the same time.
-  - [ ] Async: make sure the app is performant and users not blocking each other
 - [ ] Service Context
   - [ ] Enable users to define the service context including `model`, `temperature` etc.
 - [ ] Better loading experience
-  - [ ] Let the chat assistant show status messages. And provide more status changes
+  - [ ] Let the chat assistant show (more fine-grained) status messages. And provide more status changes
 - [ ] Focus on the streaming text
   - [ ] The streaming text is not always in focus. I believe its a matter of adjusting the `auto_scroll_limit` limit.
