@@ -17,10 +17,10 @@
                 "embedModel": "text-embedding-ada-002"
             },
             "metrics": {
-                "contextSimilarity": 0.945223,
-                "correctness": 4.456897,
-                "faithfulness": 1,
-                "relevancy": 1
+                "contextSimilarity": 0.945,
+                "correctness": 4.457,
+                "faithfulness": 1.000,
+                "relevancy": 1.000
             },
             "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/blockchain_solana/llamaindex_baseline.py"
         }
