@@ -28,5 +28,10 @@
     "id": "llama_datasets/llama2_paper",
     "author": "jerryjliu",
     "keywords": ["rag", "llama2"]
+  },
+    "OriginOfCOVID-19": {
+    "id": "llama_datasets/origin_of_covid-19",
+    "author": "CalculusC",
+    "keywords": ["rag", "covid-19"]
   }
 }
