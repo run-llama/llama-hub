@@ -34,6 +34,33 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         WAII.Database.activate_connection(key=database_key)
         self.verbose = verbose
 
+    def _try_display(self, obj):
+        if self.verbose:
+            try:
+                # display df if it is available
+                if self.verbose:
+                    display(obj)
+            except:
+                pass
+
+    def _run_query(self, sql: str, return_summary: bool):
+        from waii_sdk_py import WAII
+        from waii_sdk_py.query import RunQueryRequest
+
+        run_result = WAII.Query.run(RunQueryRequest(query=sql))
+
+        self._try_display(run_result.to_pandas_df())
+
+        documents = run_result.rows
+
+        if return_summary:
+            return self._get_summarization(
+                "Summarize the result in text, don't miss any detail.",
+                [Document(text=str(doc)) for doc in documents],
+            )
+        else:
+            return documents
+
     def load_data(self, ask: str) -> List[Document]:
         """Query using natural language and load data from the Database, returning a list of Documents.
 
@@ -43,16 +70,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
-        from waii_sdk_py import WAII
-        from waii_sdk_py.query import QueryGenerationRequest, RunQueryRequest
+        query = self.generate_query_only(ask)
 
-        query = WAII.Query.generate(
-            QueryGenerationRequest(ask=ask), verbose=self.verbose
-        ).query
-        documents = WAII.Query.run(
-            RunQueryRequest(query=query), verbose=self.verbose
-        ).rows
-        return [Document(text=str(doc)) for doc in documents]
+        return self._run_query(query, False)
 
     def _get_summarization(self, original_ask: str, documents):
         texts = []
@@ -66,7 +86,7 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
             texts.append(t)
             n_chars += len(t)
 
-        summarizer = TreeSummarize(verbose=self.verbose)
+        summarizer = TreeSummarize()
         response = summarizer.get_response(original_ask, texts)
         return response
 
@@ -79,8 +99,9 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         Returns:
             str: A string containing the summarization of the answer.
         """
-        docs = self.load_data(ask)
-        return self._get_summarization(ask, docs)
+        query = self.generate_query_only(ask)
+
+        return self._run_query(query, True)
 
     def generate_query_only(self, ask: str):
         """
@@ -95,30 +116,14 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         from waii_sdk_py import WAII
         from waii_sdk_py.query import QueryGenerationRequest
 
-        query = WAII.Query.generate(
-            QueryGenerationRequest(ask=ask), verbose=self.verbose
-        ).query
+        query = WAII.Query.generate(QueryGenerationRequest(ask=ask)).query
+
+        self._try_display(query)
+
         return query
 
     def run_query(self, sql: str):
-        """
-        This function run a SQL query against the database, returning the summarization of the answer. You use choose the function when you need to run a SQL query
-
-        Args:
-            sql: a SQL query.
-
-        Returns:
-            str: A string containing the summarization of the answer.
-        """
-        from waii_sdk_py import WAII
-        from waii_sdk_py.query import RunQueryRequest
-
-        documents = WAII.Query.run(
-            RunQueryRequest(query=sql), verbose=self.verbose
-        ).rows
-        return self._get_summarization(
-            "run query", [Document(text=str(doc)) for doc in documents]
-        )
+        return self._run_query(sql, False)
 
     def describe_query(self, question: str, query: str):
         """
@@ -136,6 +141,8 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
 
         result = WAII.Query.describe(DescribeQueryRequest(query=query))
         result = json.dumps(result.dict(), indent=2)
+        self._try_display(result)
+
         response = self._get_summarization(question, [Document(text=result)])
         return response
 
