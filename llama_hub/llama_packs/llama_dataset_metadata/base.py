@@ -242,7 +242,7 @@ class LlamaDatasetMetadataPack(BaseLlamaPack):
 
         # save card.json
         with open("card.json", "w") as f:
-            json.dump(card_obj.dict(), f)
+            json.dump(card_obj.dict(by_alias=True), f)
 
         # save README.md
         with open("README.md", "w") as f:
