@@ -6,7 +6,7 @@
   },
   "BraintrustCodaHelpDeskDataset": {
     "id": "llama_datasets/braintrust_coda",
-    "author": "kenny-wong",
+    "author": "dashk",
     "keywords": ["rag", "help desk"]
   },
   "PatronusAIFinanceBenchDataset": {
