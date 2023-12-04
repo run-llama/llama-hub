@@ -43,5 +43,10 @@
     "id": "llama_datasets/origin_of_covid19",
     "author": "CalculusC",
     "keywords": ["rag", "covid-19"]
+  },
+  "EvaluatingLlmSurveyPaperDataset": {
+    "id": "llama_datasets/eval_llm_survey_paper",
+    "author": "nerdai",
+    "keywords": ["rag", "evaluation", "paper"]
   }
 }
