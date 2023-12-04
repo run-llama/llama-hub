@@ -258,7 +258,7 @@ The high-level steps for adding a llama-dataset are as follows:
 5. Submit a Pull Request to the [llama-datasets repository](https://github.com/run-llama/llama-datasets) to check in the `LabelledRagDataset` and the source files
 
 To assist with the submission process, we have prepared a [submission template
-notebook](https://github.com/run-llama/llama_index/blob/nerdai/add_template_nb/docs/examples/llama_dataset/ragdataset_submission_template.ipynb) that walks you through the above-listed steps. We highly recommend
+notebook](https://github.com/run-llama/llama_index/blob/main/docs/examples/llama_dataset/ragdataset_submission_template.ipynb) that walks you through the above-listed steps. We highly recommend
 that you use this template notebook.
 
 ## Running tests
