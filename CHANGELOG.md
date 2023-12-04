@@ -1,5 +1,23 @@
 # ChangeLog
 
+## Unreleased
+
+### New Features
+
+### Smaller Features + Bug Fixes / NITs
+
+## [v0.0.52] - 2023-12-04
+
+### New Features
+
+- Add `EvaluatingLlmSurveyPaperDataset` (#725)
+- Add `OriginOfCovid19Dataset` (#723)
+
+### Smaller Features + Bug Fixes / NITs
+
+- Add citation to `MiniTruthfulQADataset` README (#726)
+- Fix link to submission template nb in datasets README (#724)
+
 ## [v0.0.51] - 2023-12-03
 
 ### New Features
