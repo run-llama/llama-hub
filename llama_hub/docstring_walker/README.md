@@ -97,10 +97,10 @@ import os
 from torch_geometric.nn import kge
 
 # Step 1 - get path to module
-module_path = kge_dir = os.path.dirname(kge.__file__)
+module_path = os.path.dirname(kge.__file__)
 
 # Step 2 - get the docs
-example2_docs = walker.load_data(kge_dir)
+example2_docs = walker.load_data(module_path)
 
 # Step 3 - feed into Llama Index
 example2_index = SummaryIndex.from_documents(example2_docs, service_context=service_context)
