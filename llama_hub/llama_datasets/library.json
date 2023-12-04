@@ -38,5 +38,10 @@
     "id": "llama_datasets/mini_squadv2",
     "author": "axiomofjoy",
     "keywords": ["rag", "squadv2"]
+  },
+  "OriginOfCovid19Dataset": {
+    "id": "llama_datasets/origin_of_covid19",
+    "author": "CalculusC",
+    "keywords": ["rag", "covid-19"]
   }
 }
