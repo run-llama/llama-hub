@@ -1,9 +1,11 @@
 # ChangeLog
 
-## Unreleased
+## [v0.0.51] - 2023-12-03
 
 ### New Features
 
+- add uber 10k dataset (#716)
+- add llama2 dataset (#691)
 - Add `MiniSquadV2Dataset` (#720)
 - Add `MiniTruthfulQADataset` (#713)
 - Add `LlamaDatasetMetadataPack` (#707)
