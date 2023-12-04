@@ -1,18 +1,11 @@
-# Patronus AI FinanceBench Dataset
-
-[![patronus-ai-logo (200 x 40 px)](https://github.com/nerdai/llama-hub/assets/92402603/62a6df3f-57a3-4d68-917b-b0947392efcd)](https://www.patronus.ai/)
-
-This dataset is a subset of the original FinanceBench dataset. In particular, to
-make this benchmark more computationally efficient, we only keep the documents for
-which there are 2 or more questions. Such filtering, reduced the total unique pdf
-documents from 98 to 32.
+# {NAME}
 
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset PatronusAIFinanceBenchDataset --download-dir ./data
+llamaindex-cli download-llamadataset {NAME_CAMELCASE} --download-dir ./data
 ```
 
 You can then inspect the files at `./data`. When you're ready to load the data into
@@ -41,7 +34,7 @@ from llama_index import VectorStoreIndex
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "PatronusAIFinanceBenchDataset", "./data"
+  "{NAME_CAMELCASE} ", "./data"
 )
 
 # build basic RAG system
@@ -57,4 +50,3 @@ rag_evaluator_pack = RagEvaluatorPack(
     query_engine=query_engine
 )
 benchmark_df = rag_evaluator_pack.run()  # async arun() supported as well
-```

@@ -3,10 +3,44 @@
 ## Unreleased
 
 ### New Features
+
+### Smaller Features + Bug Fixes / NITs
+
+## [v0.0.52] - 2023-12-04
+
+### New Features
+
+- Add `EvaluatingLlmSurveyPaperDataset` (#725)
+- Add `OriginOfCovid19Dataset` (#723)
+
+### Smaller Features + Bug Fixes / NITs
+
+- Add citation to `MiniTruthfulQADataset` README (#726)
+- Fix link to submission template nb in datasets README (#724)
+
+## [v0.0.51] - 2023-12-03
+
+### New Features
+
+- add uber 10k dataset (#716)
+- add llama2 dataset (#691)
+- Add `MiniSquadV2Dataset` (#720)
+- Add `MiniTruthfulQADataset` (#713)
+- Add `LlamaDatasetMetadataPack` (#707)
+- Add README template for Datasets (#702)
+- Modify RagEvaluatorPack to handle missing reference_contexts (#698)
+- Add async and sync run methods to RagEvaluatorPack (#697)
+- Add Patronus AI Finance Bench Mini Dataset (#688)
+- Add Braintrust Coda HelpDesk dataset (#686)
+- Add RagEvaluatorPack (#683)
 - New data loader - Opensearch (#672)
 - AddMainContentExtractorReader (#679)
+- Add `Datasets` structure with initial PaulGrahamEssayDataset (#669)
 
 ### Smaller Features + Bug Fixes
+
+- Update main README to include info on llama-datasets (#711)
+- Add missing README to `LlamaDatasetMetadataPack` (#708)
 - Image reader was ignoring metadata. Added metadata to loaded ImageDocument (#668)
 - Add Cypher validation to Neo4j db tool (#660)
 - feat: Improvements to Chroma loader (#673)

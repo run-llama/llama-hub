@@ -25,7 +25,7 @@ documents = SimpleDirectoryReader(
 
 You can download the dataset to a directory, say `./data` directly in Python
 as well. From there, you can use the convenient `RagEvaluatorPack` llamapack to
-run your own LlamaIndex RAG pipeline with the `llamadataset``.
+run your own LlamaIndex RAG pipeline with the `llamadataset`.
 
 ```python
 from llama_index.llama_dataset import download_llama_dataset
@@ -39,7 +39,7 @@ rag_dataset, documents = download_llama_dataset(
 
 # build basic RAG system
 index = VectorStoreIndex.from_documents(documents=documents)
-query_engine = VectorStoreIndex.as_query_engine()
+query_engine = index.as_query_engine()
 
 # evaluate using the RagEvaluatorPack
 RagEvaluatorPack = download_llama_pack(
@@ -49,5 +49,5 @@ rag_evaluator_pack = RagEvaluatorPack(
     rag_dataset=rag_dataset,
     query_engine=query_engine
 )
-benchmark_df = await rag_evaluate_pack.arun()
+benchmark_df = rag_evaluator_pack.run()  # async arun() supported as well
 ```
