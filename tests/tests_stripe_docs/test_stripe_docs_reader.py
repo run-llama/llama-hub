@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch, call
+from typing import List
 
 from llama_index.readers.schema.base import Document
 
@@ -13,7 +14,7 @@ def get_sitemap(file: str):
     return f.read()
 
 
-def dummy_load_pages(urls: list[str]):
+def dummy_load_pages(urls: List[str]):
     documents = []
     for u in urls:
         documents.append(Document(text="Bla", extra_info={"Source": u}))
