@@ -4,6 +4,7 @@
 
 ### New Features
 
+- Add `MiniSquadV2Dataset` (#720)
 - Add `MiniTruthfulQADataset` (#713)
 - Add `LlamaDatasetMetadataPack` (#707)
 - Add README template for Datasets (#702)
