@@ -18,5 +18,10 @@
     "id": "llama_datasets/blockchain_solana",
     "author": "CalculusC",
     "keywords": ["rag", "cryptocurrency"]
+  },
+  "MiniTruthfulQADataset": {
+    "id": "llama_datasets/mini_truthfulqa",
+    "author": "nerdai",
+    "keywords": ["rag", "truthfulqa"]
   }
 }
