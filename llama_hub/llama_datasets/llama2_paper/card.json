@@ -1,11 +1,26 @@
 {
-    "name": "Llama 2 Paper",
-    "description": "A labelled RAG dataset based off the Llama 2 ArXiv PDF",
+    "name": "Llama 2 Paper Dataset",
+    "description": "A labelled RAG dataset based on the Llama 2 ArXiv paper, consisting of queries, reference answers, and reference contexts.",
     "numberObservations": 100,
     "containsExamplesByHumans": false,
-    "containsExamplesByAI": true,
-    "sourceUrls": [
-        "https://arxiv.org/abs/2307.09288"
-    ],
-    "baselines": []
-}
+    "containsExamplesByAi": true,
+    "sourceUrls": ["https://arxiv.org/abs/2307.09288"],
+    "baselines": [
+      {
+        "name": "llamaindex",
+        "config": {
+          "chunkSize": 1024,
+          "llm": "gpt-3.5-turbo",
+          "similarityTopK": 2,
+          "embedModel": "text-embedding-ada-002"
+        },
+        "metrics": {
+          "contextSimilarity": 0.94,
+          "correctness": 3.665,
+          "faithfulness": 0.97,
+          "relevancy": 0.59
+        },
+        "codeUrl": ""
+      }
+    ]
+  }
