@@ -1096,6 +1096,14 @@
       "web reader"
     ]
   },
+  "StripeDocsReader": {
+    "id": "stripe_docs",
+    "author": "amorriscode",
+    "keywords":[
+      "stripe",
+      "documentation"
+    ]
+  },
   "EarningsCallTranscript":{
     "id":"earnings_call_transcript",
     "author": "Athe-kunal",
