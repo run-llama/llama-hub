@@ -148,5 +148,10 @@
     "id": "llama_packs/llama_dataset_metadata",
     "author": "nerdai",
     "keywords": ["llamadataset", "rag", "evaluation", "submission"]
+  },
+  "Neo4jQueryEnginePack": {
+    "id": "llama_packs/neo4j_query_engine",
+    "author": "wenqiglantz",
+    "keywords": ["neo4j", "knowledge graph", "query engine"]
   }
 }
