@@ -1,11 +1,11 @@
-# Mini TruthfulQA Dataset
+# Evaluating Llm Survey Paper Dataset
 
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset MiniTruthfulQADataset --download-dir ./data
+llamaindex-cli download-llamadataset EvaluatingLlmSurveyPaperDataset --download-dir ./data
 ```
 
 You can then inspect the files at `./data`. When you're ready to load the data into
@@ -34,7 +34,7 @@ from llama_index import VectorStoreIndex
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "MiniTruthfulQADataset ", "./data"
+  "EvaluatingLlmSurveyPaperDataset ", "./data"
 )
 
 # build basic RAG system
@@ -50,17 +50,3 @@ rag_evaluator_pack = RagEvaluatorPack(
     query_engine=query_engine
 )
 benchmark_df = rag_evaluator_pack.run()  # async arun() supported as well
-```
-
-## Original data citation
-
-```tex
-@misc{lin2021truthfulqa,
-    title={TruthfulQA: Measuring How Models Mimic Human Falsehoods},
-    author={Stephanie Lin and Jacob Hilton and Owain Evans},
-    year={2021},
-    eprint={2109.07958},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
-}
-```

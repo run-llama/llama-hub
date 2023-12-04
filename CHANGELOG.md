@@ -6,6 +6,7 @@
 
 - add uber 10k dataset (#716)
 - add llama2 dataset (#691)
+- Add `MiniSquadV2Dataset` (#720)
 - Add `MiniTruthfulQADataset` (#713)
 - Add `LlamaDatasetMetadataPack` (#707)
 - Add README template for Datasets (#702)
