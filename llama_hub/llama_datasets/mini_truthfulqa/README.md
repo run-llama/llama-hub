@@ -50,3 +50,17 @@ rag_evaluator_pack = RagEvaluatorPack(
     query_engine=query_engine
 )
 benchmark_df = rag_evaluator_pack.run()  # async arun() supported as well
+```
+
+## Original data citation
+
+```tex
+@misc{lin2021truthfulqa,
+    title={TruthfulQA: Measuring How Models Mimic Human Falsehoods},
+    author={Stephanie Lin and Jacob Hilton and Owain Evans},
+    year={2021},
+    eprint={2109.07958},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL}
+}
+```
