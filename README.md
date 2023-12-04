@@ -166,7 +166,7 @@ documents = SimpleDirectoryReader(
 ).load_data()
 ```
 
-## How to add a loader/tool/llama-pack/llama-dataset
+## How to add a loader/tool/llama-pack
 
 Adding a loader/tool/llama-pack simply requires forking this repo and making a Pull Request. The Llama Hub website will update automatically when a new `llama-hub` release is made. However, please keep in mind the following guidelines when making your PR.
 
