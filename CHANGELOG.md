@@ -4,6 +4,7 @@
 
 ### New Features
 
+- Add `MiniTruthfulQADataset` (#713)
 - Add `LlamaDatasetMetadataPack` (#707)
 - Add README template for Datasets (#702)
 - Modify RagEvaluatorPack to handle missing reference_contexts (#698)

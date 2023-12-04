@@ -3,7 +3,7 @@
   "description": "A list of automatically generated question/answer pairs from the Coda (https://coda.io/) help docs. This dataset is interesting because most models include Coda’s documentation as part of their training set, so you can baseline performance without RAG.",
   "numberObservations": 100,
   "containsExamplesByHumans": false,
-  "containsExamplesByAI": true,
+  "containsExamplesByAi": true,
   "sourceUrls": [
     "https://gist.githubusercontent.com/wong-codaio/b8ea0e087f800971ca5ec9eef617273e/raw/39f8bd2ebdecee485021e20f2c1d40fd649a4c77/articles.json"
   ],
