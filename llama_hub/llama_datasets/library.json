@@ -11,7 +11,7 @@
   },
   "PatronusAIFinanceBenchDataset": {
     "id": "llama_datasets/patronus_financebench",
-    "author": "anand",
+    "author": "anandnk24",
     "keywords": ["rag", "finance"]
   },
   "BlockchainSolanaDataset": {
