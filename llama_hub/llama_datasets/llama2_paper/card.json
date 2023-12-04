@@ -1,0 +1,11 @@
+{
+    "name": "Llama 2 Paper",
+    "description": "A labelled RAG dataset based off the Llama 2 ArXiv PDF",
+    "numberObservations": 100,
+    "containsExamplesByHumans": false,
+    "containsExamplesByAI": true,
+    "sourceUrls": [
+        "https://arxiv.org/abs/2307.09288"
+    ],
+    "baselines": []
+}
