@@ -4,7 +4,7 @@ This LlamaPack provides an example of our Amazon product extraction pack.
 
 It loads in a website URL, screenshots the page. Then we use OpenAI GPT-4V + prompt engineering to extract the screenshot into a structured JSON output.
 
-Check out the [notebook here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/amazon_product_extraction/amazon_product_extraction.ipynb).
+Check out the [notebook here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/amazon_product_extraction/product_extraction.ipynb).
 
 ## CLI Usage
 
