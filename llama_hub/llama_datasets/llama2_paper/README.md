@@ -34,7 +34,7 @@ from llama_index import VectorStoreIndex
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "Llama2PaperDataset ", "./data"
+  "Llama2PaperDataset", "./data"
 )
 
 # build basic RAG system
@@ -50,3 +50,4 @@ rag_evaluator_pack = RagEvaluatorPack(
     query_engine=query_engine
 )
 benchmark_df = rag_evaluate_pack.run()  # async arun() supported as well
+```
