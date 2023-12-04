@@ -1096,6 +1096,15 @@
       "web reader"
     ]
   },
+  "GenomeAnnotationReader": {
+    "id": "genome",
+    "author": "acpguedes",
+    "keywords":[
+      "ncbi",
+      "annotation",
+      "genome"
+    ]
+  },
   "EarningsCallTranscript":{
     "id":"earnings_call_transcript",
     "author": "Athe-kunal",

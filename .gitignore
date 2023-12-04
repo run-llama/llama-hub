@@ -1,3 +1,5 @@
+.gitignore
+
 *.egg-info/
 .modules
 
@@ -9,3 +11,5 @@
 llama-hub.iml
 llamahub/
 img_cache/
+
+teste.py
