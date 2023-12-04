@@ -1,5 +1,6 @@
 import urllib.request
 import xml.etree.ElementTree as ET
+from typing import List
 
 from llama_index import download_loader
 from llama_index.readers.base import BaseReader
@@ -41,8 +42,8 @@ class StripeDocsReader(BaseReader):
         return self._load_url(STRIPE_SITEMAP_URL)
 
     def _parse_sitemap(
-        self, raw_sitemap: str, filters: list[str] = DEFAULT_FILTERS
-    ) -> list:
+        self, raw_sitemap: str, filters: List[str] = DEFAULT_FILTERS
+    ) -> List:
         root_sitemap = ET.fromstring(raw_sitemap)
         sitemap_partition_urls = []
         sitemap_urls = []
@@ -65,7 +66,7 @@ class StripeDocsReader(BaseReader):
 
         return sitemap_urls
 
-    def load_data(self, filters: list[str] = DEFAULT_FILTERS) -> list[Document]:
+    def load_data(self, filters: List[str] = DEFAULT_FILTERS) -> List[Document]:
         sitemap = self._load_sitemap()
         sitemap_urls = self._parse_sitemap(sitemap, filters)
 
