@@ -39,9 +39,9 @@
     "author": "axiomofjoy",
     "keywords": ["rag", "squadv2"]
   },
-  "OriginOfCovid-19": {
-    "id": "llama_datasets/origin_of_covid-19",
-    "author": "jerryjliu",
+  "OriginOfCovid19Dataset": {
+    "id": "llama_datasets/origin_of_covid19",
+    "author": "CalculusC",
     "keywords": ["rag", "covid-19"]
   }
 }
