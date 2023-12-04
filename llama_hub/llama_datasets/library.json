@@ -24,9 +24,14 @@
     "author": "nerdai",
     "keywords": ["rag", "truthfulqa"]
   },
-    "Llama2PaperDataset": {
+  "Llama2PaperDataset": {
     "id": "llama_datasets/llama2_paper",
     "author": "jerryjliu",
     "keywords": ["rag", "llama2"]
+  },
+  "Uber10KDataset2021": {
+    "id": "llama_datasets/10k/uber_2021",
+    "author": "jerryjliu",
+    "keywords": ["sec", "uber", "10k"]
   }
 }
