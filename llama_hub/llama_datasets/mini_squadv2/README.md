@@ -1,5 +1,9 @@
 # Mini Squad V2 Dataset
 
+[![arize (100 x 40 px)](https://github.com/nerdai/llama-hub/assets/92402603/eb4cb77a-1a1a-48a0-9f9d-277798832200)](https://arize.com/)
+
+This dataset was prepared in collaboration with Xander Song of Arize AI.
+
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
