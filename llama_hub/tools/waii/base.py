@@ -35,13 +35,12 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         self.verbose = verbose
 
     def _try_display(self, obj):
-        if self.verbose:
-            try:
-                # display df if it is available
-                if self.verbose:
-                    display(obj)
-            except:
-                pass
+        try:
+            # display df if it is available
+            if self.verbose:
+                display(obj)
+        except:
+            pass
 
     def _run_query(self, sql: str, return_summary: bool):
         from waii_sdk_py import WAII
