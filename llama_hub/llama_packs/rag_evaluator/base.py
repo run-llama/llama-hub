@@ -23,6 +23,7 @@ import pandas as pd
 from collections import deque
 from openai import RateLimitError
 import warnings
+import time
 
 
 class RagEvaluatorPack(BaseLlamaPack):
@@ -39,7 +40,6 @@ class RagEvaluatorPack(BaseLlamaPack):
         query_engine: BaseQueryEngine,
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
-        batch_size: int = 25,
     ):
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
@@ -48,7 +48,6 @@ class RagEvaluatorPack(BaseLlamaPack):
         else:
             assert isinstance(judge_llm, LLM)
             self.judge_llm = judge_llm
-        self._batch_size = batch_size
         self.evals = {
             "correctness": [],
             "relevancy": [],
@@ -57,21 +56,15 @@ class RagEvaluatorPack(BaseLlamaPack):
         }
         self.eval_queue = deque(range(len(rag_dataset.examples)))
         self.prediction_dataset = None
-        if batch_size > 50:
-            warnings.warn(
-                "You've set a large batch_size (>50). If using OpenAI GPT-4 as "
-                " `judge_llm` (which is the default judge_llm),"
-                " you may experience a RateLimitError. Previous successful eval "
-                " responses are cached per batch. So hitting a RateLimitError"
-                " would mean you'd lose all of the current batches successful "
-                " GPT-4 calls."
-            )
 
-    async def _amake_predictions(self):
+    async def _amake_predictions(self, batch_size, sleep_time_in_seconds):
         """Async make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             await self.rag_dataset.amake_predictions_with(
-                query_engine=self.query_engine, show_progress=True
+                query_engine=self.query_engine,
+                show_progress=True,
+                batch_size=batch_size,
+                sleep_time_in_seconds=sleep_time_in_seconds,
             )
         )
 
@@ -257,26 +250,37 @@ class RagEvaluatorPack(BaseLlamaPack):
         mean_scores_df.to_csv("benchmark.csv")
         return mean_scores_df
 
-    def _make_evaluations(self):
+    def _make_evaluations(
+        self,
+        batch_size,
+        sleep_time_in_seconds,
+    ):
         """Sync make evaluations."""
         judges = self._prepare_judges()
 
-        for example, prediction in tqdm.tqdm(
-            zip(self.rag_dataset.examples, self.prediction_dataset.predictions)
+        start_ix = self.eval_queue[0]
+        for batch in self._batch_examples_and_preds(
+            self.rag_dataset.examples,
+            self.prediction_dataset.predictions,
+            batch_size=batch_size,
+            start_position=start_ix,
         ):
-            (
-                correctness_result,
-                relevancy_result,
-                faithfulness_result,
-                semantic_similarity_result,
-            ) = self._evaluate_example_prediction(
-                judges=judges, example=example, prediction=prediction
-            )
+            examples, predictions = batch
+            for example, prediction in tqdm.tqdm(zip(examples, predictions)):
+                (
+                    correctness_result,
+                    relevancy_result,
+                    faithfulness_result,
+                    semantic_similarity_result,
+                ) = self._evaluate_example_prediction(
+                    judges=judges, example=example, prediction=prediction
+                )
 
-            self.evals["correctness"].append(correctness_result)
-            self.evals["relevancy"].append(relevancy_result)
-            self.evals["faithfulness"].append(faithfulness_result)
-            self.evals["context_similarity"].append(semantic_similarity_result)
+                self.evals["correctness"].append(correctness_result)
+                self.evals["relevancy"].append(relevancy_result)
+                self.evals["faithfulness"].append(faithfulness_result)
+                self.evals["context_similarity"].append(semantic_similarity_result)
+            time.sleep(sleep_time_in_seconds)
 
         self._save_evaluations()
         benchmark_df = self._prepare_and_save_benchmark_results()
@@ -286,7 +290,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         self,
         examples: List[Any],
         predictions: List[Any],
-        batch_size: int = 20,
+        batch_size: int = 10,
         start_position: int = 0,
     ):
         """Batches examples and predictions with a given batch_size."""
@@ -297,7 +301,7 @@ class RagEvaluatorPack(BaseLlamaPack):
                 ndx : min(ndx + batch_size, num_examples)
             ]
 
-    async def _amake_evaluations(self):
+    async def _amake_evaluations(self, batch_size, sleep_time_in_seconds):
         """Async make evaluations."""
         judges = self._prepare_judges()
 
@@ -305,8 +309,8 @@ class RagEvaluatorPack(BaseLlamaPack):
         for batch in self._batch_examples_and_preds(
             self.rag_dataset.examples,
             self.prediction_dataset.predictions,
-            batch_size=self._batch_size,
-            start_position=start_ix
+            batch_size=batch_size,
+            start_position=start_ix,
         ):
             examples, predictions = batch
             tasks = []
@@ -347,23 +351,54 @@ class RagEvaluatorPack(BaseLlamaPack):
             self.evals["faithfulness"] += eval_results[2::4]
             self.evals["context_similarity"] += eval_results[3::4]
             # update queue
-            for _ in range(self._batch_size):
+            for _ in range(batch_size):
                 if self.eval_queue:
                     self.eval_queue.popleft()
+            time.sleep(sleep_time_in_seconds)
 
         self._save_evaluations()
         benchmark_df = self._prepare_and_save_benchmark_results()
         return benchmark_df
 
-    def run(self):
+    def run(self, batch_size: int = 10, sleep_time_in_seconds: int = 10):
         if self.prediction_dataset is None:
-            self._make_predictions()
-        benchmark_df = self._make_evaluations()
+            self._make_predictions(batch_size, sleep_time_in_seconds)
+
+        # evaluate predictions
+        eval_sleep_time_in_seconds = (
+            sleep_time_in_seconds * 2
+        )  # since we make 3 evaluator llm calls
+        eval_batch_size = int(max(batch_size / 4, 1))
+        benchmark_df = self._make_evaluations(
+            batch_size=eval_batch_size, sleep_time_in_seconds=eval_sleep_time_in_seconds
+        )
         return benchmark_df
 
-    async def arun(self):
+    async def arun(
+        self,
+        batch_size: int = 10,
+        sleep_time_in_seconds: int = 10,
+    ):
+        if batch_size > 10:
+            warnings.warn(
+                "You've set a large batch_size (>10). If using OpenAI GPT-4 as "
+                " `judge_llm` (which is the default judge_llm),"
+                " you may experience a RateLimitError. Previous successful eval "
+                " responses are cached per batch. So hitting a RateLimitError"
+                " would mean you'd lose all of the current batches successful "
+                " GPT-4 calls."
+            )
+
+        # make predictions
         if self.prediction_dataset is None:
-            await self._amake_predictions()
-        print(f"queue start position: {self.eval_queue[0]}", flush=True)
-        benchmark_df = await self._amake_evaluations()
+            await self._amake_predictions(batch_size, sleep_time_in_seconds)
+
+        # evaluate predictions
+        eval_sleep_time_in_seconds = (
+            sleep_time_in_seconds * 2
+        )  # since we make 3 evaluator llm calls
+        eval_batch_size = int(max(batch_size / 4, 1))
+        benchmark_df = await self._amake_evaluations(
+            batch_size=eval_batch_size, sleep_time_in_seconds=eval_sleep_time_in_seconds
+        )
         return benchmark_df
