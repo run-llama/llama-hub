@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Any
 from tqdm.asyncio import tqdm_asyncio
 from llama_index.query_engine import BaseQueryEngine
 from llama_index.llama_dataset import BaseLlamaDataset, BaseLlamaPredictionDataset
@@ -20,6 +20,8 @@ from llama_index.evaluation.notebook_utils import (
     get_eval_results_df,
 )
 import pandas as pd
+from collections import deque
+from openai import RateLimitError
 
 
 class RagEvaluatorPack(BaseLlamaPack):
@@ -36,6 +38,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         query_engine: BaseQueryEngine,
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
+        batch_size: int = 1,
     ):
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
@@ -44,6 +47,14 @@ class RagEvaluatorPack(BaseLlamaPack):
         else:
             assert isinstance(judge_llm, LLM)
             self.judge_llm = judge_llm
+        self._batch_size = batch_size
+        self.evals = {
+            "correctness": [],
+            "relevancy": [],
+            "faithfulness": [],
+            "context_similarity": [],
+        }
+        self.eval_queue = deque(range(len(rag_dataset.examples)))
 
     async def _amake_predictions(self):
         """Async make predictions with query engine."""
@@ -267,6 +278,17 @@ class RagEvaluatorPack(BaseLlamaPack):
         benchmark_df = self._prepare_and_save_benchmark_results(evals=evals)
         return benchmark_df
 
+    def _batch_examples_and_preds(
+        self, examples: List[Any], predictions: List[Any], batch_size: int = 1
+    ):
+        """Batches examples and predictions with a given batch_size."""
+        assert len(examples) == len(predictions)
+        num_examples = len(examples)
+        for ndx in range(0, num_examples, batch_size):
+            yield examples[ndx : min(ndx + batch_size, num_examples)], predictions[
+                ndx : min(ndx + batch_size, num_examples)
+            ]
+
     async def _amake_evaluations(self):
         """Async make evaluations."""
         judges = self._prepare_judges()
@@ -278,34 +300,52 @@ class RagEvaluatorPack(BaseLlamaPack):
             "context_similarity": [],
         }
 
-        tasks = []
-        for example, prediction in tqdm.tqdm(
-            zip(self.rag_dataset.examples, self.prediction_dataset.predictions)
+        start_ix = self.eval_queue[0]
+        for batch in self._batch_examples_and_preds(
+            self.rag_dataset.examples[start_ix:],
+            self.prediction_dataset.predictions[start_ix:],
+            batch_size=self._batch_size,
         ):
-            (
-                correctness_task,
-                relevancy_task,
-                faithfulness_task,
-                semantic_similarity_task,
-            ) = self._create_async_evaluate_example_prediction_tasks(
-                judges=judges, example=example, prediction=prediction
-            )
+            examples, predictions = batch
+            tasks = []
+            for example, prediction in tqdm.tqdm(zip(examples, predictions)):
+                (
+                    correctness_task,
+                    relevancy_task,
+                    faithfulness_task,
+                    semantic_similarity_task,
+                ) = self._create_async_evaluate_example_prediction_tasks(
+                    judges=judges, example=example, prediction=prediction
+                )
 
-            tasks += [
-                correctness_task,
-                relevancy_task,
-                faithfulness_task,
-                semantic_similarity_task,
-            ]
+                tasks += [
+                    correctness_task,
+                    relevancy_task,
+                    faithfulness_task,
+                    semantic_similarity_task,
+                ]
 
-        eval_results: List[EvaluationResult] = await tqdm_asyncio.gather(*tasks)
-
-        # since final result of eval_results respects order of inputs
-        # just take appropriate slices
-        evals["correctness"] = eval_results[::4]
-        evals["relevancy"] = eval_results[1::4]
-        evals["faithfulness"] = eval_results[2::4]
-        evals["context_similarity"] = eval_results[3::4]
+            # do this in batches to avoid RateLimitError
+            try:
+                eval_results: List[EvaluationResult] = await tqdm_asyncio.gather(*tasks)
+            except RateLimitError as err:
+                raise ValueError(
+                    "You've hit rate limits on your OpenAI subscription. This"
+                    " `RagEvaluatorPack` maintains state of evaluations. Simply"
+                    " re-invoke .arun() in order to continue from where you left"
+                    " off."
+                ) from err
+            # store in memory
+            # since final result of eval_results respects order of inputs
+            # just take appropriate slices
+            self.evals["correctness"] += eval_results[::4]
+            self.evals["relevancy"] += eval_results[1::4]
+            self.evals["faithfulness"] += eval_results[2::4]
+            self.evals["context_similarity"] += eval_results[3::4]
+            # update queue
+            for _ in range(self._batch_size):
+                if self.eval_queue:
+                    self.eval_queue.popleft()
 
         self._save_evaluations(evals=evals)
         benchmark_df = self._prepare_and_save_benchmark_results(evals=evals)
