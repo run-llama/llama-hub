@@ -1,6 +1,6 @@
 """Init file."""
 from llama_hub.microsoft_sharepoint.base import (
-    SharepointReader,
+    SharePointReader,
 )
 
-__all__ = ["SharepointReader"]
+__all__ = ["SharePointReader"]
