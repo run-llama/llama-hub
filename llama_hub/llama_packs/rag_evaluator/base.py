@@ -347,6 +347,7 @@ class RagEvaluatorPack(BaseLlamaPack):
             for _ in range(self._batch_size):
                 if self.eval_queue:
                     self.eval_queue.popleft()
+            print(f"queue start position: {self.eval_queue[0]}", flush=True)
 
         self._save_evaluations(evals=evals)
         benchmark_df = self._prepare_and_save_benchmark_results(evals=evals)
