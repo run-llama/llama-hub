@@ -349,7 +349,6 @@ class RagEvaluatorPack(BaseLlamaPack):
             for _ in range(self._batch_size):
                 if self.eval_queue:
                     self.eval_queue.popleft()
-            print(f"queue start position: {self.eval_queue[0]}", flush=True)
 
         tqdm_iterator.reset()
         self._save_evaluations(evals=evals)
@@ -365,5 +364,6 @@ class RagEvaluatorPack(BaseLlamaPack):
     async def arun(self):
         if self.prediction_dataset is None:
             await self._amake_predictions()
+        print(f"queue start position: {self.eval_queue[0]}", flush=True)
         benchmark_df = await self._amake_evaluations()
         return benchmark_df
