@@ -1,13 +1,81 @@
+# ChangeLog
+
 ## Unreleased
 
-### [v0.0.45] - 2023-11-16
+### New Features
+
+### Smaller Features + Bug Fixes / NITs
+
+## [v0.0.52] - 2023-12-04
+
+### New Features
+
+- Add `EvaluatingLlmSurveyPaperDataset` (#725)
+- Add `OriginOfCovid19Dataset` (#723)
+
+### Smaller Features + Bug Fixes / NITs
+
+- Add citation to `MiniTruthfulQADataset` README (#726)
+- Fix link to submission template nb in datasets README (#724)
+
+## [v0.0.51] - 2023-12-03
+
+### New Features
+
+- add uber 10k dataset (#716)
+- add llama2 dataset (#691)
+- Add `MiniSquadV2Dataset` (#720)
+- Add `MiniTruthfulQADataset` (#713)
+- Add `LlamaDatasetMetadataPack` (#707)
+- Add README template for Datasets (#702)
+- Modify RagEvaluatorPack to handle missing reference_contexts (#698)
+- Add async and sync run methods to RagEvaluatorPack (#697)
+- Add Patronus AI Finance Bench Mini Dataset (#688)
+- Add Braintrust Coda HelpDesk dataset (#686)
+- Add RagEvaluatorPack (#683)
+- New data loader - Opensearch (#672)
+- AddMainContentExtractorReader (#679)
+- Add `Datasets` structure with initial PaulGrahamEssayDataset (#669)
+
+### Smaller Features + Bug Fixes
+
+- Update main README to include info on llama-datasets (#711)
+- Add missing README to `LlamaDatasetMetadataPack` (#708)
+- Image reader was ignoring metadata. Added metadata to loaded ImageDocument (#668)
+- Add Cypher validation to Neo4j db tool (#660)
+- feat: Improvements to Chroma loader (#673)
+- Adding Earning Call transcripts of US based companies (#658)
+
+## [v0.0.50] - 2023-11-28
+
+### New Features
+- add amazon product extraction (#670)
+- Add Waii connector (#647)
+
+## [v0.0.49] - 2023-11-27
+
+### New Features
+- Citation LlamaPack (#666)
+
+## [v0.0.48] - 2023-11-27
+
+### New Features
+- Add some advanced retrieval llama packs  (#659)
+
+## [v0.0.46] - 2023-11-22
+
+### New Features
+- Add Llama Packs (#646)
+- Unstructured.IO API support (#648)
+
+## [v0.0.45] - 2023-11-16
 
 ### Smaller Features + Bug Fixes
 - Updated init file (#633)
 - fIMDB Movie reviews bug fixes and feature addition (#636)
 - replace s/gpt_index/llama_index references in READMEs (#635) 
 
-### [v0.0.44] - 2023-11-13
+## [v0.0.44] - 2023-11-13
 
 ### Smaller Features + Bug Fixes
 - Extend GoogleSheetsReader to Accept Custom Text Column Names (#620)

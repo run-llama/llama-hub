@@ -15,7 +15,7 @@ For any subreddit(s) you're interested in, search for relevant posts using keywo
 ### LlamaIndex
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 RedditReader = download_loader('RedditReader')
 
@@ -25,7 +25,7 @@ post_limit = 10
 
 loader = RedditReader()
 documents = loader.load_data(subreddits=subreddits, search_keys=search_keys, post_limit=post_limit)
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 
 index.query("What are the pain points of PyTorch users?")
 ```
@@ -33,7 +33,7 @@ index.query("What are the pain points of PyTorch users?")
 ### LangChain
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
@@ -47,7 +47,7 @@ post_limit = 10
 
 loader = RedditReader()
 documents = loader.load_data(subreddits=subreddits, search_keys=search_keys, post_limit=post_limit)
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 
 tools = [
     Tool(

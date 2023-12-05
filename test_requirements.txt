@@ -13,6 +13,7 @@ llama-index>=0.6.9
 atlassian-python-api
 html2text
 olefile
+chromadb
 
 # hotfix
 psutil

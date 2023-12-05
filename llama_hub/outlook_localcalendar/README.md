@@ -26,14 +26,14 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ### LlamaIndex
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 OutlookCalendarReader = download_loader('OutlookLocalCalendarReader')
 
 loader = OutlookCalendarReader(start_date='2022-01-01',number_of_documents=1000)
 
 documents = loader.load_data()
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('When did I last see George Guava? When do I see him again?')
 ```
 Note: it is actually better to give s structured prompt with this data and be sure to it is clear what today's date is and whether you want any data besides the indexed data used in answering the prompt.

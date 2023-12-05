@@ -121,6 +121,15 @@
     "id": "file/markdown",
     "author": "hursh-desai"
   },
+  "MainContentExtractorReader": {
+    "id": "web/main_content_extractor",
+    "author": "HawkClaws",
+    "keywords":[
+      "main content extractor",
+      "web",
+      "web reader"
+    ]
+  },
   "AudioTranscriber": {
     "id": "file/audio",
     "author": "ravi03071991"
@@ -1086,5 +1095,26 @@
       "web",
       "web reader"
     ]
+  },
+  "StripeDocsReader": {
+    "id": "stripe_docs",
+    "author": "amorriscode",
+    "keywords":[
+      "stripe",
+      "documentation"
+    ]
+  },
+  "EarningsCallTranscript":{
+    "id":"earnings_call_transcript",
+    "author": "Athe-kunal",
+    "keywords": [
+      "Finance",
+      "Investor",
+      "Earning calls"
+    ]
+  },
+  "OpensearchReader": {
+    "id": "opensearch",
+    "author": "chnsagitchen"
   }
 }

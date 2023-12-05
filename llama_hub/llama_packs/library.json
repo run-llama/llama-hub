@@ -61,13 +61,13 @@
   },
   "GradioReActAgentPack": {
     "id": "llama_packs/gradio_react_agent_chatbot",
-    "author": "andrei-fajardo",
-    "keywords": ["gradio", "react-agent", "chatbot", "tools"] 
+    "author": "nerdai",
+    "keywords": ["gradio", "react-agent", "chatbot", "tools"]
   },
   "GradioAgentChatPack": {
     "id": "llama_packs/gradio_agent_chat",
-    "author": "andrei-fajardo",
-    "keywords": ["gradio", "agent", "chatbot", "tools"] 
+    "author": "nerdai",
+    "keywords": ["gradio", "agent", "chatbot", "tools"]
   },
   "WeaviateSubQuestionPack": {
     "id": "llama_packs/sub_question_weaviate",
@@ -98,5 +98,65 @@
     "id": "llama_packs/arize_phoenix_query_engine",
     "author": "axiomofjoy",
     "keywords": ["arize", "phoenix", "query", "engine", "index"]
+  },
+  "FuzzyCitationEnginePack": {
+    "id": "llama_packs/fuzzy_citation",
+    "author": "logan-markewich",
+    "keywords": ["fuzzy", "citation", "engine", "index", "query", "cite"]
+  },
+  "AutoMergingRetrieverPack": {
+    "id": "llama_packs/auto_merging_retriever",
+    "author": "jerryjliu",
+    "keywords": ["auto", "merging", "retriever", "index", "automerging"]
+  },
+  "HybridFusionRetrieverPack": {
+    "id": "llama_packs/fusion_retriever/hybrid_fusion",
+    "author": "jerryjliu",
+    "keywords": ["hybrid", "fusion", "retriever"]
+  },
+  "QueryRewritingRetrieverPack": {
+    "id": "llama_packs/fusion_retriever/query_rewrite",
+    "author": "jerryjliu",
+    "keywords": ["query", "rewriting", "retriever"]
+  },
+  "MultiDocumentAgentsPack": {
+    "id": "llama_packs/multi_document_agents",
+    "author": "jerryjliu",
+    "keywords": ["multi", "document", "agents"]
+  },
+  "EmbeddedTablesUnstructuredRetrieverPack": {
+    "id": "llama_packs/recursive_retriever/embedded_tables_unstructured",
+    "author": "jerryjliu",
+    "keywords": ["embedded", "tables", "unstructured", "retriever"]
+  },
+  "RecursiveRetrieverSmallToBigPack": {
+    "id": "llama_packs/recursive_retriever/small_to_big",
+    "author": "jerryjliu",
+    "keywords": ["recursive", "retriever", "small", "big"]
+  },
+  "SentenceWindowRetrieverPack": {
+    "id": "llama_packs/sentence_window_retriever",
+    "author": "jerryjliu",
+    "keywords": ["sentence", "window", "retriever"]
+  },
+  "AmazonProductExtractionPack": {
+    "id": "llama_packs/amazon_product_extraction",
+    "author": "jerryjliu",
+    "keywords": ["amazon", "product", "extraction"]
+  },
+  "RagEvaluatorPack": {
+    "id": "llama_packs/rag_evaluator",
+    "author": "nerdai",
+    "keywords": ["rag", "evaluation", "benchmarks"]
+  },
+  "LlamaDatasetMetadataPack": {
+    "id": "llama_packs/llama_dataset_metadata",
+    "author": "nerdai",
+    "keywords": ["llamadataset", "rag", "evaluation", "submission"]
+  },
+  "Neo4jQueryEnginePack": {
+    "id": "llama_packs/neo4j_query_engine",
+    "author": "wenqiglantz",
+    "keywords": ["neo4j", "knowledge graph", "query engine"]
   }
-} 
+}

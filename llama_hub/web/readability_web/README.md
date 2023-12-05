@@ -38,7 +38,7 @@ ReadabilityWebPageReader = download_loader("ReadabilityWebPageReader")
 loader = ReadabilityWebPageReader()
 documents = loader.load_data(url='https://support.squarespace.com/hc/en-us/articles/206795137-Pages-and-content-basics')
 
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 print(index.query('What is pages?'))
 
 ```
@@ -48,7 +48,7 @@ print(index.query('What is pages?'))
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
@@ -58,7 +58,7 @@ ReadabilityWebPageReader = download_loader("ReadabilityWebPageReader")
 loader = ReadabilityWebPageReader()
 documents = loader.load_data(url='https://support.squarespace.com/hc/en-us/articles/206795137-Pages-and-content-basics')
 
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 
 tools = [
     Tool(
