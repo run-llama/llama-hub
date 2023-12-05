@@ -331,7 +331,7 @@ class RagEvaluatorPack(BaseLlamaPack):
             try:
                 eval_results: List[EvaluationResult] = await tqdm_asyncio.gather(*tasks)
             except RateLimitError as err:
-                tqdm_iterator.reset()
+                tqdm_iterator.close()
                 raise ValueError(
                     "You've hit rate limits on your OpenAI subscription. This"
                     " `RagEvaluatorPack` maintains state of evaluations. Simply"
@@ -350,7 +350,7 @@ class RagEvaluatorPack(BaseLlamaPack):
                 if self.eval_queue:
                     self.eval_queue.popleft()
 
-        tqdm_iterator.reset()
+        tqdm_iterator.close()
         self._save_evaluations(evals=evals)
         benchmark_df = self._prepare_and_save_benchmark_results(evals=evals)
         return benchmark_df
