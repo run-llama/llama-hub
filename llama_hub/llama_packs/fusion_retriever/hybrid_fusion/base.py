@@ -18,26 +18,26 @@ class HybridFusionRetrieverPack(BaseLlamaPack):
     """
 
     def __init__(
-            self,
-            nodes: List[TextNode] = None,
-            chunk_size: int = 256,
-            mode: str = "reciprocal_rerank",
-            vector_similarity_top_k: int = 2,
-            bm25_similarity_top_k: int = 2,
-            fusion_similarity_top_k: int = 2,
-            num_queries: int = 4,
-            documents: List[Document] = None,
-            cache_dir: str = None,
-            **kwargs: Any,
+        self,
+        nodes: List[TextNode] = None,
+        chunk_size: int = 256,
+        mode: str = "reciprocal_rerank",
+        vector_similarity_top_k: int = 2,
+        bm25_similarity_top_k: int = 2,
+        fusion_similarity_top_k: int = 2,
+        num_queries: int = 4,
+        documents: List[Document] = None,
+        cache_dir: str = None,
+        **kwargs: Any,
     ) -> None:
         """Init params."""
         service_context = ServiceContext.from_defaults(chunk_size=chunk_size)
         if cache_dir is not None and os.path.exists(cache_dir):
             # Load from cache
             from llama_index import StorageContext, load_index_from_storage
+
             # rebuild storage context
-            storage_context = StorageContext.from_defaults(
-                persist_dir=cache_dir)
+            storage_context = StorageContext.from_defaults(persist_dir=cache_dir)
             # load index
             index = load_index_from_storage(storage_context)
         elif documents is not None:
