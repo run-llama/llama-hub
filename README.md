@@ -294,23 +294,24 @@ For all other PR's relevant to LlamaIndex, let's create it directly against the 
 ### How can I get a verified badge on LlamaHub? 
 We have just started offering badges to our contributors. At the moment, we're focused on our early adopters and official partners, but we're gradually opening up badge consideration to all submissions. If you're interested in being considered, please review the criteria below and if everything aligns, feel free to contact us via [community Discord](https://discord.gg/dGcwcsnxhU).
 
-We are still refining our criteria but here are some aspects we considier:
 **Quality**
-* Code Quality illustrated by use of coding standards and style guidelines.
-* Code readability and proper documentation. 
-**Usability** 
-* Self-contained module with no external links, or libraries, and is easy to run. 
-* Module should not break any exisiting unit tests. 
-**Safety** 
-* Safety considerations, such an proper input validation, avoiding SQL injection, and secure handling of user data. 
-**Community engagement & feedback** 
-* The module's usefulness to the library's users as guaged by number of likes, downloads, etc.
-* Positive feedback from module user. 
+- Code Quality illustrated by the use of coding standards and style guidelines.
+- Code readability and proper documentation.
+
+**Usability**
+- Self-contained module with no external links or libraries, and it is easy to run.
+- Module should not break any existing unit tests.
+
+**Safety**
+- Safety considerations, such as proper input validation, avoiding SQL injection, and secure handling of user data.
+
+**Community Engagement & Feedback**
+- The module's usefulness to the library's users as gauged by the number of likes, downloads, etc.
+- Positive feedback from module users.
  
 Note: 
 * It's possible that we decide to award a badge to a subset of your submissions based on the above criteria. 
 * Being a regular contributor doesn't guarantee a badge, we will still look at each submission individually. 
-
 
 ### Other questions?
 
