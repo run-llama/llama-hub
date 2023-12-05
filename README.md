@@ -2,8 +2,11 @@
 
 **Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
 
-## Contributing
-Interested in contributing? Skip over to our [Contribution Section](https://github.com/run-llama/llama-hub#how-to-add-a-loadertoolllama-pack) below for more details. 
+
+<details>
+<summary>👥 Contributing</summary>
+Interested in contributing? Skip over to our [Contribution Section](https://github.com/run-llama/llama-hub#how-to-add-a-loadertoolllama-pack) below for more details.
+</details>
 
 This is a simple library of all the data loaders / readers / tools / llama-packs / llama-datasets that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index), [LangChain](https://github.com/hwchase17/langchain) and more!.
 
