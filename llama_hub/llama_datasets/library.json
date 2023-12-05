@@ -6,12 +6,12 @@
   },
   "BraintrustCodaHelpDeskDataset": {
     "id": "llama_datasets/braintrust_coda",
-    "author": "kenny-wong",
+    "author": "dashk",
     "keywords": ["rag", "help desk"]
   },
   "PatronusAIFinanceBenchDataset": {
     "id": "llama_datasets/patronus_financebench",
-    "author": "anand",
+    "author": "anandnk24",
     "keywords": ["rag", "finance"]
   },
   "BlockchainSolanaDataset": {
@@ -38,5 +38,15 @@
     "id": "llama_datasets/mini_squadv2",
     "author": "axiomofjoy",
     "keywords": ["rag", "squadv2"]
+  },
+  "OriginOfCovid19Dataset": {
+    "id": "llama_datasets/origin_of_covid19",
+    "author": "CalculusC",
+    "keywords": ["rag", "covid-19"]
+  },
+  "EvaluatingLlmSurveyPaperDataset": {
+    "id": "llama_datasets/eval_llm_survey_paper",
+    "author": "nerdai",
+    "keywords": ["rag", "evaluation", "paper"]
   }
 }
