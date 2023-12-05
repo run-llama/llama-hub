@@ -148,5 +148,10 @@
     "id": "llama_packs/llama_dataset_metadata",
     "author": "nerdai",
     "keywords": ["llamadataset", "rag", "evaluation", "submission"]
+  },
+  "OllamaQueryEnginePack": {
+    "id": "llama_packs/ollama_query_engine",
+    "author": "chnsagitchen",
+    "keywords": ["ollama", "local", "query", "engine", "index"]
   }
 }
