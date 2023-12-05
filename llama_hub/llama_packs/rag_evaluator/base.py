@@ -22,6 +22,7 @@ from llama_index.evaluation.notebook_utils import (
 import pandas as pd
 from collections import deque
 from openai import RateLimitError
+import warnings
 
 
 class RagEvaluatorPack(BaseLlamaPack):
@@ -38,7 +39,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         query_engine: BaseQueryEngine,
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
-        batch_size: int = 20,
+        batch_size: int = 50,
     ):
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
@@ -56,6 +57,14 @@ class RagEvaluatorPack(BaseLlamaPack):
         }
         self.eval_queue = deque(range(len(rag_dataset.examples)))
         self.prediction_dataset = None
+        if batch_size > 50:
+            warnings.warn(
+                "You've set a large batch_size. If using OpenAI GPT-4,"
+                " you may experience a RateLimitError. Previous successful eval "
+                " responses are cached per batch. So hitting a RateLimitError"
+                " would mean you'd lose all of the current batches successful "
+                " GPT-4 calls."
+            )
 
     async def _amake_predictions(self):
         """Async make predictions with query engine."""
