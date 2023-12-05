@@ -157,6 +157,8 @@ class ConfluenceReader(BaseReader):
 
         pages: List = []
         if space_key:
+            if not start:
+                start = 0
             pages.extend(
                 self._get_data_with_paging(
                     self.confluence.get_all_pages_from_space,
@@ -257,6 +259,7 @@ class ConfluenceReader(BaseReader):
                 and len(results) >= max_num_remaining
             ):
                 break
+
             start += len(results)
             if max_num_remaining is not None:
                 max_num_remaining -= len(results)
