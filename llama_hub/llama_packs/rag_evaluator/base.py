@@ -38,7 +38,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         query_engine: BaseQueryEngine,
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
-        batch_size: int = 1,
+        batch_size: int = 20,
     ):
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
@@ -55,6 +55,7 @@ class RagEvaluatorPack(BaseLlamaPack):
             "context_similarity": [],
         }
         self.eval_queue = deque(range(len(rag_dataset.examples)))
+        self.prediction_dataset = None
 
     async def _amake_predictions(self):
         """Async make predictions with query engine."""
@@ -352,11 +353,13 @@ class RagEvaluatorPack(BaseLlamaPack):
         return benchmark_df
 
     def run(self):
-        self._make_predictions()
+        if self.prediction_dataset is None:
+            self._make_predictions()
         benchmark_df = self._make_evaluations()
         return benchmark_df
 
     async def arun(self):
-        await self._amake_predictions()
+        if self.prediction_dataset is None:
+            await self._amake_predictions()
         benchmark_df = await self._amake_evaluations()
         return benchmark_df
