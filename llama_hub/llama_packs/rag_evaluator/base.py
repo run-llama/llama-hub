@@ -39,7 +39,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         query_engine: BaseQueryEngine,
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
-        batch_size: int = 50,
+        batch_size: int = 25,
     ):
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
@@ -283,12 +283,16 @@ class RagEvaluatorPack(BaseLlamaPack):
         return benchmark_df
 
     def _batch_examples_and_preds(
-        self, examples: List[Any], predictions: List[Any], batch_size: int = 1
+        self,
+        examples: List[Any],
+        predictions: List[Any],
+        batch_size: int = 20,
+        start_position: int = 0,
     ):
         """Batches examples and predictions with a given batch_size."""
         assert len(examples) == len(predictions)
         num_examples = len(examples)
-        for ndx in range(0, num_examples, batch_size):
+        for ndx in range(start_position, num_examples, batch_size):
             yield examples[ndx : min(ndx + batch_size, num_examples)], predictions[
                 ndx : min(ndx + batch_size, num_examples)
             ]
@@ -299,9 +303,10 @@ class RagEvaluatorPack(BaseLlamaPack):
 
         start_ix = self.eval_queue[0]
         for batch in self._batch_examples_and_preds(
-            self.rag_dataset.examples[start_ix:],
-            self.prediction_dataset.predictions[start_ix:],
+            self.rag_dataset.examples,
+            self.prediction_dataset.predictions,
             batch_size=self._batch_size,
+            start_position=start_ix
         ):
             examples, predictions = batch
             tasks = []
