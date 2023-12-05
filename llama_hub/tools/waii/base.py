@@ -35,12 +35,14 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         self.verbose = verbose
 
     def _try_display(self, obj):
-        try:
-            # display df if it is available
-            if self.verbose:
+        # only display when verbose is True, we don't want to display too much information by default.
+        if self.verbose:
+            try:
+                # display df if the function `display` is available (display only available when running with IPYTHON),
+                # if it is not available, just ignore the exception.
                 display(obj)
-        except:
-            pass
+            except:
+                pass
 
     def _run_query(self, sql: str, return_summary: bool):
         from waii_sdk_py import WAII
@@ -50,15 +52,16 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
 
         self._try_display(run_result.to_pandas_df())
 
-        documents = run_result.rows
+        # create documents based on returned rows
+        documents = [Document(text=str(doc)) for doc in run_result.rows]
 
         if return_summary:
             return self._get_summarization(
                 "Summarize the result in text, don't miss any detail.",
-                [Document(text=str(doc)) for doc in documents],
+                documents
             )
-        else:
-            return documents
+
+        return documents
 
     def load_data(self, ask: str) -> List[Document]:
         """Query using natural language and load data from the Database, returning a list of Documents.
