@@ -36,7 +36,7 @@ class VectaraRagPack(BaseLlamaPack):
     def retrieve(self, query_str: str) -> Any:
         """Retrieve."""
         return self._query_engine.retrieve(query_str)
-    
+
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
         return self._query_engine.query(*args, **kwargs)
