@@ -30,7 +30,7 @@ pytest-mock = "3.11.1"
 typing-inspect = "0.8.0"
 typing_extensions = "^4.5.0"
 types-requests = "2.28.11.8"
-black = "22.12.0"
+black = { version = "22.12.0", extras = ["jupyter"]}
 isort = "5.11.4"
 pytest-asyncio = "^0.21.1"
 ruff = "0.0.285"
