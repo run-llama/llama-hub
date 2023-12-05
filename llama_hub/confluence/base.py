@@ -123,6 +123,9 @@ class ConfluenceReader(BaseReader):
         if not space_key and start:
             raise ValueError("Must not specify `start` when `space_key` is unspecified")
 
+        if space_key and cursor:
+            raise ValueError("Must not specify `cursor` when `space_key` is specified")
+
         if page_status and not space_key:
             raise ValueError(
                 "Must specify `space_key` when `page_status` is specified."
