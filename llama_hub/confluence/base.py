@@ -38,7 +38,6 @@ class ConfluenceReader(BaseReader):
 
         self.base_url = base_url
 
-
         try:
             from atlassian import Confluence
         except ImportError:
@@ -303,10 +302,11 @@ class ConfluenceReader(BaseReader):
 
     def get_next_cursor(self):
         """
+        Returns: The last set cursor from a cql based search
         """
         return self._next_cursor
 
-    @retry(stop_max_attempt_number=4, wait_fixed=4000)
+    @retry(stop_max_attempt_number=1, wait_fixed=4)
     def _get_data_with_retry(self, function, **kwargs):
         return function(**kwargs)
 
