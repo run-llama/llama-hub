@@ -294,6 +294,8 @@ For all other PR's relevant to LlamaIndex, let's create it directly against the 
 ### How can I get a verified badge on LlamaHub? 
 We have just started offering badges to our contributors. At the moment, we're focused on our early adopters and official partners, but we're gradually opening up badge consideration to all submissions. If you're interested in being considered, please review the criteria below and if everything aligns, feel free to contact us via [community Discord](https://discord.gg/dGcwcsnxhU).
 
+We are still refining our criteria but here are some aspects we consider:
+
 **Quality**
 - Code Quality illustrated by the use of coding standards and style guidelines.
 - Code readability and proper documentation.
