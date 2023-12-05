@@ -57,8 +57,7 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
 
         if return_summary:
             return self._get_summarization(
-                "Summarize the result in text, don't miss any detail.",
-                documents
+                "Summarize the result in text, don't miss any detail.", documents
             )
 
         return documents
