@@ -11,7 +11,7 @@ Powered by LlamaIndex, OpenAI ChatGPT and [HoloViz Panel](https://panel.holoviz.
 This template
 
 - Downloads and indexes a Github repository using the the `llama_index` [`GithubRepositoryReader`](https://llamahub.ai/l/github_repo). The default repository is [holoviz/panel](https://github.com/holoviz/panel).
-- Creates a [GPTVectorStoreIndex](https://docs.llamaindex.ai/en/stable/changes/deprecated_terms.html#gptvectorstoreindex) powered chat engine that will retrieve context from that data to respond to each user query.
+- Creates a [VectorStoreIndex](https://docs.llamaindex.ai/en/stable/changes/deprecated_terms.html#VectorStoreIndex) powered chat engine that will retrieve context from that data to respond to each user query.
 - Creates a Panel [`ChatInterface`](https://panel.holoviz.org/reference/chat/ChatInterface.html) UI that will stream each answer from the chat engine.
 
 ## 🖥️ CLI Usage
@@ -41,7 +41,7 @@ python ./panel_chat_pack/base.py
 ## 🎓 Learn More
 
 - [`GithubRepositoryReader`](https://llamahub.ai/l/github_repo)
-- [`GPTVectorStoreIndex`](https://docs.llamaindex.ai/en/stable/changes/deprecated_terms.html#gptvectorstoreindex)
+- [`VectorStoreIndex`](https://docs.llamaindex.ai/en/stable/changes/deprecated_terms.html#VectorStoreIndex)
 - [Panel Chat Components](https://panel.holoviz.org/reference/index.html#chat)
 - [Panel Chat Examples](https://github.com/holoviz-topics/panel-chat-examples)
 

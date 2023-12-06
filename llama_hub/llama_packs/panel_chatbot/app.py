@@ -6,7 +6,7 @@ from pathlib import Path
 import nest_asyncio
 import panel as pn
 import param
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 from llama_hub.github_repo import GithubClient, GithubRepositoryReader
 
@@ -71,10 +71,10 @@ def _split_and_clean(cstext):
 
 
 class IndexLoader(pn.viewable.Viewer):
-    """The IndexLoader enables the user to interactively create a GPTVectorStoreIndex from a
+    """The IndexLoader enables the user to interactively create a VectorStoreIndex from a
     github repository of choice"""
 
-    value: GPTVectorStoreIndex = param.ClassSelector(class_=GPTVectorStoreIndex)
+    value: VectorStoreIndex = param.ClassSelector(class_=VectorStoreIndex)
 
     status = param.String(constant=True, doc="A status message")
 
@@ -204,7 +204,7 @@ class IndexLoader(pn.viewable.Viewer):
         return docs
 
     async def _create_index(self, docs):
-        return GPTVectorStoreIndex.from_documents(docs, use_async=True)
+        return VectorStoreIndex.from_documents(docs, use_async=True)
 
     async def _get_index(self, index):
         index_path = self._cached_index_path
@@ -282,7 +282,7 @@ def powered_by():
     )
 
 
-async def chat_component(index: GPTVectorStoreIndex, index_loader: IndexLoader):
+async def chat_component(index: VectorStoreIndex, index_loader: IndexLoader):
     """Returns the chat component powering the main area of the application"""
     if not index:
         return pn.Column(
