@@ -62,10 +62,10 @@ class RagEvaluatorPack(BaseLlamaPack):
         self.prediction_dataset = None
 
     async def _amake_predictions(
-            self,
-            batch_size: int = 20,
-            sleep_time_in_seconds: int = 1,
-        ):
+        self,
+        batch_size: int = 20,
+        sleep_time_in_seconds: int = 1,
+    ):
         """Async make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             await self.rag_dataset.amake_predictions_with(
@@ -77,17 +77,17 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
 
     def _make_predictions(
-            self,
-            batch_size: int = 20,
-            sleep_time_in_seconds: int = 1, 
-        ):
+        self,
+        batch_size: int = 20,
+        sleep_time_in_seconds: int = 1,
+    ):
         """Sync make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             self.rag_dataset.make_predictions_with(
                 query_engine=self.query_engine,
                 show_progress=self.show_progress,
                 batch_size=batch_size,
-                sleep_time_in_seconds=sleep_time_in_seconds
+                sleep_time_in_seconds=sleep_time_in_seconds,
             )
         )
 
@@ -394,11 +394,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         benchmark_df = self._prepare_and_save_benchmark_results()
         return benchmark_df
 
-    def run(
-            self, 
-            batch_size: int = 10, 
-            sleep_time_in_seconds: int = 1
-        ):
+    def run(self, batch_size: int = 10, sleep_time_in_seconds: int = 1):
         if batch_size > 10:
             warnings.warn(
                 "You've set a large batch_size (>10). If using OpenAI GPT-4 as "
