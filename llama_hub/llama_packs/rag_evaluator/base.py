@@ -24,6 +24,7 @@ from collections import deque
 from openai import RateLimitError
 import warnings
 import time
+import asyncio
 
 
 class RagEvaluatorPack(BaseLlamaPack):
@@ -40,14 +41,17 @@ class RagEvaluatorPack(BaseLlamaPack):
         query_engine: BaseQueryEngine,
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
+        show_progress: bool = False,
     ):
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
+        self._num_examples = len(self.rag_dataset.examples)
         if judge_llm is None:
             self.judge_llm = OpenAI(temperature=0, model="gpt-4")
         else:
             assert isinstance(judge_llm, LLM)
             self.judge_llm = judge_llm
+        self.show_progress = show_progress
         self.evals = {
             "correctness": [],
             "relevancy": [],
@@ -62,7 +66,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             await self.rag_dataset.amake_predictions_with(
                 query_engine=self.query_engine,
-                show_progress=True,
+                show_progress=self.show_progress,
                 batch_size=batch_size,
                 sleep_time_in_seconds=sleep_time_in_seconds,
             )
@@ -72,7 +76,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         """Sync make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             self.rag_dataset.make_predictions_with(
-                query_engine=self.query_engine, show_progress=True
+                query_engine=self.query_engine, show_progress=self.show_progress
             )
         )
 
@@ -120,25 +124,28 @@ class RagEvaluatorPack(BaseLlamaPack):
         )
 
     def _create_async_evaluate_example_prediction_tasks(
-        self, judges, example, prediction
+        self, judges, example, prediction, sleep_time_in_seconds
     ):
         """Collect the co-routines."""
         correctness_task = judges["correctness"].aevaluate(
             query=example.query,
             response=prediction.response,
             reference=example.reference_answer,
+            sleep_time_in_seconds=sleep_time_in_seconds,
         )
 
         relevancy_task = judges["relevancy"].aevaluate(
             query=example.query,
             response=prediction.response,
             contexts=prediction.contexts,
+            sleep_time_in_seconds=sleep_time_in_seconds,
         )
 
         faithfulness_task = judges["faithfulness"].aevaluate(
             query=example.query,
             response=prediction.response,
             contexts=prediction.contexts,
+            sleep_time_in_seconds=sleep_time_in_seconds,
         )
 
         if example.reference_contexts and prediction.contexts:
@@ -294,35 +301,47 @@ class RagEvaluatorPack(BaseLlamaPack):
         start_position: int = 0,
     ):
         """Batches examples and predictions with a given batch_size."""
-        assert len(examples) == len(predictions)
-        num_examples = len(examples)
-        for ndx in range(start_position, num_examples, batch_size):
-            yield examples[ndx : min(ndx + batch_size, num_examples)], predictions[
-                ndx : min(ndx + batch_size, num_examples)
-            ]
+        assert self._num_examples == len(predictions)
+        for ndx in range(start_position, self._num_examples, batch_size):
+            yield examples[
+                ndx : min(ndx + batch_size, self._num_examples)
+            ], predictions[ndx : min(ndx + batch_size, self._num_examples)]
 
     async def _amake_evaluations(self, batch_size, sleep_time_in_seconds):
         """Async make evaluations."""
         judges = self._prepare_judges()
 
-        start_ix = self.eval_queue[0]
-        for batch in self._batch_examples_and_preds(
+        ix = self.eval_queue[0]
+        batch_iterator = self._batch_examples_and_preds(
             self.rag_dataset.examples,
             self.prediction_dataset.predictions,
             batch_size=batch_size,
-            start_position=start_ix,
-        ):
+            start_position=ix,
+        )
+        total_batches = (self._num_examples - ix + 1) / batch_size + (
+            (self._num_examples - ix + 1) % batch_size != 0
+        )
+        if self.show_progress:
+            batch_iterator = tqdm_asyncio(
+                batch_iterator,
+                desc="Batch processing of evaluations",
+                total=total_batches,
+            )
+
+        for batch in batch_iterator:
             examples, predictions = batch
             tasks = []
-            tqdm_iterator = tqdm.tqdm(zip(examples, predictions))
-            for example, prediction in tqdm_iterator:
+            for example, prediction in zip(examples, predictions):
                 (
                     correctness_task,
                     relevancy_task,
                     faithfulness_task,
                     semantic_similarity_task,
                 ) = self._create_async_evaluate_example_prediction_tasks(
-                    judges=judges, example=example, prediction=prediction
+                    judges=judges,
+                    example=example,
+                    prediction=prediction,
+                    sleep_time_in_seconds=sleep_time_in_seconds,
                 )
 
                 tasks += [
@@ -334,9 +353,10 @@ class RagEvaluatorPack(BaseLlamaPack):
 
             # do this in batches to avoid RateLimitError
             try:
-                eval_results: List[EvaluationResult] = await tqdm_asyncio.gather(*tasks)
+                eval_results: List[EvaluationResult] = await asyncio.gather(*tasks)
             except RateLimitError as err:
-                tqdm_iterator.close()
+                if self.show_progress:
+                    batch_iterator.close()
                 raise ValueError(
                     "You've hit rate limits on your OpenAI subscription. This"
                     " `RagEvaluatorPack` maintains state of evaluations. Simply"
@@ -354,7 +374,10 @@ class RagEvaluatorPack(BaseLlamaPack):
             for _ in range(batch_size):
                 if self.eval_queue:
                     self.eval_queue.popleft()
-            time.sleep(sleep_time_in_seconds)
+            ix += 1
+            if self.show_progress:
+                batch_iterator.update()
+                batch_iterator.refresh()
 
         self._save_evaluations()
         benchmark_df = self._prepare_and_save_benchmark_results()
@@ -396,7 +419,8 @@ class RagEvaluatorPack(BaseLlamaPack):
         # evaluate predictions
         eval_sleep_time_in_seconds = (
             sleep_time_in_seconds * 2
-        )  # since we make 3 evaluator llm calls
+        )  # since we make 3 evaluator llm calls and default is gpt-4
+        # which is heavily rate-limited
         eval_batch_size = int(max(batch_size / 4, 1))
         benchmark_df = await self._amake_evaluations(
             batch_size=eval_batch_size, sleep_time_in_seconds=eval_sleep_time_in_seconds
