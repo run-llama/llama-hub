@@ -13,24 +13,17 @@ class VectaraRagPack(BaseLlamaPack):
 
     def __init__(
         self,
-        verbose: bool = True,
         nodes: Optional[List[TextNode]] = None,
         similarity_top_k: int = 5,
-        n_sentences_before: int = 2,
-        n_sentences_after: int = 2,
-        vectara_query_mode: str = "default",
         **kwargs: Any,
     ):
-        self._index = VectaraIndex(nodes, verbose=verbose, **kwargs)
+        self._index = VectaraIndex(nodes)
         vectara_kwargs = kwargs.get("vectara_kwargs", {})
         if "summary_enabled" not in vectara_kwargs:
             vectara_kwargs["summary_enabled"] = True
         self._query_engine = self._index.as_query_engine(
             similarity_top_k=similarity_top_k,
-            n_sentences_before=n_sentences_before,
-            n_sentences_after=n_sentences_after,
-            vectara_query_mode=vectara_query_mode,
-            vectara_kwargs=vectara_kwargs,
+            **kwargs,
         )
 
     def get_modules(self) -> Dict[str, Any]:
