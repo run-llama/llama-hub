@@ -18,7 +18,17 @@ async def main():
     # EVALUATE WITH PACK
     RagEvaluatorPack = download_llama_pack("RagEvaluatorPack", "./pack_stuff")
     rag_evaluator = RagEvaluatorPack(query_engine=query_engine, rag_dataset=rag_dataset)
-    benchmark_df = await rag_evaluator.arun()
+
+    ############################################################################
+    # NOTE: If have a lower tier subscription for OpenAI API like Usage Tier 1 #
+    # then you'll need to use different batch_size and sleep_time_in_seconds.  #
+    # For Usage Tier 1, settings that seemed to work well were batch_size=5,   #
+    # and sleep_time_in_seconds=15 (as of December 2023.)                      #
+    ############################################################################
+    benchmark_df = await rag_evaluator.arun(
+        batch_size=20,  # batches the number of openai api calls to make
+        sleep_time_in_seconds=1,  # number of seconds sleep before making an api call
+    )
     print(benchmark_df)
 
 
