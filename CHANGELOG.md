@@ -8,6 +8,9 @@
 
 - add `CovidQaDataset` and `MiniCovidQaDataset` (#738)
 
+### Smaller Features + Bug Fixes / Nits
+- nit: remove print statements from ollama pack (#741)
+
 ## [v0.0.54] - 2023-12-06
 
 ### New Features
