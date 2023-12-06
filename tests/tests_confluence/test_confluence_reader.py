@@ -871,7 +871,7 @@ class TestConfluenceReader:
         assert all(isinstance(doc, Document) for doc in documents)
         assert [doc.doc_id for doc in documents] == [str(i) for i in range(6)]
 
-    def test_confluence_reader_load_data_cql_paging_cursor_2(self, mock_confluence):
+    def test_confluence_reader_load_data_cql_paging_cursor_3(self, mock_confluence):
         mock_confluence.get.side_effect = _mock_get_cursor_pages
 
         confluence_reader = ConfluenceReader(
@@ -881,7 +881,7 @@ class TestConfluenceReader:
 
         mock_cql = "type=page"
         mock_cursor_offset = 3
-        mock_cursor = f"CURSOR_{mock_cursor_offset}"
+        mock_cursor = f"POINTER_{mock_cursor_offset}"
 
         documents = confluence_reader.load_data(cql=mock_cql, cursor=mock_cursor)
 
@@ -892,6 +892,40 @@ class TestConfluenceReader:
         assert [doc.doc_id for doc in documents] == [
             str(i + mock_cursor_offset) for i in range(8 - mock_cursor_offset)
         ]
+
+    def test_confluence_reader_load_data_cql_paging_cursor_3_max_3(
+        self, mock_confluence
+    ):
+        mock_confluence.get.side_effect = _mock_get_cursor_pages
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_cql = "type=page"
+        mock_cursor_offset = 3
+        mock_max_items = 3
+        mock_cursor = f"POINTER_{mock_cursor_offset}"
+
+        documents = confluence_reader.load_data(
+            cql=mock_cql, cursor=mock_cursor, max_num_results=mock_max_items
+        )
+
+        next_cursor = confluence_reader.get_next_cursor()
+
+        assert len(documents) == 3
+        assert mock_confluence.get.call_count == 1
+
+        # Returns page 3,4,5
+
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == [
+            str(i + mock_cursor_offset) for i in range(3)
+        ]
+
+        # Next pointer points to the next page, which is 6
+        assert next_cursor == "POINTER_6"
 
 
 def _mock_get_all_pages_from_space(

@@ -289,8 +289,10 @@ class ConfluenceReader(BaseReader):
             if not next_url:
                 self._next_cursor = None
                 break
-            cursor = next_url.split("cursor=")[1].split("&")[0]
-            params["cursor"] = cursor
+
+            if "cursor=" in next_url:  # On confluence Server this is not set
+                cursor = next_url.split("cursor=")[1].split("&")[0]
+                params["cursor"] = cursor
 
             if max_num_results is not None:
                 params["limit"] -= len(results["results"])
