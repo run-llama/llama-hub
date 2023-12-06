@@ -1116,5 +1116,14 @@
   "OpensearchReader": {
     "id": "opensearch",
     "author": "chnsagitchen"
+  },
+    "HiveReader": {
+    "id": "hive",
+    "author": "kasen",
+    "keywords": [
+      "Hive",
+      "Hadoop",
+      "HDFS"
+    ]
   }
 }
