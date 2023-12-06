@@ -57,16 +57,24 @@ def add_numbers(a, b):
     return a+b
 """
 
+
 def test_reading_module_with_class(mocker):
     # Given
-    mocker.patch('os.path.exists', return_value=True)
+    mocker.patch("os.path.exists", return_value=True)
     walker = DocstringWalker()
-    mocker.patch('os.walk', return_value=[('somepath', '', ['somefile1.py']),])
-    mocker.patch.object(walker, "read_module_text", return_value=SOME_CLASS_WITH_DOCSTRING)
-    
+    mocker.patch(
+        "os.walk",
+        return_value=[
+            ("somepath", "", ["somefile1.py"]),
+        ],
+    )
+    mocker.patch.object(
+        walker, "read_module_text", return_value=SOME_CLASS_WITH_DOCSTRING
+    )
+
     # When
     docs = walker.load_data("somepath")
-    
+
     # Then
     assert len(docs) == 1
     assert isinstance(docs[0], Document)
@@ -76,43 +84,59 @@ def test_reading_module_with_class(mocker):
 
 def test_dont_fail_on_malformed_file(mocker):
     # Given
-    mocker.patch('os.path.exists', return_value=True)
+    mocker.patch("os.path.exists", return_value=True)
     walker = DocstringWalker()
-    
-    mocker.patch('os.walk', return_value=[('somepath', '', ['somefile.py']),])
+
+    mocker.patch(
+        "os.walk",
+        return_value=[
+            ("somepath", "", ["somefile.py"]),
+        ],
+    )
     mocker.patch.object(walker, "read_module_text", return_value=MALFORMED_FILE)
-    
+
     # When
     docs = walker.load_data("somepath", fail_on_malformed_files=False)
-    
+
     # Then
     assert len(docs) == 0
-    
-    
+
+
 def test_fail_on_malformed_file(mocker):
     # Given
-    mocker.patch('os.path.exists', return_value=True)
+    mocker.patch("os.path.exists", return_value=True)
     walker = DocstringWalker()
-    
-    mocker.patch('os.walk', return_value=[('somepath', '', ['somefile.py']),])
+
+    mocker.patch(
+        "os.walk",
+        return_value=[
+            ("somepath", "", ["somefile.py"]),
+        ],
+    )
     mocker.patch.object(walker, "read_module_text", return_value=MALFORMED_FILE)
-    
+
     # Then
     with pytest.raises(SyntaxError):
         walker.load_data("somepath", fail_on_malformed_files=True)
-        
-        
-        
+
+
 def test_reading_multiple_modules(mocker):
     # Given
-    mocker.patch('os.path.exists', return_value=True)
+    mocker.patch("os.path.exists", return_value=True)
     walker = DocstringWalker()
-    mocker.patch('os.walk', return_value=[('somepath', '', ['somefile1.py', 'somefile2.py']),])
-    mocker.patch.object(walker, "read_module_text", return_value=SOME_CLASS_WITH_DOCSTRING)
-    
+    mocker.patch(
+        "os.walk",
+        return_value=[
+            ("somepath", "", ["somefile1.py", "somefile2.py"]),
+        ],
+    )
+    mocker.patch.object(
+        walker, "read_module_text", return_value=SOME_CLASS_WITH_DOCSTRING
+    )
+
     # When
     docs = walker.load_data("somepath")
-    
+
     # Then
     assert len(docs) == 2
     assert isinstance(docs[0], Document)

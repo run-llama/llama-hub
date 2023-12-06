@@ -94,7 +94,8 @@ class DocstringWalker(BaseReader):
                         log.warning(
                             "Failed to parse file %s. Skipping. Error: %s",
                             module_path,
-                            e)
+                            e,
+                        )
                         continue
         return llama_docs
 
@@ -111,7 +112,7 @@ class DocstringWalker(BaseReader):
         str
             The text of the module.
         """
-        with open(path, mode='r', encoding="utf-8") as f:
+        with open(path, mode="r", encoding="utf-8") as f:
             text = f.read()
         return text
 
