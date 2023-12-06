@@ -1,11 +1,11 @@
-# Covid Qa Dataset
+# Mini Covid Qa Dataset
 
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset CovidQaDataset --download-dir ./data
+llamaindex-cli download-llamadataset MiniCovidQaDataset --download-dir ./data
 ```
 
 You can then inspect the files at `./data`. When you're ready to load the data into
@@ -34,7 +34,7 @@ from llama_index import VectorStoreIndex
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "CovidQaDataset ", "./data"
+  "MiniCovidQaDataset ", "./data"
 )
 
 # build basic RAG system
@@ -47,8 +47,7 @@ RagEvaluatorPack = download_llama_pack(
 )
 rag_evaluator_pack = RagEvaluatorPack(
     rag_dataset=rag_dataset,
-    query_engine=query_engine,
-    show_progress=True
+    query_engine=query_engine
 )
 
 ############################################################################
@@ -59,7 +58,7 @@ rag_evaluator_pack = RagEvaluatorPack(
 ############################################################################
 
 benchmark_df = await rag_evaluator_pack.arun(
-    batch_size=40,  # batches the number of openai api calls to make
+    batch_size=20,  # batches the number of openai api calls to make
     sleep_time_in_seconds=1,  # seconds to sleep before making an api call
 )
 ```
