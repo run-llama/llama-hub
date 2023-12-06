@@ -48,7 +48,7 @@ python ./panel_chat_pack/base.py
 ## 👍 Credits
 
 - [Marc Skov Madsen](https://twitter.com/MarcSkovMadsen) for creating the template
-- [Sophia Yang](https://twitter.com/sophiamyang) for letting us use her cute LLama image.
+- [Sophia Yang](https://twitter.com/sophiamyang) for creating the cute LLama image.
 
 ## 📈 Potential Improvements
 
