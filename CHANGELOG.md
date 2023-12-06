@@ -6,6 +6,8 @@
 
 ### Smaller Features + Bug Fixes / NITs
 
+- Add batch execution controlled by `batch_size` and `sleep_time_in_seconds` to `RagEvaluatorPack` (#734)
+
 ## [v0.0.52] - 2023-12-04
 
 ### New Features
