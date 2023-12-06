@@ -4,7 +4,7 @@
 
 ### New Features
 
-- add `CovidQaDataset` (#737)
+- add `CovidQaDataset` (#738)
 
 ## [v0.0.54] = 2023-12-06
 
