@@ -62,4 +62,5 @@ python ./panel_chat_pack/base.py
   - [ ] The streaming text is not always in focus. I believe its a matter of adjusting the `auto_scroll_limit` limit.
 - [ ] Fix minor CSS issues
   - [ ] See the `CSS_FIXES_TO_BE_UPSTREAMED_TO_PANEL` variable in the code
-  - [ ] Colors in links in sidebar and main area could be improved
+- [ ] Repo Manager
+  - [ ] Support using multiple repos. For example the full HoloViz suite
