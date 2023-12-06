@@ -119,8 +119,8 @@ class ConfluenceReader(BaseReader):
                 " parameters."
             )
 
-        if not space_key and start:
-            raise ValueError("Must not specify `start` when `space_key` is unspecified")
+        if cursor and start:
+            raise ValueError("Must not specify `start` when `cursor` is specified")
 
         if space_key and cursor:
             raise ValueError("Must not specify `cursor` when `space_key` is specified")
@@ -154,10 +154,11 @@ class ConfluenceReader(BaseReader):
         text_maker.ignore_links = True
         text_maker.ignore_images = True
 
+        if not start:
+            start = 0
+
         pages: List = []
         if space_key:
-            if not start:
-                start = 0
             pages.extend(
                 self._get_data_with_paging(
                     self.confluence.get_all_pages_from_space,
@@ -172,6 +173,7 @@ class ConfluenceReader(BaseReader):
         elif label:
             pages.extend(
                 self._get_cql_data_with_paging(
+                    start=start,
                     cursor=cursor,
                     cql=f'type="page" AND label="{label}"',
                     max_num_results=max_num_results,
@@ -181,6 +183,7 @@ class ConfluenceReader(BaseReader):
         elif cql:
             pages.extend(
                 self._get_cql_data_with_paging(
+                    start=start,
                     cursor=cursor,
                     cql=cql,
                     max_num_results=max_num_results,
@@ -265,11 +268,11 @@ class ConfluenceReader(BaseReader):
         return ret
 
     def _get_cql_data_with_paging(
-        self, cql, cursor=None, max_num_results=50, expand="body.storage.value"
+        self, cql, start=0, cursor=None, max_num_results=50, expand="body.storage.value"
     ):
         max_num_remaining = max_num_results
         ret = []
-        params = {"cql": cql, "start": 0, "expand": expand}
+        params = {"cql": cql, "start": start, "expand": expand}
         if cursor:
             params["cursor"] = cursor
 
