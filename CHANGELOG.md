@@ -2,11 +2,13 @@
 
 ## Unreleased
 
+## [v0.0.55] - 2023-12-07
+
 ### New Features
 
 - add `CovidQaDataset` and `MiniCovidQaDataset` (#738)
 
-## [v0.0.54] = 2023-12-06
+## [v0.0.54] - 2023-12-06
 
 ### New Features
 
