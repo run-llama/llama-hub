@@ -1,5 +1,13 @@
 # ChangeLog
 
+## Unreleased
+
+## [v0.0.54] = 2023-12-06
+
+### New Features
+
+- Add batch execution controlled by `batch_size` and `sleep_time_in_seconds` to `RagEvaluatorPack` (#734)
+
 ## [v0.0.53] - 2023-12-05
 
 ### New Features
@@ -10,10 +18,6 @@
 - Vectara rag bugfix (#732)
 - Issue#667: New Ollama Query Engine pack (#731)
 - add document_loader and cache (#687)
-
-### Smaller Features + Bug Fixes / NITs
-
-- Add batch execution controlled by `batch_size` and `sleep_time_in_seconds` to `RagEvaluatorPack` (#734)
 
 ## [v0.0.52] - 2023-12-04
 
