@@ -23,7 +23,7 @@ class HiveReader(BaseReader):
     """
 
     def __init__(
-        self, host: str, port: int, database: str, username: str, password: None, auth: Optional = None
+        self, host: str, port: Optional[int] = None, database: Optional[str] = None, username: Optional[str] = None, password: Optional[str] = None, auth: Optional[str] = None
     ):
         """Initialize with parameters."""
         try:
@@ -34,7 +34,6 @@ class HiveReader(BaseReader):
             )
 
         self.con = hive.Connection(
-            self,
             host=host,
             port=port,
             username=username,
@@ -68,3 +67,8 @@ class HiveReader(BaseReader):
         for row in rows:
             documents = Document(text=row)
         return documents
+
+if __name__ == "__main__":
+    reader = HiveReader(host='thrift://sandbox.hortonworks.com')
+    re = reader.load_data("SHOW DATABASES")
+    print(re)
