@@ -41,6 +41,7 @@ LOADING_NEW_DOCS = "Downloading documents"
 LOADING_EXISTING_INDEX = "Loading existing index"
 LOADING_NEW_INDEX = "Creating index"
 CUTE_LLAMA = Path(__file__).parent / "llama_by_sophia_yang.png"
+CUTE_LLAMA_URL = "https://x.com/sophiamyang/status/1729810715467252080?s=20"
 
 pn.chat.ChatMessage.default_avatars.update(
     {
@@ -330,7 +331,13 @@ async def chat_component(index: VectorStoreIndex, index_loader: IndexLoader):
 def settings_components(index_loader: IndexLoader):
     """Returns a list of the components to add to the sidebar"""
     return [
-        pn.pane.Image(CUTE_LLAMA, height=250, align="center", margin=(10, 5, 25, 5)),
+        pn.pane.Image(
+            CUTE_LLAMA,
+            height=250,
+            align="center",
+            margin=(10, 5, 25, 5),
+            link_url=CUTE_LLAMA_URL,
+        ),
         "## Github Repository",
         index_loader,
         powered_by(),
