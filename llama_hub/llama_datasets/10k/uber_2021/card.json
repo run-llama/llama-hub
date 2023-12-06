@@ -20,7 +20,7 @@
           "faithfulness": 0.667,
           "relevancy": 0.844
         },
-        "codeUrl": ""
+        "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/10k/uber_2021/llamaindex_baseline.py"
       }
     ]
   }
