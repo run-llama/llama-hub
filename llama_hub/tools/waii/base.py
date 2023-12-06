@@ -38,10 +38,12 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         # only display when verbose is True, we don't want to display too much information by default.
         if self.verbose:
             try:
+                from IPython.display import display
                 # display df if the function `display` is available (display only available when running with IPYTHON),
                 # if it is not available, just ignore the exception.
                 display(obj)
-            except:
+            except ImportError:
+                # Handle the case where IPython is not available.
                 pass
 
     def _run_query(self, sql: str, return_summary: bool):
