@@ -39,6 +39,7 @@ class WaiiToolSpec(BaseToolSpec, BaseReader):
         if self.verbose:
             try:
                 from IPython.display import display
+
                 # display df if the function `display` is available (display only available when running with IPYTHON),
                 # if it is not available, just ignore the exception.
                 display(obj)
