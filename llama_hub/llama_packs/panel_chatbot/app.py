@@ -63,6 +63,8 @@ CSS_FIXES_TO_BE_UPSTREAMED_TO_PANEL = """
 .bk-active.bk-btn-primary {border-color: var(--accent-fill-active)}
 .bk-btn-primary:hover {border-color: var(--accent-fill-hover)}
 .bk-btn-primary {border-color: var(--accent-fill-rest)}
+a {color: var(--accent-fill-rest) !important;}
+a:hover {color: var(--accent-fill-hover) !important;}
 """
 
 
