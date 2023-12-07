@@ -41,7 +41,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         query_engine: BaseQueryEngine,
         rag_dataset: BaseLlamaDataset,
         judge_llm: Optional[LLM] = None,
-        show_progress: bool = False,
+        show_progress: bool = True,
     ):
         self.query_engine = query_engine
         self.rag_dataset = rag_dataset
