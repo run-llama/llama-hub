@@ -1,6 +1,8 @@
 """Provides the PanelChatPack"""
-from typing import Dict, Any
+import logging
 import os
+from typing import Any, Dict
+
 from llama_index.llama_pack.base import BaseLlamaPack
 
 ENVIRONMENT_VARIABLES = [
@@ -20,7 +22,7 @@ class PanelChatPack(BaseLlamaPack):
         """Run the pipeline."""
         for variable in ENVIRONMENT_VARIABLES:
             if variable not in os.environ:
-                raise ValueError(f"{variable} is not set")
+                logging.warn("%s environment variable is not set", variable)
 
         import panel as pn
 
