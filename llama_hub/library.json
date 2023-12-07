@@ -1118,7 +1118,7 @@
     "author": "chnsagitchen"
   },
     "SharePointReader":{
-      "id": "sharepoint",
+      "id": "microsoft_sharepoint",
       "author": "arun-soliton",
       "keywords":[
         "sharepoint",
