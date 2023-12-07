@@ -158,5 +158,10 @@
     "id": "llama_packs/neo4j_query_engine",
     "author": "wenqiglantz",
     "keywords": ["neo4j", "knowledge graph", "query engine"]
+  },
+  "OllamaQueryEnginePack": {
+    "id": "llama_packs/ollama_query_engine",
+    "author": "chnsagitchen",
+    "keywords": ["ollama", "local", "query", "engine", "index"]
   }
 }

@@ -7,16 +7,14 @@ from llama_index import VectorStoreIndex
 
 async def main():
     # DOWNLOAD LLAMADATASET
-    rag_dataset, documents = download_llama_dataset(
-        "BraintrustCodaHelpDeskDataset", "./braintrust_codahdd"
-    )
+    rag_dataset, documents = download_llama_dataset("MiniCovidQaDataset", "./data")
 
     # BUILD BASIC RAG PIPELINE
     index = VectorStoreIndex.from_documents(documents=documents)
     query_engine = index.as_query_engine()
 
     # EVALUATE WITH PACK
-    RagEvaluatorPack = download_llama_pack("RagEvaluatorPack", "./pack_stuff")
+    RagEvaluatorPack = download_llama_pack("RagEvaluatorPack", "./pack")
     rag_evaluator = RagEvaluatorPack(query_engine=query_engine, rag_dataset=rag_dataset)
 
     ############################################################################
@@ -26,7 +24,7 @@ async def main():
     # and sleep_time_in_seconds=15 (as of December 2023.)                      #
     ############################################################################
     benchmark_df = await rag_evaluator.arun(
-        batch_size=20,  # batches the number of openai api calls to make
+        batch_size=40,  # batches the number of openai api calls to make
         sleep_time_in_seconds=1,  # number of seconds sleep before making an api call
     )
     print(benchmark_df)

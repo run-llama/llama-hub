@@ -1125,5 +1125,15 @@
         "microsoft 365",
         "microsoft365"
       ]
-    }
+    },
+  "DocstringWalker": {
+    "id": "docstring_walker",
+    "author": "Filip Wojcik",
+    "keywords": [
+      "docstring",
+      "python",
+      "code",
+      "source code"
+    ]
+  }
 }
