@@ -58,5 +58,10 @@
     "id": "llama_datasets/mini_covidqa",
     "author": "nerdai",
     "keywords": ["rag", "covid", "mini"]
+  },
+  "HistoryOfAlexnetDataset": {
+    "id": "llama_datasets/history_of_alexnet",
+    "author": "CalculusC",
+    "keywords": ["rag", "alexnet"]
   }
 }
