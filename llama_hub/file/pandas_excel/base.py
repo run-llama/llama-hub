@@ -58,7 +58,7 @@ class PandasExcelReader(BaseReader):
         Returns:
             List[Document]: A list of`Document objects containing the values from the specified column in the Excel file.
         """
-        import itertools
+        
 
         import pandas as pd
 
