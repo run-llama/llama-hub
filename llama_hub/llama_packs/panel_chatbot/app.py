@@ -302,9 +302,9 @@ async def chat_component(index: VectorStoreIndex, index_loader: IndexLoader):
     chat_engine = index.as_chat_engine(chat_mode="context", verbose=True)
 
     async def generate_response(contents, user, instance):
-        response = chat_engine.stream_chat(contents)
+        response = await chat_engine.astream_chat(contents)
         text = ""
-        for token in response.response_gen:
+        async for token in response.async_response_gen():
             text += token
             yield text
 
