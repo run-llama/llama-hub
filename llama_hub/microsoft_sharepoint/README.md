@@ -24,9 +24,9 @@ This loader loads the files present in a specific folder in sharepoint.
 
 If the files are present in the `Test` folder in SharePoint Site under `root` directory, then the input for the loader for  `file_path` is `Test`
 
-![Alt text](image.png)
+![FilePath](file_path_info.png)
 
-```
+```python
 from llama_index import download_loader 
 SharePointLoader = download_loader("SharePointReader")
 

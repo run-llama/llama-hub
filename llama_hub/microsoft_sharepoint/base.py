@@ -238,7 +238,8 @@ class SharePointReader(BaseReader):
         response = requests.get(file_download_url)
 
         # Create the directory if it does not exist and save the file.
-        os.makedirs(download_dir)
+        if not os.path.exists(download_dir):
+            os.makedirs(download_dir)
         file_path = os.path.join(download_dir, file_name)
         with open(file_path, "wb") as f:
             f.write(response.content)
