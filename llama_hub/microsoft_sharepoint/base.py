@@ -3,7 +3,7 @@
 import os
 import logging
 
-from typing import Any, Dict, Optional, List
+from typing import Any, Dict, List
 import tempfile
 
 import requests
@@ -43,7 +43,7 @@ class SharePointReader(BaseReader):
         self.tenant_id = tenant_id
         self._authorization_headers = None
 
-    def _get_access_token(self)->str:
+    def _get_access_token(self) -> str:
         """
         Gets the access_token for accessing file from SharePoint.
 
@@ -74,7 +74,7 @@ class SharePointReader(BaseReader):
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error_description"])
 
-    def _get_site_id_with_host_name(self, access_token, sharepoint_site_name)->str:
+    def _get_site_id_with_host_name(self, access_token, sharepoint_site_name) -> str:
         """
         Retrieves the site ID of a SharePoint site using the provided site name.
 
@@ -113,7 +113,7 @@ class SharePointReader(BaseReader):
                 raise ValueError(response.json()["error_description"])
             raise ValueError(response.json()["error"])
 
-    def _get_drive_id(self)->str:
+    def _get_drive_id(self) -> str:
         """
         Retrieves the drive ID of the SharePoint site.
 
@@ -144,7 +144,7 @@ class SharePointReader(BaseReader):
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error_description"])
 
-    def _get_sharepoint_folder_id(self, folder_path: str) -> Optional[Any]:
+    def _get_sharepoint_folder_id(self, folder_path: str) -> str:
         """
         Retrieves the folder ID of the SharePoint site.
 
@@ -173,7 +173,7 @@ class SharePointReader(BaseReader):
         folder_id: str,
         download_dir: str,
         include_subfolders: bool = False,
-    )-> Optional[Any]:
+    ) -> Dict[str, str]:
         """
         Downloads files from the specified folder ID and extracts metadata.
 
@@ -284,7 +284,7 @@ class SharePointReader(BaseReader):
         sharepoint_site_name: str,
         sharepoint_folder_path: str,
         recursive: bool,
-    )->Optional[Any]:
+    ) -> Dict[str, str]:
         """
         Downloads files from the specified folder and returns the metadata for the downloaded files.
 
@@ -318,15 +318,15 @@ class SharePointReader(BaseReader):
 
     def _load_documents_with_metadata(
         self,
-        files_metadata: Optional[Any],
+        files_metadata: Dict[str, Any],
         download_dir: str,
         recursive: bool,
-    )-> List[Document]:
+    ) -> List[Document]:
         """
         Loads the documents from the downloaded files.
 
         Args:
-            files_metadata (Optional[Any]): A dictionary containing the metadata of the downloaded files.
+            files_metadata (Dict[str,Any]): A dictionary containing the metadata of the downloaded files.
             download_dir (str): The directory where the files should be downloaded.
             recursive (bool): If True, files from all subfolders are downloaded.
 
@@ -353,8 +353,7 @@ class SharePointReader(BaseReader):
         sharepoint_site_name: str,
         sharepoint_folder_path: str,
         recursive: bool = False,
-    )-> List[Document]:
-
+    ) -> List[Document]:
         """
         Loads the files from the specified folder in the SharePoint site.
 
