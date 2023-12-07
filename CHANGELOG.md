@@ -6,6 +6,8 @@
 
 ### Smaller Features + Bug Fixes / NITs
 
+- Update Confluence loader with capability to set start and cursor offset when searching (#733)
+
 ## [v0.0.52] - 2023-12-04
 
 ### New Features
