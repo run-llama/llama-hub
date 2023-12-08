@@ -104,3 +104,26 @@ def test_llama_packs_library_matches() -> None:
 
         # make sure the specified class is in the loader file
         assert hasattr(module, k)
+
+
+def test_llama_datasets_library_matches() -> None:
+    """Check that library.json corresponds to valid files."""
+    hub_dir = Path(__file__).parent.parent / "llama_hub"
+    library_path = hub_dir / "llama_datasets" / "library.json"
+    library_dict = json.load(open(library_path, "r"))
+    for k, entry in library_dict.items():
+        # make sure every entry has an "id" field
+        assert "id" in entry
+        entry_id = entry["id"]
+
+        # make sure the dataset directory exists
+        entry_dir = hub_dir / entry_id
+        assert entry_dir.exists()
+
+        # make sure that the card.json file exists
+        entry_file = entry_dir / "card.json"
+        assert entry_file.exists()
+
+        # make sure that the README file exists
+        readme_file = entry_dir / "README.md"
+        assert readme_file.exists()

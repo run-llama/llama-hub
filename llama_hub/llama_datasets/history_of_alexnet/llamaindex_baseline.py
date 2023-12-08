@@ -7,9 +7,7 @@ from llama_index import VectorStoreIndex
 
 async def main():
     # DOWNLOAD LLAMADATASET
-    rag_dataset, documents = download_llama_dataset(
-        "BraintrustCodaHelpDeskDataset", "./braintrust_codahdd"
-    )
+    rag_dataset, documents = download_llama_dataset("HistoryOfAlexnetDataset", "./data")
 
     # BUILD BASIC RAG PIPELINE
     index = VectorStoreIndex.from_documents(documents=documents)

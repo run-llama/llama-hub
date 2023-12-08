@@ -1117,13 +1117,23 @@
     "id": "opensearch",
     "author": "chnsagitchen"
   },
-    "HiveReader": {
+  "HiveReader": {
     "id": "hive",
     "author": "kasen",
     "keywords": [
       "Hive",
       "Hadoop",
       "HDFS"
+    ]
+  },
+  "DocstringWalker": {
+    "id": "docstring_walker",
+    "author": "Filip Wojcik",
+    "keywords": [
+      "docstring",
+      "python",
+      "code",
+      "source code"
     ]
   }
 }
