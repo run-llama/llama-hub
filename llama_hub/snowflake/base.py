@@ -13,16 +13,17 @@ from llama_index.readers.schema.base import Document
 
 logger = logging.getLogger(__name__)
 
+
 class SnowflakeReader(BaseReader):
     """
-    Initializes a new instance of the SnowflakeReader. 
+    Initializes a new instance of the SnowflakeReader.
 
     This class establishes a connection to Snowflake using SQLAlchemy, executes query
     and concatenates each row into Document used by LlamaIndex.
 
     Attributes:
         engine (Optional[Engine]): SQLAlchemy Engine object of the database connection.
-        
+
         OR
 
         account (Optional[str]): Snowflake account identifier.
@@ -35,17 +36,17 @@ class SnowflakeReader(BaseReader):
     """
 
     def __init__(
-            self, 
-            account: Optional[str] = None, 
-            user: Optional[str] = None, 
-            password: Optional[str] = None, 
-            database: Optional[str] = None, 
-            schema: Optional[str] = None, 
-            warehouse: Optional[str] = None,
-            role: Optional[str] = None, 
-            proxy: Optional[str] = None, 
-            engine: Optional[Engine] = None
-            ) -> None:
+        self,
+        account: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        database: Optional[str] = None,
+        schema: Optional[str] = None,
+        warehouse: Optional[str] = None,
+        role: Optional[str] = None,
+        proxy: Optional[str] = None,
+        engine: Optional[Engine] = None,
+    ) -> None:
         """
         Initializes the SnowflakeReader with optional connection details, proxy configuration, or an engine directly.
 
@@ -63,20 +64,20 @@ class SnowflakeReader(BaseReader):
         if engine is None:
             connect_args = {}
             if proxy:
-                connect_args['proxy'] = proxy
+                connect_args["proxy"] = proxy
 
             # Create an SQLAlchemy engine for Snowflake
             self.engine = create_engine(
                 URL(
-                    account=account or '',
-                    user=user or '',
-                    password=password or '',
-                    database=database or '',
-                    schema=schema or '',
-                    warehouse=warehouse or '',
-                    role=role or ''
+                    account=account or "",
+                    user=user or "",
+                    password=password or "",
+                    database=database or "",
+                    schema=schema or "",
+                    warehouse=warehouse or "",
+                    role=role or "",
                 ),
-                connect_args=connect_args
+                connect_args=connect_args,
             )
         else:
             self.engine = engine
@@ -103,7 +104,6 @@ class SnowflakeReader(BaseReader):
             # Ensure the session is closed after query execution
             session.close()
 
-
     def load_data(self, query: str) -> List[Document]:
         """Query and load data from the Database, returning a list of Documents.
 
@@ -114,10 +114,10 @@ class SnowflakeReader(BaseReader):
             List[Document]: A list of Document objects.
         """
         documents = []
-       
+
         if query is None:
             raise ValueError("A query parameter is necessary to filter the data")
-        
+
         try:
             result = self.execute_query(query)
 
