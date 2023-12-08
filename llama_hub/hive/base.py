@@ -67,8 +67,3 @@ class HiveReader(BaseReader):
         for row in rows:
             documents = Document(text=row)
         return documents
-
-if __name__ == "__main__":
-    reader = HiveReader(host='thrift://sandbox.hortonworks.com')
-    re = reader.load_data("SHOW DATABASES")
-    print(re)
