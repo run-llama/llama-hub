@@ -1117,6 +1117,15 @@
     "id": "opensearch",
     "author": "chnsagitchen"
   },
+    "SharePointReader":{
+      "id": "microsoft_sharepoint",
+      "author": "arun-soliton",
+      "keywords":[
+        "sharepoint",
+        "microsoft 365",
+        "microsoft365"
+      ]
+    },
   "DocstringWalker": {
     "id": "docstring_walker",
     "author": "Filip Wojcik",
