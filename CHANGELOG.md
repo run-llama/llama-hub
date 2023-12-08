@@ -28,6 +28,8 @@
 - Issue#667: New Ollama Query Engine pack (#731)
 - add document_loader and cache (#687)
 
+- Update Confluence loader with capability to set start and cursor offset when searching (#733)
+
 ## [v0.0.52] - 2023-12-04
 
 ### New Features
