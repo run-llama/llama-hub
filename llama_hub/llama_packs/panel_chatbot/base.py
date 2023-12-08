@@ -39,6 +39,3 @@ class PanelChatPack(BaseLlamaPack):
             print(
                 "To serve the Panel ChatBot please run this file with 'panel serve' or 'python'"
             )
-
-
-PanelChatPack().run()
