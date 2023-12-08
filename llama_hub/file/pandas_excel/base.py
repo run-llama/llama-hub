@@ -58,7 +58,6 @@ class PandasExcelReader(BaseReader):
         Returns:
             List[Document]: A list of`Document objects containing the values from the specified column in the Excel file.
         """
-        import itertools
 
         import pandas as pd
 
@@ -74,11 +73,13 @@ class PandasExcelReader(BaseReader):
             for sheet_name, df in dfs.items():
                 sheet_data = df.values.astype(str).tolist()
                 if self._concat_rows:
-                    text = self._row_joiner.join(self._row_joiner.join(row) for row in sheet_data)
+                    text = self._row_joiner.join(
+                        self._row_joiner.join(row) for row in sheet_data
+                    )
                 else:
                     text = [self._row_joiner.join(row) for row in sheet_data]
 
-                doc_extra_info = {'sheet_name': sheet_name}
+                doc_extra_info = {"sheet_name": sheet_name}
                 if extra_info:
                     doc_extra_info.update(extra_info)
 
@@ -109,6 +110,3 @@ class PandasExcelReader(BaseReader):
                     extra_info=extra_info or {},
                 )
             ]
-        
-
-    
