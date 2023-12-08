@@ -1,4 +1,4 @@
-# Database Loader
+# Snowflake Loader
 
 This loader connects to Snowflake (using SQLAlchemy under the hood). The user specifies a query and extracts Document objects corresponding to the results. You can use this loader to easily connect to a database on Snowflake and pass the documents into a `GPTSQLStructStoreIndex` from LlamaIndex.
 
@@ -22,7 +22,7 @@ documents = reader.load_data(query=query)
 ```
 
 
-### Opton 2: Pass the required parameters to esstablish Snowflake connection
+### Option 2: Pass the required parameters to esstablish Snowflake connection
 Here's an example usage of the SnowflakeReader.
 
 ```python
