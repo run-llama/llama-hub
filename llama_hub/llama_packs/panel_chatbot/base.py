@@ -2,6 +2,7 @@
 import logging
 import os
 from typing import Any, Dict
+import panel as pn
 
 from llama_index.llama_pack.base import BaseLlamaPack
 
@@ -24,7 +25,6 @@ class PanelChatPack(BaseLlamaPack):
             if variable not in os.environ:
                 logging.warn("%s environment variable is not set", variable)
 
-        import panel as pn
 
         if __name__ == "__main__":
             # 'pytest tests' will fail if app is imported elsewhere
