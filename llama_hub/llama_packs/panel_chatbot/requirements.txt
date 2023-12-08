@@ -1,0 +1,4 @@
+llama-hub
+nest-asyncio
+openai
+panel

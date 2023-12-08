@@ -2,11 +2,31 @@
 
 ## Unreleased
 
+## [v0.0.55] - 2023-12-07
+
 ### New Features
 
-### Smaller Features + Bug Fixes / NITs
+- add `CovidQaDataset` and `MiniCovidQaDataset` (#738)
+
+### Smaller Features + Bug Fixes / Nits
+- nit: remove print statements from ollama pack (#741)
+
+## [v0.0.54] - 2023-12-06
+
+### New Features
 
 - Add batch execution controlled by `batch_size` and `sleep_time_in_seconds` to `RagEvaluatorPack` (#734)
+
+## [v0.0.53] - 2023-12-05
+
+### New Features
+
+- added Neo4j query engine pack (#709)
+- Vectara RAG pack (#661)
+- feat: add StripeDocsReader loader (#684)
+- Vectara rag bugfix (#732)
+- Issue#667: New Ollama Query Engine pack (#731)
+- add document_loader and cache (#687)
 
 ## [v0.0.52] - 2023-12-04
 
