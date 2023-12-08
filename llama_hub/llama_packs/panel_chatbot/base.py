@@ -22,7 +22,7 @@ class PanelChatPack(BaseLlamaPack):
         """Run the pipeline."""
         for variable in ENVIRONMENT_VARIABLES:
             if variable not in os.environ:
-                logging.warn("%s environment variable is not set", variable)
+                raise ValueError("%s environment variable is not set", variable)
 
         import panel as pn
 
