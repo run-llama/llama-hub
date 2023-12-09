@@ -3,8 +3,8 @@
 This loader extracts the text from a column of a local .xlsx file using the `pandas` Python package. A single local file is passed in each time you call `load_data`.
 
 ## Usage
-
-To use this loader, you need to pass in a `Path` to a local file, along with a `sheet_name` from which sheet to extract data. The default `sheet_name=None`, which means it will load all the sheets in the excel file. You can set `sheet_name="Data1` to load only the sheet named "Data1". Or you can set `sheet_name=0` to load the first sheet in the excel file. You can pass any additional pandas configuration options to the `pandas_config` parameter, please see the [pandas documentation](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html).
+To use this loader, you need to pass in a `Path` to a local file, along with a `sheet_name` from which sheet to extract data. The default `sheet_name=None`, which means it will load all the sheets in the excel file. You can set `sheet_name="Data1` to load only the sheet named "Data1". Or you can set `sheet_name=0` to load the first sheet in the excel file. To selectively load sheets from an Excel file into separate documents, set the `include_different_sheet_docs` parameter to `True`. By default, this parameter is set to `False`, which results in consolidating all sheets from the Excel file into a single document. When `True`, each sheet is treated as an individual document, allowing for distinct handling of each sheet's content.
+You can pass any additional pandas configuration options to the `pandas_config` parameter, please see the [pandas documentation](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html).
 
 ```python
 from pathlib import Path

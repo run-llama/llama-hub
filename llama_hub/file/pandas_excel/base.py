@@ -44,6 +44,7 @@ class PandasExcelReader(BaseReader):
         include_sheetname: bool = False,
         sheet_name: Optional[Union[str, int, list]] = None,
         extra_info: Optional[Dict] = None,
+        include_different_sheet_docs: bool = False,
     ) -> List[Document]:
         """Parse file and extract values from a specific column.
 
@@ -52,11 +53,11 @@ class PandasExcelReader(BaseReader):
             include_sheetname (bool): Whether to include the sheet name in the output.
             sheet_name (Union[str, int, None]): The specific sheet to read from, default is None which reads all sheets.
             extra_info (Dict): Additional information to be added to the Document object.
+            include_different_sheet_docs: To join the document as a whole or create different docs for different sheets.
 
         Returns:
             List[Document]: A list of`Document objects containing the values from the specified column in the Excel file.
         """
-        import itertools
 
         import pandas as pd
 
@@ -67,31 +68,45 @@ class PandasExcelReader(BaseReader):
 
         dfs = pd.read_excel(file, sheet_name=sheet_name, **self._pandas_config)
 
-        sheet_names = dfs.keys()
+        if include_different_sheet_docs:
+            documents = []
+            for sheet_name, df in dfs.items():
+                sheet_data = df.values.astype(str).tolist()
+                if self._concat_rows:
+                    text = self._row_joiner.join(
+                        self._row_joiner.join(row) for row in sheet_data
+                    )
+                else:
+                    text = [self._row_joiner.join(row) for row in sheet_data]
 
-        df_sheets = []
+                doc_extra_info = {"sheet_name": sheet_name}
+                if extra_info:
+                    doc_extra_info.update(extra_info)
 
-        for key in sheet_names:
-            sheet = []
-            if include_sheetname:
-                sheet.append([key])
-            sheet.extend(dfs[key].values.astype(str).tolist())
-            df_sheets.append(sheet)
+                documents.append(
+                    Document(
+                        text=text,
+                        extra_info=doc_extra_info,
+                    )
+                )
+            return documents
+        else:
+            all_sheets_data = []
+            for sheet_name, df in dfs.items():
+                if include_sheetname:
+                    all_sheets_data.append([sheet_name])
+                all_sheets_data.extend(df.values.astype(str).tolist())
 
-        text_list = list(
-            itertools.chain.from_iterable(df_sheets)
-        )  # flatten list of lists
+            if self._concat_rows:
+                text = self._row_joiner.join(
+                    self._row_joiner.join(row) for row in all_sheets_data
+                )
+            else:
+                text = [self._row_joiner.join(row) for row in all_sheets_data]
 
-        if self._concat_rows:
             return [
                 Document(
-                    text=self._row_joiner.join(
-                        self._row_joiner.join(sublist) for sublist in text_list
-                    ),
+                    text=text,
                     extra_info=extra_info or {},
                 )
-            ]
-        else:
-            return [
-                Document(text=text, extra_info=extra_info or {}) for text in text_list
             ]
