@@ -4,7 +4,7 @@ Build a chatbot to talk to your Github repository.
 
 Powered by LlamaIndex, OpenAI ChatGPT and [HoloViz Panel](https://panel.holoviz.org/reference/chat/ChatInterface.html).
 
-![Panel Chat Bot](panel_chatbot.png)
+![Panel Chat Bot](https://raw.githubusercontent.com/run-llama/llama-hub/main/llama_hub/llama_packs/panel_chatbot/panel_chatbot.png)
 
 ## 💁‍♀️ Explanation
 
@@ -16,13 +16,14 @@ This template
 
 ## 🖥️ CLI Usage
 
-You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` Python package:
 
 ```bash
+pip install llama-index
 llamaindex-cli download-llamapack PanelChatPack --download-dir ./panel_chat_pack
 ```
 
-You can then inspect the files at `./panel_chat_pack` and use them as a template for your own project!
+You can then inspect the files in the `panel_chat_pack` folder and use them as a template for your own project!
 
 To run the app directly, use in your terminal:
 
