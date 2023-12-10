@@ -1,1 +1,1 @@
-git+https://github.com/HawkClaws/main_content_extractor.git
+MainContentExtractor
