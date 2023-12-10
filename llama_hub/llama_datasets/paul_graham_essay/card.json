@@ -3,7 +3,7 @@
     "description": "A labelled RAG dataset based off an essay by Paul Graham, consisting of queries, reference answers, and reference contexts.",
     "numberObservations": 44,
     "containsExamplesByHumans": false,
-    "containsExamplesByAI": true,
+    "containsExamplesByAi": true,
     "sourceUrls": [
         "http://www.paulgraham.com/articles.html"
     ],

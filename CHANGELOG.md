@@ -1,9 +1,70 @@
 # ChangeLog
 
-## Unreleased
+## [v0.0.56] - 2023-12-09
+
+### New Features
+- Create llama_packs_neo4j.ipynb (#744)
+- Add Panel Chat Pack (#703) 
+- Add AlexNet dataset (#750)
+- Adding SnowflakeReader (#754) 
+- Microsoft SharePoint Data Loader  (#745)
+
+### Smaller Featuers + Bug Fixes / Nits
+- Added fix to run SQL query function description (#729)
+- add basic checks for datasets library (#746)
+- added colab badge in neo4j test notebook (#747)
+- Update pandas excel reader (#752)
+- Implemented start and cursor support for confluence loader (#733)
+
+## [v0.0.55] - 2023-12-07
 
 ### New Features
 
+- add `CovidQaDataset` and `MiniCovidQaDataset` (#738)
+
+### Smaller Features + Bug Fixes / Nits
+- nit: remove print statements from ollama pack (#741)
+
+## [v0.0.54] - 2023-12-06
+
+### New Features
+
+- Add batch execution controlled by `batch_size` and `sleep_time_in_seconds` to `RagEvaluatorPack` (#734)
+
+## [v0.0.53] - 2023-12-05
+
+### New Features
+
+- added Neo4j query engine pack (#709)
+- Vectara RAG pack (#661)
+- feat: add StripeDocsReader loader (#684)
+- Vectara rag bugfix (#732)
+- Issue#667: New Ollama Query Engine pack (#731)
+- add document_loader and cache (#687)
+
+- Update Confluence loader with capability to set start and cursor offset when searching (#733)
+
+## [v0.0.52] - 2023-12-04
+
+### New Features
+
+- Add `EvaluatingLlmSurveyPaperDataset` (#725)
+- Add `OriginOfCovid19Dataset` (#723)
+
+### Smaller Features + Bug Fixes / NITs
+
+- Add citation to `MiniTruthfulQADataset` README (#726)
+- Fix link to submission template nb in datasets README (#724)
+
+## [v0.0.51] - 2023-12-03
+
+### New Features
+
+- add uber 10k dataset (#716)
+- add llama2 dataset (#691)
+- Add `MiniSquadV2Dataset` (#720)
+- Add `MiniTruthfulQADataset` (#713)
+- Add `LlamaDatasetMetadataPack` (#707)
 - Add README template for Datasets (#702)
 - Modify RagEvaluatorPack to handle missing reference_contexts (#698)
 - Add async and sync run methods to RagEvaluatorPack (#697)
@@ -16,6 +77,8 @@
 
 ### Smaller Features + Bug Fixes
 
+- Update main README to include info on llama-datasets (#711)
+- Add missing README to `LlamaDatasetMetadataPack` (#708)
 - Image reader was ignoring metadata. Added metadata to loaded ImageDocument (#668)
 - Add Cypher validation to Neo4j db tool (#660)
 - feat: Improvements to Chroma loader (#673)

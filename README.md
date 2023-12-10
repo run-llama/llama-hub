@@ -2,7 +2,11 @@
 
 **Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
 
-This is a simple library of all the data loaders / readers / tools / llama-packs that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index), [LangChain](https://github.com/hwchase17/langchain) and more!.
+> 👥 **Contributing**
+> 
+> Interested in contributing? Skip over to our [Contribution Section](https://github.com/run-llama/llama-hub#how-to-add-a-loadertoolllama-pack) below for more details.
+
+This is a simple library of all the data loaders / readers / tools / llama-packs / llama-datasets that have been created by the community. The goal is to make it extremely easy to connect large language models to a large variety of knowledge sources. These are general-purpose utilities that are meant to be used in [LlamaIndex](https://github.com/run-llama/llama_index), [LangChain](https://github.com/hwchase17/langchain) and more!.
 
 Loaders and readers allow you to easily ingest data for search and retrieval by a large language model, while tools allow the models to both read and write to third party data services and sources. Ultimately, this allows you to create your own customized data agent to intelligently work with you and your data to unlock the full capability of next level large language models.
 
@@ -93,7 +97,7 @@ index.query('Where did the author go to school?')
 
 ```
 
-## LLama-Pack Usage
+## Llama-Pack Usage
 
 Llama-packs can be downloaded using the `llamaindex-cli` tool that comes with `llama-index`:
 
@@ -110,6 +114,60 @@ from llama_index.llama_packs import download_llama_pack
 LlavaCompletionPack = download_llama_pack(
   "LlavaCompletionPack", "./llava_pack"
 )
+```
+
+## Llama-Dataset Usage
+
+The primary use of llama-dataset is for evaluating the performance of a RAG system.
+In particular, it serves as a new test set (in traditional machine learning speak)
+for one to build a RAG over, predict on, and subsequently perform evaluations
+comparing the predicted response versus the reference response. To perform the
+evaluation, the recommended usage pattern involves the application of the
+`RagEvaluatorPack`. We recommend reading the [docs](https://docs.llamaindex.ai/en/stable/module_guides/evaluating/root.html) for the "Evaluation" module for
+more information.
+
+```python
+from llama_index.llama_dataset import download_llama_dataset
+from llama_index.llama_pack import download_llama_pack
+from llama_index import VectorStoreIndex
+
+# download and install dependencies for benchmark dataset
+rag_dataset, documents = download_llama_dataset(
+  "PaulGrahamEssayDataset", "./data"
+)
+
+# build basic RAG system
+index = VectorStoreIndex.from_documents(documents=documents)
+query_engine = VectorStoreIndex.as_query_engine()
+
+# evaluate using the RagEvaluatorPack
+RagEvaluatorPack = download_llama_pack(
+  "RagEvaluatorPack", "./rag_evaluator_pack"
+)
+rag_evaluator_pack = RagEvaluatorPack(
+    rag_dataset=rag_dataset,
+    query_engine=query_engine
+)
+benchmark_df = rag_evaluate_pack.run()  # async arun() supported as well
+```
+
+Llama-datasets can also be downloaded directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
+
+```bash
+llamaindex-cli download-llamadataset PaulGrahamEssayDataset --download-dir ./data
+```
+
+After downloading them from `llamaindex-cli`, you can inspect the dataset and
+it source files (stored in a directory `/source_files`) then load them into python:
+
+```python
+from llama_index import SimpleDirectoryReader
+from llama_index.llama_dataset import LabelledRagDataset
+
+rag_dataset = LabelledRagDataset.from_json("./data/rag_dataset.json")
+documents = SimpleDirectoryReader(
+    input_dir="./data/source_files"
+).load_data()
 ```
 
 ## How to add a loader/tool/llama-pack
@@ -169,6 +227,44 @@ Finally, add your loader to the `llama_hub/library.json` file (or for the equivi
 Create a PR against the main branch. We typically review the PR within a day. To help expedite the process, it may be helpful to provide screenshots (either in the PR or in
 the README directly) Show your data loader or tool in action!
 
+## How to add a llama-dataset
+
+Similar to the process of adding a tool / loader / llama-pack, adding a llama-
+datset also requires forking this repo and making a Pull Request. However, for a
+llama-dataset, only its metadata is checked into this repo. The actual dataset
+and it's source files are instead checked into another Github repo, that is the
+[llama-datasets repository](https://github.com/run-llama/llama-datasets). You will need to fork and clone that repo in addition to forking and cloning this one. 
+
+Please ensure that when you clone the llama-datasets repository, that you set
+the environment variable `GIT_LFS_SKIP_SMUDGE` prior to calling the `git clone`
+command:
+
+```bash
+# for bash
+GIT_LFS_SKIP_SMUDGE=1 git clone git@github.com:<your-github-user-name>/llama-datasets.git  # for ssh
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/<your-github-user-name>/llama-datasets.git  # for https
+
+# for windows its done in two commands
+set GIT_LFS_SKIP_SMUDGE=1  
+git clone git@github.com:<your-github-user-name>/llama-datasets.git  # for ssh
+
+set GIT_LFS_SKIP_SMUDGE=1  
+git clone https://github.com/<your-github-user-name>/llama-datasets.git  # for https
+```
+
+The high-level steps for adding a llama-dataset are as follows:
+
+1. Create a `LabelledRagDataset` (the initial class of llama-dataset made available on llama-hub)
+2. Generate a baseline result with a RAG system of your own choosing on the
+`LabelledRagDataset`
+3. Prepare the dataset's metadata (`card.json` and `README.md`)
+4. Submit a Pull Request to this repo to check in the metadata
+5. Submit a Pull Request to the [llama-datasets repository](https://github.com/run-llama/llama-datasets) to check in the `LabelledRagDataset` and the source files
+
+To assist with the submission process, we have prepared a [submission template
+notebook](https://github.com/run-llama/llama_index/blob/main/docs/examples/llama_dataset/ragdataset_submission_template.ipynb) that walks you through the above-listed steps. We highly recommend
+that you use this template notebook.
+
 ## Running tests
 
 ```shell
@@ -195,6 +291,30 @@ If you have a data loader PR, by default let's try to create it against LlamaHub
 (for instance, if we think the data loader should be core to the LlamaIndex repo).
 
 For all other PR's relevant to LlamaIndex, let's create it directly against the [LlamaIndex repo](https://github.com/jerryjliu/llama_index).
+
+### How can I get a verified badge on LlamaHub? 
+We have just started offering badges to our contributors. At the moment, we're focused on our early adopters and official partners, but we're gradually opening up badge consideration to all submissions. If you're interested in being considered, please review the criteria below and if everything aligns, feel free to contact us via [community Discord](https://discord.gg/dGcwcsnxhU).
+
+We are still refining our criteria but here are some aspects we consider:
+
+**Quality**
+- Code Quality illustrated by the use of coding standards and style guidelines.
+- Code readability and proper documentation.
+
+**Usability**
+- Self-contained module with no external links or libraries, and it is easy to run.
+- Module should not break any existing unit tests.
+
+**Safety**
+- Safety considerations, such as proper input validation, avoiding SQL injection, and secure handling of user data.
+
+**Community Engagement & Feedback**
+- The module's usefulness to the library's users as gauged by the number of likes, downloads, etc.
+- Positive feedback from module users.
+ 
+Note: 
+* It's possible that we decide to award a badge to a subset of your submissions based on the above criteria. 
+* Being a regular contributor doesn't guarantee a badge, we will still look at each submission individually. 
 
 ### Other questions?
 

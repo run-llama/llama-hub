@@ -23,6 +23,10 @@ limit (int): Deprecated, use `max_num_results` instead.
 
 max_num_results (int): Maximum number of results to return.  If None, return all results.  Requests are made in batches to achieve the desired number of results.
 
+start(int): Which offset we should jump to when getting pages, only works with space_key
+
+cursor(str): An alternative to start for cql queries, the cursor is a pointer to the next "page" when searching atlassian products. The current one after a search can be foudn with `get_next_cursor()`
+
 User can also specify a boolean `include_attachments` to 
 include attachments, this is set to `False` by default, if set to `True` all attachments will be downloaded and 
 ConfluenceReader will extract the text from the attachments and add it to the Document object.
@@ -36,11 +40,12 @@ Here's an example usage of the ConfluenceReader.
 
 ```python
 
+# Example that reads the pages with the `page_ids`
 from llama_hub.confluence import ConfluenceReader
 
 token = {
-    access_token: "<access_token>",
-    token_type: "<token_type>"
+    "access_token": "<access_token>",
+    "token_type": "<token_type>"
 }
 oauth2_dict = {
     "client_id": "<client_id>",
@@ -56,5 +61,51 @@ reader = ConfluenceReader(base_url=base_url, oauth2=oauth2_dict)
 documents = reader.load_data(space_key=space_key, include_attachments=True, page_status="current")
 documents.extend(reader.load_data(page_ids=page_ids, include_children=True, include_attachments=True))
 ```
+
+```python
+# Example that fetches the first 5, then the next 5 pages from a space
+from llama_hub.confluence import ConfluenceReader
+
+token = {
+    "access_token": "<access_token>",
+    "token_type": "<token_type>"
+}
+oauth2_dict = {
+    "client_id": "<client_id>",
+    "token": token
+}
+
+base_url = "https://yoursite.atlassian.com/wiki"
+
+space_key = "<space_key>"
+
+reader = ConfluenceReader(base_url=base_url, oauth2=oauth2_dict)
+documents = reader.load_data(space_key=space_key, include_attachments=True, page_status="current", start=0, max_num_results=5)
+documents.extend(reader.load_data(space_key=space_key, include_children=True, include_attachments=True,start=5, max_num_results=5))
+```
+
+```python
+# Example that fetches the first 5 results froma cql query, the uses the cursor to pick up on the next element
+from llama_hub.confluence import ConfluenceReader
+
+token = {
+    "access_token": "<access_token>",
+    "token_type": "<token_type>"
+}
+oauth2_dict = {
+    "client_id": "<client_id>",
+    "token": token
+}
+
+base_url = "https://yoursite.atlassian.com/wiki"
+
+cql=f'type="page" AND label="devops"'
+
+reader = ConfluenceReader(base_url=base_url, oauth2=oauth2_dict)
+documents = reader.load_data(cql=cql, max_num_results=5)
+cursor = reader.get_next_cursor()
+documents.extend(reader.load_data(cql=cql, cursor=cursor, max_num_results=5))
+```
+
 
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

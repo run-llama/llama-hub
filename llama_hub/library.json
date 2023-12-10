@@ -1096,6 +1096,14 @@
       "web reader"
     ]
   },
+  "StripeDocsReader": {
+    "id": "stripe_docs",
+    "author": "amorriscode",
+    "keywords":[
+      "stripe",
+      "documentation"
+    ]
+  },
   "EarningsCallTranscript":{
     "id":"earnings_call_transcript",
     "author": "Athe-kunal",
@@ -1108,5 +1116,34 @@
   "OpensearchReader": {
     "id": "opensearch",
     "author": "chnsagitchen"
+  },
+    "SharePointReader":{
+      "id": "microsoft_sharepoint",
+      "author": "arun-soliton",
+      "keywords":[
+        "sharepoint",
+        "microsoft 365",
+        "microsoft365"
+      ]
+    },
+  "DocstringWalker": {
+    "id": "docstring_walker",
+    "author": "Filip Wojcik",
+    "keywords": [
+      "docstring",
+      "python",
+      "code",
+      "source code"
+    ]
+  },
+  "SnowflakeReader": {
+    "id": "snowflake",
+    "author": "godwin3737",
+    "keywords": [
+      "snowflake",
+      "database",
+      "data warehouse",
+      "warehouse"
+    ]
   }
 }

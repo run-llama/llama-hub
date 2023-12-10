@@ -1,4 +1,5 @@
 import unittest
+from typing import Optional
 from unittest.mock import patch
 
 import pytest
@@ -358,6 +359,82 @@ class TestConfluenceReader:
         assert all(isinstance(doc, Document) for doc in documents)
         # assert the ith document has id "i"
         assert all(documents[i].doc_id == str(i) for i in range(5))
+
+    def test_confluence_reader_load_data_max_8_skip_0(self, mock_confluence):
+        mock_confluence.get_all_pages_from_space.side_effect = (
+            _mock_get_all_pages_from_space
+        )
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_space_key = "spaceId123"
+        mock_start_num = 0
+        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        documents = confluence_reader.load_data(
+            space_key=mock_space_key,
+            start=mock_start_num,
+            max_num_results=mock_max_num_results,
+        )
+
+        # 2 calls are made, returning 3,2 results, respectively.
+        assert mock_confluence.get_all_pages_from_space.call_count == 2
+        assert len(documents) == 5
+        assert all(isinstance(doc, Document) for doc in documents)
+        # assert the ith document has id "i"
+        assert all(documents[i].doc_id == str(i) for i in range(5))
+
+    def test_confluence_reader_load_data_max_5_skip_1(self, mock_confluence):
+        mock_confluence.get_all_pages_from_space.side_effect = (
+            _mock_get_all_pages_from_space
+        )
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_space_key = "spaceId123"
+        mock_start_num = 1
+        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        documents = confluence_reader.load_data(
+            space_key=mock_space_key,
+            start=mock_start_num,
+            max_num_results=mock_max_num_results,
+        )
+
+        # 2 calls are made, returning 3,1 results, respectively.
+        assert mock_confluence.get_all_pages_from_space.call_count == 2
+        assert len(documents) == 5
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert all(documents[i].doc_id == str(i + mock_start_num) for i in range(5))
+
+    def test_confluence_reader_load_data_max_5_skip_5(self, mock_confluence):
+        mock_confluence.get_all_pages_from_space.side_effect = (
+            _mock_get_all_pages_from_space
+        )
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_space_key = "spaceId123"
+        mock_start_num = 5
+        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 3 requested pages before we hitting the end, which we know on call number 2
+        documents = confluence_reader.load_data(
+            space_key=mock_space_key,
+            start=mock_start_num,
+            max_num_results=mock_max_num_results,
+        )
+
+        # 2 calls are made, returning 3,1 results, respectively.
+        assert mock_confluence.get_all_pages_from_space.call_count == 2
+        assert len(documents) == 3
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert all(documents[i].doc_id == str(i + mock_start_num) for i in range(3))
 
     def test_confluence_reader_load_data_max_5(self, mock_confluence):
         mock_confluence.get_all_pages_from_space.side_effect = (
@@ -794,6 +871,62 @@ class TestConfluenceReader:
         assert all(isinstance(doc, Document) for doc in documents)
         assert [doc.doc_id for doc in documents] == [str(i) for i in range(6)]
 
+    def test_confluence_reader_load_data_cql_paging_cursor_3(self, mock_confluence):
+        mock_confluence.get.side_effect = _mock_get_cursor_pages
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_cql = "type=page"
+        mock_cursor_offset = 3
+        mock_cursor = f"POINTER_{mock_cursor_offset}"
+
+        documents = confluence_reader.load_data(cql=mock_cql, cursor=mock_cursor)
+
+        assert len(documents) == 5
+        assert mock_confluence.get.call_count == 2
+
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == [
+            str(i + mock_cursor_offset) for i in range(8 - mock_cursor_offset)
+        ]
+
+    def test_confluence_reader_load_data_cql_paging_cursor_3_max_3(
+        self, mock_confluence
+    ):
+        mock_confluence.get.side_effect = _mock_get_cursor_pages
+
+        confluence_reader = ConfluenceReader(
+            base_url=CONFLUENCE_BASE_URL, oauth2=MOCK_OAUTH
+        )
+        confluence_reader.confluence = mock_confluence
+
+        mock_cql = "type=page"
+        mock_cursor_offset = 3
+        mock_max_items = 3
+        mock_cursor = f"POINTER_{mock_cursor_offset}"
+
+        documents = confluence_reader.load_data(
+            cql=mock_cql, cursor=mock_cursor, max_num_results=mock_max_items
+        )
+
+        next_cursor = confluence_reader.get_next_cursor()
+
+        assert len(documents) == 3
+        assert mock_confluence.get.call_count == 1
+
+        # Returns page 3,4,5
+
+        assert all(isinstance(doc, Document) for doc in documents)
+        assert [doc.doc_id for doc in documents] == [
+            str(i + mock_cursor_offset) for i in range(3)
+        ]
+
+        # Next pointer points to the next page, which is 6
+        assert next_cursor == "POINTER_6"
+
 
 def _mock_get_all_pages_from_space(
     space,
@@ -835,3 +968,43 @@ def _mock_get_child_id_list(
     }
     ret = child_ids_by_page_id.get(page_id, [])
     return ret[start : start + min(server_limit, limit or server_limit)]
+
+
+def _mock_get_cursor_pages(path: Optional[str], params):
+    # This should probably be remade into a function
+    server_limit = 3
+    num_pages_on_server = 8
+
+    index_start = 0
+    if "cursor" in params.keys():
+        _, number = params["cursor"].split("_")
+        index_start = int(number)
+
+    limit = params.get("limit")
+
+    index_end = min(
+        index_start + min(server_limit, limit or server_limit),
+        num_pages_on_server,
+    )
+
+    results = [
+        {
+            "id": str(i),
+            "type": "page",
+            "status": "current",
+            "title": f"Page {i}",
+            "body": {"storage": {"value": f"<p>Content {i}</p>"}},
+            "_links": {"webui": f"/spaces/{i}/pages/{i}/Page+{i}"},
+        }
+        for i in range(index_start, index_end)
+    ]
+
+    if index_end < num_pages_on_server:
+        links = {
+            "next": f"http://example.com/rest/api/content?cql=type%3Dpage&limit=3&start=3&cursor=POINTER_{index_end}"
+        }
+    else:
+        links = {}
+
+    body = {"results": results, "_links": links}
+    return body
