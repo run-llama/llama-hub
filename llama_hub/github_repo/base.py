@@ -18,6 +18,8 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 from llama_index.readers.schema.base import Document
+from llama_hub.github_repo import github_client
+from llama_hub.github_repo.azure_devops import AzureDevOpsAdapter
 
 from llama_hub.github_repo.github_client import (
     BaseGithubClient,
@@ -247,7 +249,7 @@ class GithubRepositoryReader(BaseReader):
         :return: list of documents
         """
         branch_data: GitBranchResponseModel = self._loop.run_until_complete(
-            self._github_client.get_branch(self._owner, self._repo, branch)
+            self._github_client.get_branch(self._owner, self._repo, branch, branch)
         )
 
         tree_sha = branch_data.commit.commit.tree.sha
@@ -393,7 +395,7 @@ class GithubRepositoryReader(BaseReader):
         async for blob_data, full_path in buffered_iterator:
             print_if_verbose(self._verbose, f"generating document for {full_path}")
             assert (
-                blob_data.encoding == "base64"
+                blob_data.encoding == "base64" or blob_data.encoding == "utf-8"
             ), f"blob encoding {blob_data.encoding} not supported"
             decoded_bytes = None
             try:
@@ -403,7 +405,14 @@ class GithubRepositoryReader(BaseReader):
                 print_if_verbose(
                     self._verbose, f"could not decode {full_path} as base64"
                 )
-                continue
+                # tried to decode the content that was base64 encoded but failed
+                # continue
+                if blob_data.encoding == "base64": 
+                    continue
+                # if the content was not base64 encoded and we failed to decode it
+                # as base64, then we assume it is raw text
+                decoded_bytes = blob_data.content
+
 
             if self._use_parser:
                 document = self._parse_supported_file(
@@ -547,7 +556,7 @@ if __name__ == "__main__":
         verbose=True,
         filter_directories=(
             ["docs"],
-            GithubRepositoryReader.FilterType.INCLUDE,
+            GithubRepositoryReader.FilterType.EXCLUDE,
         ),
         filter_file_extensions=(
             [
@@ -557,7 +566,7 @@ if __name__ == "__main__":
                 ".gif",
                 ".svg",
                 ".ico",
-                "json",
+                ".json",
                 ".ipynb",
             ],
             GithubRepositoryReader.FilterType.EXCLUDE,
@@ -584,6 +593,6 @@ if __name__ == "__main__":
 
     load_data_from_branch()
 
-    # input("Press enter to load github repository from commit sha...")
+    input("Press enter to load github repository from commit sha...")
 
-    # load_data_from_commit()
+    load_data_from_commit()
