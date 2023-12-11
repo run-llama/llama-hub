@@ -19,7 +19,6 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 from llama_index.readers.schema.base import Document
 from llama_hub.github_repo import github_client
-from llama_hub.github_repo.azure_devops import AzureDevOpsAdapter
 
 from llama_hub.github_repo.github_client import (
     BaseGithubClient,
@@ -407,12 +406,11 @@ class GithubRepositoryReader(BaseReader):
                 )
                 # tried to decode the content that was base64 encoded but failed
                 # continue
-                if blob_data.encoding == "base64": 
+                if blob_data.encoding == "base64":
                     continue
                 # if the content was not base64 encoded and we failed to decode it
                 # as base64, then we assume it is raw text
                 decoded_bytes = blob_data.content
-
 
             if self._use_parser:
                 document = self._parse_supported_file(

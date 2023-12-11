@@ -7,11 +7,11 @@ The implementation is merely a workaround to use the same code for Github and Az
 
 from typing import Any, Dict, List, Optional
 from llama_hub.github_repo.github_client import (
-    BaseGithubClient, 
-    GitBlobResponseModel, 
-    GitBranchResponseModel, 
-    GitCommitResponseModel, 
-    GitTreeResponseModel
+    BaseGithubClient,
+    GitBlobResponseModel,
+    GitBranchResponseModel,
+    GitCommitResponseModel,
+    GitTreeResponseModel,
 )
 
 from azure.devops.v7_0.git.git_client import GitClient
@@ -39,9 +39,8 @@ class AzureDevOpsAdapter(BaseGithubClient):
         - `ImportError`: If azure-devops package is not installed.
         - `ValueError`: If base_url, username or password is not provided.
     """
-    def __init__(self,
-                 *args: Any, 
-                 **kwargs: Any) -> None:
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         try:
             from azure.devops.connection import Connection
@@ -51,12 +50,17 @@ class AzureDevOpsAdapter(BaseGithubClient):
                 "Please install azure-devops package to use Azure DevOps adapter"
             )
         if kwargs.get("base_url") is None:
-            raise ValueError("Azure DevOps base_url is required. Example: 'https://dev.azure.com/YOURORG'")
+            raise ValueError(
+                "Azure DevOps base_url is required. Example: 'https://dev.azure.com/YOURORG'"
+            )
         if kwargs.get("username") is None:
-            raise ValueError("Azure DevOps username is required. You can leave this blank if you are using a PAT. ex: ''")
+            raise ValueError(
+                "Azure DevOps username is required. You can leave this blank if you are using a PAT. ex: ''"
+            )
         if kwargs.get("password") is None:
-            raise ValueError("Azure DevOps password is required. Personal Access Token (PAT) is recommended.")
-
+            raise ValueError(
+                "Azure DevOps password is required. Personal Access Token (PAT) is recommended."
+            )
 
         self.connection = Connection(
             base_url=kwargs.get("base_url"),
@@ -105,13 +109,15 @@ class AzureDevOpsAdapter(BaseGithubClient):
         git_tree_object_list: List[GitTreeResponseModel.GitTreeObject] = []
         tree_entry: GitTreeEntryRef
         for tree_entry in _git_tree_response.tree_entries:
-            git_tree_object: GitTreeResponseModel.GitTreeObject = GitTreeResponseModel.GitTreeObject(
-                path=tree_entry.relative_path,
-                mode=tree_entry.mode,
-                type=tree_entry.git_object_type,
-                sha=tree_entry.object_id,
-                url=tree_entry.url,
-                size=tree_entry.size,
+            git_tree_object: GitTreeResponseModel.GitTreeObject = (
+                GitTreeResponseModel.GitTreeObject(
+                    path=tree_entry.relative_path,
+                    mode=tree_entry.mode,
+                    type=tree_entry.git_object_type,
+                    sha=tree_entry.object_id,
+                    url=tree_entry.url,
+                    size=tree_entry.size,
+                )
             )
             git_tree_object_list.append(git_tree_object)
         return GitTreeResponseModel(
@@ -120,7 +126,6 @@ class AzureDevOpsAdapter(BaseGithubClient):
             tree=git_tree_object_list,
             truncated=False,
         )
-
 
     async def get_blob(
         self,
@@ -167,7 +172,7 @@ class AzureDevOpsAdapter(BaseGithubClient):
             encoding="utf-8",
             sha=_git_blob_response.object_id,
             url=_git_blob_response.url,
-            node_id=None
+            node_id=None,
         )
 
     async def get_commit(
@@ -200,7 +205,8 @@ class AzureDevOpsAdapter(BaseGithubClient):
                 tree=GitCommitResponseModel.Commit.Tree(
                     sha=_git_commit_response.tree_id,
                 ),
-            ))
+            ),
+        )
 
     async def get_branch(
         self,
@@ -221,9 +227,7 @@ class AzureDevOpsAdapter(BaseGithubClient):
             - `branch (GitBranchResponseModel)`: Branch response model.
         """
         _git_branch_response: GitBranchStats = self._git_client.get_branch(
-            repository_id=repo,
-            project=owner,
-            name=branch
+            repository_id=repo, project=owner, name=branch
         )
 
         # get the latest commit for the branch
