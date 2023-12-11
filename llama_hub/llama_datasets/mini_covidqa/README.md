@@ -1,11 +1,11 @@
-# Blockchain Solana Dataset
+# Mini Covid Qa Dataset
 
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset BlockchainSolanaDataset --download-dir ./data
+llamaindex-cli download-llamadataset MiniCovidQaDataset --download-dir ./data
 ```
 
 You can then inspect the files at `./data`. When you're ready to load the data into
@@ -34,7 +34,7 @@ from llama_index import VectorStoreIndex
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "BlockchainSolanaDataset", "./data"
+  "MiniCovidQaDataset ", "./data"
 )
 
 # build basic RAG system

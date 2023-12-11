@@ -55,7 +55,11 @@ class OllamaEmbedding(BaseEmbedding):
     _base_url: str = PrivateAttr()
 
     def __init__(
-        self, model_name: str, base_url: str = DEFAULT_OLLAMA_BASE_URL, **kwargs: Any
+        self,
+        model_name: str,
+        base_url: str = DEFAULT_OLLAMA_BASE_URL,
+        verbose: bool = False,
+        **kwargs: Any,
     ) -> None:
 
         super().__init__(
@@ -63,6 +67,7 @@ class OllamaEmbedding(BaseEmbedding):
             **kwargs,
         )
 
+        self._verbose = verbose
         self._base_url = base_url
 
     @classmethod
@@ -123,8 +128,9 @@ class OllamaEmbedding(BaseEmbedding):
 
         try:
             embeddings = response.json()["embedding"]
-            print(f"Text={input}")
-            print(embeddings)
+            if self._verbose:
+                print(f"Text={input}")
+                print(embeddings)
             return embeddings
         except requests.exceptions.JSONDecodeError as e:
             raise ValueError(

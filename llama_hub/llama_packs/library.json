@@ -34,6 +34,12 @@
     "author": "AdkSarsen",
     "keywords": ["deeplake", "multimodal", "retriever"]
   },
+  "PanelChatPack": {
+    "id": "llama_packs/panel_chatbot",
+    "author": "MarcSkovMadsen",
+    "keywords": ["panel", "chatbot", "github", "openai", "index"],
+    "extra_files": ["app.py", "llama_by_sophia_yang.png"]
+  },
   "StreamlitChatPack": {
     "id": "llama_packs/streamlit_chatbot",
     "author": "carolinedlu",

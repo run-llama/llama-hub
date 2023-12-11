@@ -48,5 +48,20 @@
     "id": "llama_datasets/eval_llm_survey_paper",
     "author": "nerdai",
     "keywords": ["rag", "evaluation", "paper"]
+  },
+  "CovidQaDataset": {
+    "id": "llama_datasets/covidqa",
+    "author": "nerdai",
+    "keywords": ["rag", "covid"]
+  },
+  "MiniCovidQaDataset": {
+    "id": "llama_datasets/mini_covidqa",
+    "author": "nerdai",
+    "keywords": ["rag", "covid", "mini"]
+  },
+  "HistoryOfAlexnetDataset": {
+    "id": "llama_datasets/history_of_alexnet",
+    "author": "CalculusC",
+    "keywords": ["rag", "alexnet"]
   }
 }

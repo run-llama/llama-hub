@@ -49,5 +49,16 @@ rag_evaluator_pack = RagEvaluatorPack(
     rag_dataset=rag_dataset,
     query_engine=query_engine
 )
-benchmark_df = rag_evaluator_pack.run()  # async arun() supported as well
+
+############################################################################
+# NOTE: If have a lower tier subscription for OpenAI API like Usage Tier 1 #
+# then you'll need to use different batch_size and sleep_time_in_seconds.  #
+# For Usage Tier 1, settings that seemed to work well were batch_size=5,   #
+# and sleep_time_in_seconds=15 (as of December 2023.)                      #
+############################################################################
+
+benchmark_df = await rag_evaluator_pack.arun(
+    batch_size=20,  # batches the number of openai api calls to make
+    sleep_time_in_seconds=1,  # seconds to sleep before making an api call
+)
 ```
