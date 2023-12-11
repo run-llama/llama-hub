@@ -95,7 +95,7 @@ class S3Reader(BaseReader):
                 filename = Path(self.key).name
                 suffix = Path(self.key).suffix
                 filepath = f"{temp_dir}/{filename}"
-                #filepath = f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
+                # filepath = f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
                 s3_client.download_file(self.bucket, self.key, filepath)
             else:
                 bucket = s3.Bucket(self.bucket)
@@ -116,7 +116,7 @@ class S3Reader(BaseReader):
 
                     filepath = (
                         f"{temp_dir}/{filename}"
-                        #f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
+                        # f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
                     )
                     s3_client.download_file(self.bucket, obj.key, filepath)
 
