@@ -14,6 +14,7 @@ atlassian-python-api
 html2text
 olefile
 chromadb
+snowflake-sqlalchemy
 
 # hotfix
 psutil

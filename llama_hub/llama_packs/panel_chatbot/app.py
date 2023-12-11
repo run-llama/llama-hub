@@ -40,7 +40,7 @@ LOADING_EXISTING_DOCS = "Loading existing docs"
 LOADING_NEW_DOCS = "Downloading documents"
 LOADING_EXISTING_INDEX = "Loading existing index"
 LOADING_NEW_INDEX = "Creating index"
-CUTE_LLAMA = Path(__file__).parent / "llama_by_sophia_yang.png"
+CUTE_LLAMA = "https://raw.githubusercontent.com/run-llama/llama-hub/main/llama_hub/llama_packs/panel_chatbot/llama_by_sophia_yang.png"
 CUTE_LLAMA_URL = "https://x.com/sophiamyang/status/1729810715467252080?s=20"
 
 pn.chat.ChatMessage.default_avatars.update(
