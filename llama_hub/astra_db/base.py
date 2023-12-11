@@ -49,17 +49,12 @@ class AstraDBReader(BaseReader):
             self._client = AstraDB(
                 api_endpoint=api_endpoint, token=token, namespace=namespace
             )
-        
+
         self._collection = self._client.create_collection(
             collection_name=collection_name, dimension=embedding_dimension
         )
 
-    def load_data(
-        self,
-        vector: List[float],
-        limit: int = 10,
-        **kwargs: Any
-    ) -> Any:
+    def load_data(self, vector: List[float], limit: int = 10, **kwargs: Any) -> Any:
         """Load data from Astra DB.
 
         Args:
@@ -70,9 +65,7 @@ class AstraDBReader(BaseReader):
         Returns:
             List[Document]: A list of documents.
         """
-        results = self._collection.vector_find(
-            vector, limit=limit, **kwargs
-        )
+        results = self._collection.vector_find(vector, limit=limit, **kwargs)
 
         documents: List[Document] = []
         for result in results:
