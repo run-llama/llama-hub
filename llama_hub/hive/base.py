@@ -23,15 +23,19 @@ class HiveReader(BaseReader):
     """
 
     def __init__(
-        self, host: str, port: Optional[int] = None, database: Optional[str] = None, username: Optional[str] = None, password: Optional[str] = None, auth: Optional[str] = None
+        self,
+        host: str,
+        port: Optional[int] = None,
+        database: Optional[str] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        auth: Optional[str] = None,
     ):
         """Initialize with parameters."""
         try:
             from pyhive import hive
         except ImportError:
-            raise ImportError(
-                "`hive` package not found, please run `pip install hive`"
-            )
+            raise ImportError("`hive` package not found, please run `pip install hive`")
 
         self.con = hive.Connection(
             host=host,
@@ -39,13 +43,10 @@ class HiveReader(BaseReader):
             username=username,
             database=database,
             auth=auth,
-            password=password
+            password=password,
         )
 
-    def load_data(
-        self,
-        query: str
-    ) -> List[Document]:
+    def load_data(self, query: str) -> List[Document]:
         """Read data from the Hive.
 
         Args:
