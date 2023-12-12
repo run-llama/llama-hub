@@ -39,6 +39,10 @@
     "id": "assemblyai",
     "author": "patrickloeber"
   },
+  "AstraDBReader": {
+    "id": "astra_db",
+    "author": "erichare"
+  },
   "AzStorageBlobReader": {
     "id": "azstorage_blob",
     "author": "rivms",
