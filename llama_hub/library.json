@@ -40,7 +40,7 @@
     "author": "patrickloeber"
   },
   "AstraDBReader": {
-    "id": "astra_db_reader",
+    "id": "astra_db",
     "author": "erichare"
   },
   "AzStorageBlobReader": {
