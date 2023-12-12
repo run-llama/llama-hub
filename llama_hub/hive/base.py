@@ -35,7 +35,9 @@ class HiveReader(BaseReader):
         try:
             from pyhive import hive
         except ImportError:
-            raise ImportError("`hive` package not found, please run `pip install pyhive`")
+            raise ImportError(
+                "`hive` package not found, please run `pip install pyhive`"
+            )
 
         self.con = hive.Connection(
             host=host,
