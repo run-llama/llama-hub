@@ -38,3 +38,7 @@ class PanelChatPack(BaseLlamaPack):
             print(
                 "To serve the Panel ChatBot please run this file with 'panel serve' or 'python'"
             )
+
+
+if __name__.startswith("bokeh") or __name__ == "__main__":
+    PanelChatPack().run()

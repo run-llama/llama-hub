@@ -1,6 +1,20 @@
 # ChangeLog
 
-## Unreleased
+## [v0.0.56] - 2023-12-09
+
+### New Features
+- Create llama_packs_neo4j.ipynb (#744)
+- Add Panel Chat Pack (#703) 
+- Add AlexNet dataset (#750)
+- Adding SnowflakeReader (#754) 
+- Microsoft SharePoint Data Loader  (#745)
+
+### Smaller Featuers + Bug Fixes / Nits
+- Added fix to run SQL query function description (#729)
+- add basic checks for datasets library (#746)
+- added colab badge in neo4j test notebook (#747)
+- Update pandas excel reader (#752)
+- Implemented start and cursor support for confluence loader (#733)
 
 ## [v0.0.55] - 2023-12-07
 
@@ -27,6 +41,8 @@
 - Vectara rag bugfix (#732)
 - Issue#667: New Ollama Query Engine pack (#731)
 - add document_loader and cache (#687)
+
+- Update Confluence loader with capability to set start and cursor offset when searching (#733)
 
 ## [v0.0.52] - 2023-12-04
 

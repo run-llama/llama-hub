@@ -69,6 +69,8 @@ class ConfluenceReader(BaseReader):
                     url=base_url, username=user_name, password=password, cloud=cloud
                 )
 
+        self._next_cursor = None
+
     def load_data(
         self,
         space_key: Optional[str] = None,
@@ -78,6 +80,8 @@ class ConfluenceReader(BaseReader):
         cql: Optional[str] = None,
         include_attachments=False,
         include_children=False,
+        start: Optional[int] = None,
+        cursor: Optional[str] = None,
         limit: Optional[int] = None,
         max_num_results: Optional[int] = None,
     ) -> List[Document]:
@@ -93,6 +97,8 @@ class ConfluenceReader(BaseReader):
             cql (str): Confluence Query Language query, eg 'label="my-label"'
             include_attachments (bool): If True, include attachments.
             include_children (bool): If True, do a DFS of the descendants of each page_id in `page_ids`.  Only compatible with `page_ids`.
+            start (int): Skips over the first n elements. Used only with space_key
+            cursor (str): Skips to the cursor. Used with cql and label, set when the max limit has been hit for cql based search
             limit (int): Deprecated, use `max_num_results` instead.
             max_num_results (int): Maximum number of results to return.  If None, return all results.  Requests are made in batches to achieve the desired number of results.
         """
@@ -112,6 +118,12 @@ class ConfluenceReader(BaseReader):
                 "Must specify exactly one among `space_key`, `page_ids`, `label`, `cql`"
                 " parameters."
             )
+
+        if cursor and start:
+            raise ValueError("Must not specify `start` when `cursor` is specified")
+
+        if space_key and cursor:
+            raise ValueError("Must not specify `cursor` when `space_key` is specified")
 
         if page_status and not space_key:
             raise ValueError(
@@ -142,11 +154,15 @@ class ConfluenceReader(BaseReader):
         text_maker.ignore_links = True
         text_maker.ignore_images = True
 
+        if not start:
+            start = 0
+
         pages: List = []
         if space_key:
             pages.extend(
                 self._get_data_with_paging(
                     self.confluence.get_all_pages_from_space,
+                    start=start,
                     max_num_results=max_num_results,
                     space=space_key,
                     status=page_status,
@@ -157,6 +173,8 @@ class ConfluenceReader(BaseReader):
         elif label:
             pages.extend(
                 self._get_cql_data_with_paging(
+                    start=start,
+                    cursor=cursor,
                     cql=f'type="page" AND label="{label}"',
                     max_num_results=max_num_results,
                     expand="body.storage.value",
@@ -165,6 +183,8 @@ class ConfluenceReader(BaseReader):
         elif cql:
             pages.extend(
                 self._get_cql_data_with_paging(
+                    start=start,
+                    cursor=cursor,
                     cql=cql,
                     max_num_results=max_num_results,
                     expand="body.storage.value",
@@ -225,8 +245,9 @@ class ConfluenceReader(BaseReader):
                     break
         return ret
 
-    def _get_data_with_paging(self, paged_function, max_num_results=50, **kwargs):
-        start = 0
+    def _get_data_with_paging(
+        self, paged_function, start=0, max_num_results=50, **kwargs
+    ):
         max_num_remaining = max_num_results
         ret = []
         while True:
@@ -240,17 +261,21 @@ class ConfluenceReader(BaseReader):
                 and len(results) >= max_num_remaining
             ):
                 break
+
             start += len(results)
             if max_num_remaining is not None:
                 max_num_remaining -= len(results)
         return ret
 
     def _get_cql_data_with_paging(
-        self, cql, max_num_results=50, expand="body.storage.value"
+        self, cql, start=0, cursor=None, max_num_results=50, expand="body.storage.value"
     ):
         max_num_remaining = max_num_results
         ret = []
-        params = {"cql": cql, "start": 0, "expand": expand}
+        params = {"cql": cql, "start": start, "expand": expand}
+        if cursor:
+            params["cursor"] = cursor
+
         if max_num_results is not None:
             params["limit"] = max_num_remaining
         while True:
@@ -261,22 +286,32 @@ class ConfluenceReader(BaseReader):
 
             params["start"] += len(results["results"])
 
-            if max_num_results is not None:
-                params["limit"] -= len(results["results"])
-                if params["limit"] <= 0:
-                    break
-
             next_url = (
                 results["_links"]["next"] if "next" in results["_links"] else None
             )
             if not next_url:
+                self._next_cursor = None
                 break
-            cursor = next_url.split("cursor=")[1].split("&")[0]
-            params["cursor"] = cursor
+
+            if "cursor=" in next_url:  # On confluence Server this is not set
+                cursor = next_url.split("cursor=")[1].split("&")[0]
+                params["cursor"] = cursor
+
+            if max_num_results is not None:
+                params["limit"] -= len(results["results"])
+                if params["limit"] <= 0:
+                    self._next_cursor = cursor
+                    break
 
         return ret
 
-    @retry(stop_max_attempt_number=4, wait_fixed=4000)
+    def get_next_cursor(self):
+        """
+        Returns: The last set cursor from a cql based search
+        """
+        return self._next_cursor
+
+    @retry(stop_max_attempt_number=1, wait_fixed=4)
     def _get_data_with_retry(self, function, **kwargs):
         return function(**kwargs)
 
