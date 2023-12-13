@@ -1,50 +1,54 @@
-# Fuzzy Citation Query Engine Pack
+# Dense-X-Retrieval Pack
 
-Creates and runs a `CustomQueryEngine` -- `FuzzCitationQueryEngine` -- which post-processes response objects to identify source sentences using fuzzy matching. 
+This LlamaPack creates a query engine that uses a `RecursiveRetriever` in llama-index to fetch nodes based on propoistions extracted from each node.
 
-The identified sentences are available in the `response.metadata` dictionary, containing a mapping of `(response_sentence, source_chunk)` -> `{"start_char_idx": idx, "end_char_idx": idx, "node" node}`. The start/end idxs represent the character indexes in the node text that the source chunk comes from.
+This follows the idea from the paper [Dense X Retrieval: What Retreival Granularity Should We Use?](https://arxiv.org/abs/2312.06648).
 
-The fuzzy matching uses `fuzz.ratio()` to compare sentences. The default threshold score is 50.
+From the paper, a proposition is described as:
+
+```
+Propositions are defined as atomic expressions within text, each encapsulating a distinct factoid and presented in a concise, self-contained natural language format.
+```
+
+We use the provided OpenAI prompt from their paper to generate propositions, which are then embedded and used to retrieve their parent node chunks.
+
+**NOTE:** While the paper uses a fine-tuned model to extract propositions, it is unreleased at the time of writing. Currently, this pack uses the LLM to extract propositions, which can be expensive for large amounts of data.
 
 ## CLI Usage
 
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamapack FuzzyCitationEnginePack --download-dir ./fuzzy_citation_pack
+llamaindex-cli download-llamapack DenseXRetrievalPack --download-dir ./dense_pack
 ```
 
-You can then inspect the files at `./fuzzy_citation_pack` and use them as a template for your own project!
+You can then inspect the files at `./dense_pack` and use them as a template for your own project!
 
 ## Code Usage
 
-You can download the pack to a the `./fuzzy_citation_pack` directory:
+You can download the pack to a the `./dense_pack` directory:
 
 ```python
-from llama_index import Document, VectorStoreIndex
+from llama_index import SimpleDirectoryReader
 from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
-FuzzyCitationEnginePack = download_llama_pack(
-  "FuzzyCitationEnginePack", "./fuzzy_citation_pack"
+DenseXRetrievalPack = download_llama_pack(
+  "DenseXRetrievalPack", "./dense_pack"
 )
 
-index = VectorStoreIndex.from_documents([Document.example()])
-query_engine = index.as_query_engine()
+documents = SimpleDirectoryReader("./data").load_data()
 
-fuzzy_engine = FuzzyCitationEnginePack(query_engine, threshold=50)
+# uses the LLM to extract propositions from every document/node!
+dense_pack = DenseXRetrievalPack(documents)
 ```
 
-The `run()` function is a light wrapper around `query_engine.query()`. The response will have metadata attached to it indicating the fuzzy citations.
+The `run()` function is a light wrapper around `query_engine.query()`. 
 
 ```python
 response = fuzzy_engine.run("What can you tell me about LLMs?")
 
-# print source sentences
-print(response.metadata.keys())
-
-# print full source sentence info
-print(response.metadata)
+print(response)
 ```
 
-See the [notebook on llama-hub](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/fuzzy_citation/fuzzy_citation_example.ipynb) for a full example.
+See the [notebook on llama-hub](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/dense_x_retrieval/dense_x_retrieval.ipynb) for a full example.

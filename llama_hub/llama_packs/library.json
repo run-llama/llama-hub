@@ -169,5 +169,10 @@
     "id": "llama_packs/ollama_query_engine",
     "author": "chnsagitchen",
     "keywords": ["ollama", "local", "query", "engine", "index"]
+  },
+  "DenseXRetrievalPack": {
+    "id": "llama_packs/dense_x_retrieval",
+    "author": "logan-markewich",
+    "tags": ["retriever", "retrieval", "query", "chunking", "splitting", "parsing"]
   }
 }

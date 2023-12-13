@@ -1,12 +1,13 @@
 import asyncio
 import json
 import yaml
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from llama_index import Document, ServiceContext, VectorStoreIndex
-from llama_index.embeddings import OpenAIEmbedding
+from llama_index.embeddings import OpenAIEmbedding, BaseEmbedding
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.llms import OpenAI
+from llama_index.llms.llm import LLM
 from llama_index.node_parser.interface import TextSplitter
 from llama_index.node_parser.text import SentenceSplitter
 from llama_index.response.schema import RESPONSE_TYPE
@@ -60,14 +61,24 @@ Output:""")
 
 class DenseXRetrievalPack(BaseLlamaPack):
     def __init__(
-        self, documents: List[Document], text_splitter: TextSplitter = SentenceSplitter(), similarity_top_k: int = 4
+        self, 
+        documents: List[Document], 
+        proposition_llm: Optional[LLM] = None, 
+        query_llm: Optional[LLM] = None,
+        embed_model: Optional[BaseEmbedding] = None,
+        text_splitter: TextSplitter = SentenceSplitter(), 
+        similarity_top_k: int = 4
     ) -> None:
         """Init params."""
-        self._proposition_llm = OpenAI(
+        self._proposition_llm = proposition_llm or OpenAI(
             model="gpt-3.5-turbo", 
             temperature=0.1, 
             max_tokens=750, 
         )
+
+        embed_model = embed_model or OpenAIEmbedding(embed_batch_size=128)
+
+        
         nodes = text_splitter.get_nodes_from_documents(documents)
         sub_nodes = self._gen_propositions(nodes)
 
@@ -75,8 +86,9 @@ class DenseXRetrievalPack(BaseLlamaPack):
         all_nodes_dict = {n.node_id: n for n in all_nodes}
 
         service_context = ServiceContext.from_defaults(
-            llm=OpenAI(model="gpt-3.5-turbo"), 
-            embed_model=OpenAIEmbedding(embed_batch_size=128)
+            llm=query_llm or OpenAI(), 
+            embed_model=embed_model,
+            num_output=self._proposition_llm.metadata.num_output
         )
 
         self.vector_index = VectorStoreIndex(all_nodes, service_context=service_context, show_progress=True)
