@@ -169,5 +169,15 @@
     "id": "llama_packs/ollama_query_engine",
     "author": "chnsagitchen",
     "keywords": ["ollama", "local", "query", "engine", "index"]
-  }
+  },
+  "SnowflakeQueryEnginePack": {
+    "id": "llama_packs/snowflake_query_engine",
+    "author": "wenqiglantz",
+    "keywords": ["snowflake", "query", "engine"]
+  },
+  "NebulaGraphQueryEnginePack": {
+    "id": "llama_packs/nebulagraph_query_engine",
+    "author": "wenqiglantz",
+    "keywords": ["nebulagraph", "knowledge graph", "query engine"]
+  }  
 }
