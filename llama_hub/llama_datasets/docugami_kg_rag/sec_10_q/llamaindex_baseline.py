@@ -9,7 +9,7 @@ from llama_index.llms import OpenAI
 async def main():
     # DOWNLOAD LLAMADATASET
     rag_dataset, documents = download_llama_dataset(
-        "DocugamiKG-RAG-SEC10-Q", "./docugami_kg_rag_sec_10_q"
+        "DocugamiKGRAGSEC10Q", "./docugami_kg_rag_sec_10_q"
     )
 
     # BUILD BASIC RAG PIPELINE
