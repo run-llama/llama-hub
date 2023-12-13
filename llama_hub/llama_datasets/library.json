@@ -64,7 +64,7 @@
     "author": "CalculusC",
     "keywords": ["rag", "alexnet"]
   },
-  "DocugamiKGRAGSEC10Q": {
+  "DocugamiKgRagSec10Q": {
     "id": "llama_datasets/docugami_kg_rag/sec_10_q",
     "author": "Docugami",
     "keywords": ["rag", "kg-rag", "10q", "docugami"]
