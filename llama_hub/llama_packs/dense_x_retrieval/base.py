@@ -131,11 +131,11 @@ class DenseXRetrievalPack(BaseLlamaPack):
 
             try:
                 propositions = json.loads(output)
-            except Exception as e:
+            except Exception:
                 # fallback to yaml
                 try:
                     propositions = yaml.safe_load(output)
-                except:
+                except Exception:
                     # fallback to next output
                     continue
             
