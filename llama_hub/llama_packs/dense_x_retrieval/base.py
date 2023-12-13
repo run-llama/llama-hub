@@ -23,7 +23,8 @@ except ImportError:
     from llama_index.llms.base import LLM
 
 
-PROPOSITIONS_PROMPT = PromptTemplate("""Decompose the "Content" into clear and simple propositions, ensuring they are interpretable out of
+PROPOSITIONS_PROMPT = PromptTemplate(
+    """Decompose the "Content" into clear and simple propositions, ensuring they are interpretable out of
 context.
 1. Split compound sentence into simple sentences. Maintain the original phrasing from the input
 whenever possible.
@@ -60,30 +61,29 @@ Britain and America.", "The custom of the Easter Hare/Rabbit evolved into the Ea
 Britain and America." ]
 
 Input: {node_text}
-Output:""")
-
+Output:"""
+)
 
 
 class DenseXRetrievalPack(BaseLlamaPack):
     def __init__(
-        self, 
-        documents: List[Document], 
-        proposition_llm: Optional[LLM] = None, 
+        self,
+        documents: List[Document],
+        proposition_llm: Optional[LLM] = None,
         query_llm: Optional[LLM] = None,
         embed_model: Optional[BaseEmbedding] = None,
-        text_splitter: TextSplitter = SentenceSplitter(), 
-        similarity_top_k: int = 4
+        text_splitter: TextSplitter = SentenceSplitter(),
+        similarity_top_k: int = 4,
     ) -> None:
         """Init params."""
         self._proposition_llm = proposition_llm or OpenAI(
-            model="gpt-3.5-turbo", 
-            temperature=0.1, 
-            max_tokens=750, 
+            model="gpt-3.5-turbo",
+            temperature=0.1,
+            max_tokens=750,
         )
 
         embed_model = embed_model or OpenAIEmbedding(embed_batch_size=128)
 
-        
         nodes = text_splitter.get_nodes_from_documents(documents)
         sub_nodes = self._gen_propositions(nodes)
 
@@ -91,16 +91,22 @@ class DenseXRetrievalPack(BaseLlamaPack):
         all_nodes_dict = {n.node_id: n for n in all_nodes}
 
         service_context = ServiceContext.from_defaults(
-            llm=query_llm or OpenAI(), 
+            llm=query_llm or OpenAI(),
             embed_model=embed_model,
-            num_output=self._proposition_llm.metadata.num_output
+            num_output=self._proposition_llm.metadata.num_output,
         )
 
-        self.vector_index = VectorStoreIndex(all_nodes, service_context=service_context, show_progress=True)
+        self.vector_index = VectorStoreIndex(
+            all_nodes, service_context=service_context, show_progress=True
+        )
 
         self.retriever = RecursiveRetriever(
             "vector",
-            retriever_dict={"vector": self.vector_index.as_retriever(similarity_top_k=similarity_top_k)},
+            retriever_dict={
+                "vector": self.vector_index.as_retriever(
+                    similarity_top_k=similarity_top_k
+                )
+            },
             node_dict=all_nodes_dict,
         )
 
@@ -108,26 +114,28 @@ class DenseXRetrievalPack(BaseLlamaPack):
             self.retriever, service_context=service_context
         )
 
-
-
     async def _aget_proposition(self, node: TextNode) -> List[TextNode]:
         """Get proposition."""
-        inital_output = await self._proposition_llm.apredict(PROPOSITIONS_PROMPT, node_text=node.text)
-        outputs = inital_output.split('\n')
+        inital_output = await self._proposition_llm.apredict(
+            PROPOSITIONS_PROMPT, node_text=node.text
+        )
+        outputs = inital_output.split("\n")
 
         all_propositions = []
 
         for output in outputs:
             if not output.strip():
                 continue
-            if not output.strip().endswith(']'):
-                if not output.strip().endswith('"') and not output.strip().endswith(","):
+            if not output.strip().endswith("]"):
+                if not output.strip().endswith('"') and not output.strip().endswith(
+                    ","
+                ):
                     output = output + '"'
-                output = output + ' ]'
-            if not output.strip().startswith('['):
+                output = output + " ]"
+            if not output.strip().startswith("["):
                 if not output.strip().startswith('"'):
                     output = '"' + output
-                output = '[ ' + output
+                output = "[ " + output
 
             try:
                 propositions = json.loads(output)
@@ -138,13 +146,11 @@ class DenseXRetrievalPack(BaseLlamaPack):
                 except Exception:
                     # fallback to next output
                     continue
-            
+
             if not isinstance(propositions, list):
                 continue
 
             all_propositions.extend(propositions)
-        
-                
 
         assert isinstance(all_propositions, list)
         nodes = [TextNode(text=prop) for prop in all_propositions if prop]
@@ -156,9 +162,9 @@ class DenseXRetrievalPack(BaseLlamaPack):
         """Get propositions."""
         sub_nodes = asyncio.run(
             run_jobs(
-                [self._aget_proposition(node) for node in nodes], 
-                show_progress=True, 
-                workers=8
+                [self._aget_proposition(node) for node in nodes],
+                show_progress=True,
+                workers=8,
             )
         )
 
