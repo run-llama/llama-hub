@@ -19,6 +19,7 @@ class PreprocessReader(BaseReader):
 
         for key, value in kwargs.items():
             if key == "filepath":
+                self._filepath = value
                 self._preprocess.set_filepath(value)
             if key == "process_id":
                 self._process_id = value
@@ -34,6 +35,7 @@ class PreprocessReader(BaseReader):
                 "lamguage",
             ]:
                 _info[key] = value
+                
         if _info != {}:
             self._preprocess.set_info(_info)
 
