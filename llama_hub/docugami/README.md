@@ -18,8 +18,8 @@ from llama_index import download_loader
 
 DocugamiReader = download_loader('DocugamiReader')
 
-docset_id="ecxqpipcoe2p"
-document_ids=["43rj0ds7s0ur", "bpc1vibyeke2"]
+docset_id="tjwrr2ekqkc3"
+document_ids=["ui7pkriyckwi", "1be3o7ch10iy"]
 
 loader = DocugamiReader()
 documents = loader.load_data(docset_id=docset_id, document_ids=document_ids)
