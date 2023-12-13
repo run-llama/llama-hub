@@ -7,7 +7,6 @@ from llama_index import Document, ServiceContext, VectorStoreIndex
 from llama_index.embeddings import OpenAIEmbedding, BaseEmbedding
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.llms import OpenAI
-from llama_index.llms.llm import LLM
 from llama_index.node_parser.interface import TextSplitter
 from llama_index.node_parser.text import SentenceSplitter
 from llama_index.response.schema import RESPONSE_TYPE
@@ -16,6 +15,12 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.schema import IndexNode, TextNode
 from llama_index.prompts import PromptTemplate
 from llama_index.async_utils import run_jobs
+
+# backwards compatibility
+try:
+    from llama_index.llms.llm import LLM
+except ImportError:
+    from llama_index.llms.base import LLM
 
 
 PROPOSITIONS_PROMPT = PromptTemplate("""Decompose the "Content" into clear and simple propositions, ensuring they are interpretable out of
