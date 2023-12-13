@@ -1,8 +1,18 @@
 # ChangeLog
 
+## Unrealeased
+
+## [v0.0.57] - 2023-12-12
+
+# New Features
+
+- Add Astra DB loader (#764)
+- Add `DocugamiKgRagSec10Q` dataset (#767)
+
 ## [v0.0.56] - 2023-12-09
 
 ### New Features
+
 - Create llama_packs_neo4j.ipynb (#744)
 - Add Panel Chat Pack (#703) 
 - Add AlexNet dataset (#750)
