@@ -60,7 +60,7 @@ Output:""")
 
 class DenseXRetrievalPack(BaseLlamaPack):
     def __init__(
-        self, documents: List[Document], text_splitter: TextSplitter = SentenceSplitter(), similarity_top_k: int = 8
+        self, documents: List[Document], text_splitter: TextSplitter = SentenceSplitter(), similarity_top_k: int = 4
     ) -> None:
         """Init params."""
         self._proposition_llm = OpenAI(
@@ -79,16 +79,16 @@ class DenseXRetrievalPack(BaseLlamaPack):
             embed_model=OpenAIEmbedding(embed_batch_size=128)
         )
 
-        self._vector_index = VectorStoreIndex(all_nodes, service_context=service_context, show_progress=True)
+        self.vector_index = VectorStoreIndex(all_nodes, service_context=service_context, show_progress=True)
 
-        self._retriever = RecursiveRetriever(
+        self.retriever = RecursiveRetriever(
             "vector",
-            retriever_dict={"vector": self._vector_index.as_retriever(similarity_top_k=similarity_top_k)},
+            retriever_dict={"vector": self.vector_index.as_retriever(similarity_top_k=similarity_top_k)},
             node_dict=all_nodes_dict,
         )
 
-        self._query_engine = RetrieverQueryEngine.from_args(
-            self._retriever, service_context=service_context
+        self.query_engine = RetrieverQueryEngine.from_args(
+            self.retriever, service_context=service_context
         )
 
 
@@ -151,10 +151,10 @@ class DenseXRetrievalPack(BaseLlamaPack):
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
         return {
-            "query_engine": self._query_engine,
-            "retriever": self._retriever,
+            "query_engine": self.query_engine,
+            "retriever": self.retriever,
         }
 
     def run(self, query_str: str, **kwargs: Any) -> RESPONSE_TYPE:
         """Run the pipeline."""
-        return self._query_engine.query(query_str)
+        return self.query_engine.query(query_str)
