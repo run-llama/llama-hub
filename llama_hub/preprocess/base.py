@@ -1,5 +1,6 @@
 """Preprocess Reader."""
-import os, hashlib
+import os
+import hashlib
 from typing import List
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -38,7 +39,7 @@ class PreprocessReader(BaseReader):
                 "lamguage",
             ]:
                 _info[key] = value
-                
+
         if _info != {}:
             self._preprocess.set_info(_info)
 
@@ -46,7 +47,7 @@ class PreprocessReader(BaseReader):
             raise ValueError(
                 "Please provide either filepath or process_id to handle the resutls."
             )
-        
+
         self._chunks = None
 
     def load_data(self) -> List[Document]:
@@ -55,23 +56,25 @@ class PreprocessReader(BaseReader):
                 self._get_data_by_process()
             elif self._filepath is not None:
                 self._get_data_by_filepath()
-            
+
             if self._chunks is not None:
-                return [ 
+                return [
                     Document(
-                        text=" ".join(self._chunks), 
-                        metadata={"filename": os.path.basename(self._filepath)}
-                    ) 
+                        text=" ".join(self._chunks),
+                        metadata={"filename": os.path.basename(self._filepath)},
+                    )
                 ]
             else:
-                raise Exception("There is error happened during handling your file, please try again.")
-            
+                raise Exception(
+                    "There is error happened during handling your file, please try again."
+                )
+
         else:
-            return [ 
+            return [
                 Document(
-                    text=" ".join(self._chunks), 
-                    metadata={"filename": os.path.basename(self._filepath)}
-                ) 
+                    text=" ".join(self._chunks),
+                    metadata={"filename": os.path.basename(self._filepath)},
+                )
             ]
 
     def get_process_id(self):
@@ -80,7 +83,7 @@ class PreprocessReader(BaseReader):
     def get_nodes(self) -> List[TextNode]:
         if self._chunks is None:
             self.load_data()
-        
+
         nodes = []
         for chunk in self._chunks:
             text = str(chunk)
@@ -89,22 +92,22 @@ class PreprocessReader(BaseReader):
 
         if len(nodes) > 1:
             nodes[0].relationships[NodeRelationship.NEXT] = RelatedNodeInfo(
-                node_id=nodes[1].node_id, 
-                metadata={"filename": os.path.basename(self._filepath)}
+                node_id=nodes[1].node_id,
+                metadata={"filename": os.path.basename(self._filepath)},
             )
-            for i in range(1, len(nodes)-1):
+            for i in range(1, len(nodes) - 1):
                 nodes[i].relationships[NodeRelationship.NEXT] = RelatedNodeInfo(
-                    node_id=nodes[i+1].node_id, 
-                    metadata={"filename": os.path.basename(self._filepath)}
+                    node_id=nodes[i + 1].node_id,
+                    metadata={"filename": os.path.basename(self._filepath)},
                 )
                 nodes[i].relationships[NodeRelationship.PREVIOUS] = RelatedNodeInfo(
-                    node_id=nodes[i-1].node_id, 
-                    metadata={"filename": os.path.basename(self._filepath)}
+                    node_id=nodes[i - 1].node_id,
+                    metadata={"filename": os.path.basename(self._filepath)},
                 )
 
             nodes[-1].relationships[NodeRelationship.PREVIOUS] = RelatedNodeInfo(
-                node_id=nodes[-2].node_id, 
-                metadata={"filename": os.path.basename(self._filepath)}
+                node_id=nodes[-2].node_id,
+                metadata={"filename": os.path.basename(self._filepath)},
             )
         return nodes
 
@@ -120,5 +123,5 @@ class PreprocessReader(BaseReader):
     def _get_data_by_process(self) -> None:
         reponse = self._preprocess.wait()
         if reponse.status == "OK" and reponse.success is True:
-            self._filepath = reponse.data['info']['file']['name']
+            self._filepath = reponse.data["info"]["file"]["name"]
             self._chunks = reponse.data["chunks"]
