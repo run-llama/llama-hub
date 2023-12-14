@@ -1,7 +1,10 @@
 """Preprocess Reader."""
+import os, hashlib
 from typing import List
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
+from llama_index.schema import TextNode, NodeRelationship, RelatedNodeInfo
+
 from pypreprocess import Preprocess
 
 
@@ -43,35 +46,79 @@ class PreprocessReader(BaseReader):
             raise ValueError(
                 "Please provide either filepath or process_id to handle the resutls."
             )
+        
+        self._chunks = None
 
     def load_data(self) -> List[Document]:
-        if self._process_id is not None:
-            return self._get_data_by_process()
-
-        elif self._filepath is not None:
-            return self._get_data_by_filepath()
-
+        if self._chunks is None:
+            if self._process_id is not None:
+                self._get_data_by_process()
+            elif self._filepath is not None:
+                self._get_data_by_filepath()
+            
+            if self._chunks is not None:
+                return [ 
+                    Document(
+                        text=" ".join(self._chunks), 
+                        metadata={"filename": os.path.basename(self._filepath)}
+                    ) 
+                ]
+            else:
+                raise Exception("There is error happened during handling your file, please try again.")
+            
         else:
-            return []
+            return [ 
+                Document(
+                    text=" ".join(self._chunks), 
+                    metadata={"filename": os.path.basename(self._filepath)}
+                ) 
+            ]
 
     def get_process_id(self):
         return self._process_id
 
-    def _get_data_by_filepath(self) -> List[Document]:
-        documents = []
+    def get_nodes(self) -> List[TextNode]:
+        if self._chunks is None:
+            self.load_data()
+        
+        nodes = []
+        for chunk in self._chunks:
+            text = str(chunk)
+            id = hashlib.md5(text.encode()).hexdigest()
+            nodes.append(TextNode(text=text, id_=id))
+
+        if len(nodes) > 1:
+            nodes[0].relationships[NodeRelationship.NEXT] = RelatedNodeInfo(
+                node_id=nodes[1].node_id, 
+                metadata={"filename": os.path.basename(self._filepath)}
+            )
+            for i in range(1, len(nodes)-1):
+                nodes[i].relationships[NodeRelationship.NEXT] = RelatedNodeInfo(
+                    node_id=nodes[i+1].node_id, 
+                    metadata={"filename": os.path.basename(self._filepath)}
+                )
+                nodes[i].relationships[NodeRelationship.PREVIOUS] = RelatedNodeInfo(
+                    node_id=nodes[i-1].node_id, 
+                    metadata={"filename": os.path.basename(self._filepath)}
+                )
+
+            nodes[-1].relationships[NodeRelationship.PREVIOUS] = RelatedNodeInfo(
+                node_id=nodes[-2].node_id, 
+                metadata={"filename": os.path.basename(self._filepath)}
+            )
+        return nodes
+
+    def _get_data_by_filepath(self) -> None:
         pp_response = self._preprocess.chunk()
         if pp_response.status == "OK" and pp_response.success is True:
             self._process_id = pp_response.data["process"]["id"]
             reponse = self._preprocess.wait()
             if reponse.status == "OK" and reponse.success is True:
-                for chunk in reponse.data["chunks"]:
-                    documents.append(Document(text=chunk))
-        return documents
+                # self._filepath = reponse.data['info']['file']['name']
+                self._chunks = reponse.data["chunks"]
 
-    def _get_data_by_process(self) -> List[Document]:
-        documents = []
+    def _get_data_by_process(self) -> None:
         reponse = self._preprocess.wait()
         if reponse.status == "OK" and reponse.success is True:
-            for chunk in reponse.data["chunks"]:
-                documents.append(Document(text=chunk))
-        return documents
+            self._filepath = reponse.data['info']['file']['name']
+            self._chunks = reponse.data["chunks"]
