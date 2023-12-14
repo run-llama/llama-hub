@@ -11,6 +11,10 @@ Build a chatbot powered by LlamaIndex that augments an LLM with the contents of 
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
+pip install llama-index
+```
+
+```bash
 llamaindex-cli download-llamapack StreamlitChatPack --download-dir ./streamlit_chatbot_pack
 ```
 
