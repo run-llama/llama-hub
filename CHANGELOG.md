@@ -1,5 +1,12 @@
 # ChangeLog
 
+## Unreleased
+
+## [v0.0.59] - 2023-12-15
+
+### Smaller Features + Bug Fixes / Nits
+- Fix bugs in StreamlitChatPack (#772)
+
 ## [v0.0.58] - 2023-12-13
 
 ### New Features
@@ -8,7 +15,6 @@
 
 ### Smaller Features + Bug Fixes / Nits
 - Update AzStorageBlobReader (#756)
-- Fix bugs in StreamlitChatPack (#772)
 
 ## [v0.0.57] - 2023-12-12
 
