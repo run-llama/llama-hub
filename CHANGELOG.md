@@ -8,6 +8,7 @@
 
 ### Smaller Features + Bug Fixes / Nits
 - Update AzStorageBlobReader (#756)
+- Fix bugs in StreamlitChatPack (#772)
 
 ## [v0.0.57] - 2023-12-12
 
