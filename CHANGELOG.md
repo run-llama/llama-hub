@@ -1,10 +1,24 @@
 # ChangeLog
 
-## Unrealeased
+## Unreleased
+
+## [v0.0.59] - 2023-12-15
+
+### Smaller Features + Bug Fixes / Nits
+- Fix bugs in StreamlitChatPack (#772)
+
+## [v0.0.58] - 2023-12-13
+
+### New Features
+- Logan/dense x retrieval (#769)
+- add new Hive reader (#753)
+
+### Smaller Features + Bug Fixes / Nits
+- Update AzStorageBlobReader (#756)
 
 ## [v0.0.57] - 2023-12-12
 
-# New Features
+### New Features
 
 - Add Astra DB loader (#764)
 - Add `DocugamiKgRagSec10Q` dataset (#767)
