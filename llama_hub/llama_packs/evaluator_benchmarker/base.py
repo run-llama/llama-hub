@@ -62,8 +62,8 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
             sleep_time_in_seconds=sleep_time_in_seconds,
         )
 
-    def _prepare_and_save_benchmark_results(self) -> pd.DataFrame:
-        """Compute benchmark metrics."""
+    def _prepare_and_save_benchmark_results_pairwise_grading(self) -> pd.DataFrame:
+        """Compute benchmark metrics for pairwise evaluation."""
         inconclusive_counts = 0
         agreements_with_ties = 0
         agreements_without_ties = 0
@@ -101,6 +101,17 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
         benchmark_df = pd.DataFrame(df_data)
         benchmark_df.to_csv("benchmark.csv")
         return benchmark_df
+    
+    def _prepare_and_save_benchmark_results_single_grading(self) -> pd.DataFrame:
+        """Compute benchmark metrics for single grading evaluation."""
+        pass
+    
+    def _make_evaluations(self) -> pd.DataFrame:
+        """Returns benchmark_df."""
+        if isinstance(self.eval_dataset, LabelledPairwiseEvaluationDataset):
+            return self._prepare_and_save_benchmark_results_pairwise_grading()
+        else:
+            return self._prepare_and_save_benchmark_results_single_grading()
 
     async def arun(
         self,
@@ -122,5 +133,5 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
             await self._amake_predictions(batch_size, sleep_time_in_seconds)
 
         # produce metrics
-        benchmark_df = self._prepare_and_save_benchmark_results()
+        benchmark_df = self._make_evaluations()
         return benchmark_df
