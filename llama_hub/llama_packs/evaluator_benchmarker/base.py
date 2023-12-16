@@ -1,9 +1,7 @@
 from typing import Union, Dict, Any
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.llama_dataset.evaluation import (
-    LabelledEvaluationDataExample,
     LabelledEvaluationDataset,
-    LabelledPairwiseEvaluationDataExample,
     LabelledPairwiseEvaluationDataset,
     PairwiseEvaluationPredictionDataset,
     EvaluationPredictionDataset,
