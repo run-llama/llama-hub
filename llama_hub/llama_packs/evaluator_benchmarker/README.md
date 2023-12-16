@@ -63,12 +63,11 @@ print(benchmark_df)
 `Output:`
 
 ```text
-rag                            base_eval
-metrics                                
-mean_correctness_score         4.511364
-mean_relevancy_score           0.931818
-mean_faithfulness_score        1.000000
-mean_context_similarity_score  0.945952
+number_examples                1689
+inconclusives                  140
+ties                           379
+agreement_rate_with_ties       0.657844
+agreement_rate_without_ties    0.828205
 ```
 
 Note that `evaluator_benchmarker_pack.run()` will also save the `benchmark_df` files in the same directory.
