@@ -14,7 +14,6 @@ from llama_index import (
     KnowledgeGraphIndex,
 )
 from llama_index import get_response_synthesizer, VectorStoreIndex
-from llama_index.text_splitter import SentenceSplitter
 from llama_index.retrievers import VectorIndexRetriever, KGTableRetriever
 
 
