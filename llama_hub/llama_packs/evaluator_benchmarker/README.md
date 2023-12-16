@@ -7,7 +7,7 @@ an appropriate evaluator on the following llama-datasets:
 - `LabelledEvaluationDataset` for single-grading evaluations
 - `LabelledPairwiseEvaluationDataset` for pairwise-grading evaluations
 
-These llama-dataset can be downloaed from [llama-hub](https://llamahub.ai).
+These llama-datasets can be downloaed from [llama-hub](https://llamahub.ai).
 
 ## CLI Usage
 
