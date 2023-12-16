@@ -174,5 +174,15 @@
     "id": "llama_packs/dense_x_retrieval",
     "author": "logan-markewich",
     "tags": ["retriever", "retrieval", "query", "chunking", "splitting", "parsing"]
+  },
+  "SnowflakeQueryEnginePack": {
+    "id": "llama_packs/snowflake_query_engine",
+    "author": "wenqiglantz",
+    "keywords": ["snowflake", "query", "engine"]
+  },
+  "NebulaGraphQueryEnginePack": {
+    "id": "llama_packs/nebulagraph_query_engine",
+    "author": "wenqiglantz",
+    "keywords": ["nebulagraph", "knowledge graph", "query engine"]
   }
 }
