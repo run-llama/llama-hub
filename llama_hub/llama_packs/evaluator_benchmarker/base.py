@@ -1,4 +1,4 @@
-from typing import Union, Dict, Any
+from typing import Union
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.llama_dataset.evaluation import (
     LabelledEvaluationDataset,
@@ -94,16 +94,16 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
             "inconclusives": [inconclusive_counts],
             "ties": [ties],
             "agreement_rate_with_ties": [agreement_rate_with_ties],
-            "agreement_rate_without_ties": [agreement_rate_without_ties]
+            "agreement_rate_without_ties": [agreement_rate_without_ties],
         }
         benchmark_df = pd.DataFrame(df_data)
         benchmark_df.to_csv("benchmark.csv")
         return benchmark_df
-    
+
     def _prepare_and_save_benchmark_results_single_grading(self) -> pd.DataFrame:
         """Compute benchmark metrics for single grading evaluation."""
         pass
-    
+
     def _make_evaluations(self) -> pd.DataFrame:
         """Returns benchmark_df."""
         if isinstance(self.eval_dataset, LabelledPairwiseEvaluationDataset):
@@ -111,11 +111,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
         else:
             return self._prepare_and_save_benchmark_results_single_grading()
 
-    async def arun(
-        self,
-        batch_size: int = 10,
-        sleep_time_in_seconds: int = 1
-    ):
+    async def arun(self, batch_size: int = 10, sleep_time_in_seconds: int = 1):
         if batch_size > 10:
             warnings.warn(
                 "You've set a large batch_size (>10). If using OpenAI GPT-4 as "
