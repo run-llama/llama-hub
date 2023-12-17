@@ -6,7 +6,7 @@ from llama_index.llama_dataset.evaluation import (
     PairwiseEvaluationPredictionDataset,
     EvaluationPredictionDataset,
 )
-from llama_index.evaluation import BaseEvaluator
+from llama_index.evaluation import BaseEvaluator, EvaluationResult, InvalidEvaluationResult
 import warnings
 import pandas as pd
 
@@ -66,9 +66,14 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
         agreements_with_ties = 0
         agreements_without_ties = 0
         ties = 0
+        invalid_counts = 0
         for example, prediction in zip(
             self.eval_dataset[:], self.prediction_dataset[:]
         ):
+            if prediction.invalid_prediction:
+                invalid_counts += 1
+                continue
+
             # don't count inconclusive results
             if prediction.evaluation_source == "neither":
                 inconclusive_counts += 1
