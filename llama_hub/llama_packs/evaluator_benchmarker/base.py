@@ -88,14 +88,15 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
             agreements_with_ties += int(example.reference_score == prediction.score)
 
         agreement_rate_with_ties = agreements_with_ties / (
-            len(self.prediction_dataset[:]) - inconclusive_counts
+            len(self.prediction_dataset[:]) - inconclusive_counts - invalid_counts
         )
         agreement_rate_without_ties = agreements_without_ties / (
-            len(self.prediction_dataset[:]) - inconclusive_counts - ties
+            len(self.prediction_dataset[:]) - inconclusive_counts - ties - invalid_counts
         )
 
         df_data = {
             "number_examples": [len(self.prediction_dataset[:])],
+            "invalid_predictions": [invalid_counts],
             "inconclusives": [inconclusive_counts],
             "ties": [ties],
             "agreement_rate_with_ties": [agreement_rate_with_ties],
