@@ -102,6 +102,10 @@
     "id": "tools/slack",
     "author": "jerryjliu"
   },
+  "TavilyToolSpec": {
+    "id": "tools/tavily_research",
+    "author": "rotemweiss57"
+  },
   "TextToImageToolSpec": {
     "id": "tools/text_to_image",
     "author": "ajhofmann"
@@ -109,6 +113,10 @@
   "VectorDBToolSpec": {
     "id": "tools/vector_db",
     "author": "jerryjliu"
+  },
+  "WaiiToolSpec": {
+    "id": "tools/waii",
+    "author": "wangdatan"
   },
   "WikipediaToolSpec": {
     "id": "tools/wikipedia",
@@ -134,6 +142,28 @@
       "graph",
       "neo4j",
       "cypher"
+    ]
+  },
+  "CogniswitchToolSpec": {
+    "id": "tools/cogniswitch",
+    "author": "cogniswitch",
+    "keywords": [
+      "graph",
+      "knowledge graph",
+      "neural",
+      "symbolic",
+      "embedding"
+    ]
+  },
+  "OpenAIImageGenerationToolSpec": {
+    "id": "tools/openai_image_generation",
+    "author": "manelferreira_",
+    "keywords": [
+      "image",
+      "vision",
+      "cv",
+      "openai",
+      "gpt-3"
     ]
   }
 }

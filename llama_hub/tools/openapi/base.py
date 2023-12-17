@@ -3,7 +3,7 @@
 from typing import List, Optional
 
 import requests
-import yaml
+
 from llama_index.readers.schema.base import Document
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
@@ -18,6 +18,8 @@ class OpenAPIToolSpec(BaseToolSpec):
     spec_functions = ["load_openapi_spec"]
 
     def __init__(self, spec: Optional[dict] = None, url: Optional[str] = None):
+        import yaml
+
         if spec and url:
             raise ValueError("Only provide one of OpenAPI dict or url")
         elif spec:

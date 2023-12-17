@@ -10,7 +10,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the NotionToolSpec.
 
 ```python
-from llama_hub.tools.notion.base import NotionToolSpec
+from llama_hub.tools.notion import NotionToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = NotionToolSpec()

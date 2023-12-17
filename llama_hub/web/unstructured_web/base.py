@@ -1,13 +1,13 @@
 import logging
 from typing import List
 
-from langchain.document_loaders.base import BaseLoader
-from llama_index.readers.schema.base import Document
+from llama_index.readers.base import BaseReader
+from llama_index.schema import Document
 
 logger = logging.getLogger(__file__)
 
 
-class UnstructuredURLLoader(BaseLoader):
+class UnstructuredURLLoader(BaseReader):
     """Loader that uses unstructured to load HTML files."""
 
     def __init__(
@@ -41,7 +41,7 @@ class UnstructuredURLLoader(BaseLoader):
 
         return unstructured_version >= (0, 5, 7)
 
-    def load(self) -> List[Document]:
+    def load_data(self) -> List[Document]:
         """Load file."""
         from unstructured.partition.html import partition_html
 

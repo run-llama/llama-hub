@@ -24,17 +24,17 @@ documents = loader.load_data()
 
 ## Example
 
-This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
 ### LlamaIndex
 
 ```python
-from llama_index import GPTVectorStoreIndex, download_loader
+from llama_index import VectorStoreIndex, download_loader
 
 SpotifyReader = download_loader('SpotifyReader')
 
 loader = SpotifyReader()
 documents = loader.load_data()
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('When are some other artists i might like based on what i listen to ?')
 ```

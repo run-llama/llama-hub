@@ -6,7 +6,7 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
 DEFAULT_FIRESTORE_DATABASE = "(default)"
-CLIENT_INFO = "LlamaHub"
+USER_AGENT = "LlamaHub"
 IMPORT_ERROR_MSG = (
     "`firestore` package not found, please run `pip3 install google-cloud-firestore`"
 )
@@ -34,11 +34,16 @@ class FirestoreReader(BaseReader):
         """Initialize with parameters."""
         try:
             from google.cloud import firestore
+            from google.cloud.firestore_v1.services.firestore.transports.base import (
+                DEFAULT_CLIENT_INFO,
+            )
         except ImportError:
             raise ImportError(IMPORT_ERROR_MSG)
 
+        client_info = DEFAULT_CLIENT_INFO
+        client_info.user_agent = USER_AGENT
         self.db = firestore.Client(
-            project=project_id, database=database_id, client_info=CLIENT_INFO
+            project=project_id, database=database_id, client_info=client_info
         )
 
     def load_data(self, collection: str) -> List[Document]:

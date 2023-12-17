@@ -15,7 +15,7 @@ import os
 MakeWrapper = download_loader('MakeWrapper')
 
 # load index from disk
-index = GPTVectorStoreIndex.load_from_disk('../vector_indices/index_simple.json')
+index = VectorStoreIndex.load_from_disk('../vector_indices/index_simple.json')
 
 # query index
 query_str = "What did the author do growing up?"
@@ -31,4 +31,4 @@ wrapper.pass_response_to_webhook(
 
 ```
 
-This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

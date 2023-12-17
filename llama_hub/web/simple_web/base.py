@@ -1,7 +1,7 @@
 """Simple Web scraper."""
 from typing import List
 
-from langchain.requests import RequestsWrapper
+import requests
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
@@ -33,10 +33,10 @@ class SimpleWebPageReader(BaseReader):
         """
         if not isinstance(urls, list):
             raise ValueError("urls must be a list of strings.")
-        requests = RequestsWrapper()
+
         documents = []
         for url in urls:
-            response = requests.get(url)
+            response = requests.get(url).text
             if self._html_to_text:
                 import html2text
 

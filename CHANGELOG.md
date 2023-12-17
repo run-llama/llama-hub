@@ -1,3 +1,229 @@
+# ChangeLog
+
+## v[0.0.60] - 2023-12-16
+
+### New Features
+
+- Add `NebulaGraphQueryEnginePack` and `SnowflakeQueryEnginePack` (#776)
+
+### Smaller Features + Bug Fixes / Nits
+
+- Fix ui-breaking entry in library.json - authors can only be string (#779)
+
+## [v0.0.59] - 2023-12-15
+
+### Smaller Features + Bug Fixes / Nits
+
+- Fix bugs in StreamlitChatPack (#772)
+- NOTE: using "postX" as release version doesn't get picked up ui 
+
+## [v0.0.58] - 2023-12-13
+
+### New Features
+
+- Logan/dense x retrieval (#769)
+- add new Hive reader (#753)
+
+### Smaller Features + Bug Fixes / Nits
+
+- Update AzStorageBlobReader (#756)
+
+## [v0.0.57] - 2023-12-12
+
+### New Features
+
+- Add Astra DB loader (#764)
+- Add `DocugamiKgRagSec10Q` dataset (#767)
+
+## [v0.0.56] - 2023-12-09
+
+### New Features
+
+- Create llama_packs_neo4j.ipynb (#744)
+- Add Panel Chat Pack (#703) 
+- Add AlexNet dataset (#750)
+- Adding SnowflakeReader (#754) 
+- Microsoft SharePoint Data Loader  (#745)
+
+### Smaller Featuers + Bug Fixes / Nits
+
+- Added fix to run SQL query function description (#729)
+- add basic checks for datasets library (#746)
+- added colab badge in neo4j test notebook (#747)
+- Update pandas excel reader (#752)
+- Implemented start and cursor support for confluence loader (#733)
+
+## [v0.0.55] - 2023-12-07
+
+### New Features
+
+- add `CovidQaDataset` and `MiniCovidQaDataset` (#738)
+
+### Smaller Features + Bug Fixes / Nits
+- nit: remove print statements from ollama pack (#741)
+
+## [v0.0.54] - 2023-12-06
+
+### New Features
+
+- Add batch execution controlled by `batch_size` and `sleep_time_in_seconds` to `RagEvaluatorPack` (#734)
+
+## [v0.0.53] - 2023-12-05
+
+### New Features
+
+- added Neo4j query engine pack (#709)
+- Vectara RAG pack (#661)
+- feat: add StripeDocsReader loader (#684)
+- Vectara rag bugfix (#732)
+- Issue#667: New Ollama Query Engine pack (#731)
+- add document_loader and cache (#687)
+
+- Update Confluence loader with capability to set start and cursor offset when searching (#733)
+
+## [v0.0.52] - 2023-12-04
+
+### New Features
+
+- Add `EvaluatingLlmSurveyPaperDataset` (#725)
+- Add `OriginOfCovid19Dataset` (#723)
+
+### Smaller Features + Bug Fixes / NITs
+
+- Add citation to `MiniTruthfulQADataset` README (#726)
+- Fix link to submission template nb in datasets README (#724)
+
+## [v0.0.51] - 2023-12-03
+
+### New Features
+
+- add uber 10k dataset (#716)
+- add llama2 dataset (#691)
+- Add `MiniSquadV2Dataset` (#720)
+- Add `MiniTruthfulQADataset` (#713)
+- Add `LlamaDatasetMetadataPack` (#707)
+- Add README template for Datasets (#702)
+- Modify RagEvaluatorPack to handle missing reference_contexts (#698)
+- Add async and sync run methods to RagEvaluatorPack (#697)
+- Add Patronus AI Finance Bench Mini Dataset (#688)
+- Add Braintrust Coda HelpDesk dataset (#686)
+- Add RagEvaluatorPack (#683)
+- New data loader - Opensearch (#672)
+- AddMainContentExtractorReader (#679)
+- Add `Datasets` structure with initial PaulGrahamEssayDataset (#669)
+
+### Smaller Features + Bug Fixes
+
+- Update main README to include info on llama-datasets (#711)
+- Add missing README to `LlamaDatasetMetadataPack` (#708)
+- Image reader was ignoring metadata. Added metadata to loaded ImageDocument (#668)
+- Add Cypher validation to Neo4j db tool (#660)
+- feat: Improvements to Chroma loader (#673)
+- Adding Earning Call transcripts of US based companies (#658)
+
+## [v0.0.50] - 2023-11-28
+
+### New Features
+- add amazon product extraction (#670)
+- Add Waii connector (#647)
+
+## [v0.0.49] - 2023-11-27
+
+### New Features
+- Citation LlamaPack (#666)
+
+## [v0.0.48] - 2023-11-27
+
+### New Features
+- Add some advanced retrieval llama packs  (#659)
+
+## [v0.0.46] - 2023-11-22
+
+### New Features
+- Add Llama Packs (#646)
+- Unstructured.IO API support (#648)
+
+## [v0.0.45] - 2023-11-16
+
+### Smaller Features + Bug Fixes
+- Updated init file (#633)
+- fIMDB Movie reviews bug fixes and feature addition (#636)
+- replace s/gpt_index/llama_index references in READMEs (#635) 
+
+## [v0.0.44] - 2023-11-13
+
+### Smaller Features + Bug Fixes
+- Extend GoogleSheetsReader to Accept Custom Text Column Names (#620)
+- feat: sync mongo to SimpleMongoReader of llama-index (#624)
+- Adding moview reviews link for IMDB loader (#630)
+
+## [v0.0.43] - 2023-11-1
+
+### Smaller Features + Bug Fixes
+- Update tavily requirements (#618)
+- fix tavily tool (#617)
+
+## [v0.0.42] - 2023-10-31
+
+### New Features
+- Add a Lilac dataset reader. (#563)
+
+### Smaller Features + Bug Fixes
+- Cogniswitch llama-hub corrections (#613)
+- name change and README update to Tavily (#614)
+
+## [v0.0.41] - 2023-10-30
+
+### New Features
+- CogniSwitch Connector (#604) 
+
+### Smaller Features + Bug Fixes
+- add docs to min_chunk_size (#607)
+- Change Tavily client name (#609)
+
+## [v0.0.40] - 2023-10-26
+
+### New Features
+- Added OpenAlex Reader for Scientific QA (#599)
+- Added Tavily Search API as a tool (#600)
+- Adding loader to read from OneDrive Personal and OneDrive for Business (#597)
+
+### Smaller Features + Bug Fixes
+- Update TrafilaturaWebReader in library.json (#602) 
+
+## [v0.0.39] - 2023-10-24
+
+### New Features
+- Added smart layout aware fast PDF reader/loader (#587)
+- Added Protein Data Bank citation reader (#595) 
+
+### Smaller Features + Bug Fixes
+- Fix Firestore client info (#586) 
+- doc(README): remove typo (#589)
+- Add model kwargs to image loader (#588)
+- updating documentation to match method defaults (#591)
+- doc(README): Fix Grammatical Error (#593)
+- Fix import statement for CodeInterpreterToolSpec (#594) 
+
+## [v0.0.38] - 2023-10-16
+
+### New Features
+- IMDB Review loader (#571) 
+- Add AWS Athena Reader (#579)
+- add PatentsviewReader for reading patent abstract (#582) 
+
+### Smaller Features + Bug Fixes
+- Add proper __init__.py files (#581)
+- Add possibility to pass model kwargs to image loader models
+
+## [v0.0.37] - 2023-10-09
+
+### New Features
+- Add Nougat OCR loader (#541)
+
+### Smaller Features + Bug Fixes
+- improve bitbucket loader and extension to skip (#576)
+
 ## [v0.0.36] - 2023-10-07
 
 ### New Features

@@ -16,7 +16,7 @@ Here's an example usage of the AirbyteCdkReader.
 
 ```python
 from llama_index import download_loader
-from llama_hub.airbyte_cdk.base import AirbyteCDKReader
+from llama_hub.airbyte_cdk import AirbyteCDKReader
 from source_github.source import SourceGithub # this is just an example, you can use any source here - this one is loaded from the Airbyte Github repo via pip install git+https://github.com/airbytehq/airbyte.git@master#egg=source_github&subdirectory=airbyte-integrations/connectors/source-github`
 
 
@@ -51,4 +51,4 @@ current_state = reader.last_state # can be pickled away or stored otherwise
 updated_documents = reader.load_data(stream_name="issues", state=current_state) # only loads documents that were updated since last time
 ```
 
-This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

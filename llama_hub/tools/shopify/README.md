@@ -9,10 +9,10 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 In particular, the tool is very effective when combined with a method of retriving data from the GraphQL schema defintion.
 
 ```python
-from llama_hub.tools.shopify.base import ShopifyToolSpec
+from llama_hub.tools.shopify import ShopifyToolSpec
 from llama_index.agent import OpenAIAgent
 
-from llama_hub.file.unstructured.base import UnstructuredReader
+from llama_hub.file.unstructured import UnstructuredReader
 from llama_index.tools.ondemand_loader_tool import OnDemandLoaderTool
 
 documentation_tool = OnDemandLoaderTool.from_defaults(

@@ -22,7 +22,7 @@ To utilize the tool, initialize it with the appropriate `identifier` (Subgraph I
 ```python
 import openai
 from llama_index.agent import OpenAIAgent
-from llama_hub.tools.playgrounds_subgraph_inspector.base import PlaygroundsSubgraphInspectorToolSpec
+from llama_hub.tools.playgrounds_subgraph_inspector import PlaygroundsSubgraphInspectorToolSpec
 
 def inspect_subgraph(
     openai_api_key: str,
@@ -73,4 +73,4 @@ if __name__ == "__main__":
 ```
 Visit here for more in-depth [Examples](https://github.com/Tachikoma000/playgrounds_subgraph_connector/blob/main/introspector_agent_tool/examples.ipynb).
 
-This inspector is designed to be used as a way to understand the schema of subgraphs and subgraph data being loaded into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. 
+This inspector is designed to be used as a way to understand the schema of subgraphs and subgraph data being loaded into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. 

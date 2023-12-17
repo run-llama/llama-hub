@@ -7,7 +7,7 @@ This loader takes in a local directory containing files and extracts `Document`s
 To use this loader, you simply need to instantiate the `SimpleDirectoryReader` class with a directory, along with other optional settings, such as whether to ignore hidden files. See the code for the complete list.
 
 ```python
-from llama_hub.file.base import SimpleDirectoryReader
+from llama_hub.file import SimpleDirectoryReader
 
 # other way of loading
 # from llama_index import download_loader
@@ -19,13 +19,13 @@ documents = loader.load_data()
 
 ## Examples
 
-This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/jerryjliu/gpt_index/tree/main/gpt_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
 
 ### LlamaIndex
 
 ```python
-from llama_hub.file.base import SimpleDirectoryReader
-from llama_index import GPTVectorStoreIndex
+from llama_hub.file import SimpleDirectoryReader
+from llama_index import VectorStoreIndex
 
 # other way of loading
 # from llama_index import download_loader
@@ -33,7 +33,7 @@ from llama_index import GPTVectorStoreIndex
 
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 index.query('What are these files about?')
 ```
 
@@ -42,8 +42,8 @@ index.query('What are these files about?')
 Note: Make sure you change the description of the `Tool` to match your use-case.
 
 ```python
-from llama_hub.file.base import SimpleDirectoryReader
-from llama_index import GPTVectorStoreIndex
+from llama_hub.file import SimpleDirectoryReader
+from llama_index import VectorStoreIndex
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
@@ -54,7 +54,7 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
-index = GPTVectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(documents)
 
 tools = [
     Tool(

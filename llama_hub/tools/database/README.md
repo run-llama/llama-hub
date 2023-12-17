@@ -9,7 +9,7 @@ This tool has more extensive example usage documented in a Jupyter notebook [her
 Here's an example usage of the DatabaseToolSpec.
 
 ```python
-from llama_hub.tools.database.base import DatabaseToolSpec
+from llama_hub.tools.database import DatabaseToolSpec
 from llama_index.agent import OpenAIAgent
 
 db_tools = DatabaseToolSpec(

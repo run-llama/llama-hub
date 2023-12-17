@@ -35,7 +35,7 @@ from llama_index import (
     VectorStoreIndex,
     ServiceContext,
 )
-from llama_hub.semanticscholar.base import SemanticScholarReader
+from llama_hub.semanticscholar import SemanticScholarReader
 
 s2reader = SemanticScholarReader()
 

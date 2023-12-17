@@ -8,3 +8,5 @@
 .idea/
 llama-hub.iml
 llamahub/
+img_cache/
+.cache/

@@ -9,7 +9,7 @@ This tool has a more extensive example usage documented in a Jupyter notebook [h
 Here's an example usage of the ArxivToolSpec.
 
 ```python
-from llama_hub.tools.arxiv.base import ArxivToolSpec
+from llama_hub.tools.arxiv import ArxivToolSpec
 from llama_index.agent import OpenAIAgent
 
 tool_spec = ArxivToolSpec()

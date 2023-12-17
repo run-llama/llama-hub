@@ -29,7 +29,6 @@ class CJKPDFReader(BaseReader):
         from io import StringIO
 
         from pdfminer.converter import TextConverter
-        from pdfminer.layout import LAParams
         from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
         from pdfminer.pdfpage import PDFPage
 
@@ -39,8 +38,8 @@ class CJKPDFReader(BaseReader):
         retstr = StringIO()
         # Create a text converter
         codec = "utf-8"
-        laparams = LAParams()
-        device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+
+        device = TextConverter(rsrcmgr, retstr, codec=codec)
         # Create a PDF interpreter
         interpreter = PDFPageInterpreter(rsrcmgr, device)
         # Open the PDF file
