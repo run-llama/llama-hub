@@ -45,10 +45,7 @@
   },
   "AzStorageBlobReader": {
     "id": "azstorage_blob",
-    "author": [
-      "rivms", 
-      "JAlexMcGraw"
-    ],
+    "author": "rivms",
     "keywords": [
       "azure storage",
       "blob",
