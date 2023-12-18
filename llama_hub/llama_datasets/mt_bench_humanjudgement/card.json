@@ -3,8 +3,8 @@
     "className": "LabelledPairwiseEvaluationDataset",
     "description": "The MT Bench Human Judgement dataset is a ....",
     "numberObservations": 1204,
-    "referenceEvaluationsByHumans": true,
-    "referenceEvaluationsByAi": false,
+    "containsExamplesByHumans": true,
+    "containsExamplesByAI": false,
     "sourceUrls": [
         "https://huggingface.co/datasets/lmsys/mt_bench_human_judgments"
     ],
