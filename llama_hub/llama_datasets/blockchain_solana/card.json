@@ -1,5 +1,6 @@
 {
     "name": "Blockchain Solana",
+    "className": "LabelledRagDataset",
     "description": "A labelled RAG dataset based off an article, From Bitcoin to Solana – Innovating Blockchain towards Enterprise Applications),by Xiangyu Li, Xinyu Wang, Tingli Kong, Junhao Zheng and Min Luo, consisting of queries, reference answers, and reference contexts.",
     "numberObservations": 58,
     "containsExamplesByHumans": false,

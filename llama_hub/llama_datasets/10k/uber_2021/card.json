@@ -1,5 +1,6 @@
 {
     "name": "Uber 10K Dataset 2021",
+    "className": "LabelledRagDataset",
     "description": "A labelled RAG dataset based on the Uber 2021 10K document, consisting of queries, reference answers, and reference contexts.",
     "numberObservations": 822,
     "containsExamplesByHumans": false,

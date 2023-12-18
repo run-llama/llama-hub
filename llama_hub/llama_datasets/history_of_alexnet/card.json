@@ -1,5 +1,6 @@
 {
     "name": "History of Alexnet Dataset",
+    "className": "LabelledRagDataset",
     "description": "A labelled RAG dataset based off an article, The History Began from AlexNet: A Comprehensive Survey on Deep Learning Approaches, by Md Zahangir Alom, Tarek M. Taha, Christopher Yakopcic, Stefan Westberg, Paheding Sidike, Mst Shamima Nasrin, Brian C Van Esesn, Abdul A S. Awwal, Vijayan K. Asari, consisting of queries, reference answers, and reference contexts.",
     "numberObservations": 160,
     "containsExamplesByHumans": false,
