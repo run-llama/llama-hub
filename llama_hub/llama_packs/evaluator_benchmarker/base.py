@@ -91,7 +91,10 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
             len(self.prediction_dataset[:]) - inconclusive_counts - invalid_counts
         )
         agreement_rate_without_ties = agreements_without_ties / (
-            len(self.prediction_dataset[:]) - inconclusive_counts - ties - invalid_counts
+            len(self.prediction_dataset[:])
+            - inconclusive_counts
+            - ties
+            - invalid_counts
         )
 
         df_data = {
