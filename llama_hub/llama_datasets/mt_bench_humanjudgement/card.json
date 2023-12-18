@@ -1,0 +1,43 @@
+{
+    "name": "MT Bench Human Judgement Dataset",
+    "className": "LabelledPairwiseEvaluationDataset",
+    "description": "The MT Bench Human Judgement dataset is a ....",
+    "numberObservations": 1204,
+    "referenceEvaluationsByHumans": true,
+    "referenceEvaluationsByAi": false,
+    "sourceUrls": [
+        "https://huggingface.co/datasets/lmsys/mt_bench_human_judgments"
+    ],
+    "baselines": [
+        {
+            "name": "gpt-3.5",
+            "config": {
+                "promptUrl": "...",
+                "llm": "gpt-3.5"
+            },
+            "metrics": {
+                "invalidPredictions": 89,
+                "inconclusives": 407,
+                "ties": 51,
+                "agreementRateWithTies": 0.743,
+                "agreementRateWithoutTies": 0.798
+            },
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
+        },
+        {
+            "name": "gpt-4",
+            "config": {
+                "promptUrl": "...",
+                "llm": "gpt-4"
+            },
+            "metrics": {
+                "invalidPredictions": 1,
+                "inconclusives": 107,
+                "ties": 102,
+                "agreementRateWithTies": 0.709,
+                "agreementRateWithoutTies": 0.779
+            },
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
+        }
+    ]
+}

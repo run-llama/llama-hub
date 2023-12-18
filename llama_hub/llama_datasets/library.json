@@ -68,5 +68,10 @@
     "id": "llama_datasets/docugami_kg_rag/sec_10_q",
     "author": "Docugami",
     "keywords": ["rag", "kg-rag", "10q", "docugami"]
+  },
+  "MtBenchHumanJudgement": {
+    "id": "llama_datasets/mt_bench_humanjudgement",
+    "author": "nerdai",
+    "keywords": ["evaluator", "llm as judge", "human agreement"]
   }
 }
