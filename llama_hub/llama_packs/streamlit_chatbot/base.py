@@ -1,4 +1,11 @@
 from typing import Dict, Any
+import asyncio
+
+# Create a new event loop
+loop = asyncio.new_event_loop()
+
+# Set the event loop as the current event loop
+asyncio.set_event_loop(loop)
 
 from llama_index import (
     VectorStoreIndex,
@@ -101,7 +108,11 @@ class StreamlitChatPack(BaseLlamaPack):
             with st.chat_message(message["role"]):
                 st.write(message["content"])
 
-        if selected:
+        # To avoid duplicated display of answered pill questions each rerun
+        if selected and selected not in st.session_state.get(
+            "displayed_pill_questions", set()
+        ):
+            st.session_state.setdefault("displayed_pill_questions", set()).add(selected)
             with st.chat_message("user"):
                 st.write(selected)
             with st.chat_message("assistant"):
@@ -119,8 +130,12 @@ class StreamlitChatPack(BaseLlamaPack):
         ):  # Prompt for user input and save to chat history
             add_to_message_history("user", prompt)
 
-        # If last message is not from assistant, generate a new response
-        if st.session_state["messages"][-1]["role"] != "assistant":
+            # Display the new question immediately after it is entered
+            with st.chat_message("user"):
+                st.write(prompt)
+
+            # If last message is not from assistant, generate a new response
+            # if st.session_state["messages"][-1]["role"] != "assistant":
             with st.chat_message("assistant"):
                 response = st.session_state["chat_engine"].stream_chat(prompt)
                 response_str = ""
@@ -130,6 +145,9 @@ class StreamlitChatPack(BaseLlamaPack):
                     response_container.write(response_str)
                 # st.write(response.response)
                 add_to_message_history("assistant", response.response)
+
+            # Save the state of the generator
+            st.session_state["response_gen"] = response.response_gen
 
 
 if __name__ == "__main__":

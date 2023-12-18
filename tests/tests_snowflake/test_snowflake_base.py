@@ -3,6 +3,7 @@ from unittest.mock import patch
 from llama_hub.snowflake.base import SnowflakeReader
 from llama_index.readers.schema.base import Document
 
+
 # Test initialization with connection details
 @patch("llama_hub.snowflake.base.create_engine")  # Patch the create_engine function
 def test_init_with_connection_details(mock_create_engine):

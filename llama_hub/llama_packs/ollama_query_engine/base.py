@@ -61,7 +61,6 @@ class OllamaEmbedding(BaseEmbedding):
         verbose: bool = False,
         **kwargs: Any,
     ) -> None:
-
         super().__init__(
             model_name=model_name,
             **kwargs,
