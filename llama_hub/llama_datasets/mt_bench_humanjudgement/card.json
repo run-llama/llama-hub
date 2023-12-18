@@ -38,6 +38,36 @@
                 "agreementRateWithoutTies": 0.779
             },
             "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
+        },
+        {
+            "name": "gemini-pro",
+            "config": {
+                "promptUrl": "...",
+                "llm": "gemini-pro"
+            },
+            "metrics": {
+                "invalidPredictions": 2,
+                "inconclusives": 295,
+                "ties": 60,
+                "agreementRateWithTies": 0.742,
+                "agreementRateWithoutTies": 0.793
+            },
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
+        },
+        {
+            "name": "gemini-ultra",
+            "config": {
+                "promptUrl": "...",
+                "llm": "gemini-ultra"
+            },
+            "metrics": {
+                "invalidPredictions": 1,
+                "inconclusives": 297,
+                "ties": 59,
+                "agreementRateWithTies": 0.743,
+                "agreementRateWithoutTies": 0.793
+            },
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
         }
     ]
 }
