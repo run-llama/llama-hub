@@ -13,9 +13,9 @@ python, you can use the below snippet of code:
 
 ```python
 from llama_index import SimpleDirectoryReader
-from llama_index.llama_dataset import LabelledRagDataset
+from llama_index.llama_dataset import LabelledPairwiseEvaluationDataset
 
-rag_dataset = LabelledRagDataset.from_json("./data/rag_dataset.json")
+pairwise_evaluation_dataset = LabelledPairwiseEvaluationDataset.from_json("./data/pairwise_evaluation_dataset.json")
 documents = SimpleDirectoryReader(
     input_dir="./data/source_files"
 ).load_data()
@@ -34,8 +34,8 @@ from llama_index.evaluation import PairwiseComparisonEvaluator
 from llama_index.llms import OpenAI
 from llama_index import ServiceContext
 
-# download and install dependencies for benchmark dataset
-pairwise_grading_dataset, _ = download_llama_dataset(
+# download benchmark dataset
+pairwise_evaluation_dataset, _ = download_llama_dataset(
   "MtBenchHumanJudgementDataset ", "./data"
 )
 
@@ -52,7 +52,7 @@ EvaluatorBenchmarkerPack = download_llama_pack(
 )
 evaluator_benchmarker = EvaluatorBenchmarkerPack(
     evaluator=evaluator,
-    eval_dataset=pairwise_dataset,
+    eval_dataset=pairwise_evaluation_dataset,
     show_progress=True,
 )
 
