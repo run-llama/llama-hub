@@ -113,9 +113,7 @@ class S3Reader(BaseReader):
                     if is_dir or is_bad_ext:
                         continue
 
-                    filepath = (
-                        f"{temp_dir}/{filename}"
-                    )
+                    filepath = f"{temp_dir}/{filename}"
                     s3_client.download_file(self.bucket, obj.key, filepath)
 
             try:
