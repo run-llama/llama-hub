@@ -6,7 +6,7 @@ from llama_index.llama_dataset.evaluation import (
     PairwiseEvaluationPredictionDataset,
     EvaluationPredictionDataset,
 )
-from llama_index.evaluation import BaseEvaluator, EvaluationResult, InvalidEvaluationResult
+from llama_index.evaluation import BaseEvaluator
 import warnings
 import pandas as pd
 
