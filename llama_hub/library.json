@@ -39,6 +39,10 @@
     "id": "assemblyai",
     "author": "patrickloeber"
   },
+  "AstraDBReader": {
+    "id": "astra_db",
+    "author": "erichare"
+  },
   "AzStorageBlobReader": {
     "id": "azstorage_blob",
     "author": "rivms",
@@ -1117,15 +1121,24 @@
     "id": "opensearch",
     "author": "chnsagitchen"
   },
-    "SharePointReader":{
-      "id": "microsoft_sharepoint",
-      "author": "arun-soliton",
-      "keywords":[
-        "sharepoint",
-        "microsoft 365",
-        "microsoft365"
-      ]
-    },
+  "HiveReader": {
+    "id": "hive",
+    "author": "kasen",
+    "keywords": [
+      "Hive",
+      "Hadoop",
+      "HDFS"
+    ]
+  },
+  "SharePointReader":{
+    "id": "microsoft_sharepoint",
+    "author": "arun-soliton",
+    "keywords":[
+      "sharepoint",
+      "microsoft 365",
+      "microsoft365"
+    ]
+  },
   "DocstringWalker": {
     "id": "docstring_walker",
     "author": "Filip Wojcik",
