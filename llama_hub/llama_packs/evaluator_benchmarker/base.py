@@ -1,6 +1,6 @@
 from typing import Union
 from llama_index.llama_pack.base import BaseLlamaPack
-from llama_index.llama_dataset.evaluation import (
+from llama_index.llama_dataset.evaluator_evaluation import (
     LabelledEvaluatorEvaluationDataset,
     LabelledPairwiseEvaluatorEvaluationDataset,
     PairwiseEvaluatorEvaluationPredictionDataset,
