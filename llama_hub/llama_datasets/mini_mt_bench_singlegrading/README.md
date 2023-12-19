@@ -1,11 +1,11 @@
-# Mt Bench Human Judgement Dataset
+# Mini Mt Bench Single Grading Dataset
 
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
 
 ```bash
-llamaindex-cli download-llamadataset MtBenchHumanJudgementDataset --download-dir ./data
+llamaindex-cli download-llamadataset MiniMtBenchSingleGradingDataset --download-dir ./data
 ```
 
 You can then inspect the files at `./data`. When you're ready to load the data into
@@ -13,9 +13,9 @@ python, you can use the below snippet of code:
 
 ```python
 from llama_index import SimpleDirectoryReader
-from llama_index.llama_dataset import LabelledPairwiseEvaluatorDataset
+from llama_index.llama_dataset import LabelledEvaluatorDataset
 
-pairwise_evaluator_dataset = LabelledPairwiseEvaluatorDataset.from_json("./data/pairwise_evaluator_dataset.json")
+evaluator_dataset = LabelledEvaluatorDataset.from_json("./data/pairwise_evaluation_dataset.json")
 ```
 
 ## Code Usage
@@ -27,13 +27,13 @@ run your own LlamaIndex RAG pipeline with the `llamadataset`.
 ```python
 from llama_index.llama_dataset import download_llama_dataset
 from llama_index.llama_pack import download_llama_pack
-from llama_index.evaluator import PairwiseComparisonEvaluator
+from llama_index.evaluation import CorrectnessEvaluator
 from llama_index.llms import OpenAI
 from llama_index import ServiceContext
 
 # download benchmark dataset
-pairwise_evaluator_dataset, _ = download_llama_dataset(
-  "MtBenchHumanJudgementDataset ", "./data"
+evaluator_dataset, _ = download_llama_dataset(
+  "MiniMtBenchSingleGradingDataset ", "./data"
 )
 
 # define your evaluator
@@ -41,7 +41,7 @@ gpt_4_context = ServiceContext.from_defaults(
     llm=OpenAI(temperature=0, model="gpt-4"),
 )
 
-evaluator = PairwiseComparisonEvaluator(service_context=gpt_4_context)
+evaluator = CorrectnessEvaluator(service_context=gpt_4_context)
 
 # evaluate using the EvaluatorBenchmarkerPack
 EvaluatorBenchmarkerPack = download_llama_pack(
@@ -49,7 +49,7 @@ EvaluatorBenchmarkerPack = download_llama_pack(
 )
 evaluator_benchmarker = EvaluatorBenchmarkerPack(
     evaluator=evaluator,
-    eval_dataset=pairwise_evaluator_dataset,
+    eval_dataset=evaluator_dataset,
     show_progress=True,
 )
 

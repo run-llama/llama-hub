@@ -73,5 +73,10 @@
     "id": "llama_datasets/mt_bench_humanjudgement",
     "author": "nerdai",
     "keywords": ["evaluator", "llm as judge", "human agreement"]
+  },
+  "MiniMtBenchSingleGradingDataset": {
+    "id": "llama_dataset/mini_mt_bench_singlegrading",
+    "author": "nerdai",
+    "keywords": ["evaluator", "llm as judge"]
   }
 }
