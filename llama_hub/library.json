@@ -45,8 +45,7 @@
   },
   "AzStorageBlobReader": {
     "id": "azstorage_blob",
-    "author": "rivms"
-    ,
+    "author": "rivms",
     "keywords": [
       "azure storage",
       "blob",
