@@ -1,10 +1,10 @@
 from typing import Union
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.llama_dataset.evaluator_evaluation import (
-    LabelledEvaluatorEvaluationDataset,
-    LabelledPairwiseEvaluatorEvaluationDataset,
-    PairwiseEvaluatorEvaluationPredictionDataset,
-    EvaluatorEvaluationPredictionDataset,
+    LabelledEvaluatorDataset,
+    LabelledPairwiseEvaluatorDataset,
+    PairwiseEvaluatorPredictionDataset,
+    EvaluatorPredictionDataset,
 )
 from llama_index.evaluation import BaseEvaluator
 import warnings
@@ -16,7 +16,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
 
     Args:
         evaluator (BaseEvaluator): The evaluator to evaluate/benchmark.
-        eval_dataset (LabelledEvaluatorEvaluationDataset | LabelledPairwiseEvaluatorEvaluationDataset): The
+        eval_dataset (LabelledEvaluatorDataset | LabelledPairwiseEvaluatorDataset): The
             labelled evaluation dataset to run benchmarks against.
     """
 
@@ -24,7 +24,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
         self,
         evaluator: BaseEvaluator,
         eval_dataset: Union[
-            LabelledEvaluatorEvaluationDataset, LabelledPairwiseEvaluatorEvaluationDataset
+            LabelledEvaluatorDataset, LabelledPairwiseEvaluatorDataset
         ],
         show_progress: bool = True,
     ):
@@ -41,7 +41,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
     ):
         """Async make predictions with evaluator."""
         self.prediction_dataset: Union[
-            EvaluatorEvaluationPredictionDataset, PairwiseEvaluatorEvaluationPredictionDataset
+            EvaluatorPredictionDataset, PairwiseEvaluatorPredictionDataset
         ] = await self.eval_dataset.amake_predictions_with(
             predictor=self.evaluator,
             show_progress=self.show_progress,
@@ -52,7 +52,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
     def make_predictions(self, batch_size: int = 20, sleep_time_in_seconds: int = 1):
         """Sync make predictions with evaluator."""
         self.prediction_dataset: Union[
-            EvaluatorEvaluationPredictionDataset, PairwiseEvaluatorEvaluationPredictionDataset
+            EvaluatorPredictionDataset, PairwiseEvaluatorPredictionDataset
         ] = self.eval_dataset.make_predictions_with(
             predictor=self.evaluator,
             show_progress=self.show_progress,
@@ -112,7 +112,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
 
     def _make_evaluations(self) -> pd.DataFrame:
         """Returns benchmark_df."""
-        if isinstance(self.eval_dataset, LabelledPairwiseEvaluatorEvaluationDataset):
+        if isinstance(self.eval_dataset, LabelledPairwiseEvaluatorDataset):
             return self._prepare_and_save_benchmark_results_pairwise_grading()
         else:
             return self._prepare_and_save_benchmark_results_single_grading()
