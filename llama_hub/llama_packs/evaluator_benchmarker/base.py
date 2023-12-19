@@ -24,9 +24,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
     def __init__(
         self,
         evaluator: BaseEvaluator,
-        eval_dataset: Union[
-            LabelledEvaluatorDataset, LabelledPairwiseEvaluatorDataset
-        ],
+        eval_dataset: Union[LabelledEvaluatorDataset, LabelledPairwiseEvaluatorDataset],
         show_progress: bool = True,
     ):
         self.evaluator = evaluator
@@ -92,7 +90,10 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
             len(self.prediction_dataset[:]) - inconclusive_counts - invalid_counts
         )
         agreement_rate_without_ties = agreements_without_ties / (
-            len(self.prediction_dataset[:]) - inconclusive_counts - ties - invalid_counts
+            len(self.prediction_dataset[:])
+            - inconclusive_counts
+            - ties
+            - invalid_counts
         )
 
         df_data = {
@@ -112,11 +113,15 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
         invalid_counts = sum([p.invalid_prediction for p in self.prediction_dataset[:]])
         np_preds = np.array([p.score for p in self.prediction_dataset[:]])
         np_refs = np.array([e.reference_score for e in self.eval_dataset[:]])
-        invalid_mask = ~np.array([p.invalid_prediction for p in self.prediction_dataset[:]])
+        invalid_mask = ~np.array(
+            [p.invalid_prediction for p in self.prediction_dataset[:]]
+        )
 
         # metrics
         mae = np.mean(np.abs(np_preds[invalid_mask] - np_refs[invalid_mask]))
-        corr = np.corrcoef(np_preds[invalid_mask].astype(float), np_refs[invalid_mask].astype(float))[0, 1]
+        corr = np.corrcoef(
+            np_preds[invalid_mask].astype(float), np_refs[invalid_mask].astype(float)
+        )[0, 1]
         hamming = np.sum(np_preds[invalid_mask] == np_refs[invalid_mask])
 
         df_data = {
