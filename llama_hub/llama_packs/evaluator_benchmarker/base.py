@@ -116,7 +116,7 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
 
         # metrics
         mae = np.mean(np.abs(np_preds[invalid_mask] - np_refs[invalid_mask]))
-        corr = np.corrcoef(np_preds[invalid_mask], np_refs[invalid_mask])[0, 1]
+        corr = np.corrcoef(np_preds[invalid_mask].astype(float), np_refs[invalid_mask].astype(float))[0, 1]
         hamming = np.sum(np_preds[invalid_mask] == np_refs[invalid_mask])
 
         df_data = {
