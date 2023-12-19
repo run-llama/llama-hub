@@ -130,11 +130,11 @@ def test_llama_datasets_library_matches() -> None:
         assert card["className"] in [
             "LabelledRagDataset",
             "LabeledRagDataset",
-            "LabelledEvaluationDataset",
-            "LabeledEvaluationDataset",
-            "LabelledEvaluationDataset",
-            "LabelledPairwiseEvaluationDataset",
-            "LabeledPairwiseEvaluationDataset"
+            "LabelledEvaluatorDataset",
+            "LabeledEvaluatorDataset",
+            "LabelledEvaluatorDataset",
+            "LabelledPairwiseEvaluatorDataset",
+            "LabeledPairwiseEvaluatorDataset"
         ]
 
         # make sure that the README file exists
