@@ -3,7 +3,7 @@
 This LlamaPack provides an end-to-end Retrieval Augmented Generation flow using Vectara.
 
 Before you start, if you have not done so already, you would need to follow these steps:
-- Create a [free Vectara account](https://vectara.com/integrations/llama_index).
+- Create a [free Vectara account](https://vectara.com/integrations/llamaindex).
 - Create a [corpus](https://docs.vectara.com/docs/console-ui/creating-a-corpus) to store your data
 - Create an [API key](https://docs.vectara.com/docs/common-use-cases/app-authn-authz/api-keys) with QueryService and IndexService access so you can access this corpus
 

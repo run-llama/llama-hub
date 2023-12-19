@@ -1,6 +1,57 @@
 # ChangeLog
 
-## Unreleased
+## v[0.0.60] - 2023-12-16
+
+### New Features
+
+- Add `NebulaGraphQueryEnginePack` and `SnowflakeQueryEnginePack` (#776)
+
+### Smaller Features + Bug Fixes / Nits
+
+- Fix ui-breaking entry in library.json - authors can only be string (#779)
+
+## [v0.0.59] - 2023-12-15
+
+### Smaller Features + Bug Fixes / Nits
+
+- Fix bugs in StreamlitChatPack (#772)
+- NOTE: using "postX" as release version doesn't get picked up ui 
+
+## [v0.0.58] - 2023-12-13
+
+### New Features
+
+- Logan/dense x retrieval (#769)
+- add new Hive reader (#753)
+
+### Smaller Features + Bug Fixes / Nits
+
+- Update AzStorageBlobReader (#756)
+
+## [v0.0.57] - 2023-12-12
+
+### New Features
+
+- Add Astra DB loader (#764)
+- Add `DocugamiKgRagSec10Q` dataset (#767)
+
+## [v0.0.56] - 2023-12-09
+
+### New Features
+
+- Create llama_packs_neo4j.ipynb (#744)
+- Add Panel Chat Pack (#703) 
+- Add AlexNet dataset (#750)
+- Adding SnowflakeReader (#754) 
+- Microsoft SharePoint Data Loader  (#745)
+
+### Smaller Featuers + Bug Fixes / Nits
+
+- Added fix to run SQL query function description (#729)
+- add basic checks for datasets library (#746)
+- added colab badge in neo4j test notebook (#747)
+- Update pandas excel reader (#752)
+- Implemented start and cursor support for confluence loader (#733)
 
 ## [v0.0.55] - 2023-12-07
 
