@@ -9,6 +9,7 @@ from llama_index.llama_dataset.evaluator_evaluation import (
 from llama_index.evaluation import BaseEvaluator
 import warnings
 import pandas as pd
+import numpy as np
 
 
 class EvaluatorBenchmarkerPack(BaseLlamaPack):
@@ -108,7 +109,26 @@ class EvaluatorBenchmarkerPack(BaseLlamaPack):
 
     def _prepare_and_save_benchmark_results_single_grading(self) -> pd.DataFrame:
         """Compute benchmark metrics for single grading evaluation."""
-        pass
+        invalid_counts = sum([p.invalid_prediction for p in self.prediction_dataset[:]])
+        np_preds = np.array([p.score for p in self.prediction_dataset[:]])
+        np_refs = np.array([e.reference_score for e in self.eval_dataset[:]])
+        invalid_mask = ~np.array([p.invalid_prediction for p in self.prediction_dataset[:]])
+
+        # metrics
+        mae = np.mean(np.abs(np_preds[invalid_mask] - np_refs[invalid_mask]))
+        corr = np.corrcoef(np_preds[invalid_mask], np_refs[invalid_mask])[0, 1]
+        hamming = np.sum(np_preds[invalid_mask] == np_refs[invalid_mask])
+
+        df_data = {
+            "number_examples": [len(self.prediction_dataset[:])],
+            "invalid_predictions": [invalid_counts],
+            "correlation": [corr],
+            "mae": [mae],
+            "hamming": [hamming],
+        }
+        benchmark_df = pd.DataFrame(df_data)
+        benchmark_df.to_csv("benchmark.csv")
+        return benchmark_df
 
     def _make_evaluations(self) -> pd.DataFrame:
         """Returns benchmark_df."""
