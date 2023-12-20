@@ -22,7 +22,7 @@ class OllamaQueryEnginePack(BaseLlamaPack):
         self._model = model
         self._base_url = base_url
 
-        llm = Ollama(self._model, base_url=self._base_url)
+        llm = Ollama(model=self._model, base_url=self._base_url)
 
         embed_model = OllamaEmbedding(model_name=self._model, base_url=self._base_url)
 
