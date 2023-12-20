@@ -75,7 +75,7 @@ class AzStorageBlobReader(BaseReader):
 
         if self.connection_string:
             container_client = ContainerClient.from_connection_string(
-                connection_string=self.connection_string,
+                conn_str=self.connection_string,
                 container_name=self.container_name,
             )
         else:

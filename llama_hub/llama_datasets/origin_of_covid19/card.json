@@ -1,5 +1,6 @@
 {
     "name": "Origin Of Covid19 Dataset",
+    "className": "LabelledRagDataset",
     "description": "A labelled RAG dataset based off an article, The Origin Of COVID-19 and Why It Matters, by Morens DM, Breman JG, Calisher CH, Doherty PC, Hahn BH, Keusch GT, Kramer LD, LeDuc JW, Monath TP, Taubenberger JK, consisting of queries, reference answers, and reference contexts.",
     "numberObservations": 24,
     "containsExamplesByHumans": false,

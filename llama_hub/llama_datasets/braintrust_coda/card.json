@@ -1,5 +1,6 @@
 {
   "name": "Braintrust Coda Help Desk",
+  "className": "LabelledRagDataset",
   "description": "A list of automatically generated question/answer pairs from the Coda (https://coda.io/) help docs. This dataset is interesting because most models include Coda’s documentation as part of their training set, so you can baseline performance without RAG.",
   "numberObservations": 100,
   "containsExamplesByHumans": false,

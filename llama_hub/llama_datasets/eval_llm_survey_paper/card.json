@@ -1,5 +1,6 @@
 {
     "name": "Evaluating LLM Survey Paper Dataset",
+    "className": "LabelledRagDataset",
     "description": "A labelled RAG dataset over the comprehensive, spanning 111 pages in total, survey on evaluating LLMs.",
     "numberObservations": 276,
     "containsExamplesByHumans": false,

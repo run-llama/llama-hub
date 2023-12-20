@@ -184,5 +184,10 @@
     "id": "llama_packs/nebulagraph_query_engine",
     "author": "wenqiglantz",
     "keywords": ["nebulagraph", "knowledge graph", "query engine"]
+  },
+  "EvaluatorBenchmarkerPack": {
+    "id": "llama_packs/evaluator_benchmarker",
+    "author": "nerdai",
+    "tags": ["judge", "evaluator", "benchmarker", "benchmark"]
   }
 }
