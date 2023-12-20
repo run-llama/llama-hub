@@ -1,5 +1,5 @@
 from llama_index.graph_stores import Neo4jGraphStore
-from llama_index.llms.base import LLM, ChatMessage, MessageRole
+from llama_index.llms.base import BaseLLM as LLM, ChatMessage, MessageRole
 from llama_index.tools.tool_spec.base import BaseToolSpec
 from importlib.util import find_spec
 
