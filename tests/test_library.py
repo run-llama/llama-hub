@@ -121,8 +121,20 @@ def test_llama_datasets_library_matches() -> None:
         assert entry_dir.exists()
 
         # make sure that the card.json file exists
-        entry_file = entry_dir / "card.json"
-        assert entry_file.exists()
+        card_file = entry_dir / "card.json"
+        assert card_file.exists()
+        with open(card_file) as f:
+            card = json.load(f)
+        assert "className" in card
+        assert card["className"] in [
+            "LabelledRagDataset",
+            "LabeledRagDataset",
+            "LabelledEvaluatorDataset",
+            "LabeledEvaluatorDataset",
+            "LabelledEvaluatorDataset",
+            "LabelledPairwiseEvaluatorDataset",
+            "LabeledPairwiseEvaluatorDataset",
+        ]
 
         # make sure that the README file exists
         readme_file = entry_dir / "README.md"

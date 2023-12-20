@@ -1,5 +1,6 @@
 {
     "name": "Paul Graham Essay",
+    "className": "LabelledRagDataset",
     "description": "A labelled RAG dataset based off an essay by Paul Graham, consisting of queries, reference answers, and reference contexts.",
     "numberObservations": 44,
     "containsExamplesByHumans": false,

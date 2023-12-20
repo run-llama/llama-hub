@@ -118,13 +118,20 @@ LlavaCompletionPack = download_llama_pack(
 
 ## Llama-Dataset Usage
 
+(NOTE: in what follows we present the pattern for producing a RAG benchmark with
+the `RagEvaluatorPack` over a `LabelledRagDataset`. However, there are also other
+types of llama-datasets such as `LabelledEvaluatorDataset` and corresponding llama-packs
+for producing benchmarks on their respective tasks. They all follow the similar
+usage pattern. Please refer to the README's to learn more on each type of
+llama-dataset.)
+
 The primary use of llama-dataset is for evaluating the performance of a RAG system.
 In particular, it serves as a new test set (in traditional machine learning speak)
 for one to build a RAG over, predict on, and subsequently perform evaluations
 comparing the predicted response versus the reference response. To perform the
 evaluation, the recommended usage pattern involves the application of the
 `RagEvaluatorPack`. We recommend reading the [docs](https://docs.llamaindex.ai/en/stable/module_guides/evaluating/root.html) for the "Evaluation" module for
-more information.
+more information on all of our llama-dataset's.
 
 ```python
 from llama_index.llama_dataset import download_llama_dataset
@@ -264,6 +271,9 @@ The high-level steps for adding a llama-dataset are as follows:
 To assist with the submission process, we have prepared a [submission template
 notebook](https://github.com/run-llama/llama_index/blob/main/docs/examples/llama_dataset/ragdataset_submission_template.ipynb) that walks you through the above-listed steps. We highly recommend
 that you use this template notebook.
+
+(NOTE: you can use the above process for submitting any of our other supported
+types of llama-datasets such as the `LabelledEvaluatorDataset`.)
 
 ## Running tests
 

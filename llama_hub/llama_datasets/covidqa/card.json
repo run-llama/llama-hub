@@ -1,5 +1,6 @@
 {
     "name": "Covid QA Dataset",
+    "className": "LabelledRagDataset",
     "description": "A human-annotated RAG dataset consisting of over 300 question-answer pairs. This dataset represents a subset of the Covid-QA dataset available on Kaggle and authored by Xhlulu. It is a collection of frequently asked questions on COVID from various websites. This subset only considers the top 10 webpages containing the most question-answer pairs.",
     "numberObservations": 316,
     "containsExamplesByHumans": true,

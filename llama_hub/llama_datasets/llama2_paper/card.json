@@ -1,5 +1,6 @@
 {
     "name": "Llama 2 Paper Dataset",
+    "className": "LabelledRagDataset",
     "description": "A labelled RAG dataset based off the Llama 2 ArXiv PDF.",
     "numberObservations": 100,
     "containsExamplesByHumans": false,

@@ -1,5 +1,6 @@
 {
     "name": "Mini Squad V2 Dataset",
+    "className": "LabelledRagDataset",
     "description": "This is a subset of the original SquadV2 dataset. In particular, it considers only the top 10 Wikipedia pages in terms of having questions about them.",
     "numberObservations": 195,
     "containsExamplesByHumans": true,
