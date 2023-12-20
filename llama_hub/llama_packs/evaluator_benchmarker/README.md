@@ -4,8 +4,8 @@ A pack for quick computation of benchmark results of your own LLM evaluator
 on an Evaluation llama-dataset. Specifically, this pack supports benchmarking
 an appropriate evaluator on the following llama-datasets:
 
-- `LabelledEvaluationDataset` for single-grading evaluations
-- `LabelledPairwiseEvaluationDataset` for pairwise-grading evaluations
+- `LabelledEvaluatorDataset` for single-grading evaluations
+- `LabelledPairwiseEvaluatorDataset` for pairwise-grading evaluations
 
 These llama-datasets can be downloaed from [llama-hub](https://llamahub.ai).
 
