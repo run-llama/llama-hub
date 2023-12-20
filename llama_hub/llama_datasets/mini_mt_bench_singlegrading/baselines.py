@@ -24,7 +24,7 @@ async def main():
     )
 
     gemini_pro_context = ServiceContext.from_defaults(
-        llm = Gemini(model="models/gemini-pro", temperature=0)
+        llm=Gemini(model="models/gemini-pro", temperature=0)
     )
 
     evaluators = {
@@ -46,27 +46,36 @@ async def main():
         eval_dataset=evaluator_dataset,
         show_progress=True,
     )
-    gpt_3p5_benchmark_df = await evaluator_benchmarker.arun(batch_size=100, sleep_time_in_seconds=0)
+    gpt_3p5_benchmark_df = await evaluator_benchmarker.arun(
+        batch_size=100, sleep_time_in_seconds=0
+    )
 
     evaluator_benchmarker = EvaluatorBenchmarkerPack(
         evaluator=evaluators["gpt-4"],
         eval_dataset=evaluator_dataset,
         show_progress=True,
     )
-    gpt_4_benchmark_df = await evaluator_benchmarker.arun(batch_size=100, sleep_time_in_seconds=0)
+    gpt_4_benchmark_df = await evaluator_benchmarker.arun(
+        batch_size=100, sleep_time_in_seconds=0
+    )
 
     evaluator_benchmarker = EvaluatorBenchmarkerPack(
         evaluator=evaluators["gemini-pro"],
         eval_dataset=evaluator_dataset,
         show_progress=True,
     )
-    gemini_pro_benchmark_df = await evaluator_benchmarker.arun(batch_size=5, sleep_time_in_seconds=0.5)
+    gemini_pro_benchmark_df = await evaluator_benchmarker.arun(
+        batch_size=5, sleep_time_in_seconds=0.5
+    )
 
-    benchmark_df = pd.concat([
-        gpt_3p5_benchmark_df,
-        gpt_4_benchmark_df,
-        gemini_pro_benchmark_df,
-    ], axis=0)
+    benchmark_df = pd.concat(
+        [
+            gpt_3p5_benchmark_df,
+            gpt_4_benchmark_df,
+            gemini_pro_benchmark_df,
+        ],
+        axis=0,
+    )
     print(benchmark_df)
 
 
