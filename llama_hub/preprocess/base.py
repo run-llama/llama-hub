@@ -6,14 +6,20 @@ from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 from llama_index.schema import TextNode, NodeRelationship, RelatedNodeInfo
 
-from pypreprocess import Preprocess
-
 
 class PreprocessReader(BaseReader):
     def __init__(self, api_key: str, *args, **kwargs):
         if api_key is None or api_key == "":
             raise ValueError(
                 "Please provide an api key to be used while doing the auth with the system."
+            )
+
+        try:
+            from pypreprocess import Preprocess
+        except ImportError:
+            raise ImportError(
+                "`pypreprocess` package not found, please run `pip install"
+                " pypreprocess`"
             )
 
         _info = {}
