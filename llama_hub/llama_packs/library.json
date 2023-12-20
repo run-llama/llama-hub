@@ -184,5 +184,10 @@
     "id": "llama_packs/nebulagraph_query_engine",
     "author": "wenqiglantz",
     "keywords": ["nebulagraph", "knowledge graph", "query engine"]
+  },
+  "LlamaGuardModeratorPack": {
+    "id": "llama_packs/llama_guard_moderator",
+    "author": "wenqiglantz",
+    "keywords": ["llama guard", "purple llama", "llm security", "prompt injection"]
   }
 }
