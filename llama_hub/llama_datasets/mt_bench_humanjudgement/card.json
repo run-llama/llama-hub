@@ -12,7 +12,7 @@
         {
             "name": "gpt-3.5",
             "config": {
-                "promptUrl": "...",
+                "promptUrl": "https://github.com/run-llama/llama_index/blob/e471e5f8a93ddae6d366cdbba8a497cd6728c7f8/llama_index/evaluation/pairwise.py#L21",
                 "llm": "gpt-3.5"
             },
             "metrics": {
@@ -22,12 +22,12 @@
                 "agreementRateWithTies": 0.743,
                 "agreementRateWithoutTies": 0.798
             },
-            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mt_bench_humanjudgement/baselines.py"
         },
         {
             "name": "gpt-4",
             "config": {
-                "promptUrl": "...",
+                "promptUrl": "https://github.com/run-llama/llama_index/blob/e471e5f8a93ddae6d366cdbba8a497cd6728c7f8/llama_index/evaluation/pairwise.py#L21",
                 "llm": "gpt-4"
             },
             "metrics": {
@@ -37,12 +37,12 @@
                 "agreementRateWithTies": 0.709,
                 "agreementRateWithoutTies": 0.779
             },
-            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mt_bench_humanjudgement/baselines.py"
         },
         {
             "name": "gemini-pro",
             "config": {
-                "promptUrl": "...",
+                "promptUrl": "https://github.com/run-llama/llama_index/blob/e471e5f8a93ddae6d366cdbba8a497cd6728c7f8/llama_index/evaluation/pairwise.py#L21",
                 "llm": "gemini-pro"
             },
             "metrics": {
@@ -52,22 +52,7 @@
                 "agreementRateWithTies": 0.742,
                 "agreementRateWithoutTies": 0.793
             },
-            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
-        },
-        {
-            "name": "gemini-ultra",
-            "config": {
-                "promptUrl": "...",
-                "llm": "gemini-ultra"
-            },
-            "metrics": {
-                "invalidPredictions": 1,
-                "inconclusives": 297,
-                "ties": 59,
-                "agreementRateWithTies": 0.743,
-                "agreementRateWithoutTies": 0.793
-            },
-            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mini_truthfulqa/llamaindex_baseline.py"
+            "codeUrl": "https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_datasets/mt_bench_humanjudgement/baselines.py"
         }
     ]
 }
