@@ -20,7 +20,7 @@ from llama_index.async_utils import run_jobs
 try:
     from llama_index.llms.llm import LLM
 except ImportError:
-    from llama_index.llms.base import BaseLLM as LLM
+    from llama_index.llms.base import LLM
 
 
 PROPOSITIONS_PROMPT = PromptTemplate(
