@@ -3,7 +3,6 @@
 import json
 from importlib import util
 from pathlib import Path
-import tempfile
 
 
 def test_library_matches() -> None:
@@ -134,7 +133,7 @@ def test_llama_datasets_library_matches() -> None:
             "LabeledEvaluatorDataset",
             "LabelledEvaluatorDataset",
             "LabelledPairwiseEvaluatorDataset",
-            "LabeledPairwiseEvaluatorDataset"
+            "LabeledPairwiseEvaluatorDataset",
         ]
 
         # make sure that the README file exists
