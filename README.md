@@ -131,7 +131,7 @@ for one to build a RAG over, predict on, and subsequently perform evaluations
 comparing the predicted response versus the reference response. To perform the
 evaluation, the recommended usage pattern involves the application of the
 `RagEvaluatorPack`. We recommend reading the [docs](https://docs.llamaindex.ai/en/stable/module_guides/evaluating/root.html) for the "Evaluation" module for
-more information.
+more information on all of our llama-dataset's.
 
 ```python
 from llama_index.llama_dataset import download_llama_dataset
