@@ -1,5 +1,14 @@
 # ChangeLog
 
+## v[0.0.61] - 2023-12-20
+
+- Add `MiniMtBenchSingleGradingDataset` & `MtBenchHumanJudgementDataset` (#782)
+- Add `EvaluatorBenchmarkerPack` (#777)
+
+### Smaller Features + Bug Fixes / Nits
+
+- backwards compatibility import `ResumeScreenerPack`, `GmailOpenAIAgentPack`, `Neo4jQueryToolSpec`
+
 ## v[0.0.60] - 2023-12-16
 
 ### New Features
