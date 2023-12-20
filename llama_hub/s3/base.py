@@ -92,15 +92,16 @@ class S3Reader(BaseReader):
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.key:
+                filename = Path(self.key).name
                 suffix = Path(self.key).suffix
-                filepath = f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
+                filepath = f"{temp_dir}/{filename}"
                 s3_client.download_file(self.bucket, self.key, filepath)
             else:
                 bucket = s3.Bucket(self.bucket)
                 for i, obj in enumerate(bucket.objects.filter(Prefix=self.prefix)):
                     if self.num_files_limit is not None and i > self.num_files_limit:
                         break
-
+                    filename = Path(obj.key).name
                     suffix = Path(obj.key).suffix
 
                     is_dir = obj.key.endswith("/")  # skip folders
@@ -112,9 +113,7 @@ class S3Reader(BaseReader):
                     if is_dir or is_bad_ext:
                         continue
 
-                    filepath = (
-                        f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
-                    )
+                    filepath = f"{temp_dir}/{filename}"
                     s3_client.download_file(self.bucket, obj.key, filepath)
 
             try:
