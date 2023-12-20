@@ -23,8 +23,10 @@ You can then inspect the files at `./evaluator_benchmarker_pack` and use them as
 
 You can download the pack to the `./evaluator_benchmarker_pack` directory through python
 code as well. The sample script below demonstrates how to construct `EvaluatorBenchmarkerPack`
-using a `LabelledPairwiseEvaluationDataset` downloaded from `llama-hub` and a
-`PairwiseComparisonEvaluator` that uses GPT-4 as the LLM.
+using a `LabelledPairwiseEvaluatorDataset` downloaded from `llama-hub` and a
+`PairwiseComparisonEvaluator` that uses GPT-4 as the LLM. Note though that this pack
+can also be used on a `LabelledEvaluatorDataset` with a `BaseEvaluator` that performs
+single-grading evaluation — in this case, the usage flow remains the same.
 
 ```python
 from llama_index.llama_dataset import download_llama_dataset
