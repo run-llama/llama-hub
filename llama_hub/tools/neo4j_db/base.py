@@ -6,10 +6,11 @@ from llama_hub.tools.neo4j_db.query_validator import CypherQueryCorrector, Schem
 
 # backwards compatibility
 try:
-    from llama_index.llms.llm import LLM 
+    from llama_index.llms.llm import LLM
     from llama_index.llms.types import ChatMessage, MessageRole
 except ImportError:
     from llama_index.llms.base import LLM, ChatMessage, MessageRole
+
 
 class Neo4jQueryToolSpec(BaseToolSpec):
     """
