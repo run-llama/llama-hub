@@ -111,20 +111,6 @@ files = [
 frozenlist = ">=1.1.0"
 
 [[package]]
-name = "aiostream"
-version = "0.5.2"
-description = "Generator-based operators for asynchronous iteration"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "aiostream-0.5.2-py3-none-any.whl", hash = "sha256:054660370be9d37f6fe3ece3851009240416bd082e469fd90cc8673d3818cf71"},
-    {file = "aiostream-0.5.2.tar.gz", hash = "sha256:b71b519a2d66c38f0872403ab86417955b77352f08d9ad02ad46fc3926b389f4"},
-]
-
-[package.dependencies]
-typing-extensions = "*"
-
-[[package]]
 name = "annotated-types"
 version = "0.6.0"
 description = "Reusable constraint types to use with typing.Annotated"
@@ -727,18 +713,17 @@ files = [
 
 [[package]]
 name = "llama-index"
-version = "0.9.13"
+version = "0.9.19"
 description = "Interface between LLMs and your data"
 optional = false
 python-versions = ">=3.8.1,<4.0"
 files = [
-    {file = "llama_index-0.9.13-py3-none-any.whl", hash = "sha256:1fba9039e6b223f7940d2bde7a587638af886d220d2074780660b010fb0149f5"},
-    {file = "llama_index-0.9.13.tar.gz", hash = "sha256:dd12003395e4e92e8b70879f3845e4bdd4614027870b0979253ba9291bae4c35"},
+    {file = "llama_index-0.9.19-py3-none-any.whl", hash = "sha256:75ea26f9a0fa19363adf5ec152f308df6842362552a2803d944308c39702289b"},
+    {file = "llama_index-0.9.19.tar.gz", hash = "sha256:98cb6804344e00f1f03b23b913dcd2f0982de8b4c0fbc87cd95b3bed39300112"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.8.6,<4.0.0"
-aiostream = ">=0.5.2,<0.6.0"
 beautifulsoup4 = ">=4.12.2,<5.0.0"
 dataclasses-json = "*"
 deprecated = ">=1.2.9.3"
@@ -757,6 +742,7 @@ typing-extensions = ">=4.5.0"
 typing-inspect = ">=0.8.0"
 
 [package.extras]
+gradientai = ["gradientai (>=1.4.0)"]
 langchain = ["langchain (>=0.0.303)"]
 local-models = ["optimum[onnxruntime] (>=1.13.2,<2.0.0)", "sentencepiece (>=0.1.99,<0.2.0)", "transformers[torch] (>=4.34.0,<5.0.0)"]
 postgres = ["asyncpg (>=0.28.0,<0.29.0)", "pgvector (>=0.1.0,<0.2.0)", "psycopg-binary (>=3.1.12,<4.0.0)"]

@@ -1,9 +1,15 @@
 from llama_index.graph_stores import Neo4jGraphStore
-from llama_index.llms.base import LLM, ChatMessage, MessageRole
 from llama_index.tools.tool_spec.base import BaseToolSpec
 from importlib.util import find_spec
 
 from llama_hub.tools.neo4j_db.query_validator import CypherQueryCorrector, Schema
+
+# backwards compatibility
+try:
+    from llama_index.llms.llm import LLM
+    from llama_index.llms.types import ChatMessage, MessageRole
+except ImportError:
+    from llama_index.llms.base import LLM, ChatMessage, MessageRole
 
 
 class Neo4jQueryToolSpec(BaseToolSpec):

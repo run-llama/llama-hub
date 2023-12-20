@@ -69,7 +69,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         """Async make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             await self.rag_dataset.amake_predictions_with(
-                query_engine=self.query_engine,
+                self.query_engine,
                 show_progress=self.show_progress,
                 batch_size=batch_size,
                 sleep_time_in_seconds=sleep_time_in_seconds,
@@ -84,7 +84,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         """Sync make predictions with query engine."""
         self.prediction_dataset: BaseLlamaPredictionDataset = (
             self.rag_dataset.make_predictions_with(
-                query_engine=self.query_engine,
+                self.query_engine,
                 show_progress=self.show_progress,
                 batch_size=batch_size,
                 sleep_time_in_seconds=sleep_time_in_seconds,
