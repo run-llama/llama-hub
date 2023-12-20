@@ -63,3 +63,10 @@ documents = loader.load_data()
 ```
 
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.
+
+### Updates
+
+#### [2023-12-14] by [JAlexMcGraw](https://github.com/JAlexMcGraw) (#765)
+
+- Added functionality to allow user to connect to blob storage with connection string
+- Changed temporary file names from random to back to original names
