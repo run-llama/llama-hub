@@ -3,7 +3,7 @@
 
 from typing import Any, Dict
 
-from llama_index.agent.openai_agent import OpenAIAgent
+from llama_index.agent.legacy.openai_agent import OpenAIAgent
 from llama_index.llama_pack.base import BaseLlamaPack
 
 
