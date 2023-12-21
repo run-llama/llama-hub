@@ -619,6 +619,14 @@
       "pdf"
     ]
   },
+  "PDFPlumberReader": {
+    "id": "file/pdf_plumber",
+    "author": "JAlexMcGraw",
+    "keywords": [
+      "pdf",
+      "reader"
+    ]
+  },
   "PreprocessReader": {
     "id": "preprocess",
     "author": "preprocess",
