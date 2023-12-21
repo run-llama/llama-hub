@@ -1,5 +1,5 @@
 """Init file."""
-from llama_hub.file.pdf_miner.base import (
+from llama_hub.file.pdf_plumber.base import (
     PDFPlumberReader,
 )
 
