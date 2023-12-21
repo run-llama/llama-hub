@@ -1,7 +1,7 @@
 """LlamaPack class."""
 
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from llama_index.llama_pack.base import BaseLlamaPack
 
@@ -103,7 +103,7 @@ class LlamaGuardModeratorPack(BaseLlamaPack):
         # tailored for query engine input/output, using "user" role
         chat = [{"role": "user", "content": message}]
 
-        prompt = self.moderation_prompt_for_chat(chat, self.custom_taxonomy)
+        prompt = self._moderation_prompt_for_chat(chat)
         inputs = self.tokenizer([prompt], return_tensors="pt").to(self.device)
         output = self.model.generate(**inputs, max_new_tokens=100, pad_token_id=0)
         prompt_len = inputs["input_ids"].shape[-1]
@@ -112,14 +112,14 @@ class LlamaGuardModeratorPack(BaseLlamaPack):
         )
         return moderator_response
 
-    def moderation_prompt_for_chat(chat, custom_taxonomy):
+    def _moderation_prompt_for_chat(self, chat):
         # For simplicity, we assume the chat dictionary correctly alternates "user" and "assistant" roles
         conversation = [turn["content"] for turn in chat]
         role = "Agent" if len(conversation) % 2 == 0 else "User"
         prompt = f"""[INST] Task: Check if there is unsafe content in '{role}' messages in conversations according our safety policy with the below categories.
 
     <BEGIN UNSAFE CONTENT CATEGORIES>
-    {custom_taxonomy}
+    {self.custom_taxonomy}
     <END UNSAFE CONTENT CATEGORIES>
 
     <BEGIN CONVERSATION>
