@@ -189,5 +189,16 @@
     "id": "llama_packs/evaluator_benchmarker",
     "author": "nerdai",
     "tags": ["judge", "evaluator", "benchmarker", "benchmark"]
+  },
+  "CogniswitchAgentPack": {
+    "id": "llama_packs/cogniswitch_agent",
+    "author": "cogniswitch",
+    "keywords": [
+      "graph",
+      "knowledge graph",
+      "neural",
+      "symbolic",
+      "embedding"
+    ]
   }
 }
