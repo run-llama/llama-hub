@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v[0.0.62] - 2023-12-21
+
+## New Features
+
+- Add `MiniEsgBenchDataset` (#799)
+- Add `PDFPlubmerReader` (#798)
+- Add Cogniswitch llama pack and update Cogniswitch tool (#797)
+
+### Smaller Features + Bug Fixes / Nits
+
+- Improved s3Reader to move control where files are downloaded (#788)
+
 ## v[0.0.61] - 2023-12-20
 
 - Add `MiniMtBenchSingleGradingDataset` & `MtBenchHumanJudgementDataset` (#782)
