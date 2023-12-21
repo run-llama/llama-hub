@@ -1,7 +1,7 @@
 {
   "name": "Mini ESG Bench Dataset",
   "className": "LabelledRagDataset",
-  "description": "This dataset is meant to be a difficult benchmark for pdf parsers. In particular, adopting the terminology used in the PDFTiage paper (https://arxiv.org/abs/2309.08872), we curate difficult questions involving structural knowledge of the PDF documents. The examples in this dataset come from the Environment, Social and (corporate) Governance (ESG) reports of FAANG + Microsoft in 2021-2022.",
+  "description": "This dataset is meant to be a difficult benchmark for pdf parsers. In particular, adopting the terminology used in the PDFTriage paper (https://arxiv.org/abs/2309.08872), we curate difficult questions involving structural knowledge of the PDF documents. The examples in this dataset come from the Environment, Social and (corporate) Governance (ESG) reports of FAANG (companies) and Microsoft in 2021-2022.",
   "numberObservations": 50,
   "containsExamplesByHumans": true,
   "containsExamplesByAi": false,
