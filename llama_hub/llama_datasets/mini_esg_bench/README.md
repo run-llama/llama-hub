@@ -62,3 +62,17 @@ benchmark_df = await rag_evaluator_pack.arun(
     sleep_time_in_seconds=1,  # seconds to sleep before making an api call
 )
 ```
+
+## Citing the data
+
+If you choose to use this dataset for research, it would be appreciated if you
+could cite it with given details below.
+
+```text
+@misc{llamaindex_mini_esg_bench_2023,
+      title={Mini ESG Bench}, 
+      author={Val Andrei Fajardo},
+      year={2023},
+      organization={llamaindex}
+}
+```
