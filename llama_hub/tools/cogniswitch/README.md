@@ -18,7 +18,7 @@ visit [https://www.cogniswitch.ai/developer](https://www.cogniswitch.ai/develope
 **Step 3: Cogniswitch Store data:**
 - Make the call to the agent by giving the file path or url to the agent input. 
 - The agent will pick the tool and use the file/url and it will be processed and stored in your knowledge store.
-- You can check the status of document processing with a call to the agent. Alternatively you can also check in [cogniswitch console](https://console.cogniswitch.ai:8443/ui/document-upload).
+- You can check the status of document processing with a call to the agent. Alternatively you can also check in [cogniswitch console](- You can check the status of document processing with a call to the agent. Alternatively you can also check in [cogniswitch console](https://console.cogniswitch.ai:8443/login?utm_source=llamaindex&utm_medium=llamaindexbuild&utm_id=dev). 
 
 **Step 4: Cogniswitch Answer:**
 - Make the call to the agent by giving query as agent input. 
@@ -95,7 +95,7 @@ print(response)
 
 
 ```python
-answer_response = toolspec.query_knowledge("tell me about cogniswitch")
+answer_response = agent.chat("tell me about cogniswitch")
 print(answer_response)
 ```
 

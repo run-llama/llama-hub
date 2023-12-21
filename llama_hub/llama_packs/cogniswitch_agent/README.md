@@ -1,6 +1,6 @@
 ## Cogniswitch LlamaPack
 
-**Use CogniSwitch to build production ready applications that can consume, organize and retrieve knowledge flawlessly. Using the framework of your choice, in this case LlamaIndex, CogniSwitch helps alleviate the stress of decision making when it comes to, choosing the right storage and retrieval formats. It also eradicates reliability issues and hallucinations when it comes to responses that are generated. Get started by interacting with your knowledge in simple steps**
+**Use CogniSwitch to build production ready applications that can consume, organize and retrieve knowledge flawlessly. Using the framework of your choice, in this case LlamaIndex, CogniSwitch helps alleviate the stress of decision making when it comes to, choosing the right storage and retrieval formats. It also eradicates reliability issues and hallucinations when it comes to responses that are generated. Get started by interacting with your knowledge in a few simple steps**
 
 visit [https://www.cogniswitch.ai/developer](https://www.cogniswitch.ai/developer?utm_source=llamaindex&utm_medium=llamaindexbuild&utm_id=dev).
 
@@ -18,7 +18,7 @@ visit [https://www.cogniswitch.ai/developer](https://www.cogniswitch.ai/develope
 **Step 3: Cogniswitch Store data:**
 - Make the call to the agent by giving the file path or url to the agent input.
 - The agent will pick the tool and use the file/url and it will be processed and stored in your knowledge store.
-- You can check the status of document processing with a call to the agent. Alternatively you can also check in [cogniswitch console](https://console.cogniswitch.ai:8443/ui/document-upload). 
+- You can check the status of document processing with a call to the agent. Alternatively you can also check in [cogniswitch console](https://console.cogniswitch.ai:8443/login?utm_source=llamaindex&utm_medium=llamaindexbuild&utm_id=dev). 
 
 **Step 4: Cogniswitch Answer:**
 - Make the call to the agent by giving query as agent input.
