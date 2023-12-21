@@ -1,17 +1,24 @@
 import requests
-from typing import Optional, Type
-from llama_index.bridge.pydantic import BaseModel
+from typing import Optional
+import os
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
 
 class CogniswitchToolSpec(BaseToolSpec):
+
     """Cogniswitch Tool Spec.
-    A tool used to store data using the Cogniswitch service.
+    A toolspec to have store_data and query_knowledge as tools to store the data from a file or a url
+    and answer questions from the knowledge stored respectively.
     """
 
-    spec_functions = ["store_data", "query_knowledge"]
+    spec_functions = ["store_data", "query_knowledge", "knowledge_status"]
 
-    def __init__(self, cs_token: str, OAI_token: str, apiKey: str) -> None:
+    def __init__(
+        self,
+        cs_token: str,
+        apiKey: str,
+        OAI_token: Optional[str] = None,
+    ) -> None:
         """
         Args:
             cs_token (str): Cogniswitch token.
@@ -19,7 +26,12 @@ class CogniswitchToolSpec(BaseToolSpec):
             apiKey (str): Oauth token
         """
         self.cs_token = cs_token
-        self.OAI_token = OAI_token
+        if OAI_token:
+            self.OAI_token = OAI_token
+        elif os.environ["OPENAI_API_KEY"]:
+            self.OAI_token = os.environ["OPENAI_API_KEY"]
+        else:
+            raise ValueError("Please provide the OpenAI token")
         self.apiKey = apiKey
         self.source_URL_endpoint = (
             "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeSource/url"
@@ -29,6 +41,9 @@ class CogniswitchToolSpec(BaseToolSpec):
         )
         self.knowledge_request_endpoint = (
             "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeRequest"
+        )
+        self.knowledge_status_endpoint = (
+            "https://api.cogniswitch.ai:8243/cs-api/0.0.1/cs/knowledgeSource/status"
         )
         self.headers = {
             "apiKey": self.apiKey,
@@ -128,5 +143,28 @@ class CogniswitchToolSpec(BaseToolSpec):
                 "message": "Bad Request",
             }
 
-    def get_fn_schema_from_fn_name(self, fn_name: str) -> Optional[Type[BaseModel]]:
-        pass
+    def knowledge_status(self, document_name: str) -> dict:
+        """
+        Use this function to know the status of the document or the URL uploaded
+        Args:
+            document_name (str): The document name or the url that is uploaded.
+
+        Returns:
+            dict: Response JSON from the Cogniswitch service.
+        """
+
+        params = {"docName": document_name, "platformToken": self.cs_token}
+        response = requests.get(
+            self.knowledge_status_endpoint,
+            headers=self.headers,
+            params=params,
+            verify=False,
+        )
+        if response.status_code == 200:
+            source_info = response.json()
+            return source_info[-1]
+        else:
+            # error_message = response.json()["message"]
+            return {
+                "message": "Bad Request",
+            }
