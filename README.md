@@ -108,7 +108,7 @@ llamaindex-cli download-llamapack ZephyrQueryEnginePack --download-dir ./zephyr_
 Or with the `download_llama_pack` function directly:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 LlavaCompletionPack = download_llama_pack(
