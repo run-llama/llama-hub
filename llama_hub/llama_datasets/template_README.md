@@ -34,7 +34,7 @@ from llama_index import VectorStoreIndex
 
 # download and install dependencies for benchmark dataset
 rag_dataset, documents = download_llama_dataset(
-  "{NAME_CAMELCASE} ", "./data"
+  "{NAME_CAMELCASE}", "./data"
 )
 
 # build basic RAG system
