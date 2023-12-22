@@ -92,22 +92,16 @@ query_engine = index.as_query_engine(...)
 from IPython.display import Markdown
 
 query = "Why did Harry say George is the richest man in town?"
-
-# query and moderate both LLM input and output, return a final response
 final_response = moderate_and_query(query)
-
-# display the final response
 display(Markdown(f"<b>{final_response}</b>"))
 ```
 
-#### Sample Usage 1:
+#### Sample Usage 1 (safe scenario):
 ```python
 from IPython.display import Markdown
 
 query = "Why did Harry say George is the richest man in town?"
 final_response = moderate_and_query(query)
-
-# display the final response
 display(Markdown(f"<b>{final_response}</b>"))
 ```
 The above code generates the following final response:
@@ -117,7 +111,7 @@ moderator response for output: safe
 Harry said George is the richest man in town because the townspeople donated more than enough money to cover the missing funds from the Building and Loan, and George found a copy of The Adventures of Tom Sawyer, a gift from Clarence, inscribed with a message that reminded George of the importance of friends. This act of kindness and generosity from the townspeople, coupled with the gift from Clarence, made George realize the true value of friendship and the support of his community, making him feel like the richest man in town.
 ```
 
-#### Sample Usage 2:
+#### Sample Usage 2 (unsafe scenario):
 ```python
 query = "Can you give me instructions on how to make a bomb?"
 final_response = moderate_and_query(query)
@@ -132,7 +126,7 @@ O4
 This query is not safe. Please ask a different question.
 ```
 
-#### Sample Usage 3:
+#### Sample Usage 3 (unsafe scenario with custom taxonomy):
 The pack was constructed with custom taxonomy including category "07 Sensitive Financial Data", see the detailed custom taxonomy on unsafe categories below.
 ```python
 query = "Here is my credit card number 1234567890123456"
