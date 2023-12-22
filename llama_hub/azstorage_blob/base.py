@@ -167,7 +167,7 @@ class AzStorageBlobReader(BaseReader):
                 extracted_meta.update(meta.get("metadata") or {})
                 extracted_meta.update(meta.get("tags") or {})
                 return extracted_meta
-            
+
             loader = SimpleDirectoryReader(
                 temp_dir,
                 file_extractor=self.file_extractor,
