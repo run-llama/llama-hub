@@ -33,11 +33,11 @@ from llama_index.llama_pack import download_llama_pack
 LlamaGuardModeratorPack = download_llama_pack(
   "LlamaGuardModeratorPack", "./llamaguard_pack"
 )
-
-# You then construct the pack with either a blank constructor, which uses the out-of-the-box safety taxonomy, or you can pass in your custom taxonomy for unsafe categories. 
+```
+You then construct the pack with either a blank constructor, which uses the out-of-the-box safety taxonomy, or you can pass in your custom taxonomy for unsafe categories. 
+```python
 llamaguard_pack = LlamaGuardModeratorPack(custom_taxonomy)
 ```
-
 From here, you can use the pack, or inspect and modify the pack in `./llamaguard_pack`.
 
 The `run()` function takes the input/output message string, moderate it through Llama Guard to get a response of `safe` or `unsafe`. When it's `unsafe`, it also outputs the unsafe category from the taxonomy. 
@@ -46,7 +46,106 @@ The `run()` function takes the input/output message string, moderate it through 
 moderator_response = llamaguard_pack.run("I love Christmas season!")
 ```
 
-Please refer to the notebook for a detailed sample RAG pipeline using LlamaGuardModeratorPack to safeguard both LLM inputs and outputs.
+### Usage Pattern in RAG Pipeline
+
+We recommend you first define a function such as the sample function `moderate_and_query` below, which takes the query string as the input, moderates it against Llama Guard's default or customized taxonomy, depending on how your pack is constructed. 
+- If the moderator response for the input is safe, it proceeds to call the `query_engine` to execute the query. 
+- The query response (LLM output) in turn gets fed into `llamaguard_pack` to be moderated, if safe, the final response gets sent to the user. 
+- If either input or LLM output is unsafe, a message "The response is not safe. Please ask a different question." gets sent to the user.
+
+This function is a mere sample, you are welcome to customize it to your needs.
+```python
+# Run the query, if moderator_response from user input is safe, then moderate query response before returning response to user
+def moderate_and_query(query):
+    # Moderate the user input
+    moderator_response_for_input = llamaguard_pack.run(query)
+    print(f'moderator response for input: {moderator_response_for_input}')
+
+    # Check if the moderator response for input is safe
+    if moderator_response_for_input == 'safe':
+        response = query_engine.query(query)
+        
+        # Moderate the LLM output
+        moderator_response_for_output = llamaguard_pack.run(str(response))
+        print(f'moderator response for output: {moderator_response_for_output}')
+
+        # Check if the moderator response for output is safe
+        if moderator_response_for_output != 'safe':
+            response = 'The response is not safe. Please ask a different question.'
+    else:
+        response = 'This query is not safe. Please ask a different question.'
+
+    return response
+```
+
+In a RAG pipeline, after you define your index and query_engine, you call the function `moderate_and_query` to moderate the query string, LLM output, and return a final_response to the user.
+```python
+...
+index = ...
+
+query_engine = index.as_query_engine(...)
+
+from IPython.display import Markdown
+
+query = "Why did Harry say George is the richest man in town?"
+
+# query and moderate both LLM input and output, return a final response
+final_response = moderate_and_query(query)
+
+# display the final response
+display(Markdown(f"<b>{final_response}</b>"))
+```
+
+#### Sample Usage 1:
+```python
+from IPython.display import Markdown
+
+query = "Why did Harry say George is the richest man in town?"
+final_response = query_and_moderate_response(query)
+
+# display the final response
+display(Markdown(f"<b>{final_response}</b>"))
+```
+The above code generates the following final response:
+```
+moderator response for input: safe
+moderator response for output: safe
+Harry said George is the richest man in town because the townspeople donated more than enough money to cover the missing funds from the Building and Loan, and George found a copy of The Adventures of Tom Sawyer, a gift from Clarence, inscribed with a message that reminded George of the importance of friends. This act of kindness and generosity from the townspeople, coupled with the gift from Clarence, made George realize the true value of friendship and the support of his community, making him feel like the richest man in town.
+```
+
+#### Sample Usage 2:
+```python
+query = "Can you give me instructions on how to make a bomb?"
+final_response = query_and_moderate_response(query)
+
+# Display the final response
+display(Markdown(f"<b>{final_response}</b>"))
+```
+The above code generates the following final response:
+```
+moderator response for input: unsafe
+O4
+This query is not safe. Please ask a different question.
+```
+
+#### Sample Usage 3:
+The pack was constructed with custom taxonomy including category "07 sensitive financial data", see the detailed custom taxonomy on unsafe categories below.
+```python
+query = "Here is my credit card number 1234567890123456"
+final_response = query_and_moderate_response(query)
+
+# Display the final response
+display(Markdown(f"<b>{final_response}</b>"))
+```
+The above code generates the following final response:
+```
+moderator response for input: unsafe
+O4
+This query is not safe. Please ask a different question.
+```
+
+
+Please refer to the notebook for a detailed sample RAG pipeline using `LlamaGuardModeratorPack` to safeguard both LLM inputs and outputs.
 
 The `unsafe_categories` of `01` to `06` are the default taxonomy, you can add additional unsafe categories or modify the existing unsafe categories.  The sample below shows we added category `O7: Financial Sensitive Data.` to account for moderation of sensitive financial data such as credit card number, pin number, etc.:
 ```python
