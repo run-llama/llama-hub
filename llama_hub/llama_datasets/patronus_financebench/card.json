@@ -1,5 +1,6 @@
 {
     "name": "Patronus AI FinanceBench",
+    "className": "LabelledRagDataset",
     "description": "This is a subset of the original FinanceBench dataset. FinanceBench is a first-of-its-kind test suite for evaluating the performance of LLMs on open book financial question answering (QA). This is an open source sample of 150 annotated examples used in the evaluation and analysis of models assessed in the FinanceBench paper. The dataset comprises of questions about publicly traded companies, with corresponding answers and evidence strings. The questions in FinanceBench are ecologically valid and cover a diverse set of scenarios. They are intended to be clear-cut and straightforward to answer to serve as a minimum performance standard.",
     "numberObservations": 98,
     "containsExamplesByHumans": true,

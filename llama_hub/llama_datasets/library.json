@@ -68,5 +68,20 @@
     "id": "llama_datasets/docugami_kg_rag/sec_10_q",
     "author": "Docugami",
     "keywords": ["rag", "kg-rag", "10q", "docugami"]
+  },
+  "MtBenchHumanJudgementDataset": {
+    "id": "llama_datasets/mt_bench_humanjudgement",
+    "author": "nerdai",
+    "keywords": ["evaluator", "llm as judge", "human agreement"]
+  },
+  "MiniMtBenchSingleGradingDataset": {
+    "id": "llama_datasets/mini_mt_bench_singlegrading",
+    "author": "nerdai",
+    "keywords": ["evaluator", "llm as judge"]
+  },
+  "MiniEsgBenchDataset": {
+    "id": "llama_datasets/mini_esg_bench",
+    "author": "nerdai",
+    "keywords": ["rag", "pdf", "esg"]
   }
 }

@@ -1,5 +1,6 @@
 {
     "name": "Mini TruthfulQA Dataset",
+    "className": "LabelledRagDataset",
     "description": "This is a subset of the TruthfulQA benchmark. Only examples that are based off of Wikipedia pages are considered; and furthermore, Wikipedia pages that contain only one question are also dropped. The result is 152 examples for evaluating a RAG system.",
     "numberObservations": 152,
     "containsExamplesByHumans": true,

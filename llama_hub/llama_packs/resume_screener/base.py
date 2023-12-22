@@ -2,13 +2,18 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.readers import PDFReader
-from llama_index.llms.base import LLM
 from llama_index.llms import OpenAI
 from llama_index import ServiceContext
 from llama_index.schema import NodeWithScore
 from llama_index.response_synthesizers import TreeSummarize
 
 from pydantic import BaseModel, Field
+
+# backwards compatibility
+try:
+    from llama_index.llms.llm import LLM
+except ImportError:
+    from llama_index.llms.base import LLM
 
 QUERY_TEMPLATE = """
 You are an expert resume reviewer. 

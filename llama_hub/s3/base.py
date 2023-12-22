@@ -4,6 +4,8 @@ A loader that fetches a file or iterates through a directory on AWS S3.
 
 """
 import tempfile
+import os
+import shutil
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
 
@@ -75,7 +77,7 @@ class S3Reader(BaseReader):
         self.aws_session_token = aws_session_token
         self.s3_endpoint_url = s3_endpoint_url
 
-    def load_data(self) -> List[Document]:
+    def load_s3_files_as_docs(self, temp_dir) -> List[Document]:
         """Load file(s) from S3."""
         import boto3
 
@@ -90,52 +92,63 @@ class S3Reader(BaseReader):
             s3 = session.resource("s3", endpoint_url=self.s3_endpoint_url)
             s3_client = session.client("s3", endpoint_url=self.s3_endpoint_url)
 
-        with tempfile.TemporaryDirectory() as temp_dir:
-            if self.key:
-                suffix = Path(self.key).suffix
-                filepath = f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
-                s3_client.download_file(self.bucket, self.key, filepath)
+        if self.key:
+            filename = Path(self.key).name
+            suffix = Path(self.key).suffix
+            filepath = f"{temp_dir}/{filename}"
+            s3_client.download_file(self.bucket, self.key, filepath)
+        else:
+            bucket = s3.Bucket(self.bucket)
+            for i, obj in enumerate(bucket.objects.filter(Prefix=self.prefix)):
+                if self.num_files_limit is not None and i > self.num_files_limit:
+                    break
+                filename = Path(obj.key).name
+                suffix = Path(obj.key).suffix
+
+                is_dir = obj.key.endswith("/")  # skip folders
+                is_bad_ext = (
+                    self.required_exts is not None
+                    and suffix not in self.required_exts  # skip other extentions
+                )
+
+                if is_dir or is_bad_ext:
+                    continue
+
+                filepath = f"{temp_dir}/{filename}"
+                s3_client.download_file(self.bucket, obj.key, filepath)
+
+        try:
+            from llama_index import SimpleDirectoryReader
+        except ImportError:
+            custom_reader_path = self.custom_reader_path
+
+            if custom_reader_path is not None:
+                SimpleDirectoryReader = download_loader(
+                    "SimpleDirectoryReader", custom_path=custom_reader_path
+                )
             else:
-                bucket = s3.Bucket(self.bucket)
-                for i, obj in enumerate(bucket.objects.filter(Prefix=self.prefix)):
-                    if self.num_files_limit is not None and i > self.num_files_limit:
-                        break
+                SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
 
-                    suffix = Path(obj.key).suffix
+        loader = SimpleDirectoryReader(
+            temp_dir,
+            file_extractor=self.file_extractor,
+            required_exts=self.required_exts,
+            filename_as_id=self.filename_as_id,
+            num_files_limit=self.num_files_limit,
+            file_metadata=self.file_metadata,
+        )
 
-                    is_dir = obj.key.endswith("/")  # skip folders
-                    is_bad_ext = (
-                        self.required_exts is not None
-                        and suffix not in self.required_exts  # skip other extentions
-                    )
+        return loader.load_data()
 
-                    if is_dir or is_bad_ext:
-                        continue
+    def load_data(self, custom_temp_subdir: str = None) -> List[Document]:
+        """Decide which directory to load files in - randomly generated directories under /tmp or a custom subdirectory under /tmp"""
 
-                    filepath = (
-                        f"{temp_dir}/{next(tempfile._get_candidate_names())}{suffix}"
-                    )
-                    s3_client.download_file(self.bucket, obj.key, filepath)
-
-            try:
-                from llama_index import SimpleDirectoryReader
-            except ImportError:
-                custom_reader_path = self.custom_reader_path
-
-                if custom_reader_path is not None:
-                    SimpleDirectoryReader = download_loader(
-                        "SimpleDirectoryReader", custom_path=custom_reader_path
-                    )
-                else:
-                    SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
-
-            loader = SimpleDirectoryReader(
-                temp_dir,
-                file_extractor=self.file_extractor,
-                required_exts=self.required_exts,
-                filename_as_id=self.filename_as_id,
-                num_files_limit=self.num_files_limit,
-                file_metadata=self.file_metadata,
-            )
-
-            return loader.load_data()
+        if custom_temp_subdir is None:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                documents = self.load_s3_files_as_docs(temp_dir)
+        else:
+            temp_dir = os.path.join("/tmp", custom_temp_subdir)
+            os.makedirs(temp_dir, exist_ok=True)
+            documents = self.load_s3_files_as_docs(temp_dir)
+            shutil.rmtree(temp_dir)
+        return documents

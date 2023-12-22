@@ -619,6 +619,24 @@
       "pdf"
     ]
   },
+  "PDFPlumberReader": {
+    "id": "file/pdf_plumber",
+    "author": "JAlexMcGraw",
+    "keywords": [
+      "pdf",
+      "reader"
+    ]
+  },
+  "PreprocessReader": {
+    "id": "preprocess",
+    "author": "preprocess",
+    "keywords": [
+      "preprocess",
+      "chunking",
+      "chunk", 
+      "documents"
+    ]
+  },
   "MilvusReader": {
     "id": "milvus",
     "author": "filip-halt"
