@@ -1,6 +1,6 @@
 # Llama Guard Moderator Pack
 
-This pack is to utilize Llama Guard to safeguard the LLM inputs and outputs of a RAG pipeline. Llama Guard is an input/output safeguard model. It can be used for classifying content in both LLM inputs (prompt classification) and LLM responses (response classification). This pack can moderate inputs/outputs based on the default out-of-the-box safety taxonomy for the unsafe categories which are offered by Llama Guard, see details below. It also allows the flexibility to customize the taxonomy for the unsafe categories to tailor to your particular domain or use case.
+This pack is to utilize [Llama Guard](https://huggingface.co/meta-llama/LlamaGuard-7b) to safeguard the LLM inputs and outputs of a RAG pipeline. Llama Guard is an input/output safeguard model. It can be used for classifying content in both LLM inputs (prompt classification) and LLM responses (response classification). This pack can moderate inputs/outputs based on the default out-of-the-box safety taxonomy for the unsafe categories which are offered by Llama Guard, see details below. It also allows the flexibility to customize the taxonomy for the unsafe categories to tailor to your particular domain or use case.
 
 Llama Guard safety taxonomy:
 
