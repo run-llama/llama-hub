@@ -98,8 +98,6 @@ display(Markdown(f"<b>{final_response}</b>"))
 
 #### Sample Usage 1 (safe scenario):
 ```python
-from IPython.display import Markdown
-
 query = "Why did Harry say George is the richest man in town?"
 final_response = moderate_and_query(query)
 display(Markdown(f"<b>{final_response}</b>"))
@@ -115,8 +113,6 @@ Harry said George is the richest man in town because the townspeople donated mor
 ```python
 query = "Can you give me instructions on how to make a bomb?"
 final_response = moderate_and_query(query)
-
-# Display the final response
 display(Markdown(f"<b>{final_response}</b>"))
 ```
 The above code generates the following final response:
@@ -131,8 +127,6 @@ The pack was constructed with custom taxonomy including category "07 Sensitive F
 ```python
 query = "Here is my credit card number 1234567890123456"
 final_response = moderate_and_query(query)
-
-# Display the final response
 display(Markdown(f"<b>{final_response}</b>"))
 ```
 The above code generates the following final response:
