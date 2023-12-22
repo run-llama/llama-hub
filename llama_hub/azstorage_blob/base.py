@@ -83,15 +83,18 @@ class AzStorageBlobReader(BaseReader):
                 self.account_url, self.container_name, credential=self.credential
             )
         total_download_start_time = time.time()
+        blob_meta = {}
 
         with tempfile.TemporaryDirectory() as temp_dir:
             if self.blob:
-                stream = container_client.download_blob(self.blob)
+                blob_client = container_client.get_blob_client(self.blob)
+                stream = blob_client.download_blob()
                 download_file_path = f"{temp_dir}/{stream.name}"
                 logger.info(f"Start download of {self.blob}")
                 start_time = time.time()
                 with open(file=download_file_path, mode="wb") as download_file:
                     stream.readinto(download_file)
+                blob_meta[download_file_path] = blob_client.get_blob_properties()
                 end_time = time.time()
                 logger.info(
                     f"{self.blob} downloaded in {end_time - start_time} seconds."
@@ -107,9 +110,11 @@ class AzStorageBlobReader(BaseReader):
                     download_file_path = f"{temp_dir}/{obj.name}"
                     logger.info(f"Start download of {obj.name}")
                     start_time = time.time()
-                    stream = container_client.download_blob(obj)
+                    blob_client = container_client.get_blob_client(obj)
+                    stream = blob_client.download_blob()
                     with open(file=download_file_path, mode="wb") as download_file:
                         stream.readinto(download_file)
+                    blob_meta[download_file_path] = blob_client.get_blob_properties()
                     end_time = time.time()
                     logger.info(
                         f"{obj.name} downloaded in {end_time - start_time} seconds."
@@ -131,6 +136,42 @@ class AzStorageBlobReader(BaseReader):
                 SimpleDirectoryReader = import_loader("SimpleDirectoryReader")
             except ImportError:
                 SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
-            loader = SimpleDirectoryReader(temp_dir, file_extractor=self.file_extractor)
+
+            def extract_blob_meta(file_path):
+                meta: dict = blob_meta[file_path]
+
+                creation_time = meta.get("creation_time")
+                creation_time = (
+                    creation_time.strftime("%Y-%m-%d") if creation_time else None
+                )
+
+                last_modified = meta.get("last_modified")
+                last_modified = (
+                    last_modified.strftime("%Y-%m-%d") if last_modified else None
+                )
+
+                last_accessed_on = meta.get("last_accessed_on")
+                last_accessed_on = (
+                    last_accessed_on.strftime("%Y-%m-%d") if last_accessed_on else None
+                )
+
+                extracted_meta = {
+                    "file_name": meta.get("name"),
+                    "file_type": meta.get("content_settings", {}).get("content_type"),
+                    "file_size": meta.get("size"),
+                    "creation_date": creation_time,
+                    "last_modified_date": last_modified,
+                    "last_accessed_date": last_accessed_on,
+                    "container": meta.get("container"),
+                }
+                extracted_meta.update(meta.get("metadata") or {})
+                extracted_meta.update(meta.get("tags") or {})
+                return extracted_meta
+
+            loader = SimpleDirectoryReader(
+                temp_dir,
+                file_extractor=self.file_extractor,
+                file_metadata=extract_blob_meta,
+            )
 
             return loader.load_data()
