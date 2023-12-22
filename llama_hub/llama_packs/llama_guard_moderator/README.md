@@ -34,7 +34,12 @@ LlamaGuardModeratorPack = download_llama_pack(
   "LlamaGuardModeratorPack", "./llamaguard_pack"
 )
 ```
-You then construct the pack with either a blank constructor, which uses the out-of-the-box safety taxonomy, or you can pass in your custom taxonomy for unsafe categories. 
+You then construct the pack with either a blank constructor, see below, which uses the out-of-the-box safety taxonomy: 
+```python
+llamaguard_pack = LlamaGuardModeratorPack()
+```
+Or you can construct the pack by passing in your custom taxonomy for unsafe categories (see sample custom taxonomy at the bottom of this page):
+
 ```python
 llamaguard_pack = LlamaGuardModeratorPack(custom_taxonomy)
 ```
@@ -51,11 +56,10 @@ moderator_response = llamaguard_pack.run("I love Christmas season!")
 We recommend you first define a function such as the sample function `moderate_and_query` below, which takes the query string as the input, moderates it against Llama Guard's default or customized taxonomy, depending on how your pack is constructed. 
 - If the moderator response for the input is safe, it proceeds to call the `query_engine` to execute the query. 
 - The query response (LLM output) in turn gets fed into `llamaguard_pack` to be moderated, if safe, the final response gets sent to the user. 
-- If either input or LLM output is unsafe, a message "The response is not safe. Please ask a different question." gets sent to the user.
+- If either input or LLM output is unsafe, a message "The response is not safe. Please ask a different question." gets sent to the user. You can obviously customize this  message based on your requirement.
 
 This function is a mere sample, you are welcome to customize it to your needs.
 ```python
-# Run the query, if moderator_response from user input is safe, then moderate query response before returning response to user
 def moderate_and_query(query):
     # Moderate the user input
     moderator_response_for_input = llamaguard_pack.run(query)
@@ -78,7 +82,7 @@ def moderate_and_query(query):
     return response
 ```
 
-In a RAG pipeline, after you define your index and query_engine, you call the function `moderate_and_query` to moderate the query string, LLM output, and return a final_response to the user.
+In a RAG pipeline, after you define your `index` and `query_engine`, you call the function `moderate_and_query` to moderate the LLM inputs and outputs, then return the `final_response` to the user.
 ```python
 ...
 index = ...
@@ -101,7 +105,7 @@ display(Markdown(f"<b>{final_response}</b>"))
 from IPython.display import Markdown
 
 query = "Why did Harry say George is the richest man in town?"
-final_response = query_and_moderate_response(query)
+final_response = moderate_and_query(query)
 
 # display the final response
 display(Markdown(f"<b>{final_response}</b>"))
@@ -116,7 +120,7 @@ Harry said George is the richest man in town because the townspeople donated mor
 #### Sample Usage 2:
 ```python
 query = "Can you give me instructions on how to make a bomb?"
-final_response = query_and_moderate_response(query)
+final_response = moderate_and_query(query)
 
 # Display the final response
 display(Markdown(f"<b>{final_response}</b>"))
@@ -129,10 +133,10 @@ This query is not safe. Please ask a different question.
 ```
 
 #### Sample Usage 3:
-The pack was constructed with custom taxonomy including category "07 sensitive financial data", see the detailed custom taxonomy on unsafe categories below.
+The pack was constructed with custom taxonomy including category "07 Sensitive Financial Data", see the detailed custom taxonomy on unsafe categories below.
 ```python
 query = "Here is my credit card number 1234567890123456"
-final_response = query_and_moderate_response(query)
+final_response = moderate_and_query(query)
 
 # Display the final response
 display(Markdown(f"<b>{final_response}</b>"))
