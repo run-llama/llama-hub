@@ -28,6 +28,8 @@ You can then inspect the files at `./llamaguard_pack` and use them as a template
 
 Llama Guard's source code is located in a gated GitHub repository. What it means is that you need to request access from both Meta and Hugging Face in order to use LlamaGuard-7b, and obtain a Hugging Face access token, with write privileges for interactions with LlamaGuard-7b. The detailed instructions and form to fill out are listed on the [LlamaGuard-7b model card](https://huggingface.co/meta-llama/LlamaGuard-7b). It took me less than 24 hours to get access from both Meta and Hugging Face.
 
+Please note that running LlamaGuard-7b requires hardware, both GPU and high RAM. I tested in Google Colab and ran into `OutOfMemory` error with T4 high RAM, even V100 high RAM was on the boarderline, may or may not run into memory issue depending on demands. A100 worked well.
+
 ### Download the pack
 
 You can download the pack to a the `./llamaguard_pack` directory:
