@@ -33,7 +33,7 @@ from llama_index import ServiceContext
 
 # download benchmark dataset
 evaluator_dataset, _ = download_llama_dataset(
-  "MiniMtBenchSingleGradingDataset ", "./data"
+  "MiniMtBenchSingleGradingDataset", "./data"
 )
 
 # define your evaluator
