@@ -1,29 +1,20 @@
 """Multidoc Autoretriever."""
 
-from llama_index import ServiceContext, VectorStoreIndex
+from llama_index import VectorStoreIndex
 from llama_index.llms import OpenAI
-from llama_index.embeddings import HuggingFaceEmbedding
-from llama_index.node_parser import (
-    SentenceWindowNodeParser,
-)
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, cast
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.schema import Document, BaseNode
-from llama_index.postprocessor import MetadataReplacementPostProcessor
 from llama_index.vector_stores import WeaviateVectorStore
 from llama_index.vector_stores.types import VectorStoreInfo
 from llama_index.storage import StorageContext
 from llama_index import VectorStoreIndex
-from typing import TYPE_CHECKING
 from llama_index.retrievers import VectorIndexAutoRetriever, RecursiveRetriever
 from llama_index.vector_stores.types import (
     MetadataFilter,
     MetadataFilters,
     FilterOperator,
 )
-
-if TYPE_CHECKING:
-    import weaviate
 
 from llama_index.retrievers import BaseRetriever
 from llama_index.indices.query.schema import QueryBundle
@@ -36,7 +27,7 @@ class IndexAutoRetriever(BaseRetriever):
 
     Simple wrapper around VectorIndexAutoRetriever to convert
     text nodes to index nodes.
-    
+
     """
 
     def __init__(self, retriever: VectorIndexAutoRetriever):
@@ -68,14 +59,17 @@ class MultiDocAutoRetrieverPack(BaseLlamaPack):
         **kwargs: Keyword arguments to pass to the underlying index.
 
     """
+
     def __init__(
         self,
+        weaviate_client: Any,
         doc_metadata_index_name: str,
         doc_chunks_index_name: str,
         metadata_nodes: List[BaseNode],
         docs: List[Document],
         doc_metadata_schema: VectorStoreInfo,
         auto_retriever_kwargs: Optional[Dict[str, Any]] = None,
+        verbose: bool = False,
     ) -> None:
         """Init params."""
         import weaviate
@@ -87,11 +81,12 @@ class MultiDocAutoRetrieverPack(BaseLlamaPack):
             )
 
         # authenticate
-        auth_config = weaviate.AuthApiKey(api_key="")
-        client = weaviate.Client(
-            "https://<weaviate-cluster>.weaviate.network",
-            auth_client_secret=auth_config,
-        )
+        client = cast(weaviate.Client, weaviate_client)
+        # auth_config = weaviate.AuthApiKey(api_key="")
+        # client = weaviate.Client(
+        #     "https://<weaviate-cluster>.weaviate.network",
+        #     auth_client_secret=auth_config,
+        # )
 
         # initialize two vector store classes corresponding to the two index names
         metadata_store = WeaviateVectorStore(
@@ -101,15 +96,17 @@ class MultiDocAutoRetrieverPack(BaseLlamaPack):
         # index VectorStoreIndex
         # Since "new_docs" are concise summaries, we can directly feed them as nodes into VectorStoreIndex
         index = VectorStoreIndex(metadata_nodes, storage_context=metadata_sc)
+        if verbose:
+            print("Indexed metadata nodes.")
 
         # construct separate Weaviate Index with original docs. Define a separate query engine with query engine mapping to each doc id.
         chunks_store = WeaviateVectorStore(
             weaviate_client=client, index_name=doc_chunks_index_name
         )
         chunks_sc = StorageContext.from_defaults(vector_store=chunks_store)
-        doc_index = VectorStoreIndex.from_documents(
-            docs, storage_context=chunks_sc
-        )
+        doc_index = VectorStoreIndex.from_documents(docs, storage_context=chunks_sc)
+        if verbose:
+            print("Indexed source document nodes.")
 
         # setup auto retriever
         auto_retriever = VectorIndexAutoRetriever(
@@ -118,6 +115,8 @@ class MultiDocAutoRetrieverPack(BaseLlamaPack):
             **(auto_retriever_kwargs or {}),
         )
         self.index_auto_retriever = IndexAutoRetriever(retriever=auto_retriever)
+        if verbose:
+            print("Setup autoretriever over metadata.")
 
         # define per-document retriever
         self.retriever_dict = {}
@@ -132,9 +131,11 @@ class MultiDocAutoRetrieverPack(BaseLlamaPack):
                 ]
             )
             retriever = doc_index.as_retriever(filters=filters)
-            query_engine = doc_index.as_query_engine(filters=filters)
 
             self.retriever_dict[index_id] = retriever
+
+        if verbose:
+            print("Setup per-document retriever.")
 
         # setup recursive retriever
         self.recursive_retriever = RecursiveRetriever(
@@ -142,12 +143,14 @@ class MultiDocAutoRetrieverPack(BaseLlamaPack):
             retriever_dict={"vector": self.index_auto_retriever, **self.retriever_dict},
             verbose=True,
         )
-                        
+        if verbose:
+            print("Setup recursive retriever.")
 
         # plug into query engine
         llm = OpenAI(model="gpt-3.5-turbo")
-        self.query_engine = RetrieverQueryEngine.from_args(self.recursive_retriever, llm=llm)
-
+        self.query_engine = RetrieverQueryEngine.from_args(
+            self.recursive_retriever, llm=llm
+        )
 
     def get_modules(self) -> Dict[str, Any]:
         """
@@ -171,4 +174,4 @@ class MultiDocAutoRetrieverPack(BaseLlamaPack):
         Returns:
             Any: A response from the query engine.
         """
-        return self._query_engine.query(*args, **kwargs)
+        return self.query_engine.query(*args, **kwargs)
