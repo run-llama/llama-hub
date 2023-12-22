@@ -24,6 +24,12 @@ You can then inspect the files at `./llamaguard_pack` and use them as a template
 
 ## Code Usage
 
+### Prerequisites
+
+Llama Guard's source code is located in a gated GitHub repository. What it means is that you need to request access from both Meta and Hugging Face in order to use LlamaGuard-7b, and obtain a Hugging Face access token, with write privileges for interactions with LlamaGuard-7b. The detailed instructions and form to fill out are listed on the [LlamaGuard-7b model card](https://huggingface.co/meta-llama/LlamaGuard-7b). It took me less than 24 hours to get access from both Meta and Hugging Face.
+
+### Download the pack
+
 You can download the pack to a the `./llamaguard_pack` directory:
 
 ```python
@@ -34,6 +40,14 @@ LlamaGuardModeratorPack = download_llama_pack(
   "LlamaGuardModeratorPack", "./llamaguard_pack"
 )
 ```
+
+### Construct the pack
+
+Before constructing the pack, be sure to set your Hugging Face access token (see Prerequisites section above) as your environment variable.
+```python
+os.environ["HUGGINGFACE_ACCESS_TOKEN"] = 'hf_###############'
+```
+
 You then construct the pack with either a blank constructor, see below, which uses the out-of-the-box safety taxonomy: 
 ```python
 llamaguard_pack = LlamaGuardModeratorPack()
@@ -43,6 +57,8 @@ Or you can construct the pack by passing in your custom taxonomy for unsafe cate
 ```python
 llamaguard_pack = LlamaGuardModeratorPack(custom_taxonomy)
 ```
+
+### Run the pack
 From here, you can use the pack, or inspect and modify the pack in `./llamaguard_pack`.
 
 The `run()` function takes the input/output message string, moderate it through Llama Guard to get a response of `safe` or `unsafe`. When it's `unsafe`, it also outputs the unsafe category from the taxonomy. 
