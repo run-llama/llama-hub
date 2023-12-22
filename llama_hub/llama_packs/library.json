@@ -200,5 +200,16 @@
       "symbolic",
       "embedding"
     ]
+  },
+  "MultiDocAutoRetrieverPack": {
+    "id": "llama_packs/multidoc_autoretrieval",
+    "author": "jerryjliu",
+    "keywords": [
+      "autoretrieval",
+      "multi",
+      "multidoc",
+      "document",
+      "retrieval"
+    ]
   }
 }
