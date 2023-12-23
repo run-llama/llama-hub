@@ -1,8 +1,16 @@
 # ChangeLog
 
+## v[0.0.63] - 2023-12-22
+
+### New Features
+- add multi doc autoretrieval pack (#803) 
+
+### Smaller Features + Bug Fixes / Nits
+- Extract metadata from Azure BLOB (#804)
+
 ## v[0.0.62] - 2023-12-21
 
-## New Features
+### New Features
 
 - Add `MiniEsgBenchDataset` (#799)
 - Add `PDFPlubmerReader` (#798)
