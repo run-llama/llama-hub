@@ -2,6 +2,7 @@
 import logging
 import os
 from typing import Dict, List, Optional
+from urllib.parse import unquote
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -274,7 +275,7 @@ class ConfluenceReader(BaseReader):
         ret = []
         params = {"cql": cql, "start": start, "expand": expand}
         if cursor:
-            params["cursor"] = cursor
+            params["cursor"] = unquote(cursor)
 
         if max_num_results is not None:
             params["limit"] = max_num_remaining
@@ -295,7 +296,7 @@ class ConfluenceReader(BaseReader):
 
             if "cursor=" in next_url:  # On confluence Server this is not set
                 cursor = next_url.split("cursor=")[1].split("&")[0]
-                params["cursor"] = cursor
+                params["cursor"] = unquote(cursor)
 
             if max_num_results is not None:
                 params["limit"] -= len(results["results"])
