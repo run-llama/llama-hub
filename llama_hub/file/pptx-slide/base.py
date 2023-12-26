@@ -6,12 +6,14 @@ from typing import Dict, List, Optional
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+
 class PptxSlideReader(BaseReader):
     """Powerpoint Slides Reader.
 
     Create a list of Documents corresponding to the Slides of the presentation.
 
     """
+
     def __init__(self) -> None:
         """Init reader."""
 
@@ -22,6 +24,7 @@ class PptxSlideReader(BaseReader):
     ) -> List[Document]:
         """Load pptx file to create slide Documents"""
         from pptx import Presentation
+
         if isinstance(file, str):
             file_path = Path(file)
         else:
@@ -30,20 +33,23 @@ class PptxSlideReader(BaseReader):
         presentation = Presentation(file_path)
         slide_docs = [
             Document(
-                text = "\n".join([shape.text for shape in slide.shapes if hasattr(shape, "text")]),
-                extra_info = {
+                text="\n".join(
+                    [shape.text for shape in slide.shapes if hasattr(shape, "text")]
+                ),
+                extra_info={
                     "source": file_path.name,
-                    "shapes" : [
+                    "shapes": [
                         {
-                            "text": shape.text, 
+                            "text": shape.text,
                             "name": shape.name,
                             "shape_id": shape.shape_id,
-                            "shape_type": shape.shape_type
-                        } 
-                        for shape in slide.shapes if hasattr(shape, "text")
-                    ]
-                }
-            ) 
+                            "shape_type": shape.shape_type,
+                        }
+                        for shape in slide.shapes
+                        if hasattr(shape, "text")
+                    ],
+                },
+            )
             for slide in presentation.slides
             for shape in slide.shapes
             if hasattr(shape, "text")
