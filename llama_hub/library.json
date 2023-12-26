@@ -94,6 +94,10 @@
     "id": "file/pptx",
     "author": "thejessezhang"
   },
+  "PptxSlideReader": {
+    "id": "file/pptx-slide",
+    "author": "tewnut"
+  },
   "ImageReader": {
     "id": "file/image",
     "author": "ravi03071991",
@@ -128,7 +132,7 @@
   "MainContentExtractorReader": {
     "id": "web/main_content_extractor",
     "author": "HawkClaws",
-    "keywords":[
+    "keywords": [
       "main content extractor",
       "web",
       "web reader"
@@ -633,7 +637,7 @@
     "keywords": [
       "preprocess",
       "chunking",
-      "chunk", 
+      "chunk",
       "documents"
     ]
   },
@@ -964,11 +968,16 @@
   "ZepReader": {
     "id": "zep",
     "author": "zep",
-    "keywords": ["zep", "retriever", "memory", "storage"]
+    "keywords": [
+      "zep",
+      "retriever",
+      "memory",
+      "storage"
+    ]
   },
   "MacrometaGDNReader": {
-  	"id": "macrometa_gdn",
-  	"author": "Dain Im",
+    "id": "macrometa_gdn",
+    "author": "Dain Im",
     "keywords": [
       "macrometa"
     ]
@@ -1019,15 +1028,15 @@
     "id": "lilac_reader",
     "author": "nsthorat"
   },
-  "IMDBReviews":{
+  "IMDBReviews": {
     "id": "imdb_review",
     "author": "Athe-kunal",
-    "keywords":[
+    "keywords": [
       "movies",
       "reviews",
       "IMDB"
-  ]
-},
+    ]
+  },
   "PDFNougatOCR": {
     "id": "nougat_ocr",
     "author": "mdarshad1000",
@@ -1037,10 +1046,10 @@
       "academic papers"
     ]
   },
-  "BitbucketReader":{
+  "BitbucketReader": {
     "id": "bitbucket",
     "author": "lejdiprifti",
-    "keywords":[
+    "keywords": [
       "bitbucket",
       "project",
       "repository"
@@ -1076,7 +1085,9 @@
   "PatentsviewReader": {
     "id": "patentsview",
     "author": "shao-shuai",
-    "keywords": ["patent"]
+    "keywords": [
+      "patent"
+    ]
   },
   "SmartPDFLoader": {
     "id": "smart_pdf_loader",
@@ -1112,7 +1123,7 @@
   "TrafilaturaWebReader": {
     "id": "web/trafilatura_web",
     "author": "NA",
-    "keywords":[
+    "keywords": [
       "trafilatura",
       "web",
       "web reader"
@@ -1121,13 +1132,13 @@
   "StripeDocsReader": {
     "id": "stripe_docs",
     "author": "amorriscode",
-    "keywords":[
+    "keywords": [
       "stripe",
       "documentation"
     ]
   },
-  "EarningsCallTranscript":{
-    "id":"earnings_call_transcript",
+  "EarningsCallTranscript": {
+    "id": "earnings_call_transcript",
     "author": "Athe-kunal",
     "keywords": [
       "Finance",
@@ -1148,10 +1159,10 @@
       "HDFS"
     ]
   },
-  "SharePointReader":{
+  "SharePointReader": {
     "id": "microsoft_sharepoint",
     "author": "arun-soliton",
-    "keywords":[
+    "keywords": [
       "sharepoint",
       "microsoft 365",
       "microsoft365"
