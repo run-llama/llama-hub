@@ -53,6 +53,7 @@ class OllamaEmbedding(BaseEmbedding):
     """
 
     _base_url: str = PrivateAttr()
+    _verbose: bool = PrivateAttr()
 
     def __init__(
         self,
