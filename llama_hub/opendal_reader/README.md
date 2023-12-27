@@ -1,6 +1,6 @@
 # OpenDAL Loader
 
-This loader parses any file via [OpenDAL](https://github.com/apache/incubator-opendal).
+This loader parses any file via [Apache OpenDAL](https://github.com/apache/incubator-opendal).
 
 All files are temporarily downloaded locally and subsequently parsed with `SimpleDirectoryReader`. Hence, you may also specify a custom `file_extractor`, relying on any of the loaders in this library (or your own)!
 
