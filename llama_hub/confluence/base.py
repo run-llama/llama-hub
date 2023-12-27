@@ -268,7 +268,12 @@ class ConfluenceReader(BaseReader):
         return ret
 
     def _get_cql_data_with_paging(
-        self, cql, start=0, cursor=None, max_num_results=50, expand="body.export_view.value"
+        self,
+        cql,
+        start=0,
+        cursor=None,
+        max_num_results=50,
+        expand="body.export_view.value",
     ):
         max_num_remaining = max_num_results
         ret = []
