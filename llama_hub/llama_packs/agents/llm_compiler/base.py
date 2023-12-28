@@ -10,7 +10,8 @@ from llama_index import set_global_handler
 
 from .step import LLMCompilerAgentWorker
 
-
+if TYPE_CHECKING:
+    from phoenix import Session as PhoenixSession
 
 class LLMCompilerAgentPack(BaseLlamaPack):
     """LLMCompilerAgent pack.
