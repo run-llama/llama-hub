@@ -64,4 +64,4 @@ class LLMCompilerAgentPack(BaseLlamaPack):
 
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
-        return self.agent(*args, **kwargs)
+        return self.agent.chat(*args, **kwargs)
