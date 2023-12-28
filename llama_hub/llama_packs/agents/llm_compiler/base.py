@@ -42,7 +42,7 @@ class LLMCompilerAgentPack(BaseLlamaPack):
         set_global_handler("arize_phoenix")
 
         self.llm = llm or OpenAI(model="gpt-4")
-        self.callback_manager = llm.callback_manager
+        self.callback_manager = self.llm.callback_manager
         self.agent_worker = LLMCompilerAgentWorker.from_tools(
             tools,
             llm=llm,
