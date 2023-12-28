@@ -7,7 +7,7 @@ from llama_index.llms.llm import LLM
 from llama_index.llms.openai import OpenAI
 from llama_index.tools.types import BaseTool
 
-from step import LLMCompilerAgentWorker
+from .step import LLMCompilerAgentWorker
 
 
 

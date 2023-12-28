@@ -3,7 +3,7 @@ import ast
 import re
 from typing import Any, Dict, List, Sequence, Tuple, Union
 
-from schema import (
+from .schema import (
     LLMCompilerParseResult,
     LLMCompilerTask,
 )
