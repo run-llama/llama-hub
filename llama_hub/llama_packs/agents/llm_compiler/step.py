@@ -16,17 +16,17 @@ from typing import (
     cast,
 )
 
-from llm_compiler.output_parser import (
+from output_parser import (
     LLMCompilerJoinerParser,
     LLMCompilerPlanParser,
 )
-from llm_compiler.prompts import OUTPUT_PROMPT, PLANNER_EXAMPLE_PROMPT
-from llm_compiler.schema import JoinerOutput
-from llm_compiler.task_fetching_unit import (
+from prompts import OUTPUT_PROMPT, PLANNER_EXAMPLE_PROMPT
+from schema import JoinerOutput
+from task_fetching_unit import (
     LLMCompilerTask,
     TaskFetchingUnit,
 )
-from llm_compiler.utils import (
+from utils import (
     format_contexts,
     generate_context_for_replanner,
 )
