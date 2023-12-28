@@ -20,9 +20,9 @@ from .output_parser import (
     LLMCompilerJoinerParser,
     LLMCompilerPlanParser,
 )
-from prompts import OUTPUT_PROMPT, PLANNER_EXAMPLE_PROMPT
+from .prompts import OUTPUT_PROMPT, PLANNER_EXAMPLE_PROMPT
 from .schema import JoinerOutput
-from task_fetching_unit import (
+from .task_fetching_unit import (
     LLMCompilerTask,
     TaskFetchingUnit,
 )
