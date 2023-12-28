@@ -1,24 +1,22 @@
-# Spotify Loader
+# Genius Loader
 
-This loader reads your Spotify account and loads saved albums, tracks, or playlists into `Documents`.
+This loader connects to the Genius API and loads lyrics, metadata, and album art into `Documents`.
 
-As a prerequisite, you will need to register with [Spotify for Developers](https://developer.spotify.com) and create an app in order to get a `client_id` and a `client_secret`. You should then set a `redirect_uri` for the app (in the web dashboard under app settings). The `redirect_uri` does not need to be functional. You should then set the `client_id`, `client_secret`, and `redirect_uri` as environmental variables.
-
-`export SPOTIPY_CLIENT_ID='xxxxxxxxxxxxxxxxx'`\
-`export SPOTIPY_CLIENT_SECRET='xxxxxxxxxxxxxxxxxx'`\
-`export SPOTIPY_REDIRECT_URI='http://localhost:8080/redirect'`
+As a prerequisite, you will need to register with [Genius API](https://genius.com/api-clients) and create an app in order to get a `client_id` and a `client_secret`. You should then set a `redirect_uri` for the app. The `redirect_uri` does not need to be functional. You should then generate an access token as an instantiator for the GeniusReader.
 
 ## Usage
 
-Here's an example usage of the SpotifyReader. It will retrieve your saved albums, unless an optional `collection` argument is passed. Acceptable arguments are "albums", "tracks", and "playlists".
+Here's an example usage of the GeniusReader. It will retrieve songs that match specific lyrics. Acceptable agruments are lyrics (str): The lyric snippet you're looking for and will return List[Document]: A list of documents containing songs with those lyrics.
 
 ```python
 from llama_index import download_loader
 
-SpotifyReader = download_loader('SpotifyReader')
+GeniusReader = download_loader('GeniusReader')
 
-loader = SpotifyReader()
-documents = loader.load_data()
+access_token = "your_generated_access_token"
+
+loader = GeniusReader(access_token)
+documents = loader.search_songs_by_lyrics("Imagine")
 ```
 
 ## Example
@@ -30,10 +28,10 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ```python
 from llama_index import VectorStoreIndex, download_loader
 
-SpotifyReader = download_loader('SpotifyReader')
+GeniusReader = download_loader('GeniusReader')
 
-loader = SpotifyReader()
+loader = GeniusReader()
 documents = loader.load_data()
 index = VectorStoreIndex.from_documents(documents)
-index.query('When are some other artists i might like based on what i listen to ?')
+index.query('What songs have the lyrics imagine in them?')
 ```
