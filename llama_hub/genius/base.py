@@ -42,6 +42,7 @@ class GeniusReader(BaseReader):
     # - OAuth2 authentication (if required for specific endpoints)
 
 if __name__ == "__main__":
-    reader = GeniusReader("gUmUyikTQi7yoLuSdqHrsXCQYBH6XBd4PjlH1Uh9XGG9RWBJstuiZOxYYgXRwm7U")
+    access_token = ""
+    reader = GeniusReader(access_token)
     # Example usage
     print(reader.load_artist_songs("Chance the Rapper", max_songs=1))
