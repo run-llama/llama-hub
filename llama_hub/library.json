@@ -1187,5 +1187,9 @@
       "data warehouse",
       "warehouse"
     ]
+  },
+  "TelegramReader": {
+    "id": "telegram",
+    "author": "diicell"
   }
 }
