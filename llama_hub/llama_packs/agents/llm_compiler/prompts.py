@@ -3,6 +3,7 @@
 Taken from https://github.com/SqueezeAILab/LLMCompiler.
 
 """
+# ruff: noqa: E501
 
 JOINER_FINISH = "finish"
 END_OF_PLAN = "<END_OF_PLAN>"

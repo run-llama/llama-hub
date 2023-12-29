@@ -30,7 +30,7 @@ def parse_llm_compiler_action_args(args: str) -> Union[List, Tuple]:
         return ()
     try:
         eval_args: Union[List, Tuple, str] = ast.literal_eval(args)
-    except Exception as e:
+    except Exception:
         eval_args = args
     if not isinstance(eval_args, list) and not isinstance(eval_args, tuple):
         new_args: Union[List, Tuple] = (eval_args,)

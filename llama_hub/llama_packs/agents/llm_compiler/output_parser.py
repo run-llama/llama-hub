@@ -2,6 +2,7 @@
 
 import re
 from typing import Any, Dict, List, Sequence
+from llama_index.types import BaseOutputParser
 
 from .schema import JoinerOutput, LLMCompilerParseResult
 from .utils import get_graph_dict
@@ -14,8 +15,6 @@ ID_PATTERN = r"\$\{?(\d+)\}?"
 
 END_OF_PLAN = "<END_OF_PLAN>"
 JOINER_REPLAN = "Replan"
-
-from llama_index.types import BaseOutputParser
 
 
 def default_dependency_rule(idx: int, args: str) -> bool:

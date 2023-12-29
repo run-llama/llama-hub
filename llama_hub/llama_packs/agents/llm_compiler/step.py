@@ -30,9 +30,6 @@ from .utils import (
     format_contexts,
     generate_context_for_replanner,
 )
-from llama_index.agent.react.types import (
-    BaseReasoningStep,
-)
 from llama_index.agent.types import (
     BaseAgentWorker,
     Task,
@@ -44,7 +41,6 @@ from llama_index.callbacks import (
     trace_method,
 )
 from llama_index.chat_engine.types import AgentChatResponse
-from llama_index.llms.base import ChatMessage
 from llama_index.llms.llm import LLM
 from llama_index.llms.openai import OpenAI
 from llama_index.llms.types import ChatMessage, ChatResponse, MessageRole
@@ -219,7 +215,6 @@ class LLMCompilerAgentWorker(BaseAgentWorker):
     def initialize_step(self, task: Task, **kwargs: Any) -> TaskStep:
         """Initialize step from task."""
         sources: List[ToolOutput] = []
-        current_reasoning: List[BaseReasoningStep] = []
         # temporary memory for new messages
         new_memory = ChatMemoryBuffer.from_defaults()
 

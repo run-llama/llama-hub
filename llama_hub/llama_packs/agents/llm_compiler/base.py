@@ -1,6 +1,6 @@
 """LLM Compiler agent pack."""
 
-from typing import Dict, Any, List, Optional
+from typing import TYPE_CHECKING, Dict, Any, List, Optional
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.agent import AgentRunner
 from llama_index.llms.llm import LLM
@@ -12,6 +12,7 @@ from .step import LLMCompilerAgentWorker
 
 if TYPE_CHECKING:
     from phoenix import Session as PhoenixSession
+
 
 class LLMCompilerAgentPack(BaseLlamaPack):
     """LLMCompilerAgent pack.
@@ -44,10 +45,7 @@ class LLMCompilerAgentPack(BaseLlamaPack):
         self.llm = llm or OpenAI(model="gpt-4")
         self.callback_manager = self.llm.callback_manager
         self.agent_worker = LLMCompilerAgentWorker.from_tools(
-            tools,
-            llm=llm,
-            verbose=True,
-            callback_manager=self.callback_manager
+            tools, llm=llm, verbose=True, callback_manager=self.callback_manager
         )
         self.agent = AgentRunner(
             self.agent_worker, callback_manager=self.callback_manager
