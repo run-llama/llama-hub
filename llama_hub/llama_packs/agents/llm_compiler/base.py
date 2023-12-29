@@ -6,6 +6,7 @@ from llama_index.agent import AgentRunner
 from llama_index.llms.llm import LLM
 from llama_index.llms.openai import OpenAI
 from llama_index.tools.types import BaseTool
+from llama_index.callbacks import CallbackManager
 
 from .step import LLMCompilerAgentWorker
 
@@ -23,15 +24,24 @@ class LLMCompilerAgentPack(BaseLlamaPack):
         self,
         tools: List[BaseTool],
         llm: Optional[LLM] = None,
+        callback_manager: Optional[CallbackManager] = None,
+        agent_worker_kwargs: Optional[Dict[str, Any]] = None,
+        agent_runner_kwargs: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Init params."""
         self.llm = llm or OpenAI(model="gpt-4")
-        self.callback_manager = self.llm.callback_manager
+        self.callback_manager = callback_manager or self.llm.callback_manager
         self.agent_worker = LLMCompilerAgentWorker.from_tools(
-            tools, llm=llm, verbose=True, callback_manager=self.callback_manager
+            tools,
+            llm=llm,
+            verbose=True,
+            callback_manager=self.callback_manager,
+            **(agent_worker_kwargs or {})
         )
         self.agent = AgentRunner(
-            self.agent_worker, callback_manager=self.callback_manager
+            self.agent_worker,
+            callback_manager=self.callback_manager,
+            **(agent_runner_kwargs or {})
         )
 
     def get_modules(self) -> Dict[str, Any]:
