@@ -218,6 +218,9 @@ class LLMCompilerAgentWorker(BaseAgentWorker):
         # temporary memory for new messages
         new_memory = ChatMemoryBuffer.from_defaults()
 
+        # put user message in memory
+        new_memory.put(ChatMessage(content=task.input, role=MessageRole.USER))
+
         # initialize task state
         task_state = {
             "sources": sources,
@@ -292,6 +295,7 @@ class LLMCompilerAgentWorker(BaseAgentWorker):
 
     def _get_task_step_response(
         self,
+        task: Task,
         llmc_tasks: Dict[int, LLMCompilerTask],
         answer: str,
         joiner_thought: str,
@@ -299,9 +303,16 @@ class LLMCompilerAgentWorker(BaseAgentWorker):
         is_replan: bool,
     ) -> TaskStepOutput:
         """Get task step response."""
+        agent_answer = AgentChatResponse(response=answer, sources=[])
+
         if not is_replan:
             # generate final answer
             new_steps = []
+
+            # put in memory
+            task.extra_state["new_memory"].put(
+                ChatMessage(content=answer, role=MessageRole.ASSISTANT)
+            )
         else:
             # Collect contexts for the subsequent replanner
             context = generate_context_for_replanner(
@@ -320,8 +331,6 @@ class LLMCompilerAgentWorker(BaseAgentWorker):
                     },
                 )
             ]
-
-        agent_answer = AgentChatResponse(response=answer, sources=[])
 
         return TaskStepOutput(
             output=agent_answer,
@@ -377,6 +386,7 @@ class LLMCompilerAgentWorker(BaseAgentWorker):
 
         # get task step response (with new steps planned)
         return self._get_task_step_response(
+            task,
             llmc_tasks=tasks,
             answer=joiner_output.answer,
             joiner_thought=joiner_output.thought,

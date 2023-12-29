@@ -2,6 +2,9 @@
 
 This LlamaPack implements the [LLMCompiler agent paper](https://github.com/SqueezeAILab/LLMCompiler).
 
+A lot of code came from the source repo, we repurposed with LlamaIndex abstractions. All credits
+to the original authors for a great work! 
+
 ## CLI Usage
 
 You can download llamapacks directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:
@@ -14,7 +17,9 @@ You can then inspect the files at `./llm_compiler_agent_pack` and use them as a 
 
 ## Code Usage
 
-You can download the pack to a directory. **NOTE**: You must specify `skip_load=True`, since the pack contains multiple files. 
+You can download the pack to a directory. **NOTE**: You must specify `skip_load=True` - the pack contains multiple files,
+which makes it hard to load directly.
+
 We will show you how to import the agent from these files!
 
 ```python
