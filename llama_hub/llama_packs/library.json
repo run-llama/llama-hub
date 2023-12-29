@@ -216,5 +216,11 @@
     "id": "llama_packs/llama_guard_moderator",
     "author": "wenqiglantz",
     "keywords": ["llama guard", "purple llama", "llm security", "prompt injection"]
+  },
+  "LLMCompilerAgentPack": {
+    "id": "llama_packs/agents/llm_compiler",
+    "author": "jerryjliu",
+    "keywords": ["llm", "compiler", "agent"],
+    "extra_files": ["output_parser.py", "prompts.py", "schema.py", "step.py", "task_fetching_unit.py", "utils.py"]
   }
 }
