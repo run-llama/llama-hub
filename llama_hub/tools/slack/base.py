@@ -83,7 +83,8 @@ class SlackToolSpec(BaseToolSpec):
         except Exception as e:
             logger.error(e)
             raise e
-        return MessageSenderOutput(slack_response=msg_result)
+        # TODO: Consider adding `slack_response=msg_result` into `MessageSenderOutput`.
+        return MessageSenderOutput()
 
     def fetch_channels(
         self,
