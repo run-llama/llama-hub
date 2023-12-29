@@ -77,14 +77,14 @@ class SlackToolSpec(BaseToolSpec):
         """Send a message to a channel given the channel ID."""
         slack_client = self.reader.client
         try:
-            msg_result = slack_client.chat_postMessage(
+            # TODO: Consider adding the result into `MessageSenderOutput`.
+            slack_client.chat_postMessage(
                 channel=channel_id,
                 text=message,
             )
         except Exception as e:
             logger.error(e)
             raise e
-        # TODO: Consider adding `slack_response=msg_result` into `MessageSenderOutput`.
         return MessageSenderOutput()
 
     def fetch_channels(
