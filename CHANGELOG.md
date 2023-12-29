@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v[0.0.65] - 2023-12-29
+
+### New Features
+- Add Powerpoint Slide Loader PptxSlideReader to LLama-hub (#796)
+- Added notebook for llama_guard_moderator pack (#814)
+- add llm compiler pack  (#820)
+
+### Smaller Features + Bug Fixes / Nits 
+- docs: Address branding issues of Apache OpenDAL (#817)
+
 ## v[0.0.63] - 2023-12-22
 
 ### New Features
