@@ -9,7 +9,6 @@ from llama_index.readers.schema.base import Document
 from llama_index.readers.slack import SlackReader
 from llama_index.tools.tool_spec.base import BaseToolSpec
 from pydantic import BaseModel
-from slack_sdk.web import SlackResponse
 
 logger = logging.getLogger(__name__)
 
@@ -19,8 +18,10 @@ class DataLoaderOutput(BaseModel):
 
 
 class MessageSenderOutput(BaseModel):
-    # TODO: RuntimeError: no validator found for <class 'slack_sdk.web.slack_response.SlackResponse'>, see `arbitrary_types_allowed` in Config
-    pass  # slack_response: SlackResponse
+    # TODO: Once we have a Pydantic definition for `slack_sdk.web.SlackResponse`, we can make this more useful.
+    # Today, if we add `slack_response: SlackResponse` here, it will give RuntimeError:
+    # no validator found for <class 'slack_sdk.web.slack_response.SlackResponse'>, see `arbitrary_types_allowed` in Config
+    pass
 
 
 class ChannelFetcherOutput(BaseModel):
