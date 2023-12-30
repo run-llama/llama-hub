@@ -12,6 +12,7 @@ The WholeSiteReader is a sophisticated web scraping tool that employs a breadth-
 ```python
 from llama_index import download_loader
 
+WholeSiteReader = download_loader("WholeSiteReader")
 # Initialize the scraper with a prefix URL and maximum depth
 scraper = WholeSiteReader(
     prefix='https://www.paulgraham.com/', # Example prefix
@@ -31,6 +32,7 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ```python
 from llama_index import VectorStoreIndex, download_loader
 
+WholeSiteReader = download_loader("WholeSiteReader")
 
 # Initialize the scraper with a prefix URL and maximum depth
 scraper = WholeSiteReader(

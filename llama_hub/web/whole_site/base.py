@@ -48,7 +48,7 @@ class WholeSiteReader(BaseReader):
         return webdriver.Chrome(options=opt)
 
     def clean_url(self, url):
-        return url.split('#')[0]
+        return url.split("#")[0]
 
     def restart_driver(self):
         self.driver.quit()
@@ -57,7 +57,8 @@ class WholeSiteReader(BaseReader):
     def extract_content(self):
 
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "body")))
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
         body_element = self.driver.find_element(By.TAG_NAME, "body")
         return body_element.text.strip()
 
@@ -112,16 +113,16 @@ class WholeSiteReader(BaseReader):
                     except Exception:
                         continue
 
-                documents.append(Document(text=page_content,
-                                 extra_info={"URL": current_url}))
+                documents.append(
+                    Document(text=page_content, extra_info={"URL": current_url})
+                )
                 time.sleep(1)
 
             except WebDriverException:
-                print(f"WebDriverException encountered, restarting driver...")
+                print("WebDriverException encountered, restarting driver...")
                 self.restart_driver()
             except Exception as e:
-                print(
-                    f"An unexpected exception occurred: {e}, skipping URL...")
+                print(f"An unexpected exception occurred: {e}, skipping URL...")
                 continue
 
         self.driver.quit()
