@@ -1,18 +1,25 @@
-# Simple Website Loader
+# WholeSiteReader
 
-This loader is a simple web scraper that fetches the text from static websites by converting the HTML to text.
+The WholeSiteReader is a sophisticated web scraping tool that employs a breadth-first search (BFS) algorithm. It's designed to methodically traverse and extract content from entire websites, focusing specifically on predefined URL paths.
 
-## Usage
+## Features
 
-To use this loader, you need to pass in an array of URLs.
+- **Breadth-First Search (BFS):** Traverses a website thoroughly, ensuring comprehensive coverage of all accessible pages.
+- **Depth Control:** Limits scraping to a specified depth within a site's structure.
+- **URL Prefix Focus:** Targets scraping efforts to specific subsections of a site based on URL prefixes.
+- **Selenium-Based:** Leverages Selenium for dynamic interaction with web pages, supporting JavaScript-rendered content.
 
 ```python
 from llama_index import download_loader
 
-SimpleWebPageReader = download_loader("SimpleWebPageReader")
+# Initialize the scraper with a prefix URL and maximum depth
+scraper = WholeSiteReader(
+    prefix='https://www.paulgraham.com/', # Example prefix
+    max_depth=10
+)
 
-loader = SimpleWebPageReader()
-documents = loader.load_data(urls=['https://google.com'])
+# Start scraping from a base URL
+documents = scraper.load_data(base_url='https://www.paulgraham.com/articles.html') # Example base URL
 ```
 
 ## Examples
@@ -24,10 +31,15 @@ This loader is designed to be used as a way to load data into [LlamaIndex](https
 ```python
 from llama_index import VectorStoreIndex, download_loader
 
-SimpleWebPageReader = download_loader("SimpleWebPageReader")
 
-loader = SimpleWebPageReader()
-documents = loader.load_data(urls=['https://google.com'])
+# Initialize the scraper with a prefix URL and maximum depth
+scraper = WholeSiteReader(
+    prefix='https://docs.llamaindex.ai/en/stable/', # Example prefix
+    max_depth=10
+)
+
+# Start scraping from a base URL
+documents = scraper.load_data(base_url='https://docs.llamaindex.ai/en/stable/') # Example base URL
 index = VectorStoreIndex.from_documents(documents)
 index.query('What language is on this website?')
 ```
@@ -42,10 +54,16 @@ from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
-SimpleWebPageReader = download_loader("SimpleWebPageReader")
+WholeSiteReader = download_loader("WholeSiteReader")
 
-loader = SimpleWebPageReader()
-documents = loader.load_data(urls=['https://google.com'])
+# Initialize the scraper with a prefix URL and maximum depth
+scraper = WholeSiteReader(
+    prefix='https://docs.llamaindex.ai/en/stable/', # Example prefix
+    max_depth=10
+)
+
+# Start scraping from a base URL
+documents = scraper.load_data(base_url='https://docs.llamaindex.ai/en/stable/') # Example base URL
 index = VectorStoreIndex.from_documents(documents)
 
 tools = [
