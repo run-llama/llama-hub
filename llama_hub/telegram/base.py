@@ -1,6 +1,6 @@
 """Telegram reader that reads posts/chats and comments to post from Telegram channel or chat."""
 import asyncio
-from typing import Any, List, Optional
+from typing import List, Union
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
@@ -43,7 +43,7 @@ class TelegramReader(BaseReader):
         self.loop = asyncio.get_event_loop()
 
     def load_data(
-        self, entity_name: str, post_id: int | None = None,  limit: int | None = None,
+        self, entity_name: str, post_id: Union[int, None] = None,  limit: Union[int, None] = None,
     ) -> List[Document]:
         """Load posts/chat messages/comments from Telegram channels or chats.
 
@@ -58,7 +58,7 @@ class TelegramReader(BaseReader):
         return self.loop.run_until_complete(self._load_data(entity_name=entity_name, post_id=post_id, limit=limit))
 
     async def _load_data(
-        self, entity_name: str, post_id: int | None = None,  limit: int | None = None,
+        self, entity_name: str, post_id: Union[int, None] = None,  limit: Union[int, None] = None,
     ) -> List[Document]:
         """Load posts/chat messages/comments from Telegram channels or chats.
 
