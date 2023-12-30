@@ -189,5 +189,38 @@
     "id": "llama_packs/evaluator_benchmarker",
     "author": "nerdai",
     "tags": ["judge", "evaluator", "benchmarker", "benchmark"]
+  },
+  "CogniswitchAgentPack": {
+    "id": "llama_packs/cogniswitch_agent",
+    "author": "cogniswitch",
+    "keywords": [
+      "graph",
+      "knowledge graph",
+      "neural",
+      "symbolic",
+      "embedding"
+    ]
+  },
+  "MultiDocAutoRetrieverPack": {
+    "id": "llama_packs/multidoc_autoretrieval",
+    "author": "jerryjliu",
+    "keywords": [
+      "autoretrieval",
+      "multi",
+      "multidoc",
+      "document",
+      "retrieval"
+    ]
+  },
+  "LlamaGuardModeratorPack": {
+    "id": "llama_packs/llama_guard_moderator",
+    "author": "wenqiglantz",
+    "keywords": ["llama guard", "purple llama", "llm security", "prompt injection"]
+  },
+  "LLMCompilerAgentPack": {
+    "id": "llama_packs/agents/llm_compiler",
+    "author": "jerryjliu",
+    "keywords": ["llm", "compiler", "agent"],
+    "extra_files": ["output_parser.py", "prompts.py", "schema.py", "step.py", "task_fetching_unit.py", "utils.py"]
   }
 }

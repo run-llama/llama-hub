@@ -33,7 +33,7 @@ from llama_index import ServiceContext
 
 # download benchmark dataset
 pairwise_evaluator_dataset, _ = download_llama_dataset(
-  "MtBenchHumanJudgementDataset ", "./data"
+  "MtBenchHumanJudgementDataset", "./data"
 )
 
 # define your evaluator

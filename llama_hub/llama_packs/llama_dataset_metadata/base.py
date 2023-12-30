@@ -84,6 +84,7 @@ class DatasetCard(BaseMetadata):
     """A pydantic BaseModel representing DatasetCard."""
 
     name: str
+    class_name: str = "LabelledRagDataset"
     description: str
     number_observations: int
     contains_examples_by_humans: bool

@@ -1,5 +1,35 @@
 # ChangeLog
 
+## v[0.0.65] - 2023-12-29
+
+### New Features
+- Add Powerpoint Slide Loader PptxSlideReader to LLama-hub (#796)
+- Added notebook for llama_guard_moderator pack (#814)
+- add llm compiler pack  (#820)
+
+### Smaller Features + Bug Fixes / Nits 
+- docs: Address branding issues of Apache OpenDAL (#817)
+
+## v[0.0.63] - 2023-12-22
+
+### New Features
+- add multi doc autoretrieval pack (#803) 
+
+### Smaller Features + Bug Fixes / Nits
+- Extract metadata from Azure BLOB (#804)
+
+## v[0.0.62] - 2023-12-21
+
+### New Features
+
+- Add `MiniEsgBenchDataset` (#799)
+- Add `PDFPlubmerReader` (#798)
+- Add Cogniswitch llama pack and update Cogniswitch tool (#797)
+
+### Smaller Features + Bug Fixes / Nits
+
+- Improved s3Reader to move control where files are downloaded (#788)
+
 ## v[0.0.61] - 2023-12-20
 
 - Add `MiniMtBenchSingleGradingDataset` & `MtBenchHumanJudgementDataset` (#782)

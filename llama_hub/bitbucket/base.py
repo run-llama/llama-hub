@@ -21,6 +21,7 @@ class BitbucketReader(BaseReader):
         base_url: Optional[str] = None,
         project_key: Optional[str] = None,
         branch: Optional[str] = "refs/heads/develop",
+        repository: Optional[str] = None,
         extensions_to_skip: Optional[List] = [],
     ) -> None:
         """Initialize with parameters."""
@@ -36,6 +37,7 @@ class BitbucketReader(BaseReader):
         self.project_key = project_key
         self.branch = branch
         self.extensions_to_skip = extensions_to_skip
+        self.repository = repository
 
     def get_headers(self):
         username = os.getenv("BITBUCKET_USERNAME")
@@ -47,18 +49,21 @@ class BitbucketReader(BaseReader):
         """
         Get slugs of the specific project.
         """
-        repos_url = (
-            f"{self.base_url}/rest/api/latest/projects/{self.project_key}/repos/"
-        )
-        headers = self.get_headers()
         slugs = []
-        response = requests.get(repos_url, headers=headers)
+        if self.repository is None:
+            repos_url = (
+                f"{self.base_url}/rest/api/latest/projects/{self.project_key}/repos/"
+            )
+            headers = self.get_headers()
 
-        if response.status_code == 200:
-            repositories = response.json()["values"]
-            for repo in repositories:
-                repo_slug = repo["slug"]
-                slugs.append(repo_slug)
+            response = requests.get(repos_url, headers=headers)
+
+            if response.status_code == 200:
+                repositories = response.json()["values"]
+                for repo in repositories:
+                    repo_slug = repo["slug"]
+                    slugs.append(repo_slug)
+        slugs.append(self.repository)
         return slugs
 
     def load_all_file_paths(self, slug, branch, directory_path="", paths=[]):
@@ -78,7 +83,7 @@ class BitbucketReader(BaseReader):
         children = response["children"]
         for value in children["values"]:
             if value["type"] == "FILE":
-                if value["extension"] not in self.extensions_to_skip:
+                if value["path"]["extension"] not in self.extensions_to_skip:
                     paths.append(
                         {
                             "slug": slug,
