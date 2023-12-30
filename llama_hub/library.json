@@ -95,8 +95,13 @@
     "author": "thejessezhang"
   },
   "PptxSlideReader": {
-    "id": "file/pptx-slide",
-    "author": "tewnut"
+    "id": "file/pptx_slide",
+    "author": "tewnut",
+    "keywords": [
+      "presentation",
+      "slide",
+      "pptx"
+    ]
   },
   "ImageReader": {
     "id": "file/image",
