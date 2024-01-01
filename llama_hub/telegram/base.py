@@ -15,16 +15,23 @@ class TelegramReader(BaseReader):
 
         1. Login to your Telegram account with the phone number of the developer account to use.
         2. Click under API Development tools.
-        3. A Create new application window will appear. Fill in your application details. There is no need to enter any URL, and only the first two fields (App title and Short name) can currently be changed later.
-        4. Click on Create application at the end. Remember that your API hash is secret and Telegram won’t let you revoke it. Don’t post it anywhere!
+        3. A Create new application window will appear. Fill in your application details.\
+            There is no need to enter any URL,\
+            and only the first two fields (App title and Short name) can currently be changed later.
+        4. Click on Create application at the end.\
+            Remember that your API hash is secret and Telegram won’t let you revoke it.\
+            Don’t post it anywhere!
 
-    This API ID and hash is the one used by your application, not your phone number. You can use this API ID and hash with any phone number.
+    This API ID and hash is the one used by your application, not your phone number.\
+        You can use this API ID and hash with any phone number.
         
     Args:
-        session_name (str): The file name of the session file to be used if a string is given (it may be a full path), or the Session instance to be used otherwise.
+        session_name (str): The file name of the session file to be used\
+            if a string is given (it may be a full path),\
+            or the Session instance to be used otherwise.
         api_id (int): The API ID you obtained from https://my.telegram.org.
         api_hash (str): The API hash you obtained from https://my.telegram.org.
-        phone_number (str): The phone (or callable without arguments to get it) to which the code will be sent.
+        phone_number (str): The phone to which the code will be sent.
     """
 
     def __init__(
@@ -47,15 +54,21 @@ class TelegramReader(BaseReader):
     ) -> List[Document]:
         """Load posts/chat messages/comments from Telegram channels or chats.
 
-        Since Telethon is an asynchronous library, you need to await coroutine functions to have them run (or otherwise, run the loop until they are complete)
+        Since Telethon is an asynchronous library,\
+            you need to await coroutine functions to have them run\
+            (or otherwise, run the loop until they are complete)
 
         Args:
             entity_name (str): The entity from whom to retrieve the message history.
-            post_id (int): If set to a post ID, the comments that reply to this ID will be returned. Else will get posts/chat messages.
+            post_id (int): If set to a post ID, \
+                the comments that reply to this ID will be returned.\
+                Else will get posts/chat messages.
             limit (int): Number of messages to be retrieved.
 
         """
-        return self.loop.run_until_complete(self._load_data(entity_name=entity_name, post_id=post_id, limit=limit))
+        return self.loop.run_until_complete(
+            self._load_data(entity_name=entity_name, post_id=post_id, limit=limit)
+        )
 
     async def _load_data(
         self, entity_name: str, post_id: Union[int, None] = None,  limit: Union[int, None] = None,
@@ -64,7 +77,9 @@ class TelegramReader(BaseReader):
 
         Args:
             entity_name (str): The entity from whom to retrieve the message history.
-            post_id (int): If set to a post ID, the comments that reply to this ID will be returned. Else will get posts/chat messages.
+            post_id (int): If set to a post ID, \
+                the comments that reply to this ID will be returned.\
+                Else will get posts/chat messages.
             limit (int): Number of messages to be retrieved.
 
         """
@@ -80,5 +95,4 @@ class TelegramReader(BaseReader):
                 if isinstance(message.text, str) and message.text !="":
                     results.append(Document(text=message.text))
         return results
-        
         
