@@ -50,7 +50,10 @@ class TelegramReader(BaseReader):
         self.loop = asyncio.get_event_loop()
 
     def load_data(
-        self, entity_name: str, post_id: Union[int, None] = None,  limit: Union[int, None] = None,
+        self,
+        entity_name: str,
+        post_id: Union[int, None] = None,
+        limit: Union[int, None] = None,
     ) -> List[Document]:
         """Load posts/chat messages/comments from Telegram channels or chats.
 
@@ -71,7 +74,10 @@ class TelegramReader(BaseReader):
         )
 
     async def _load_data(
-        self, entity_name: str, post_id: Union[int, None] = None,  limit: Union[int, None] = None,
+        self,
+        entity_name: str,
+        post_id: Union[int, None] = None,
+        limit: Union[int, None] = None,
     ) -> List[Document]:
         """Load posts/chat messages/comments from Telegram channels or chats.
 
@@ -91,8 +97,9 @@ class TelegramReader(BaseReader):
         results = []
         async with client:
             # Asynchronously iterate over messages
-            async for message in client.iter_messages(entity_name, reply_to=post_id, limit=limit):
-                if isinstance(message.text, str) and message.text !="":
+            async for message in client.iter_messages(
+                entity_name, reply_to=post_id, limit=limit
+            ):
+                if isinstance(message.text, str) and message.text != "":
                     results.append(Document(text=message.text))
         return results
-        
