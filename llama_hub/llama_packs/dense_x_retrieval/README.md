@@ -46,7 +46,7 @@ dense_pack = DenseXRetrievalPack(documents)
 The `run()` function is a light wrapper around `query_engine.query()`. 
 
 ```python
-response = fuzzy_engine.run("What can you tell me about LLMs?")
+response = dense_pack.run("What can you tell me about LLMs?")
 
 print(response)
 ```
