@@ -2,7 +2,6 @@
 
 from typing import Any, Dict
 
-from llama_index.readers.schema.base import Document
 from llama_index.tools.tool_spec.base import BaseToolSpec
 
 
