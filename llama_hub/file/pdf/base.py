@@ -21,7 +21,14 @@ class PDFReader(BaseReader):
             file = Path(file)
 
         # Open the file if it's not already open, else use it as it is
-        context = open(file, "rb") if isinstance(file, Path) else file
+        if isinstance(file, Path):
+            context = open(file, "rb")
+            if extra_info:
+                extra_info.update({"file_name": file.name})
+            else:
+                extra_info = {"file_name": file.name}
+        else:
+            context = file
 
         with context as fp:
             # Create a PDF object
@@ -36,7 +43,7 @@ class PDFReader(BaseReader):
                 # Extract the text from the page
                 page_text = pdf.pages[page].extract_text()
                 page_label = pdf.page_labels[page]
-                metadata = {"page_label": page_label, "file_name": file.name}
+                metadata = {"page_label": page_label}
 
                 if extra_info is not None:
                     metadata.update(extra_info)
