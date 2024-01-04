@@ -23,11 +23,10 @@ class WikipediaToolSpec(BaseToolSpec):
             lang (str): Language of Wikipedia to read. (default: English)
         """
         import wikipedia
+
         wikipedia.set_lang(lang)
         try:
-            wikipedia_page = wikipedia.page(
-                page, **load_kwargs, auto_suggest=False
-            )
+            wikipedia_page = wikipedia.page(page, **load_kwargs, auto_suggest=False)
         except wikipedia.PageError:
             return "Unable to load page. Try searching instead."
         return wikipedia_page.content
