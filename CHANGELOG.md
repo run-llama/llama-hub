@@ -1,5 +1,20 @@
 # ChangeLog
 
+## v[0.0.66] - 2024-01-04
+
+### New Features
+- add ragatouille pack  (#836)
+- TelegramLoader (#822)
+
+### Smaller Features + Bug Fixes / Nits
+- handle bytestring (#834)
+- Slack Tool: Fix "fn_schema is None" issue (#824)
+-  Wikipedia tools should return text, not documents (Tools aren't DataLoaders!) (#828)
+- Fixing JsonReader and introducing unit tests (#816)
+- Fix:dense pack naming error in usage example notebook (#831)
+- chore: get the full detailed text from Confluence (#809)
+- feat: fix folder name and add keywords (#829)
+
 ## v[0.0.65] - 2023-12-29
 
 ### New Features
