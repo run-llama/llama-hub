@@ -26,14 +26,14 @@ class PagedCSVReader(BaseReader):
         self._encoding = encoding
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None
+        self, file: Path, extra_info: Optional[Dict] = None, delimiter: str = ',', quotechar: str | None = '"'
     ) -> List[Document]:
         """Parse file."""
         import csv
 
         docs = []
         with open(file, "r", encoding=self._encoding) as fp:
-            csv_reader = csv.DictReader(fp)  # type: ignore
+            csv_reader = csv.DictReader(f=fp, delimiter=delimiter, quotechar=quotechar)  # type: ignore
             for row in csv_reader:
                 docs.append(
                     Document(
