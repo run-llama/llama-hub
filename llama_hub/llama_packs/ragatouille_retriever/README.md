@@ -1,4 +1,4 @@
-# RAGatouille Completion Pack
+# RAGatouille Retriever Pack
 
 RAGatouille is a [cool library](https://github.com/bclavie/RAGatouille) that lets you use e.g. ColBERT and other SOTA retrieval models in your RAG pipeline. You can use it to either run inference on ColBERT, or use it to train/fine-tune models.
 
