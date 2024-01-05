@@ -222,5 +222,10 @@
     "author": "jerryjliu",
     "keywords": ["llm", "compiler", "agent"],
     "extra_files": ["output_parser.py", "prompts.py", "schema.py", "step.py", "task_fetching_unit.py", "utils.py"]
+  },
+  "RAGatouilleRetrieverPack": {
+    "id": "llama_packs/ragatouille_retriever",
+    "author": "jerryjliu",
+    "keywords": ["rag", "ragatouille", "retriever"]
   }
 }
