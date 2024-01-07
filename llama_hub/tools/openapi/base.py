@@ -26,7 +26,7 @@ class OpenAPIToolSpec(BaseToolSpec):
             pass
         elif url:
             response = requests.get(url).text
-            spec = yaml.load(response, Loader=yaml.Loader)
+            spec = yaml.safe_load(response)
         else:
             raise ValueError("You must provide a url or OpenAPI spec as a dict")
 
