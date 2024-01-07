@@ -7,7 +7,7 @@ This LlamaPack uses `snowflake-sqlalchemy` to connect to Snowflake, then calls `
 You can download the pack to a the `./snowflake_pack` directory:
 
 ```python
-from llama_index.llama_packs import download_llama_pack
+from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 SnowflakeQueryEnginePack = download_llama_pack(
