@@ -15,7 +15,7 @@ Here's an example usage of the AgentSearchReader.
 from llama_index import download_loader
 import os
 
-AgentSearch = download_loader("AgentSearch")
+AgentSearch = download_loader("AgentSearchReader")
 
 reader = AgentSearch()
 

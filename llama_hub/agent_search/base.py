@@ -28,7 +28,7 @@ For more information, refer to the docs:
 https://agent-search.readthedocs.io/en/latest/
 """
 
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
