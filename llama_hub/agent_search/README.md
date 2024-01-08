@@ -3,7 +3,9 @@
 This framework facilitates seamless integration with the AgentSearch dataset or hosted search APIs (e.g. Search Engines) and with RAG-specialized LLM's (e.g. Search Agents).
 
 
-During query-time, the user passes in the query string, search provider (`bing`, `agent-search`), and RAG provider model (`SciPhi/Sensei-7B-V1`).
+During query-time, the user passes in the query string, search provider (`bing`, `agent-search`), and RAG provider model (`SciPhi/Sensei-7B-V1`). 
+
+To learn more, please refer to the documentation [here](https://agent-search.readthedocs.io/en/latest/).
 
 ## Usage
 
