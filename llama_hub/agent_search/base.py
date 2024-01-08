@@ -24,6 +24,8 @@ consequences [2]. In the realm of international relations, the release
 of Jeffrey... 
 ```
 
+For more information, refer to the docs:
+https://agent-search.readthedocs.io/en/latest/
 """
 
 from typing import Any, Dict, List, Optional
