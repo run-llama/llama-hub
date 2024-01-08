@@ -1,8 +1,19 @@
 """AgentSearch reader
 
-Example response as of 1/8/2024:
+Example as of 1/8/2024:
 
+```python
+AgentSearch = download_loader("AgentSearch")
+
+document = reader.load_data(
+    query="latest news",
+    search_provider="bing"
+)[0]
+
+print(f'Document:\n{document} ')
 ```
+
+```plaintext
 Document:
 Doc ID: 67a57dfe-8bd6-4c69-af9d-683e76177119
 Text: The latest news encompasses a wide array of topics, reflecting
