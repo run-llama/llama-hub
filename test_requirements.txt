@@ -16,7 +16,6 @@ olefile
 chromadb
 snowflake-sqlalchemy
 selenium
-chromedriver_autoinstaller
 
 # hotfix
 psutil

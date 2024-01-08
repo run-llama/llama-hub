@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import chromedriver_autoinstaller
 import time
 
 from llama_index.readers.base import BaseReader
@@ -42,6 +41,11 @@ class WholeSiteReader(BaseReader):
         Returns:
             WebDriver: An instance of Chrome WebDriver.
         """
+        try:
+            import chromedriver_autoinstaller
+        except ImportError:
+            raise ImportError("Please install chromedriver_autoinstaller")
+
         opt = webdriver.ChromeOptions()
         opt.add_argument("--start-maximized")
         chromedriver_autoinstaller.install()
@@ -107,14 +111,15 @@ class WholeSiteReader(BaseReader):
                 print(f"Found {len(links)} new potential links")
                 for href in links:
                     try:
-                        if href.startswith(self.prefix):
+                        if href.startswith(self.prefix) and href not in added_urls:
                             urls_to_visit.append((href, depth + 1))
                             added_urls.add(href)
                     except Exception:
                         continue
 
                 documents.append(
-                    Document(text=page_content, extra_info={"URL": current_url})
+                    Document(text=page_content, extra_info={
+                             "URL": current_url})
                 )
                 time.sleep(1)
 
@@ -122,7 +127,8 @@ class WholeSiteReader(BaseReader):
                 print("WebDriverException encountered, restarting driver...")
                 self.restart_driver()
             except Exception as e:
-                print(f"An unexpected exception occurred: {e}, skipping URL...")
+                print(
+                    f"An unexpected exception occurred: {e}, skipping URL...")
                 continue
 
         self.driver.quit()
