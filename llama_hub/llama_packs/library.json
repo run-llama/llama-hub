@@ -227,5 +227,10 @@
     "id": "llama_packs/ragatouille_retriever",
     "author": "jerryjliu",
     "keywords": ["rag", "ragatouille", "retriever"]
+  },
+  "SemanticEmbeddingQueryEnginePack": {
+    "id": "llama_packs/node_parser/semantic_embedding",
+    "author": "jerryjliu",
+    "keywords": ["semantic", "chunking", "chunk", "parser", "node", "embedding"]
   }
 }
