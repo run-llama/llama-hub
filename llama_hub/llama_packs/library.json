@@ -227,5 +227,10 @@
     "id": "llama_packs/ragatouille_retriever",
     "author": "jerryjliu",
     "keywords": ["rag", "ragatouille", "retriever"]
+  },
+  "RAGFusionPipelinePack": {
+    "id": "llama_packs/query/rag_fusion_pipeline",
+    "author": "jerryjliu",
+    "keywords": ["rag", "fusion", "pipeline", "query"]
   }
 }
