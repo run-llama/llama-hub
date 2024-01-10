@@ -1,4 +1,3 @@
-import yfinance as yf
 from typing import List, Dict, Any
 
 from llama_index.llama_pack.base import BaseLlamaPack
@@ -10,31 +9,6 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.response_synthesizers import get_response_synthesizer
 
 
-def get_stock_market_data(ticker, **kwargs):
-    """
-    Retrieve historical market data for a given stock ticker using yfinance.
-
-    Args:
-        ticker (str): Stock ticker symbol.
-        kwargs: Additional keyword arguments to pass to the yfinance.
-
-    Returns:
-        pandas.DataFrame: Historical market data for the specified stock.
-    """
-    stock = yf.Ticker(ticker)
-    hist = stock.history(**kwargs)
-
-    year = [i.year for i in hist.index]
-    hist.insert(0, 'year', year)
-    month = [i.month for i in hist.index]
-    hist.insert(1, 'month', month)
-    day = [i.day for i in hist.index]
-    hist.insert(2, 'day', day)
-    hist.reset_index(drop=True, inplace=True)
-
-    return hist
-
-
 class StockMarketDataQueryEnginePack(BaseLlamaPack):
     """Historical stock market data query engine pack."""
 
@@ -44,18 +18,35 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
         **kwargs: Any,
     ):
         self.tickers = tickers
-        self.stocks_market_data = [get_stock_market_data(ticker, **kwargs) for ticker in tickers]
-    
-    def set_query_engines(self):
-        """
-        Set up pandas query engines and recursive retriever for historical stock market data.
-        """
-        
-        df_price_query_engines = [PandasQueryEngine(stock) for stock in self.stocks_market_data]
+
+        try:
+            import yfinance as yf
+        except ImportError:
+            raise ImportError(
+                "Dependencies missing, run "
+                "`pip install yfinance`"
+            )
+
+        stocks_market_data = []
+        for ticker in tickers:
+            stock = yf.Ticker(ticker)
+            hist = stock.history(**kwargs)
+
+            year = [i.year for i in hist.index]
+            hist.insert(0, 'year', year)
+            month = [i.month for i in hist.index]
+            hist.insert(1, 'month', month)
+            day = [i.day for i in hist.index]
+            hist.insert(2, 'day', day)
+            hist.reset_index(drop=True, inplace=True)
+            stocks_market_data.append(hist)
+        self.stocks_market_data = stocks_market_data
+
+        df_price_query_engines = [PandasQueryEngine(stock) for stock in stocks_market_data]
 
         summaries = [
             f'{ticker} historical market data'
-            for ticker in self.tickers
+            for ticker in tickers
         ]
 
         df_price_nodes = [
@@ -84,20 +75,19 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
         )
 
         stock_price_query_engine = RetrieverQueryEngine.from_args(
-        stock_price_recursive_retriever, response_synthesizer=stock_price_response_synthesizer
+             stock_price_recursive_retriever, response_synthesizer=stock_price_response_synthesizer
         )
 
-        return stock_price_query_engine
+        self.stock_price_query_engine = stock_price_query_engine
     
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
         return {
             'tickers': self.tickers,
             'stocks market data': self.stocks_market_data,
-            'query engine': self.set_query_engines,
+            'query engine': self.stock_price_query_engine,
         }
     
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run."""
-        engine = self.set_query_engines()
-        return engine.query(*args, **kwargs)
+        return self.stock_price_query_engine.query(*args, **kwargs)
