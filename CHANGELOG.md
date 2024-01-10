@@ -1,6 +1,6 @@
 # ChangeLog
 
-## v[0.0.68] - 2024-01-08
+## v[0.0.69] - 2024-01-08
 
 ### New Features
 - add rag fusion query pipeline pack (#847)
