@@ -42,7 +42,7 @@ pack = RAGFusionPipelinePack(docs, llm=OpenAI(model="gpt-3.5-turbo"))
 The `run()` function is a light wrapper around `query_pipeline.run(*args, **kwargs)`.
 
 ```python
-response = pack.run("What did the author do during his time in YC?")
+response = pack.run(input="What did the author do during his time in YC?")
 ```
 
 You can also use modules individually.
