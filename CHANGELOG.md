@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v[0.0.70] - 2024-01-11
+
+### New Features
+- add semantic chunker llama pack (#853)
+- Feature/add agent search (#844)
+
 ## v[0.0.69] - 2024-01-08
 
 ### New Features
