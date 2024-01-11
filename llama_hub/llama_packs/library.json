@@ -228,6 +228,11 @@
     "author": "jerryjliu",
     "keywords": ["rag", "ragatouille", "retriever"]
   },
+  "SemanticChunkingQueryEnginePack": {
+    "id": "llama_packs/node_parser/semantic_chunking",
+    "author": "jerryjliu",
+    "keywords": ["semantic", "chunking", "chunk", "parser", "node", "embedding"]
+  },
   "RAGFusionPipelinePack": {
     "id": "llama_packs/query/rag_fusion_pipeline",
     "author": "jerryjliu",
