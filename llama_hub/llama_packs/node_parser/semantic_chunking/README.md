@@ -6,7 +6,7 @@ How it works:
 - Split text into sentences.
 - For each sentence, generate an embedding.
 - Measure cosine distance between each pair of consecutive sentences.
-- Get the 95% cosine distance, set that as the threshold.
+- Get the 95% percentile cosine distance, set that as the threshold.
 - Create a new chunk if the cosine distance of a sentence compared to prev. exceeds that threshold.
 
 ## CLI Usage
