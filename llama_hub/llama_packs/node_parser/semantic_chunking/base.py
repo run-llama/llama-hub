@@ -123,7 +123,7 @@ def make_chunks(sentences: List[str], indices_above_thresh: List[int]) -> List[s
     return chunks
 
 
-class SemanticEmbeddingSplitter(MetadataAwareTextSplitter):
+class SemanticChunker(MetadataAwareTextSplitter):
     """Semantic splitter.
 
     Inspired by Greg's semantic chunking.
@@ -204,8 +204,8 @@ class SemanticEmbeddingSplitter(MetadataAwareTextSplitter):
         return chunks
 
 
-class SemanticEmbeddingQueryEnginePack(BaseLlamaPack):
-    """Semantic Embedding Query Engine Pack.
+class SemanticChunkingQueryEnginePack(BaseLlamaPack):
+    """Semantic Chunking Query Engine Pack.
 
     Takes in a list of documents, parses it with semantic embedding chunker, 
     and runs a query engine on the resulting chunks.
@@ -220,7 +220,7 @@ class SemanticEmbeddingQueryEnginePack(BaseLlamaPack):
     ) -> None:
         """Init params."""
         self.embed_model = OpenAIEmbedding()
-        self.splitter = SemanticEmbeddingSplitter(
+        self.splitter = SemanticChunker(
             buffer_size=buffer_size, breakpoint_percentile_threshold=breakpoint_percentile_threshold, 
             embed_model=self.embed_model
         )

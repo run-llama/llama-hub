@@ -1,4 +1,8 @@
 {
+  "AgentSearchReader": {
+    "id": "agent_search",
+    "author": "emrgnt-cmplxty"
+  },
   "AirbyteCDKReader": {
     "id": "airbyte_cdk",
     "author": "flash1293"
