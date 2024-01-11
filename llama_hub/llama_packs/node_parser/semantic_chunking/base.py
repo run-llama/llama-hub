@@ -19,7 +19,6 @@ import re
 from typing import Any, List, Optional
 
 import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
 
 from llama_index.bridge.pydantic import Field
 from llama_index.embeddings.base import BaseEmbedding
@@ -64,6 +63,8 @@ def combine_sentences(sentences: List[str], buffer_size: int = 1) -> List[str]:
 
 def calculate_cosine_distances(sentences: List[str]) -> List[float]:
     """Calculate cosine distances."""
+    from sklearn.metrics.pairwise import cosine_similarity
+
     distances: List[float] = []
     for i in range(len(sentences) - 1):
         embedding_current = sentences[i]["embedding"]
