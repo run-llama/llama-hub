@@ -207,13 +207,13 @@ class SemanticChunker(MetadataAwareTextSplitter):
 class SemanticChunkingQueryEnginePack(BaseLlamaPack):
     """Semantic Chunking Query Engine Pack.
 
-    Takes in a list of documents, parses it with semantic embedding chunker, 
+    Takes in a list of documents, parses it with semantic embedding chunker,
     and runs a query engine on the resulting chunks.
 
     """
 
     def __init__(
-        self, 
+        self,
         documents: List[Document],
         buffer_size: int = 1,
         breakpoint_percentile_threshold: float = 95.0,
@@ -221,8 +221,9 @@ class SemanticChunkingQueryEnginePack(BaseLlamaPack):
         """Init params."""
         self.embed_model = OpenAIEmbedding()
         self.splitter = SemanticChunker(
-            buffer_size=buffer_size, breakpoint_percentile_threshold=breakpoint_percentile_threshold, 
-            embed_model=self.embed_model
+            buffer_size=buffer_size,
+            breakpoint_percentile_threshold=breakpoint_percentile_threshold,
+            embed_model=self.embed_model,
         )
 
         nodes = self.splitter.get_nodes_from_documents(documents)
@@ -240,6 +241,3 @@ class SemanticChunkingQueryEnginePack(BaseLlamaPack):
     def run(self, query: str) -> Any:
         """Run the pipeline."""
         return self.query_engine.query(query)
-
-
-    
