@@ -11,8 +11,11 @@ To learn more, please refer to the documentation [here](https://agent-search.rea
 Here's an example usage of the AgentSearchReader.
 
 ```python
+# Optionally set the API key in the env
+# import os
+# os.environ["SCIPHI_API_KEY"] = "..."
+
 from llama_index import download_loader
-import os
 
 AgentSearch = download_loader("AgentSearchReader")
 

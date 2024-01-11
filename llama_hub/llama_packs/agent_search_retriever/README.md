@@ -1,6 +1,6 @@
 # Agent-Search Retrieval Pack
 
-This LlamaPack creates a custom retriever that uses the [free agent-search API](https://agent-search.readthedocs.io/en/latest/index.html#) for retrieving general content indexed from the internet. 
+This LlamaPack creates a custom retriever that uses the agent-search API for retrieving general content indexed from the internet. 
 
 This framework facilitates seamless integration with the AgentSearch dataset (terabytes of indexed data!) or hosted search APIs (e.g. Search Engines).
 
@@ -16,13 +16,17 @@ You can download llamapacks directly using `llamaindex-cli`, which comes install
 llamaindex-cli download-llamapack AgentSearchRetrieverPack --download-dir ./agent_search_pack
 ```
 
-You can then inspect the files at `./agent_search_packk` and use them as a template for your own project!
+You can then inspect the files at `./agent_search_pack` and use them as a template for your own project!
 
 ## Code Usage
 
 You can download the pack to a the `./agent_search_pack` directory:
 
 ```python
+# Optionally set the API key in the env
+# import os
+# os.environ["SCIPHI_API_KEY"] = "..."
+
 from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.llama_pack import download_llama_pack
 
