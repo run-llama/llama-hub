@@ -232,5 +232,10 @@
     "id": "llama_packs/query/rag_fusion_pipeline",
     "author": "jerryjliu",
     "keywords": ["rag", "fusion", "pipeline", "query"]
+  },
+  "AgentSearchRetrieverPack": {
+    "id": "llama_packs/agent_search_retriever",
+    "author": "logan-markewich",
+    "keywords": ["agent", "search", "retriever"]
   }
 }
