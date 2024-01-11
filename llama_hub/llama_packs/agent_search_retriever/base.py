@@ -15,7 +15,13 @@ class SearchProvider(str, Enum):
 class AgentSearchRetriever(BaseRetriever):
     """Retriever that uses the Agent Search API to retrieve documents."""
 
-    def __init__(self, search_provider: str = 'agent-search', api_key: Optional[str] = None, api_base: Optional[str] = None, similarity_top_k: int = 4) -> None:
+    def __init__(
+        self,
+        search_provider: str = "agent-search",
+        api_key: Optional[str] = None,
+        api_base: Optional[str] = None,
+        similarity_top_k: int = 4,
+    ) -> None:
         import_err_msg = (
             "`agent-search` package not found, please run `pip install agent-search`"
         )
@@ -30,9 +36,11 @@ class AgentSearchRetriever(BaseRetriever):
         self._search_provider = SearchProvider(search_provider)
         self._similarity_top_k = similarity_top_k
         super().__init__()
-    
+
     def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
-        search_result = self._client.search(query_bundle.query_str, search_provider=self._search_provider.value)
+        search_result = self._client.search(
+            query_bundle.query_str, search_provider=self._search_provider.value
+        )
         nodes = []
         found_texts = set()
         for result in search_result:
@@ -53,14 +61,26 @@ class AgentSearchRetriever(BaseRetriever):
                     score=result["score"],
                 )
             )
-        
-        return nodes[:self._similarity_top_k]
+
+        return nodes[: self._similarity_top_k]
 
 
 class AgentSearchRetrieverPack(BaseLlamaPack):
     """AgentSearchRetrieverPack for running an agent-search retriever."""
-    def __init__(self, similarity_top_k: int = 2, search_provider: str = 'agent-search', api_key: Optional[str] = None, api_base: Optional[str] = None) -> None:
-        self.retriever = AgentSearchRetriever(search_provider=search_provider, api_key=api_key, api_base=api_base, similarity_top_k=similarity_top_k)
+
+    def __init__(
+        self,
+        similarity_top_k: int = 2,
+        search_provider: str = "agent-search",
+        api_key: Optional[str] = None,
+        api_base: Optional[str] = None,
+    ) -> None:
+        self.retriever = AgentSearchRetriever(
+            search_provider=search_provider,
+            api_key=api_key,
+            api_base=api_base,
+            similarity_top_k=similarity_top_k,
+        )
         super().__init__()
 
     def get_modules(self) -> Dict[str, Any]:
@@ -72,4 +92,3 @@ class AgentSearchRetrieverPack(BaseLlamaPack):
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
         return self._retriever.retrieve(*args, **kwargs)
-

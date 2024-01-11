@@ -72,5 +72,7 @@ class AgentSearchReader(BaseReader):
         Returns:
             List[Document]: A list of documents.
         """
-        rag_response = self._client.get_search_rag_response(query=query, search_provider=search_provider, llm_model=llm_model)
-        return [Document(text=rag_response.pop('response'), metadata=rag_response)]
+        rag_response = self._client.get_search_rag_response(
+            query=query, search_provider=search_provider, llm_model=llm_model
+        )
+        return [Document(text=rag_response.pop("response"), metadata=rag_response)]
