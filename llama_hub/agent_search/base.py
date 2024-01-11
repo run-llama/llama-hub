@@ -61,7 +61,8 @@ class AgentSearchReader(BaseReader):
         search_provider: str = "bing",
         llm_model: str = "SciPhi/Sensei-7B-V1",
     ) -> List[Document]:
-        """Load data from AgentSearch, hosted by SciPhi.
+        """
+        Load data from AgentSearch, hosted by SciPhi.
 
         Args:
             collection_name (str): Name of the Milvus collection.
