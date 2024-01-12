@@ -13,7 +13,7 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
     """Historical stock market data query engine pack."""
 
     def __init__(
-        self, 
+        self,
         tickers: List[str],
         **kwargs: Any,
     ):
@@ -22,10 +22,7 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
         try:
             import yfinance as yf
         except ImportError:
-            raise ImportError(
-                "Dependencies missing, run "
-                "`pip install yfinance`"
-            )
+            raise ImportError("Dependencies missing, run `pip install yfinance`")
 
         stocks_market_data = []
         for ticker in tickers:
@@ -33,34 +30,35 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
             hist = stock.history(**kwargs)
 
             year = [i.year for i in hist.index]
-            hist.insert(0, 'year', year)
+            hist.insert(0, "year", year)
             month = [i.month for i in hist.index]
-            hist.insert(1, 'month', month)
+            hist.insert(1, "month", month)
             day = [i.day for i in hist.index]
-            hist.insert(2, 'day', day)
+            hist.insert(2, "day", day)
             hist.reset_index(drop=True, inplace=True)
             stocks_market_data.append(hist)
         self.stocks_market_data = stocks_market_data
 
-        df_price_query_engines = [PandasQueryEngine(stock) for stock in stocks_market_data]
-
-        summaries = [
-            f'{ticker} historical market data'
-            for ticker in tickers
+        df_price_query_engines = [
+            PandasQueryEngine(stock) for stock in stocks_market_data
         ]
 
+        summaries = [f"{ticker} historical market data" for ticker in tickers]
+
         df_price_nodes = [
-            IndexNode(text=summary, index_id=f'pandas{idx}') 
+            IndexNode(text=summary, index_id=f"pandas{idx}")
             for idx, summary in enumerate(summaries)
         ]
 
         df_price_id_query_engine_mapping = {
-            f'pandas{idx}': df_engine
+            f"pandas{idx}": df_engine
             for idx, df_engine in enumerate(df_price_query_engines)
         }
 
         stock_price_vector_index = VectorStoreIndex(df_price_nodes)
-        stock_price_vector_retriever = stock_price_vector_index.as_retriever(similarity_top_k=1)
+        stock_price_vector_retriever = stock_price_vector_index.as_retriever(
+            similarity_top_k=1
+        )
 
         stock_price_recursive_retriever = RecursiveRetriever(
             "vector",
@@ -75,19 +73,20 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
         )
 
         stock_price_query_engine = RetrieverQueryEngine.from_args(
-             stock_price_recursive_retriever, response_synthesizer=stock_price_response_synthesizer
+            stock_price_recursive_retriever,
+            response_synthesizer=stock_price_response_synthesizer,
         )
 
         self.stock_price_query_engine = stock_price_query_engine
-    
+
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
         return {
-            'tickers': self.tickers,
-            'stocks market data': self.stocks_market_data,
-            'query engine': self.stock_price_query_engine,
+            "tickers": self.tickers,
+            "stocks market data": self.stocks_market_data,
+            "query engine": self.stock_price_query_engine,
         }
-    
+
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run."""
         return self.stock_price_query_engine.query(*args, **kwargs)
