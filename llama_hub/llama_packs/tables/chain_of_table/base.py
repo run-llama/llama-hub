@@ -5,26 +5,59 @@ https://arxiv.org/pdf/2401.04398v1.pdf
 
 """
 
+from abc import abstractmethod
 from llama_index.prompts import PromptTemplate
 from llama_index.query_engine import CustomQueryEngine
+from llama_index.response.schema import Response
 from llama_index.bridge.pydantic import Field
 from llama_index.llms.llm import LLM
 from llama_index.llms import OpenAI
-from llama_index.query_pipeline import QueryPipeline as QP, FnComponent
+from llama_index.query_pipeline import QueryPipeline as QP, FnComponent, QueryComponent
 from llama_index.tools import FunctionTool
-from pydantic import BaseModel
+from llama_index.bridge.pydantic import BaseModel
 import pandas as pd
 from typing import Any, Optional, Dict, Callable, List, Tuple
 import re
 
 
+def _get_regex_parser_fn(regex: str) -> Callable:
+    """Get regex parser."""
+    def _regex_parser(output: Any) -> Dict[str, Any]:
+        """Regex parser"""
+        output = str(output)
+        m = re.search(regex, output)
+        args = m.group(1)
+        if "," in args:
+            return args.split(",")
+        else:
+            return args
+
+    return _regex_parser
+
+
 class FunctionSchema(BaseModel):
     """Function schema."""
-    prompt: PromptTemplate
-    fn: Optional[Callable] = None
-    regex: Optional[str] = None
+    prompt: PromptTemplate = Field(..., description="Prompt.")
+    regex: Optional[str] = Field(default=None, description="Regex.")
 
-    def generate_prompt(self, **kwargs: Any) -> PromptTemplate:
+    @abstractmethod
+    def fn(self, table: pd.DataFrame, args: Any) -> Callable:
+        """Function."""
+        raise NotImplementedError
+
+    def parse_args(self, args: str) -> Any:
+        """Parse args."""
+        regex_fn = _get_regex_parser_fn(self.regex)
+        return regex_fn(args)
+
+    def parse_args_and_call_fn(self, table: pd.DataFrame, args: str) -> pd.DataFrame:
+        """Parse args and call function."""
+        print(f"raw args: {args}")
+        args = self.parse_args(args)
+        print(f"args: {(args, type(args))}")
+        return self.fn(pd.DataFrame, args)
+
+    def generate_prompt_component(self, **kwargs: Any) -> QueryComponent:
         """Generate prompt."""
         # add valid kwargs to prompt
         new_kwargs = {}
@@ -116,18 +149,49 @@ Therefore, the answer is: f_add_column(Country of athletes). The value: KAZ | IN
 {serialized_table}
 Question: {question}
 Explanation: """
-add_column_prompt = PromptTemplate(add_column_str)
 
-add_column_schema = FunctionSchema(
-    prompt=add_column_prompt,
-    regex="f_add_column\((.*)\)",
-)
 
-def add_column(table: pd.DataFrame, column_name: str) -> pd.DataFrame:
-    """Add column."""
-    # TODO: 
-    table[column_name] = ""
-    return table
+class AddColumnSchema(FunctionSchema):
+    """Add column schema."""
+
+    def __init__(
+        self,
+        **kwargs: Any,
+    ) -> None:
+        """Init params."""
+        prompt = PromptTemplate(add_column_str)
+        regex = "f_add_column\((.*)\)"
+        super().__init__(
+            prompt=prompt,
+            regex=regex,
+            **kwargs,
+        )
+
+    def fn(self, table: pd.DataFrame, args: Any) -> pd.DataFrame:
+        """Call function."""
+        col_name = args["col_name"]
+        col_values = args["col_values"]
+        table = table.copy()
+        # add column to table with col_name and col_values
+        table[col_name] = col_values
+        return table
+
+    def parse_args(self, args: str) -> Any:
+        """Parse args."""
+        regex_fn = _get_regex_parser_fn(self.regex)
+        args = regex_fn(args)
+
+        value_args_regex = "value:(.*)"
+        value_regex_fn = _get_regex_parser_fn(value_args_regex)
+        value_args = value_regex_fn(args)
+
+        return {
+            "col_name": args,
+            "col_values": value_args,
+        }
+
+add_column_schema = AddColumnSchema()
+        
 
 
 select_column_str = """\
@@ -153,11 +217,31 @@ The answer is : f_select_column([cardiff win, draw])
 statement : {question}
 similar words link to columns : \
 """
-select_column_prompt = PromptTemplate(select_column_str)
-select_column_schema = FunctionSchema(
-    prompt=select_column_prompt,
-    regex="f_select_column([(.*)])",
-)
+
+class SelectColumnSchema(FunctionSchema):
+    """Select column schema."""
+    def __init__(self, **kwargs: Any) -> None:
+        """Init params."""
+        prompt = PromptTemplate(select_column_str)
+        super().__init__(
+            prompt=prompt,
+            regex="f_select_column\(\[(.*)\]\)",
+            **kwargs,
+        )
+
+    def fn(self, table: pd.DataFrame, args: Any) -> pd.DataFrame:
+        """Call function."""
+        # assert that args is a list
+        assert isinstance(args, list)
+        table = table.copy()
+        # select columns from table
+        print(f"current table: {table}")
+        table = table[args]
+        print(f"new table: {table}")
+        return table
+
+select_column_schema = SelectColumnSchema()
+
 
 
 # select_args_str = """\
@@ -208,11 +292,27 @@ The answer is : f_select_row([row 5])
 statement : {question}
 explain : \
 """
-select_row_prompt = PromptTemplate(select_row_str)
-select_row_schema = FunctionSchema(
-    prompt=select_row_prompt,
-    regex="f_select_row\([(.*)]\)",
-)
+class SelectRowSchema(FunctionSchema):
+    """Select row schema."""
+    def __init__(self, **kwargs: Any) -> None:
+        """Init params."""
+        prompt = PromptTemplate(select_row_str)
+        super().__init__(
+            prompt=prompt,
+            regex="f_select_row\(\[(.*)\]\)",
+            **kwargs,
+        )
+
+    def fn(self, table: pd.DataFrame, args: Any) -> pd.DataFrame:
+        """Call function."""
+        # assert that args is a list
+        assert isinstance(args, list)
+        table = table.copy()
+        # select rows from table
+        table = table.loc[args]
+        return table
+select_row_schema = SelectRowSchema()
+        
 
 group_by_str = """\
 To answer the question, we can first use f_group_by() to group the values in a column.
@@ -233,11 +333,28 @@ Therefore, the answer is: f_group_by(Country).
 {serialized_table}
 Question: {question}
 Explanation: """
-group_by_prompt = PromptTemplate(group_by_str)
-group_by_schema = FunctionSchema(
-    prompt=group_by_prompt,
-    regex="f_group_by\((.*)\)",
-)
+
+class GroupBySchema(FunctionSchema):
+    """Group by fn schema."""
+    def __init__(self, **kwargs: Any) -> None:
+        """Init params."""
+        prompt = PromptTemplate(group_by_str)
+        super().__init__(
+            prompt=prompt,
+            regex="f_group_by\((.*)\)",
+            **kwargs,
+        )
+
+    def fn(self, table: pd.DataFrame, args: Any) -> pd.DataFrame:
+        """Call function."""
+        # assert that args is a string
+        assert isinstance(args, str)
+
+        table = table.copy()
+        # group by column
+        return table.groupby(args).count()
+
+group_by_schema = GroupBySchema()
 
 
 sort_by_str = """\
@@ -265,11 +382,28 @@ Therefore, the answer is: f_sort_by(Position), the order is "large to small".
 {serialized_table}
 Question: {question}
 Explanation: """
-sort_by_prompt = PromptTemplate(sort_by_str)
-sort_by_schema = FunctionSchema(
-    prompt=sort_by_prompt,
-    regex="f_sort_by\((.*)\)",
-)
+
+class SortBySchema(FunctionSchema):
+    """Sort by fn schema."""
+    def __init__(self, **kwargs: Any) -> None:
+        """Init params."""
+        prompt = PromptTemplate(sort_by_str)
+        super().__init__(
+            prompt=prompt,
+            regex="f_sort_by\((.*)\)",
+            **kwargs,
+        )
+
+    def fn(self, table: pd.DataFrame, args: Any) -> pd.DataFrame:
+        """Call function."""
+        # assert that args is a string
+        assert isinstance(args, str)
+
+        table = table.copy()
+        # sort by column
+        return table.sort_values(args)
+
+sort_by_schema = SortBySchema()
 
 
 query_prompt_str = """\
@@ -310,11 +444,10 @@ question:
 Question: {question}
 The answer is: """
 query_prompt = PromptTemplate(query_prompt_str)
-query_schema = FunctionSchema(prompt=query_prompt)
 
 
 
-schema_mappings = {
+schema_mappings: Dict[str, FunctionSchema] = {
     "f_add_column": add_column_schema,
     "f_select_column": select_column_schema,
     "f_select_row": select_row_schema,
@@ -340,20 +473,6 @@ def _dynamic_plan_parser(dynamic_plan: Any) -> Dict[str, Any]:
     raise ValueError(f"Could not parse dynamic plan: {dynamic_plan_str}")
 
 
-def _get_regex_parser_fn(regex: str) -> Callable:
-    """Get regex parser."""
-    def _regex_parser(output: str) -> Dict[str, Any]:
-        """Regex parser"""
-        m = re.search(regex, output)
-        args = m.group(1)
-        if "," in args:
-            return args.split(",")
-        else:
-            return args
-
-    return _regex_parser
-
-
 def serialize_chain(op_chain: List[Tuple[str, str]]) -> str:
     """Serialize operation chain.
 
@@ -370,6 +489,10 @@ def serialize_chain(op_chain: List[Tuple[str, str]]) -> str:
         output_str += f"{op[0]}({op[1]}) -> "
     return output_str
     
+
+def serialize_keys(keys: Any) -> str:
+    """Serialize keys."""
+    return ", ".join(list(keys))
 
 def serialize_table(table: pd.DataFrame) -> str:
     """Serialize table."""
@@ -395,11 +518,11 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
         llm = llm or OpenAI(model="gpt-3.5-turbo")
         super().__init__(
             table=table,
-            llm=llm
+            llm=llm,
             **kwargs
         )
 
-    def custom_query(self, query_str: str) -> str:
+    def custom_query(self, query_str: str) -> Response:
         """Run chain of thought query engine."""
         op_chain = []
         dynamic_plan_parser = FnComponent(fn=_dynamic_plan_parser)
@@ -407,32 +530,46 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
         cur_table = self.table.copy()
         
         for _ in range(self.max_iterations):
+            print("ITERATION")
+            print(serialize_table(cur_table))
             # generate dynamic plan
             dynamic_plan_prompt = self.dynamic_plan_prompt.as_query_component(
                 partial={
                     "serialized_table": serialize_table(cur_table),
-                    "candidates": op_chain,
+                    "candidates": serialize_keys(schema_mappings.keys()),
                     "incomplete_function_chain": serialize_chain(op_chain),
                 }
             )
             dynamic_plan_chain = QP(chain=[dynamic_plan_prompt, self.llm, dynamic_plan_parser])
             key = dynamic_plan_chain.run(question=query_str)
+            print((query_str, key))
             if key == "<END>":
                 break
 
             # generate args from key
-            fn_prompt = schema_mappings[key].generate_prompt(
+            fn_prompt = schema_mappings[key].generate_prompt_component(
                 serialized_table=serialize_table(cur_table),
             )
-            regex_fn = _get_regex_parser_fn(schema_mappings[key].regex)
-            generate_args_chain = QP(chain=[fn_prompt, self.llm, regex_fn])
-            args = generate_args_chain.run(question=query_str)
+            generate_args_chain = QP(chain=[fn_prompt, self.llm])
+            raw_args = generate_args_chain.run(question=query_str)
+            cur_table = schema_mappings[key].parse_args_and_call_fn(cur_table, raw_args)
             
-            # pass args to function
-            fn = schema_mappings[key].fn.partial(cur_table)
-            # run function, get new table
-            cur_table = fn(args)
+            # print(args)
+            # # pass args to function
+            # fn = schema_mappings[key].fn.partial(cur_table)
+            # # run function, get new table
+            # cur_table = fn(args)
             
             op_chain.append((key, args))
+
+        # generate query prompt
+        query_prompt = self.query_prompt.as_query_component(
+            partial={
+                "serialized_table": serialize_table(cur_table),
+            }
+        )
+        query_chain = QP(chain=[query_prompt, self.llm])
+        response = query_chain.run(question=query_str)
+        return Response(response=response)
             
     
