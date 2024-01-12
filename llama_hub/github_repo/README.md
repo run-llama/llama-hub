@@ -39,6 +39,54 @@ for doc in docs:
     print(doc.extra_info)
 ```
 
+### Azure DevOps
+
+```bash
+export AZURE_DEVOPS_BASEURL='...'
+export AZURE_DEVOPS_USERNAME='...'
+export AZURE_DEVOPS_PASSWORD='...'
+```
+
+```python
+import os
+
+from llama_index import download_loader
+download_loader("GithubRepositoryReader")
+
+from llama_hub.github_repo import GithubRepositoryReader, AzureDevOpsAdapter
+
+# Example: https://dev.azure.com/ahmetkarapinar/testProject/_git/testProject/commit/08633d3844192a69ab5011c20201dba3aced0a41?refName=refs%2Fheads%2Fmaster
+# 'ahmetkarapinar' is organization id
+# 'testProject' is project id
+# 'testProject' is repository id
+# '08633d3844192a69ab5011c20201dba3aced0a41' commit sha
+# 'master' branch name
+
+
+azure_devops_adapter = AzureDevOpsAdapter(
+    base_url=os.environ["AZURE_DEVOPS_BASE_URL"], # Ex. 'https://dev.azure.com/YOURORG'
+    username=os.environ["AZURE_DEVOPS_USERNAME"],
+    password=os.environ["AZURE_DEVOPS_PASSWORD"],
+)
+
+loader = GithubRepositoryReader(
+    github_client = azure_devops_adapter,
+    owner =                  "<your_project_id_goes_here>",
+    repo =                   "<your_repository_id_goes_here>",
+    filter_directories =     (["llama_index", "docs"], GithubRepositoryReader.FilterType.INCLUDE),
+    filter_file_extensions = ([".py"], GithubRepositoryReader.FilterType.INCLUDE),
+    verbose =                True,
+    concurrent_requests =    10,
+)
+
+docs = loader.load_data(branch="main")
+# alternatively, load from a specific commit:
+# docs = loader.load_data(commit_sha="a6c89159bf8e7086bea2f4305cff3f0a4102e370")
+
+for doc in docs:
+    print(doc.extra_info)
+```
+
 ## Examples
 
 This loader designed to be used as a way to load data into [Llama Index](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
