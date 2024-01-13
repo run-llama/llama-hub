@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "llama-hub"
-version = "0.0.70"
+version = "0.0.71"
 description = "A library of community-driven data loaders for LLMs. Use with LlamaIndex and/or LangChain. "
 authors = ["Jerry Liu", "Jesse Zhang"]
 # New attributes

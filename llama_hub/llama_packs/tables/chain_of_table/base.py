@@ -15,6 +15,7 @@ from llama_index.llms import OpenAI
 from llama_index.query_pipeline import QueryPipeline as QP, FnComponent, QueryComponent
 from llama_index.tools import FunctionTool
 from llama_index.bridge.pydantic import BaseModel
+from llama_index.utils import print_text
 import pandas as pd
 from typing import Any, Optional, Dict, Callable, List, Tuple
 import re
@@ -22,15 +23,15 @@ import re
 
 def _get_regex_parser_fn(regex: str) -> Callable:
     """Get regex parser."""
-    def _regex_parser(output: Any) -> Dict[str, Any]:
+    def _regex_parser(output: Any) -> List[str]:
         """Regex parser"""
         output = str(output)
         m = re.search(regex, output)
         args = m.group(1)
         if "," in args:
-            return args.split(",")
+            return [a.strip().strip("'\"") for a in args.split(",")]
         else:
-            return args
+            return [args.strip().strip("'\"")]
 
     return _regex_parser
 
@@ -52,10 +53,9 @@ class FunctionSchema(BaseModel):
 
     def parse_args_and_call_fn(self, table: pd.DataFrame, args: str) -> pd.DataFrame:
         """Parse args and call function."""
-        print(f"raw args: {args}")
+        # print(f"raw args: {args}")
         args = self.parse_args(args)
-        print(f"args: {(args, type(args))}")
-        return self.fn(pd.DataFrame, args)
+        return args, self.fn(table, args)
 
     def generate_prompt_component(self, **kwargs: Any) -> QueryComponent:
         """Generate prompt."""
@@ -68,7 +68,23 @@ class FunctionSchema(BaseModel):
 
 
 dynamic_plan_str = """\
-========================================= Prompt =========================================
+========================================= Atomic Operations =========================================
+If the table needs an extra inferred column to answer the question, we use f_add_column() to
+add this column. For example,
+/*
+col : Week | When | Kickoff | Opponent | Results; Final score | Results; Team record
+row 1 : 1 | Saturday, April 13 | 7:00 p.m. | at Rhein Fire | W 27-21 | 1-0
+row 2 : 2 | Saturday, April 20 | 7:00 p.m. | London Monarchs | W 37-3 | 2-0
+row 3 : 3 | Sunday, April 28 | 6:00 p.m. | at Barcelona Dragons | W 33-29 | 3-0
+*/
+Question : what is the date of the competition with highest attendance?
+The existing columns are: "Week", "When", "Kickoff", "Opponent", "Results; Final score",
+"Results; Team record", "Game site", "Attendance".
+Function : f_add_column(Attendance number)
+Explanation: the question asks about the date of the competition with highest score. Each
+row is about one competition. We extract the value from column "Attendance" and create a
+different column "Attendance number" for each row. The datatype is Numerical.
+
 If the table only needs a few rows to answer the question, we use f_select_row() to select
 these rows for it. For example,
 /*
@@ -78,20 +94,69 @@ row 2 : south melbourne | 9.12 (66) | footscray | 11.13 (79) | lake oval | 9154
 row 3 : richmond | 20.17 (137) | fitzroy | 13.22 (100) | mcg | 27651
 */
 Question : Whose home team score is higher, richmond or st kilda?
-Function: f_select_row(row 1, row 3)
+Function : f_select_row(row 1, row 3)
 Explanation: The question asks about the home team score of richmond and st kilda. We need
 to know the the information of richmond and st kilda in row 1 and row 3. We select row 1
 and row 3.
+
 If the table only needs a few columns to answer the question, we use
 f_select_column() to select these columns for it. For example,
-......
+/*
+col : Competition | Total Matches | Cardiff Win | Draw | Swansea Win
+row 1 : League | 55 | 19 | 16 | 20
+row 2 : FA Cup | 2 | 0 | 27 | 2
+row 3 : League Cup | 5 | 2 | 0 | 3
+*/
+Question : Are there cardiff wins that have a draw greater than 27?
+Function : f_select_column([cardiff win, draw])
+Explanation: The question asks about the cardiff wins that have a draw greater than 27.
+    We need to know the information of cardiff win and draw. We select column cardiff win and
+    draw.
+
 If the question asks about items with the same value and the number of these items, we use
 f_group_by() to group the items. For example,
-......
+/*
+col : Rank | Lane | Athlete | Time | Country
+row 1 : 1 | 6 | Manjeet Kaur (IND) | 52.17 | IND
+row 2 : 2 | 5 | Olga Tereshkova (KAZ) | 51.86 | KAZ
+row 3 : 3 | 4 | Pinki Pramanik (IND) | 53.06 | IND
+*/
+Question: tell me the number of athletes from japan.
+Function : f_group_by(Country)
+Explanation: The question asks about the number of athletes from India. Each row is about
+an athlete. We can group column "Country" to group the athletes from the same country.
+
 If the question asks about the order of items in a column, we use f_sort_by() to sort
 the items. For example,
-......
-Here are examples of using the operations to answer the question.
+/*
+col : Position | Club | Played | Points | Wins | Draws | Losses | Goals for | Goals against
+row 1 : 1 | Malaga CF | 42 | 79 | 22 | 13 | 7 | 72 | 47
+row 10 : 10 | CP Merida | 42 | 59 | 15 | 14 | 13 | 48 | 41
+row 3 : 3 | CD Numancia | 42 | 73 | 21 | 10 | 11 | 68 | 40
+*/
+Question: what club placed in the last position?
+Function : f_sort_by(Position)
+Explanation: the question asks about the club in the last position. Each row is about a
+club. We need to know the order of position from last to front. There is a column for
+position and the column name is Position. The datatype is Numerical.
+
+========================================= Operation Chain Task+Examples =========================================
+
+Your task is to construct an operation chain using the above operations to answer the questions.
+
+Some rules:
+- The operation chain must end with <END>.
+- Please use arrow -> to separate operations.
+- You can use any operation any number of times, in any order.
+- If the operation chain is incomplete, you must help complete it by adding the missing \
+    operation. For example in the below example, if the operation chain is \
+    'f_add_column(Date) -> f_select_row([row 1, row 2]) -> f_select_column([Date, League]) -> ' \
+    then you must add the following: 'f_sort_by(Date) -> <END>'
+- If the table is simplified/reduced enough to answer the question, ONLY WRITE <END>. \
+For instance, if the table is only 1 row or a small set of columns, PLEASE write \
+<END> - DON'T DO unnecessary operations.
+
+Here are some examples.
 /*
 col : Date | Division | League | Regular Season | Playoffs | Open Cup
 row 1 : 2001/01/02 | 2 | USL A-League | 4th, Western | Quarterfinals | Did not qualify
@@ -99,16 +164,28 @@ row 2 : 2002/08/06 | 2 | USL A-League | 2nd, Pacific | 1st Round | Did not quali
 row 5 : 2005/03/24 | 2 | USL First Division | 5th | Quarterfinals | 4th Round
 */
 Question: what was the last year where this team was a part of the usl a-league?
-Function Chain: f_add_column(Year) -> f_select_row(row 1, row 2) ->
-f_select_column(Year, League) -> f_sort_by(Year) -> <END>
-......
+Candidates: {candidates}
+Previous Function Chain: f_add_column(Date) -> f_select_row([row 1, row 2, row 5])
+Function Chain: f_select_column([Date, League]) -> f_sort_by(Date) -> <END>
+
+/*
+col : Rank | Cyclist | Country
+row 3 : 3 | Davide Rebellin (ITA) | ITA
+row 4 : 4 | Paolo Bettini (ITA) | ITA
+*/
+Question: Which italian cyclist placed in the top 10?
+Candidates: {candidates}
+Previous Function Chain: f_add_column(Country) -> f_select_row([row 3, row 4]) -> f_select_column([Rank, Cyclist, Country])
+Function Chain: <END>
+
+/*
 {serialized_table}
+*/
 Question: {question}
 Candidates: {candidates}
-Function Chain: {incomplete_function_chain}
+Previous Function Chain: {incomplete_function_chain}
+Function Chain: """
 
-======================================= Completion =======================================
-"""
 dynamic_plan_prompt = PromptTemplate(dynamic_plan_str)
 
 
@@ -135,9 +212,9 @@ different column "Attendance number" for each row. The datatype is Numerical.
 Therefore, the answer is: f_add_column(Attendance number). The value: 32092 | 34186 | 17503
 /*
 col : Rank | Lane | Player | Time
-row 1 : | 5 | Olga Tereshkova (KAZ) | 51.86
-row 2 : | 6 | Manjeet Kaur (IND) | 52.17
-row 3 : | 3 | Asami Tanno (JPN) | 53.04
+row 1 : 5 | Olga Tereshkova (KAZ) | 51.86
+row 2 : 6 | Manjeet Kaur (IND) | 52.17
+row 3 : 3 | Asami Tanno (JPN) | 53.04
 */
 Question: tell me the number of athletes from japan.
 The existing columns are: Rank, Lane, Player, Time.
@@ -190,6 +267,12 @@ class AddColumnSchema(FunctionSchema):
             "col_values": value_args,
         }
 
+    def parse_args_and_call_fn(self, table: pd.DataFrame, args: str) -> pd.DataFrame:
+        """Parse args and call function."""
+        # print(f"raw args: {args}")
+        args = self.parse_args(args)
+        return [args["col_name"]], self.fn(table, args)
+
 add_column_schema = AddColumnSchema()
         
 
@@ -197,13 +280,19 @@ add_column_schema = AddColumnSchema()
 select_column_str = """\
 Use f_select_column() to filter out useless columns in the table according to information
 in the statement and the table.
+
+Additional rules:
+- You must ONLY select from the valid set of columns, in the first row of the table marked with "col : ...".
+- You must NOT select the same column multiple times.
+- You must NOT select a row (e.g. select_column(League) in the example below is not allowed)
+
 /*
-col : Competition | Total Matches | Cardiff Win | Draw | Swansea Win
-row 1 : | League | 55 | 19 | 16 | 20
-row 2 : | FA Cup | 2 | 0 | 27 | 2
-row 3 : | League Cup | 5 | 2 | 0 | 3
+col : competition | total matches | cardiff win | draw | swansea win
+row 1 : League | 55 | 19 | 16 | 20
+row 2 : FA Cup | 2 | 0 | 27 | 2
+row 3 : League Cup | 5 | 2 | 0 | 3
 */
-statement : Are there cardiff wins that have a draw greater than 27?
+Question : Are there cardiff wins that have a draw greater than 27?
 similar words link to columns :
 no cardiff wins -> cardiff win
 a draw -> draw
@@ -213,9 +302,10 @@ semantic sentence link to columns :
 None
 The answer is : f_select_column([cardiff win, draw])
 
+/*
 {serialized_table}
-statement : {question}
-similar words link to columns : \
+*/
+Question : {question}
 """
 
 class SelectColumnSchema(FunctionSchema):
@@ -235,9 +325,7 @@ class SelectColumnSchema(FunctionSchema):
         assert isinstance(args, list)
         table = table.copy()
         # select columns from table
-        print(f"current table: {table}")
         table = table[args]
-        print(f"new table: {table}")
         return table
 
 select_column_schema = SelectColumnSchema()
@@ -307,6 +395,11 @@ class SelectRowSchema(FunctionSchema):
         """Call function."""
         # assert that args is a list
         assert isinstance(args, list)
+        # parse out args since it's in the format ["row 1", "row 2"], etc.
+        args = [int(arg.split(" ")[1]) - 1 for arg in args]
+
+        # print(f'SELECT ROW ARGS: {args}')
+
         table = table.copy()
         # select rows from table
         table = table.loc[args]
@@ -348,7 +441,8 @@ class GroupBySchema(FunctionSchema):
     def fn(self, table: pd.DataFrame, args: Any) -> pd.DataFrame:
         """Call function."""
         # assert that args is a string
-        assert isinstance(args, str)
+        assert isinstance(args, list) and len(args) == 1
+        args = str(args[0])
 
         table = table.copy()
         # group by column
@@ -371,6 +465,13 @@ row 1 : 1 | Malaga CF | 42 | 79 | 22 | 13 | 7 | 72 | 47
 row 10 : 10 | CP Merida | 42 | 59 | 15 | 14 | 13 | 48 | 41
 row 3 : 3 | CD Numancia | 42 | 73 | 21 | 10 | 11 | 68 | 40
 */
+
+More rules:
+- The answer MUST be in the format "the answer is: f_sort_by(Arg1)", where Arg1 is the
+column name.
+- The answer CANNOT include multiple columns
+- You CANNOT run f_sort_by on a row. For instance, f_sort_by(row 1) is not allowed.
+
 Question: what club placed in the last position?
 The existing columns are: Position, Club, Played, Points, Wins, Draws, Losses, Goals for,
 Goals against
@@ -397,7 +498,8 @@ class SortBySchema(FunctionSchema):
     def fn(self, table: pd.DataFrame, args: Any) -> pd.DataFrame:
         """Call function."""
         # assert that args is a string
-        assert isinstance(args, str)
+        assert isinstance(args, list) and len(args) == 1
+        args = str(args[0])
 
         table = table.copy()
         # sort by column
@@ -459,6 +561,7 @@ schema_mappings: Dict[str, FunctionSchema] = {
 
 def _dynamic_plan_parser(dynamic_plan: Any) -> Dict[str, Any]:
     """Parse dynamic plan."""
+    # print(f'RAW PLAN: {dynamic_plan}')
     dynamic_plan_str = str(dynamic_plan)
     # break out arrows
     tokens = dynamic_plan_str.split("->")
@@ -468,7 +571,7 @@ def _dynamic_plan_parser(dynamic_plan: Any) -> Dict[str, Any]:
         if key in first_token:
             return key
     # look at end token
-    if "<END>" in first_token:
+    if "<END>" in tokens[0]:
         return "<END>"
     raise ValueError(f"Could not parse dynamic plan: {dynamic_plan_str}")
 
@@ -496,7 +599,16 @@ def serialize_keys(keys: Any) -> str:
 
 def serialize_table(table: pd.DataFrame) -> str:
     """Serialize table."""
-    return table.to_markdown(tablefmt="github")
+    # return table.to_markdown(tablefmt="github")
+
+    def _esc_newl(s: str) -> str:
+        """Escape newlines."""
+        return s.replace("\n", "\\n")
+
+    output_str = f"col : {' | '.join([_esc_newl(c) for c in table.columns])}\n"
+    for i in range(len(table)):
+        output_str += f"row {i+1} : {' | '.join([_esc_newl(str(x)) for x in table.iloc[i]])}\n"
+    return output_str
 
 
 class ChainOfTableQueryEngine(CustomQueryEngine):
@@ -507,11 +619,13 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
     table: pd.DataFrame = Field(..., description="Table (in pandas).")
     llm: LLM = Field(..., description='LLM')
     max_iterations: int = Field(default=10, description="Max iterations.")
+    verbose: bool = Field(default=False, description="Verbose.")
 
     def __init__(
         self,
         table: pd.DataFrame,
         llm: Optional[LLM] = None,
+        verbose: bool = False,
         **kwargs: Any,
     ) -> None:
         """Init params."""
@@ -519,6 +633,7 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
         super().__init__(
             table=table,
             llm=llm,
+            verbose=verbose,
             **kwargs
         )
 
@@ -529,9 +644,14 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
 
         cur_table = self.table.copy()
         
-        for _ in range(self.max_iterations):
-            print("ITERATION")
-            print(serialize_table(cur_table))
+        for iter in range(self.max_iterations):
+            if self.verbose:
+                print_text(f"> Iteration: {iter}\n", color="green")
+                print_text(f"> Current table:\n{serialize_table}\n\n", color="blue")
+                
+            # print("ITERATION")
+            # print(serialize_table(cur_table))
+            print(serialize_chain(op_chain))
             # generate dynamic plan
             dynamic_plan_prompt = self.dynamic_plan_prompt.as_query_component(
                 partial={
@@ -540,6 +660,9 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
                     "incomplete_function_chain": serialize_chain(op_chain),
                 }
             )
+
+            print(dynamic_plan_prompt.run_component(question=query_str)["prompt"])
+
             dynamic_plan_chain = QP(chain=[dynamic_plan_prompt, self.llm, dynamic_plan_parser])
             key = dynamic_plan_chain.run(question=query_str)
             print((query_str, key))
@@ -550,11 +673,12 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
             fn_prompt = schema_mappings[key].generate_prompt_component(
                 serialized_table=serialize_table(cur_table),
             )
+            # print('FN PROMPT')
+            # print(fn_prompt.run_component(question=query_str))
             generate_args_chain = QP(chain=[fn_prompt, self.llm])
             raw_args = generate_args_chain.run(question=query_str)
-            cur_table = schema_mappings[key].parse_args_and_call_fn(cur_table, raw_args)
+            args, cur_table = schema_mappings[key].parse_args_and_call_fn(cur_table, raw_args)
             
-            # print(args)
             # # pass args to function
             # fn = schema_mappings[key].fn.partial(cur_table)
             # # run function, get new table
@@ -570,6 +694,6 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
         )
         query_chain = QP(chain=[query_prompt, self.llm])
         response = query_chain.run(question=query_str)
-        return Response(response=response)
+        return Response(response=str(response))
             
     
