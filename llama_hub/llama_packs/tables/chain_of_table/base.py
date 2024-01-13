@@ -14,7 +14,6 @@ from llama_index.bridge.pydantic import Field
 from llama_index.llms.llm import LLM
 from llama_index.llms import OpenAI
 from llama_index.query_pipeline import QueryPipeline as QP, FnComponent, QueryComponent
-from llama_index.tools import FunctionTool
 from llama_index.bridge.pydantic import BaseModel
 from llama_index.utils import print_text
 import pandas as pd
@@ -56,7 +55,6 @@ class FunctionSchema(BaseModel):
 
     def parse_args_and_call_fn(self, table: pd.DataFrame, args: str) -> pd.DataFrame:
         """Parse args and call function."""
-        # print(f"raw args: {args}")
         args = self.parse_args(args)
         return args, self.fn(table, args)
 
@@ -271,7 +269,6 @@ class AddColumnSchema(FunctionSchema):
 
     def parse_args_and_call_fn(self, table: pd.DataFrame, args: str) -> pd.DataFrame:
         """Parse args and call function."""
-        # print(f"raw args: {args}")
         args = self.parse_args(args)
         return [args["col_name"]], self.fn(table, args)
 
@@ -404,8 +401,6 @@ class SelectRowSchema(FunctionSchema):
         assert isinstance(args, list)
         # parse out args since it's in the format ["row 1", "row 2"], etc.
         args = [int(arg.split(" ")[1]) - 1 for arg in args]
-
-        # print(f'SELECT ROW ARGS: {args}')
 
         table = table.copy()
         # select rows from table
@@ -574,7 +569,6 @@ schema_mappings: Dict[str, FunctionSchema] = {
 
 def _dynamic_plan_parser(dynamic_plan: Any) -> Dict[str, Any]:
     """Parse dynamic plan."""
-    # print(f'RAW PLAN: {dynamic_plan}')
     dynamic_plan_str = str(dynamic_plan)
     # break out arrows
     tokens = dynamic_plan_str.split("->")
@@ -674,14 +668,11 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
                 }
             )
 
-            print(dynamic_plan_prompt.run_component(question=query_str)["prompt"])
-
             dynamic_plan_chain = QP(
                 chain=[dynamic_plan_prompt, self.llm, dynamic_plan_parser],
                 callback_manager=self.callback_manager,
             )
             key = dynamic_plan_chain.run(question=query_str)
-            print((query_str, key))
             if key == "<END>":
                 if self.verbose:
                     print("> Ending operation chain.")
@@ -691,8 +682,6 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
             fn_prompt = schema_mappings[key].generate_prompt_component(
                 serialized_table=serialize_table(cur_table),
             )
-            # print('FN PROMPT')
-            # print(fn_prompt.run_component(question=query_str))
             generate_args_chain = QP(
                 chain=[fn_prompt, self.llm], callback_manager=self.callback_manager
             )
@@ -701,15 +690,12 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
                 cur_table, raw_args
             )
 
-            # # pass args to function
-            # fn = schema_mappings[key].fn.partial(cur_table)
-            # # run function, get new table
-            # cur_table = fn(args)
-
             op_chain.append((key, args))
             if self.verbose:
-                print_text(f"> New Operation + Args: {key}({args})", color="pink")
-                print_text(f"> Current chain: {serialize_chain(op_chain)}\n", color="pink")
+                print_text(f"> New Operation + Args: {key}({args})\n", color="pink")
+                print_text(
+                    f"> Current chain: {serialize_chain(op_chain)}\n", color="pink"
+                )
 
         # generate query prompt
         query_prompt = self.query_prompt.as_query_component(
@@ -718,12 +704,10 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
             }
         )
         query_chain = QP(
-            chain=[query_prompt, self.llm],
-            callback_manager=self.callback_manager
+            chain=[query_prompt, self.llm], callback_manager=self.callback_manager
         )
         response = query_chain.run(question=query_str)
         return Response(response=str(response))
-
 
 
 class ChainOfTablePack(BaseLlamaPack):
