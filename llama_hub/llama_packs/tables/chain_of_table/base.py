@@ -5,6 +5,7 @@ https://arxiv.org/pdf/2401.04398v1.pdf
 
 """
 
+from llama_index.llama_pack.base import BaseLlamaPack
 from abc import abstractmethod
 from llama_index.prompts import PromptTemplate
 from llama_index.query_engine import CustomQueryEngine
@@ -23,6 +24,7 @@ import re
 
 def _get_regex_parser_fn(regex: str) -> Callable:
     """Get regex parser."""
+
     def _regex_parser(output: Any) -> List[str]:
         """Regex parser"""
         output = str(output)
@@ -38,6 +40,7 @@ def _get_regex_parser_fn(regex: str) -> Callable:
 
 class FunctionSchema(BaseModel):
     """Function schema."""
+
     prompt: PromptTemplate = Field(..., description="Prompt.")
     regex: Optional[str] = Field(default=None, description="Regex.")
 
@@ -189,7 +192,6 @@ Function Chain: """
 dynamic_plan_prompt = PromptTemplate(dynamic_plan_str)
 
 
-
 ## function prompts
 add_column_str = """\
 To answer the question, we can first use f_add_column() to add more columns to the table.
@@ -273,8 +275,8 @@ class AddColumnSchema(FunctionSchema):
         args = self.parse_args(args)
         return [args["col_name"]], self.fn(table, args)
 
+
 add_column_schema = AddColumnSchema()
-        
 
 
 select_column_str = """\
@@ -308,8 +310,10 @@ The answer is : f_select_column([cardiff win, draw])
 Question : {question}
 """
 
+
 class SelectColumnSchema(FunctionSchema):
     """Select column schema."""
+
     def __init__(self, **kwargs: Any) -> None:
         """Init params."""
         prompt = PromptTemplate(select_column_str)
@@ -328,8 +332,8 @@ class SelectColumnSchema(FunctionSchema):
         table = table[args]
         return table
 
-select_column_schema = SelectColumnSchema()
 
+select_column_schema = SelectColumnSchema()
 
 
 # select_args_str = """\
@@ -380,8 +384,11 @@ The answer is : f_select_row([row 5])
 statement : {question}
 explain : \
 """
+
+
 class SelectRowSchema(FunctionSchema):
     """Select row schema."""
+
     def __init__(self, **kwargs: Any) -> None:
         """Init params."""
         prompt = PromptTemplate(select_row_str)
@@ -404,8 +411,10 @@ class SelectRowSchema(FunctionSchema):
         # select rows from table
         table = table.loc[args]
         return table
+
+
 select_row_schema = SelectRowSchema()
-        
+
 
 group_by_str = """\
 To answer the question, we can first use f_group_by() to group the values in a column.
@@ -427,8 +436,10 @@ Therefore, the answer is: f_group_by(Country).
 Question: {question}
 Explanation: """
 
+
 class GroupBySchema(FunctionSchema):
     """Group by fn schema."""
+
     def __init__(self, **kwargs: Any) -> None:
         """Init params."""
         prompt = PromptTemplate(group_by_str)
@@ -447,6 +458,7 @@ class GroupBySchema(FunctionSchema):
         table = table.copy()
         # group by column
         return table.groupby(args).count()
+
 
 group_by_schema = GroupBySchema()
 
@@ -484,8 +496,10 @@ Therefore, the answer is: f_sort_by(Position), the order is "large to small".
 Question: {question}
 Explanation: """
 
+
 class SortBySchema(FunctionSchema):
     """Sort by fn schema."""
+
     def __init__(self, **kwargs: Any) -> None:
         """Init params."""
         prompt = PromptTemplate(sort_by_str)
@@ -504,6 +518,7 @@ class SortBySchema(FunctionSchema):
         table = table.copy()
         # sort by column
         return table.sort_values(args)
+
 
 sort_by_schema = SortBySchema()
 
@@ -548,7 +563,6 @@ The answer is: """
 query_prompt = PromptTemplate(query_prompt_str)
 
 
-
 schema_mappings: Dict[str, FunctionSchema] = {
     "f_add_column": add_column_schema,
     "f_select_column": select_column_schema,
@@ -556,7 +570,6 @@ schema_mappings: Dict[str, FunctionSchema] = {
     "f_group_by": group_by_schema,
     "f_sort_by": sort_by_schema,
 }
-
 
 
 def _dynamic_plan_parser(dynamic_plan: Any) -> Dict[str, Any]:
@@ -584,18 +597,19 @@ def serialize_chain(op_chain: List[Tuple[str, str]]) -> str:
     Return string in form: fn1(args1) -> fn2(args2) -> ...
 
     Leave dangling arrow at end.
-    
+
     """
     # implement
     output_str = ""
     for op in op_chain:
         output_str += f"{op[0]}({op[1]}) -> "
     return output_str
-    
+
 
 def serialize_keys(keys: Any) -> str:
     """Serialize keys."""
     return ", ".join(list(keys))
+
 
 def serialize_table(table: pd.DataFrame) -> str:
     """Serialize table."""
@@ -607,17 +621,23 @@ def serialize_table(table: pd.DataFrame) -> str:
 
     output_str = f"col : {' | '.join([_esc_newl(c) for c in table.columns])}\n"
     for i in range(len(table)):
-        output_str += f"row {i+1} : {' | '.join([_esc_newl(str(x)) for x in table.iloc[i]])}\n"
+        output_str += (
+            f"row {i+1} : {' | '.join([_esc_newl(str(x)) for x in table.iloc[i]])}\n"
+        )
     return output_str
 
 
 class ChainOfTableQueryEngine(CustomQueryEngine):
     """Chain of table query engine."""
 
-    dynamic_plan_prompt: PromptTemplate = Field(default=dynamic_plan_prompt, description="Dynamic plan prompt.")
-    query_prompt: PromptTemplate = Field(default=query_prompt, description="Query prompt.")
+    dynamic_plan_prompt: PromptTemplate = Field(
+        default=dynamic_plan_prompt, description="Dynamic plan prompt."
+    )
+    query_prompt: PromptTemplate = Field(
+        default=query_prompt, description="Query prompt."
+    )
     table: pd.DataFrame = Field(..., description="Table (in pandas).")
-    llm: LLM = Field(..., description='LLM')
+    llm: LLM = Field(..., description="LLM")
     max_iterations: int = Field(default=10, description="Max iterations.")
     verbose: bool = Field(default=False, description="Verbose.")
 
@@ -630,12 +650,7 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
     ) -> None:
         """Init params."""
         llm = llm or OpenAI(model="gpt-3.5-turbo")
-        super().__init__(
-            table=table,
-            llm=llm,
-            verbose=verbose,
-            **kwargs
-        )
+        super().__init__(table=table, llm=llm, verbose=verbose, **kwargs)
 
     def custom_query(self, query_str: str) -> Response:
         """Run chain of thought query engine."""
@@ -643,15 +658,13 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
         dynamic_plan_parser = FnComponent(fn=_dynamic_plan_parser)
 
         cur_table = self.table.copy()
-        
+
         for iter in range(self.max_iterations):
             if self.verbose:
                 print_text(f"> Iteration: {iter}\n", color="green")
-                print_text(f"> Current table:\n{serialize_table(cur_table)}\n\n", color="blue")
-                
-            # print("ITERATION")
-            # print(serialize_table(cur_table))
-            print(serialize_chain(op_chain))
+                print_text(
+                    f"> Current table:\n{serialize_table(cur_table)}\n\n", color="blue"
+                )
             # generate dynamic plan
             dynamic_plan_prompt = self.dynamic_plan_prompt.as_query_component(
                 partial={
@@ -663,10 +676,15 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
 
             print(dynamic_plan_prompt.run_component(question=query_str)["prompt"])
 
-            dynamic_plan_chain = QP(chain=[dynamic_plan_prompt, self.llm, dynamic_plan_parser])
+            dynamic_plan_chain = QP(
+                chain=[dynamic_plan_prompt, self.llm, dynamic_plan_parser],
+                callback_manager=self.callback_manager,
+            )
             key = dynamic_plan_chain.run(question=query_str)
             print((query_str, key))
             if key == "<END>":
+                if self.verbose:
+                    print("> Ending operation chain.")
                 break
 
             # generate args from key
@@ -675,16 +693,23 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
             )
             # print('FN PROMPT')
             # print(fn_prompt.run_component(question=query_str))
-            generate_args_chain = QP(chain=[fn_prompt, self.llm])
+            generate_args_chain = QP(
+                chain=[fn_prompt, self.llm], callback_manager=self.callback_manager
+            )
             raw_args = generate_args_chain.run(question=query_str)
-            args, cur_table = schema_mappings[key].parse_args_and_call_fn(cur_table, raw_args)
-            
+            args, cur_table = schema_mappings[key].parse_args_and_call_fn(
+                cur_table, raw_args
+            )
+
             # # pass args to function
             # fn = schema_mappings[key].fn.partial(cur_table)
             # # run function, get new table
             # cur_table = fn(args)
-            
+
             op_chain.append((key, args))
+            if self.verbose:
+                print_text(f"> New Operation + Args: {key}({args})", color="pink")
+                print_text(f"> Current chain: {serialize_chain(op_chain)}\n", color="pink")
 
         # generate query prompt
         query_prompt = self.query_prompt.as_query_component(
@@ -692,8 +717,42 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
                 "serialized_table": serialize_table(cur_table),
             }
         )
-        query_chain = QP(chain=[query_prompt, self.llm])
+        query_chain = QP(
+            chain=[query_prompt, self.llm],
+            callback_manager=self.callback_manager
+        )
         response = query_chain.run(question=query_str)
         return Response(response=str(response))
-            
-    
+
+
+
+class ChainOfTablePack(BaseLlamaPack):
+    """Chain of table pack."""
+
+    def __init__(
+        self,
+        table: pd.DataFrame,
+        llm: Optional[LLM] = None,
+        verbose: bool = False,
+        **kwargs: Any,
+    ) -> None:
+        """Init params."""
+
+        self.query_engine = ChainOfTableQueryEngine(
+            table=table,
+            llm=llm,
+            verbose=verbose,
+            **kwargs,
+        )
+
+    def get_modules(self) -> Dict[str, Any]:
+        """Get modules."""
+        return {
+            "query_engine": self.query_engine,
+            "llm": self.query_engine.llm,
+            "query_prompt": self.query_engine.query_prompt,
+        }
+
+    def run(self, *args: Any, **kwargs: Any) -> Any:
+        """Run the pipeline."""
+        return self.query_engine.run(*args, **kwargs)
