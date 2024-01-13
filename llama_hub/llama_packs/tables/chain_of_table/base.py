@@ -647,7 +647,7 @@ class ChainOfTableQueryEngine(CustomQueryEngine):
         for iter in range(self.max_iterations):
             if self.verbose:
                 print_text(f"> Iteration: {iter}\n", color="green")
-                print_text(f"> Current table:\n{serialize_table}\n\n", color="blue")
+                print_text(f"> Current table:\n{serialize_table(cur_table)}\n\n", color="blue")
                 
             # print("ITERATION")
             # print(serialize_table(cur_table))
