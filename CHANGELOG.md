@@ -1,5 +1,10 @@
 # ChangeLog
 
+## v[0.0.71] - 2024-01-13
+
+### New Features
+-  add chain of table llamapack  (#859)
+
 ## v[0.0.70] - 2024-01-11
 
 ### New Features
