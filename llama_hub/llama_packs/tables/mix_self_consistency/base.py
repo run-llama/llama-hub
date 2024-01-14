@@ -25,7 +25,7 @@ from llama_index.response.schema import RESPONSE_TYPE
 
 text_prompt_str = """\
 You are an advanced AI capable of analyzing and understanding information within \
-tables. Read the table below regarding "{title}".
+tables. Read the table below.
 
 {table}
 
@@ -59,17 +59,14 @@ async def async_textual_reasoning(
     llm: LLM,
     verbose: bool = False,
     temperature: float = 0.0,
-    title: Optional[str] = None,
 ) -> List[str]:
     llm.temperature = temperature
-
     output_parser = FinalAnswerOutputParser()
-
     markdown_table = table.to_markdown()
+
     chain = QP(chain=[text_prompt, llm, output_parser], verbose=verbose)
 
     response = await chain.arun(
-        title=title or "Untitled Table",
         question=query_str,
         table=markdown_table,
     )
@@ -80,30 +77,25 @@ async def async_textual_reasoning(
 
 # NOTE: this is adapted from the PyAgent prompt
 pandas_query_str = """\
-You are working with a pandas dataframe in Python. The name of the dataframe is `df`. Your task is
-to use `python_repl_ast` to answer the question posed to you.
-
-{instruction_str}
-
-You are provided with a table regarding "{title}". This is the result of `print(df.to_markdown())`:
+You are working with a pandas dataframe in Python. 
+The name of the dataframe is `df`.
+This is the result of `print(df.to_markdown())`:
 {df_str}
 
-**Note**: All cells in the table should be considered as `object` data type, regardless of their
+Additional Guidelines:
+- **Aggregated Rows**: Be cautious of rows that aggregate data such as 'total', 'sum', or 'average'.
+Ensure these rows do not influence your results inappropriately.
+- **Note**: All cells in the table should be considered as `object` data type, regardless of their
 appearance.
 
-Query: {query_str}
+You must follow the instructions below to answer the question:
+{instruction_str}
+
+Question: {query_str}
 Expression:
 """
 
 pandas_prompt = PromptTemplate(template=pandas_query_str)
-
-pandas_instruction_str = """\
-Guidelines:
-- **Aggregated Rows**: Be cautious of rows that aggregate data such as 'total', 'sum', or 'average'.
-Ensure these rows do not influence your results inappropriately.
-- **Data Verification**: Before concluding the final answer, always verify that your observations
-align with the original table and question.
-"""
 
 
 async def async_symbolic_reasoning(
@@ -118,7 +110,6 @@ async def async_symbolic_reasoning(
     query_engine = PandasQueryEngine(
         df=table,
         llm=llm,
-        instruction_str=pandas_instruction_str,
         pandas_prompt=pandas_prompt,
         head=None,
         verbose=verbose,
@@ -135,7 +126,7 @@ class AggregationMode(str, Enum):
 
 
 self_evaluation_prompt_str = """\
-Below is a markdown table regarding "{title}":
+Below is a markdown table:
 
 {table}
 
@@ -195,13 +186,11 @@ def aggregate_self_evaluation(
     text_result: str,
     symbolic_result: str,
     llm: LLM,
-    title: Optional[str] = None,
 ) -> str:
     output_parser = EvalOutputParser()
     markdown_table = table.to_markdown()
     chain = QP(chain=[self_evaluation_prompt, llm, output_parser], verbose=False)
     response = chain.run(
-        title=title or "Untitled Table",
         question=query_str,
         table=markdown_table,
         textual_answer=text_result,
@@ -263,8 +252,8 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
     verbose: bool = Field(
         default=False, description="Whether to print debug information."
     )
-    text_paths = Field(default=5, description="Number of textual reasoning paths.")
-    symbolic_paths = Field(default=5, description="Number of symbolic reasoning paths.")
+    text_paths: int = Field(default=5, description="Number of textual reasoning paths.")
+    symbolic_paths: int = Field(default=5, description="Number of symbolic reasoning paths.")
     aggregation_mode: AggregationMode = Field(
         default=AggregationMode.SELF_CONSISTENCY,
         description="Aggregation mode.",
