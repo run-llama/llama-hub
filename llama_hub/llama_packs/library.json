@@ -247,5 +247,10 @@
     "id": "llama_packs/tables/chain_of_table",
     "author": "jerryjliu",
     "keywords": ["chain", "table", "tables"]
+  },
+  "MultiTenancyRAGPack": {
+    "id": "llama_packs/multi_tenancy_rag",
+    "author": "ravi03071991",
+    "keywords": ["multi-tenancy", "multi", "tenancy", "rag"]
   }
 }
