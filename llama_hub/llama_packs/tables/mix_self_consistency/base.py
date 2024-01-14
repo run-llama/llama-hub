@@ -82,17 +82,18 @@ The name of the dataframe is `df`.
 This is the result of `print(df.to_markdown())`:
 {df_str}
 
+Here's the input query: {query_str}.
+
 Additional Guidelines:
 - **Aggregated Rows**: Be cautious of rows that aggregate data such as 'total', 'sum', or 'average'.
 Ensure these rows do not influence your results inappropriately.
 - **Note**: All cells in the table should be considered as `object` data type, regardless of their
 appearance.
 
-You must follow the instructions below to answer the question:
+Given the df information and the input query, please follow these instructions:
 {instruction_str}
 
-Question: {query_str}
-Expression:
+Output:
 """
 
 pandas_prompt = PromptTemplate(template=pandas_query_str)
@@ -221,7 +222,12 @@ def aggregate(
     symbolic_results: List[str],
     llm: LLM,
     aggregation_mode: AggregationMode,
+    verbose: bool = False,
 ) -> str:
+    if verbose:
+        print(f"Text results: {text_results}")
+        print(f"Symbolic results: {symbolic_results}")
+
     if aggregation_mode == AggregationMode.SELF_EVALUATION:
         assert (
             len(text_results) == 1 and len(symbolic_results) == 1
@@ -331,6 +337,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
             symbolic_results,
             self.llm,
             self.aggregation_mode,
+            verbose=self.verbose,
         )
 
     async def acustom_query(self, query_str: str) -> RESPONSE_TYPE:
@@ -373,6 +380,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
             symbolic_results,
             self.llm,
             self.aggregation_mode,
+            verbose=self.verbose,
         )
 
 
