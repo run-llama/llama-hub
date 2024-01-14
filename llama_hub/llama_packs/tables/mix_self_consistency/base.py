@@ -266,7 +266,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
     text_paths = Field(default=5, description="Number of textual reasoning paths.")
     symbolic_paths = Field(default=5, description="Number of symbolic reasoning paths.")
     aggregation_mode: AggregationMode = Field(
-        default=AggregationMode.MIX_SELF_CONSISTENCY,
+        default=AggregationMode.SELF_CONSISTENCY,
         description="Aggregation mode.",
     )
 
