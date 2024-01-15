@@ -230,7 +230,7 @@ def aggregate(
     verbose: bool = False,
 ) -> str:
     if verbose:
-        print(f'Aggregation mode: {aggregation_mode}')
+        print(f"Aggregation mode: {aggregation_mode}")
         print(f"Text results: {text_results}")
         print(f"Symbolic results: {symbolic_results}")
 
@@ -239,7 +239,12 @@ def aggregate(
             len(text_results) == 1 and len(symbolic_results) == 1
         ), "Must use exactly 1 text reasoning path and 1 symbolic reasoning path."
         result = aggregate_self_evaluation(
-            table, query_str, text_results[0], symbolic_results[0], llm, verbose=verbose,
+            table,
+            query_str,
+            text_results[0],
+            symbolic_results[0],
+            llm,
+            verbose=verbose,
         )
     elif aggregation_mode == AggregationMode.SELF_CONSISTENCY:
         result = aggregate_self_consistency(text_results + symbolic_results)
@@ -265,7 +270,9 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
         default=False, description="Whether to print debug information."
     )
     text_paths: int = Field(default=5, description="Number of textual reasoning paths.")
-    symbolic_paths: int = Field(default=5, description="Number of symbolic reasoning paths.")
+    symbolic_paths: int = Field(
+        default=5, description="Number of symbolic reasoning paths."
+    )
     aggregation_mode: AggregationMode = Field(
         default=AggregationMode.SELF_CONSISTENCY,
         description="Aggregation mode.",
@@ -405,10 +412,14 @@ class MixSelfConsistencyPack(BaseLlamaPack):
         **kwargs: Any,
     ) -> None:
         self.query_engine = MixSelfConsistencyQueryEngine(
-            table=table, llm=llm, verbose=verbose, 
-            normalize_table=normalize_table, text_paths=text_paths,
-            symbolic_paths=symbolic_paths, aggregation_mode=aggregation_mode,
-            **kwargs
+            table=table,
+            llm=llm,
+            verbose=verbose,
+            normalize_table=normalize_table,
+            text_paths=text_paths,
+            symbolic_paths=symbolic_paths,
+            aggregation_mode=aggregation_mode,
+            **kwargs,
         )
 
     def get_modules(self) -> Dict[str, Any]:
