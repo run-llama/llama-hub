@@ -604,6 +604,17 @@
       "url"
     ]
   },
+  "WholeSiteReader": {
+    "id": "web/whole_site",
+    "author": "an-bluecat",
+    "keywords": [
+      "selenium",
+      "scraper",
+      "BFS",
+      "web",
+      "web reader"
+    ]
+  },
   "GoogleSheetsReader": {
     "id": "google_sheets",
     "author": "piroz"
