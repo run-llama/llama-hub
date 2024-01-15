@@ -60,6 +60,7 @@ async def async_textual_reasoning(
     verbose: bool = False,
     temperature: float = 0.0,
 ) -> List[str]:
+    # TODO: improve
     llm.temperature = temperature
     output_parser = FinalAnswerOutputParser()
     markdown_table = table.to_markdown()
@@ -75,8 +76,8 @@ async def async_textual_reasoning(
 
 # ===== Symbolic Reasoning =====
 
-# NOTE: this is adapted from the PyAgent prompt
-pandas_query_str = """\
+# NOTE: this is adapted from the PyAgent prompt and pandas query engine prompt
+pandas_prompt_str = """\
 You are working with a pandas dataframe in Python. 
 The name of the dataframe is `df`.
 This is the result of `print(df.to_markdown())`:
@@ -96,23 +97,24 @@ Given the df information and the input query, please follow these instructions:
 Output:
 """
 
-pandas_prompt = PromptTemplate(template=pandas_query_str)
+pandas_prompt = PromptTemplate(template=pandas_prompt_str)
 
 
 async def async_symbolic_reasoning(
-    table: pd.DataFrame,
+    df: pd.DataFrame,
     query_str: str,
     llm: LLM,
     verbose: bool,
     temperature: float = 0.0,
 ) -> str:
+    # TODO: improve
     llm.temperature = temperature
 
     query_engine = PandasQueryEngine(
-        df=table,
+        df=df,
         llm=llm,
         pandas_prompt=pandas_prompt,
-        head=None,
+        head=len(df),
         verbose=verbose,
     )
     response = await query_engine.aquery(query_str)
@@ -121,8 +123,8 @@ async def async_symbolic_reasoning(
 
 # ===== Reasoning Aggregation =====
 class AggregationMode(str, Enum):
-    SELF_CONSISTENCY = "self_consistency"
-    SELF_EVALUATION = "self_evaluation"
+    SELF_CONSISTENCY = "self-consistency"
+    SELF_EVALUATION = "self-evaluation"
     NONE = "none"
 
 
@@ -182,15 +184,17 @@ class EvalOutputParser(ChainableOutputParser):
 
 
 def aggregate_self_evaluation(
-    table: pd.DataFrame,
+    df: pd.DataFrame,
     query_str: str,
     text_result: str,
     symbolic_result: str,
     llm: LLM,
+    verbose: bool = False,
 ) -> str:
     output_parser = EvalOutputParser()
-    markdown_table = table.to_markdown()
-    chain = QP(chain=[self_evaluation_prompt, llm, output_parser], verbose=False)
+    markdown_table = df.to_markdown()
+
+    chain = QP(chain=[self_evaluation_prompt, llm, output_parser], verbose=verbose)
     response = chain.run(
         question=query_str,
         table=markdown_table,
@@ -206,6 +210,7 @@ def aggregate_self_evaluation(
 
 
 def aggregate_self_consistency(results: List[str]) -> str:
+    # TODO: currently assumes exact match, can be improved with fuzzy matches
     counts = {}
     for result in results:
         if result in counts:
@@ -225,6 +230,7 @@ def aggregate(
     verbose: bool = False,
 ) -> str:
     if verbose:
+        print(f'Aggregation mode: {aggregation_mode}')
         print(f"Text results: {text_results}")
         print(f"Symbolic results: {symbolic_results}")
 
@@ -233,7 +239,7 @@ def aggregate(
             len(text_results) == 1 and len(symbolic_results) == 1
         ), "Must use exactly 1 text reasoning path and 1 symbolic reasoning path."
         result = aggregate_self_evaluation(
-            table, query_str, text_results[0], symbolic_results[0], llm
+            table, query_str, text_results[0], symbolic_results[0], llm, verbose=verbose,
         )
     elif aggregation_mode == AggregationMode.SELF_CONSISTENCY:
         result = aggregate_self_consistency(text_results + symbolic_results)
@@ -352,7 +358,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
 
         for _ in range(self.text_paths):
             task = async_textual_reasoning(
-                self.table,
+                self.df,
                 query_str,
                 self.llm,
                 self.verbose,
@@ -362,7 +368,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
 
         for _ in range(self.symbolic_paths):
             task = async_symbolic_reasoning(
-                self.table, query_str, self.llm, self.verbose, temperature=temperature
+                self.df, query_str, self.llm, self.verbose, temperature=temperature
             )
             tasks.append(task)
 
@@ -374,7 +380,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
                 symbolic_results.append(response)
 
         return aggregate(
-            self.table,
+            self.df,
             query_str,
             text_results,
             symbolic_results,
@@ -392,10 +398,17 @@ class MixSelfConsistencyPack(BaseLlamaPack):
         table: pd.DataFrame,
         llm: Optional[LLMType] = None,
         verbose: bool = False,
+        normalize_table: bool = False,
+        text_paths: int = 2,
+        symbolic_paths: int = 2,
+        aggregation_mode: AggregationMode = AggregationMode.SELF_CONSISTENCY,
         **kwargs: Any,
     ) -> None:
         self.query_engine = MixSelfConsistencyQueryEngine(
-            table=table, llm=llm, verbose=verbose, **kwargs
+            table=table, llm=llm, verbose=verbose, 
+            normalize_table=normalize_table, text_paths=text_paths,
+            symbolic_paths=symbolic_paths, aggregation_mode=aggregation_mode,
+            **kwargs
         )
 
     def get_modules(self) -> Dict[str, Any]:
