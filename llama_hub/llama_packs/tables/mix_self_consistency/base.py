@@ -253,7 +253,7 @@ def aggregate(
 
 
 class MixSelfConsistencyQueryEngine(CustomQueryEngine):
-    table: pd.DataFrame = Field(..., description="Table (in pandas).")
+    df: pd.DataFrame = Field(..., description="Table (in pandas).")
     llm: LLM = Field(..., description="LLM to use.")
     verbose: bool = Field(
         default=False, description="Whether to print debug information."
@@ -267,7 +267,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
 
     def __init__(
         self,
-        table: pd.DataFrame,
+        df: pd.DataFrame,
         llm: Optional[LLMType] = None,
         verbose: bool = False,
         normalize_table: bool = False,
@@ -279,7 +279,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
         llm = resolve_llm(llm)
 
         super().__init__(
-            table=table,
+            df=df,
             llm=llm,
             verbose=verbose,
             normalize_table=normalize_table,
@@ -303,7 +303,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
                 print(f"Textual Reasoning Path {ind + 1}/{self.text_paths}")
             response = asyncio.run(
                 async_textual_reasoning(
-                    self.table,
+                    self.df,
                     query_str,
                     self.llm,
                     self.verbose,
@@ -319,7 +319,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
                 print(f"Symbolic Reasoning Path {ind + 1}/{self.symbolic_paths}")
             response = asyncio.run(
                 async_symbolic_reasoning(
-                    self.table,
+                    self.df,
                     query_str,
                     self.llm,
                     self.verbose,
@@ -331,7 +331,7 @@ class MixSelfConsistencyQueryEngine(CustomQueryEngine):
             symbolic_results.append(response)
 
         return aggregate(
-            self.table,
+            self.df,
             query_str,
             text_results,
             symbolic_results,
@@ -407,4 +407,4 @@ class MixSelfConsistencyPack(BaseLlamaPack):
 
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
-        self.query_engine.run(*args, **kwargs)
+        self.query_engine.query(*args, **kwargs)
