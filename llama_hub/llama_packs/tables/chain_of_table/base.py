@@ -739,4 +739,4 @@ class ChainOfTablePack(BaseLlamaPack):
 
     def run(self, *args: Any, **kwargs: Any) -> Any:
         """Run the pipeline."""
-        return self.query_engine.run(*args, **kwargs)
+        return self.query_engine.query(*args, **kwargs)
