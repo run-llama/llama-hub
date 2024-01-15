@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v[0.0.72] - 2024-01-15
+
+### New Features
+- Add mix self consistency llama pack (for table QA)   (#861)
+- Add MultiTenancyRAGPack (#862)
+
 ## v[0.0.71] - 2024-01-13
 
 ### New Features
