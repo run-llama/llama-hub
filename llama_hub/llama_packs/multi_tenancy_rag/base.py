@@ -34,7 +34,7 @@ class MultiTenancyRAGPack(BaseLlamaPack):
                 SentenceSplitter(chunk_size=512, chunk_overlap=20),
             ]
         )
-        nodes = pipeline.run(documents=documents)
+        nodes = pipeline.run(documents=documents, num_workers=4)
         # Insert nodes into the index
         self.index.insert_nodes(nodes)
 
