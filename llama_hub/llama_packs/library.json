@@ -216,5 +216,46 @@
     "id": "llama_packs/llama_guard_moderator",
     "author": "wenqiglantz",
     "keywords": ["llama guard", "purple llama", "llm security", "prompt injection"]
+  },
+  "LLMCompilerAgentPack": {
+    "id": "llama_packs/agents/llm_compiler",
+    "author": "jerryjliu",
+    "keywords": ["llm", "compiler", "agent"],
+    "extra_files": ["output_parser.py", "prompts.py", "schema.py", "step.py", "task_fetching_unit.py", "utils.py"]
+  },
+  "RAGatouilleRetrieverPack": {
+    "id": "llama_packs/ragatouille_retriever",
+    "author": "jerryjliu",
+    "keywords": ["rag", "ragatouille", "retriever"]
+  },
+  "SemanticChunkingQueryEnginePack": {
+    "id": "llama_packs/node_parser/semantic_chunking",
+    "author": "jerryjliu",
+    "keywords": ["semantic", "chunking", "chunk", "parser", "node", "embedding"]
+  },
+  "RAGFusionPipelinePack": {
+    "id": "llama_packs/query/rag_fusion_pipeline",
+    "author": "jerryjliu",
+    "keywords": ["rag", "fusion", "pipeline", "query"]
+  },
+  "AgentSearchRetrieverPack": {
+    "id": "llama_packs/agent_search_retriever",
+    "author": "logan-markewich",
+    "keywords": ["agent", "search", "retriever"]
+  },
+  "ChainOfTablePack": {
+    "id": "llama_packs/tables/chain_of_table",
+    "author": "jerryjliu",
+    "keywords": ["chain", "table", "tables"]
+  },
+  "MixSelfConsistencyPack": {
+    "id": "llama_packs/tables/mix_self_consistency",
+    "author": "Disiok",
+    "keywords": ["chain", "table", "tables", "pandas", "dataframe"]
+  },
+  "MultiTenancyRAGPack": {
+    "id": "llama_packs/multi_tenancy_rag",
+    "author": "ravi03071991",
+    "keywords": ["multi-tenancy", "multi", "tenancy", "rag"]
   }
 }

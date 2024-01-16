@@ -137,14 +137,14 @@ class TestConfluenceReader:
             {
                 "id": "123",
                 "title": "Page 123",
-                "body": {"storage": {"value": "<p>Content 123</p>"}},
+                "body": {"export_view": {"value": "<p>Content 123</p>"}},
                 "status": "current",
                 "_links": {"webui": "/spaces/123/pages/123/Page+123"},
             },
             {
                 "id": "456",
                 "title": "Page 456",
-                "body": {"storage": {"value": "<p>Content 456</p>"}},
+                "body": {"export_view": {"value": "<p>Content 456</p>"}},
                 "status": "current",
                 "_links": {"webui": "/spaces/456/pages/456/Page+456"},
             },
@@ -191,7 +191,7 @@ class TestConfluenceReader:
                     "type": "page",
                     "status": "current",
                     "title": "Page 123",
-                    "body": {"storage": {"value": "<p>Content 123</p>"}},
+                    "body": {"export_view": {"value": "<p>Content 123</p>"}},
                     "_links": {"webui": "/spaces/123/pages/123/Page+123"},
                 },
                 {
@@ -199,7 +199,7 @@ class TestConfluenceReader:
                     "type": "page",
                     "status": "archived",
                     "title": "Page 456",
-                    "body": {"storage": {"value": "<p>Content 456</p>"}},
+                    "body": {"export_view": {"value": "<p>Content 456</p>"}},
                     "_links": {"webui": "/spaces/456/pages/456/Page+456"},
                 },
             ],
@@ -226,7 +226,7 @@ class TestConfluenceReader:
         assert mock_confluence.get_all_pages_from_space.call_args[1]["status"] is None
         assert (
             mock_confluence.get_all_pages_from_space.call_args[1]["expand"]
-            == "body.storage.value"
+            == "body.export_view.value"
         )
 
         assert len(documents) == 2
@@ -262,7 +262,7 @@ class TestConfluenceReader:
                     "type": "page",
                     "status": "current",
                     "title": "Page 123",
-                    "body": {"storage": {"value": "<p>Content 123</p>"}},
+                    "body": {"export_view": {"value": "<p>Content 123</p>"}},
                     "_links": {"webui": "/spaces/123/pages/123/Page+123"},
                 },
             ],
@@ -272,7 +272,7 @@ class TestConfluenceReader:
                     "type": "page",
                     "status": "current",
                     "title": "Page 456",
-                    "body": {"storage": {"value": "<p>Content 456</p>"}},
+                    "body": {"export_view": {"value": "<p>Content 456</p>"}},
                     "_links": {"webui": "/spaces/456/pages/456/Page+456"},
                 }
             ],
@@ -285,7 +285,8 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_max_num_results = 3  # Asking for up to 3 pages. There are only two pages to retrieve though, and they'll come 1 at a time from Confluence.
+        # Asking for up to 3 pages. There are only two pages to retrieve though, and they'll come 1 at a time from Confluence.
+        mock_max_num_results = 3
         documents = confluence_reader.load_data(
             space_key=mock_space_key, max_num_results=mock_max_num_results
         )
@@ -325,7 +326,8 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_max_num_results = 10  # Asking for up to 10 pages. There are only 8 pages to retrieve though, and they'll come 3 at a time from Confluence.
+        # Asking for up to 10 pages. There are only 8 pages to retrieve though, and they'll come 3 at a time from Confluence.
+        mock_max_num_results = 10
         documents = confluence_reader.load_data(
             space_key=mock_space_key, max_num_results=mock_max_num_results
         )
@@ -348,7 +350,8 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        mock_max_num_results = 5
         documents = confluence_reader.load_data(
             space_key=mock_space_key, max_num_results=mock_max_num_results
         )
@@ -372,7 +375,8 @@ class TestConfluenceReader:
 
         mock_space_key = "spaceId123"
         mock_start_num = 0
-        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        mock_max_num_results = 5
         documents = confluence_reader.load_data(
             space_key=mock_space_key,
             start=mock_start_num,
@@ -398,7 +402,8 @@ class TestConfluenceReader:
 
         mock_space_key = "spaceId123"
         mock_start_num = 1
-        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        mock_max_num_results = 5
         documents = confluence_reader.load_data(
             space_key=mock_space_key,
             start=mock_start_num,
@@ -447,7 +452,8 @@ class TestConfluenceReader:
         confluence_reader.confluence = mock_confluence
 
         mock_space_key = "spaceId123"
-        mock_max_num_results = 5  # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        # Asking for up to 5 pages. Since there are 8 pages in Confluence we will get 5 requested pages, at most 3 at a time.
+        mock_max_num_results = 5
         documents = confluence_reader.load_data(
             space_key=mock_space_key, max_num_results=mock_max_num_results
         )
@@ -484,7 +490,7 @@ class TestConfluenceReader:
             "type": "page",
             "status": "current",
             "title": f"Page {page_id}",
-            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {page_id}</p>"}},
             "_links": {"webui": f"/spaces/{page_id}/pages/{page_id}/Page+{page_id}"},
         }
 
@@ -496,7 +502,8 @@ class TestConfluenceReader:
         mock_page_ids = ["0", "1", "2", "3", "4", "5", "6", "7"]
         mock_get_children = False
         mock_max_num_results = (
-            10  # Asking for up to 10 pages, but only requesting 8 specific ones.
+            # Asking for up to 10 pages, but only requesting 8 specific ones.
+            10
         )
         documents = confluence_reader.load_data(
             page_ids=mock_page_ids,
@@ -515,7 +522,7 @@ class TestConfluenceReader:
             "type": "page",
             "status": "current",
             "title": f"Page {page_id}",
-            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {page_id}</p>"}},
             "_links": {"webui": f"/spaces/{page_id}/pages/{page_id}/Page+{page_id}"},
         }
 
@@ -544,7 +551,7 @@ class TestConfluenceReader:
             "type": "page",
             "status": "current",
             "title": f"Page {page_id}",
-            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {page_id}</p>"}},
             "_links": {"webui": f"/spaces/{page_id}/pages/{page_id}/Page+{page_id}"},
         }
 
@@ -574,7 +581,7 @@ class TestConfluenceReader:
             "type": "page",
             "status": "current",
             "title": f"Page {page_id}",
-            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {page_id}</p>"}},
             "_links": {"webui": f"/spaces/{page_id}/pages/{page_id}/Page+{page_id}"},
         }
 
@@ -605,7 +612,7 @@ class TestConfluenceReader:
             "type": "page",
             "status": "current",
             "title": f"Page {page_id}",
-            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {page_id}</p>"}},
             "_links": {"webui": f"/spaces/{page_id}/pages/{page_id}/Page+{page_id}"},
         }
 
@@ -638,7 +645,7 @@ class TestConfluenceReader:
             "type": "page",
             "status": "current",
             "title": f"Page {page_id}",
-            "body": {"storage": {"value": f"<p>Content {page_id}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {page_id}</p>"}},
             "_links": {"webui": f"/spaces/{page_id}/pages/{page_id}/Page+{page_id}"},
         }
 
@@ -676,7 +683,7 @@ class TestConfluenceReader:
                         "id": "0",
                         "type": "page",
                         "title": "Page 0",
-                        "body": {"storage": {"value": "<p>Content 0</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 0</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/0/pages/0/Page+0"},
                     },
@@ -684,7 +691,7 @@ class TestConfluenceReader:
                         "id": "1",
                         "type": "page",
                         "title": "Page 1",
-                        "body": {"storage": {"value": "<p>Content 1</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 1</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/1/pages/1/Page+1"},
                     },
@@ -692,7 +699,7 @@ class TestConfluenceReader:
                         "id": "2",
                         "type": "page",
                         "title": "Page 2",
-                        "body": {"storage": {"value": "<p>Content 2</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 2</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/2/pages/2/Page+2"},
                     },
@@ -707,7 +714,7 @@ class TestConfluenceReader:
                         "id": "3",
                         "type": "page",
                         "title": "Page 3",
-                        "body": {"storage": {"value": "<p>Content 3</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 3</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/3/pages/3/Page+3"},
                     },
@@ -715,7 +722,7 @@ class TestConfluenceReader:
                         "id": "4",
                         "type": "page",
                         "title": "Page 4",
-                        "body": {"storage": {"value": "<p>Content 4</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 4</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/4/pages/4/Page+4"},
                     },
@@ -723,7 +730,7 @@ class TestConfluenceReader:
                         "id": "5",
                         "type": "page",
                         "title": "Page 5",
-                        "body": {"storage": {"value": "<p>Content 5</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 5</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/5/pages/5/Page+5"},
                     },
@@ -738,7 +745,7 @@ class TestConfluenceReader:
                         "id": "6",
                         "type": "page",
                         "title": "Page 6",
-                        "body": {"storage": {"value": "<p>Content 6</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 6</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/6/pages/6/Page+6"},
                     },
@@ -746,7 +753,7 @@ class TestConfluenceReader:
                         "id": "7",
                         "type": "page",
                         "title": "Page 7",
-                        "body": {"storage": {"value": "<p>Content 7</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 7</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/7/pages/7/Page+7"},
                     },
@@ -776,7 +783,7 @@ class TestConfluenceReader:
                         "id": "0",
                         "type": "page",
                         "title": "Page 0",
-                        "body": {"storage": {"value": "<p>Content 0</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 0</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/0/pages/0/Page+0"},
                     },
@@ -784,7 +791,7 @@ class TestConfluenceReader:
                         "id": "1",
                         "type": "page",
                         "title": "Page 1",
-                        "body": {"storage": {"value": "<p>Content 1</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 1</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/1/pages/1/Page+1"},
                     },
@@ -792,7 +799,7 @@ class TestConfluenceReader:
                         "id": "2",
                         "type": "page",
                         "title": "Page 2",
-                        "body": {"storage": {"value": "<p>Content 2</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 2</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/2/pages/2/Page+2"},
                     },
@@ -807,7 +814,7 @@ class TestConfluenceReader:
                         "id": "3",
                         "type": "page",
                         "title": "Page 3",
-                        "body": {"storage": {"value": "<p>Content 3</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 3</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/3/pages/3/Page+3"},
                     },
@@ -815,7 +822,7 @@ class TestConfluenceReader:
                         "id": "4",
                         "type": "page",
                         "title": "Page 4",
-                        "body": {"storage": {"value": "<p>Content 4</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 4</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/4/pages/4/Page+4"},
                     },
@@ -823,7 +830,7 @@ class TestConfluenceReader:
                         "id": "5",
                         "type": "page",
                         "title": "Page 5",
-                        "body": {"storage": {"value": "<p>Content 5</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 5</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/5/pages/5/Page+5"},
                     },
@@ -838,7 +845,7 @@ class TestConfluenceReader:
                         "id": "6",
                         "type": "page",
                         "title": "Page 6",
-                        "body": {"storage": {"value": "<p>Content 6</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 6</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/6/pages/6/Page+6"},
                     },
@@ -846,7 +853,7 @@ class TestConfluenceReader:
                         "id": "7",
                         "type": "page",
                         "title": "Page 7",
-                        "body": {"storage": {"value": "<p>Content 7</p>"}},
+                        "body": {"export_view": {"value": "<p>Content 7</p>"}},
                         "status": "current",
                         "_links": {"webui": "/spaces/7/pages/7/Page+7"},
                     },
@@ -933,7 +940,7 @@ def _mock_get_all_pages_from_space(
     start=0,
     limit=3,
     status="current",
-    expand="body.storage.value",
+    expand="body.export_view.value",
     content_type="page",
 ):
     """Mock the API results from a Confluence server that has 8 pages in a space, and a server limit of 3 results per call."""
@@ -945,7 +952,7 @@ def _mock_get_all_pages_from_space(
             "type": "page",
             "status": "current",
             "title": f"Page {i}",
-            "body": {"storage": {"value": f"<p>Content {i}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {i}</p>"}},
             "_links": {"webui": f"/spaces/{i}/pages/{i}/Page+{i}"},
         }
         for i in range(
@@ -956,7 +963,7 @@ def _mock_get_all_pages_from_space(
 
 
 def _mock_get_child_id_list(
-    page_id, type="page", start=0, limit=3, expand="body.storage.value"
+    page_id, type="page", start=0, limit=3, expand="body.export_view.value"
 ):
     """Mock the API results from a Confluence server that has 3 child pages for each page."""
     server_limit = 3
@@ -993,7 +1000,7 @@ def _mock_get_cursor_pages(path: Optional[str], params):
             "type": "page",
             "status": "current",
             "title": f"Page {i}",
-            "body": {"storage": {"value": f"<p>Content {i}</p>"}},
+            "body": {"export_view": {"value": f"<p>Content {i}</p>"}},
             "_links": {"webui": f"/spaces/{i}/pages/{i}/Page+{i}"},
         }
         for i in range(index_start, index_end)

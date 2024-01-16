@@ -4,7 +4,7 @@ This loader extracts the text from a local PDF file using the `PyPDF2` Python pa
 
 ## Usage
 
-To use this loader, you need to pass in a `Path` to a local file.
+To use this loader, you need to pass in a `Path` to a local file or a PDF byte stream.
 
 ```python
 from pathlib import Path

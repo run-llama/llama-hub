@@ -50,6 +50,30 @@ class JSONReader(BaseReader):
         super().__init__()
         self.levels_back = levels_back
 
+    def _parse_jsonobj_to_document(
+        self, json_data_object: Dict, extra_info: Optional[Dict] = None
+    ) -> Document:
+        """Parse the json object into a Document.
+
+        Args:
+            json_data_object: The Json Object to be converted.
+            extra_info (Optional[Dict]): Additional information. Default is None.
+
+        Returns:
+            Document: The document.
+        """
+        if self.levels_back is None:
+            json_output = json.dumps(json_data_object, indent=0)
+            lines = json_output.split("\n")
+            useful_lines = [
+                line for line in lines if not re.match(r"^[{}\\[\\],]*$", line)
+            ]
+            return Document(text="\n".join(useful_lines), extra_info=extra_info or {})
+
+        else:
+            lines = [*_depth_first_yield(json_data_object, self.levels_back, [])]
+            return Document(text="\n".join(lines), extra_info=extra_info or {})
+
     def load_data(
         self,
         file: Path,
@@ -76,21 +100,15 @@ class JSONReader(BaseReader):
             else:
                 data = json.load(f)
             documents = []
-            for json_object in data:
-                if self.levels_back is None:
-                    json_output = json.dumps(json_object, indent=0)
-                    lines = json_output.split("\n")
-                    useful_lines = [
-                        line for line in lines if not re.match(r"^[{}\\[\\],]*$", line)
-                    ]
+
+            # For a dictionary JSON object, pass the entire data to be parsed as document
+            if isinstance(data, dict):
+                documents.append(self._parse_jsonobj_to_document(data, extra_info))
+            # For a List or Non-Dictionary JSON object loop through and pass each item
+            else:
+                for json_object in data:
                     documents.append(
-                        Document(
-                            text="\n".join(useful_lines), extra_info=extra_info or {}
-                        )
+                        self._parse_jsonobj_to_document(json_object, extra_info)
                     )
-                elif self.levels_back is not None:
-                    lines = [*_depth_first_yield(json_object, self.levels_back, [])]
-                    documents.append(
-                        Document(text="\n".join(lines), extra_info=extra_info or {})
-                    )
+
             return documents

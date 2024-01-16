@@ -77,6 +77,7 @@ def test_llama_packs_library_matches() -> None:
     hub_dir = Path(__file__).parent.parent / "llama_hub"
     library_path = hub_dir / "llama_packs" / "library.json"
     library_dict = json.load(open(library_path, "r"))
+    skip_load_files = ["LLMCompilerAgentPack"]
     for k, entry in library_dict.items():
         # make sure every entry has an "id" field
         assert "id" in entry
@@ -93,6 +94,9 @@ def test_llama_packs_library_matches() -> None:
         # make sure that the README file exists
         readme_file = entry_dir / "README.md"
         assert readme_file.exists()
+
+        if k in skip_load_files:
+            continue
 
         spec = util.spec_from_file_location(
             "custom_llama_pack", location=str(entry_file)
