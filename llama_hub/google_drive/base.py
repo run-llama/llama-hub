@@ -308,6 +308,8 @@ class GoogleDriveReader(BaseReader):
                     SimpleDirectoryReader = download_loader("SimpleDirectoryReader")
                 loader = SimpleDirectoryReader(temp_dir, file_metadata=get_metadata)
                 documents = loader.load_data()
+                for doc in documents:
+                    doc.id_ = doc.metadata.get("file id", doc.id_)
 
             return documents
         except Exception as e:

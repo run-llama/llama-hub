@@ -74,6 +74,7 @@ async def read_channel(
         map(
             lambda msg: Document(
                 text=msg.content,
+                id_=msg.id,
                 metadata={
                     "message_id": msg.id,
                     "username": msg.author.name,
