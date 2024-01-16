@@ -2,7 +2,6 @@
 from typing import List, Optional
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-import lyricsgenius
 
 
 class GeniusReader(BaseReader):
@@ -10,6 +9,10 @@ class GeniusReader(BaseReader):
 
     def __init__(self, access_token: str):
         """Initialize the GeniusReader with an access token."""
+        try:
+            import lyricsgenius
+        except ImportError:
+            raise ImportError("Please install lyricsgenius via 'pip install lyricsgenius'")
         self.genius = lyricsgenius.Genius(access_token)
 
     def load_artist_songs(
