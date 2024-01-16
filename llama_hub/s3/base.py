@@ -151,4 +151,9 @@ class S3Reader(BaseReader):
             os.makedirs(temp_dir, exist_ok=True)
             documents = self.load_s3_files_as_docs(temp_dir)
             shutil.rmtree(temp_dir)
+
+        if not self.filename_as_id:
+            for doc in documents:
+                doc.id_ = self.s3_endpoint_url + "_" + doc.metadata["filename"]
+
         return documents
