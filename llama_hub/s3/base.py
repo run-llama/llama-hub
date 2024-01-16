@@ -155,5 +155,5 @@ class S3Reader(BaseReader):
         if not self.filename_as_id:
             for doc in documents:
                 doc.id_ = self.s3_endpoint_url + "_" + doc.metadata["filename"]
-        
+
         return documents
