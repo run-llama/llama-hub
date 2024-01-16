@@ -1,4 +1,8 @@
 {
+  "AgentSearchReader": {
+    "id": "agent_search",
+    "author": "emrgnt-cmplxty"
+  },
   "AirbyteCDKReader": {
     "id": "airbyte_cdk",
     "author": "flash1293"
@@ -86,8 +90,9 @@
     "author": "thejessezhang"
   },
   "PptxSlideReader": {
-    "id": "file/pptx-slide",
-    "author": "tewnut"
+    "id": "file/pptx_slide",
+    "author": "tewnut",
+    "keywords": ["presentation", "slide", "pptx"]
   },
   "ImageReader": {
     "id": "file/image",
@@ -457,6 +462,16 @@
     "author": "kravetsmic",
     "keywords": ["unstructured.io", "url"]
   },
+  "WholeSiteReader": {
+    "id": "web/whole_site",
+    "author": "an-bluecat",
+    "keywords": ["selenium", "scraper", "BFS", "web", "web reader"]
+  },
+  "WholeSiteReader": {
+    "id": "web/whole_site",
+    "author": "an-bluecat",
+    "keywords": ["selenium", "scraper", "BFS", "web", "web reader"]
+  },
   "GoogleSheetsReader": {
     "id": "google_sheets",
     "author": "piroz"
@@ -823,9 +838,8 @@
     "author": "godwin3737",
     "keywords": ["snowflake", "database", "data warehouse", "warehouse"]
   },
-  "GeniusReader": {
-    "id": "genius",
-    "author": "ThibaudARoy",
-    "keywords": ["genius", "lyrics", "artists"]
+  "TelegramReader": {
+    "id": "telegram",
+    "author": "diicell"
   }
 }
