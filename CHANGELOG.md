@@ -1,5 +1,57 @@
 # ChangeLog
 
+## v[0.0.72] - 2024-01-15
+
+### New Features
+- Add mix self consistency llama pack (for table QA)   (#861)
+- Add MultiTenancyRAGPack (#862)
+
+## v[0.0.71] - 2024-01-13
+
+### New Features
+-  add chain of table llamapack  (#859)
+
+## v[0.0.70] - 2024-01-11
+
+### New Features
+- add semantic chunker llama pack (#853)
+- Feature/add agent search (#844)
+
+## v[0.0.69] - 2024-01-08
+
+### New Features
+- add rag fusion query pipeline pack (#847)
+
+## v[0.0.67] - 2024-01-07
+
+### Security Fix
+- Fixed security flaw when loading yaml, should always use `yaml.safe_load()` (#841)
+
+## v[0.0.66] - 2024-01-04
+
+### New Features
+- add ragatouille pack  (#836)
+- TelegramLoader (#822)
+
+### Smaller Features + Bug Fixes / Nits
+- handle bytestring (#834)
+- Slack Tool: Fix "fn_schema is None" issue (#824)
+-  Wikipedia tools should return text, not documents (Tools aren't DataLoaders!) (#828)
+- Fixing JsonReader and introducing unit tests (#816)
+- Fix:dense pack naming error in usage example notebook (#831)
+- chore: get the full detailed text from Confluence (#809)
+- feat: fix folder name and add keywords (#829)
+
+## v[0.0.65] - 2023-12-29
+
+### New Features
+- Add Powerpoint Slide Loader PptxSlideReader to LLama-hub (#796)
+- Added notebook for llama_guard_moderator pack (#814)
+- add llm compiler pack  (#820)
+
+### Smaller Features + Bug Fixes / Nits 
+- docs: Address branding issues of Apache OpenDAL (#817)
+
 ## v[0.0.63] - 2023-12-22
 
 ### New Features

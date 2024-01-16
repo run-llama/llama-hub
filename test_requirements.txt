@@ -15,6 +15,7 @@ html2text
 olefile
 chromadb
 snowflake-sqlalchemy
+selenium
 
 # hotfix
 psutil
