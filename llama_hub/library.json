@@ -134,6 +134,14 @@
     "id": "jsondata",
     "author": "jerryjliu"
   },
+  "MangaDexReader": {
+    "id": "mangadex",
+    "author": "choombaa",
+    "keywords": [
+      "manga",
+      "anime"
+    ]
+  },
   "MarkdownReader": {
     "id": "file/markdown",
     "author": "hursh-desai"
