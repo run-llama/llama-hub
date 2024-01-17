@@ -25,7 +25,7 @@ class S3Reader(BaseReader):
         prefix: Optional[str] = "",
         file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
         required_exts: Optional[List[str]] = None,
-        filename_as_id: bool = False,
+        filename_as_id: bool = True,
         num_files_limit: Optional[int] = None,
         file_metadata: Optional[Callable[[str], Dict]] = None,
         aws_access_id: Optional[str] = None,
@@ -152,8 +152,7 @@ class S3Reader(BaseReader):
             documents = self.load_s3_files_as_docs(temp_dir)
             shutil.rmtree(temp_dir)
 
-        if not self.filename_as_id:
-            for doc in documents:
-                doc.id_ = self.s3_endpoint_url + "_" + doc.metadata["filename"]
+        for doc in documents:
+            doc.id_ = self.s3_endpoint_url + "_" + doc.id_
 
         return documents
