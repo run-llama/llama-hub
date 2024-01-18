@@ -311,7 +311,7 @@ class GithubClient:
 
         _client: httpx.AsyncClient
         async with httpx.AsyncClient(
-            headers=_headers, 
+            headers=_headers,
             base_url=self._base_url,
             timeout=timeout,
         ) as _client:
@@ -354,15 +354,20 @@ class GithubClient:
         return GitBranchResponseModel.from_json(
             (
                 await self.request(
-                    "getBranch", "GET", owner=owner, repo=repo, branch=branch, timeout=timeout
+                    "getBranch",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    branch=branch,
+                    timeout=timeout,
                 )
             ).text
         )
 
     async def get_tree(
-        self, 
-        owner: str, 
-        repo: str, 
+        self,
+        owner: str,
+        repo: str,
         tree_sha: str,
         timeout: Optional[int] = 5,
     ) -> GitTreeResponseModel:
@@ -384,15 +389,20 @@ class GithubClient:
         return GitTreeResponseModel.from_json(
             (
                 await self.request(
-                    "getTree", "GET", owner=owner, repo=repo, tree_sha=tree_sha, timeout=timeout
+                    "getTree",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    tree_sha=tree_sha,
+                    timeout=timeout,
                 )
             ).text
         )
 
     async def get_blob(
-        self, 
-        owner: str, 
-        repo: str, 
+        self,
+        owner: str,
+        repo: str,
         file_sha: str,
         timeout: Optional[int] = 5,
     ) -> GitBlobResponseModel:
@@ -414,15 +424,20 @@ class GithubClient:
         return GitBlobResponseModel.from_json(
             (
                 await self.request(
-                    "getBlob", "GET", owner=owner, repo=repo, file_sha=file_sha, timeout=timeout
+                    "getBlob",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    file_sha=file_sha,
+                    timeout=timeout,
                 )
             ).text
         )
 
     async def get_commit(
-        self, 
-        owner: str, 
-        repo: str, 
+        self,
+        owner: str,
+        repo: str,
         commit_sha: str,
         timeout: Optional[int] = 5,
     ) -> GitCommitResponseModel:
@@ -444,7 +459,12 @@ class GithubClient:
         return GitCommitResponseModel.from_json(
             (
                 await self.request(
-                    "getCommit", "GET", owner=owner, repo=repo, commit_sha=commit_sha, timeout=timeout
+                    "getCommit",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    commit_sha=commit_sha,
+                    timeout=timeout,
                 )
             ).text
         )

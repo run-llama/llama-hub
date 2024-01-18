@@ -227,7 +227,9 @@ class GithubRepositoryReader(BaseReader):
         :return: list of documents
         """
         commit_response: GitCommitResponseModel = self._loop.run_until_complete(
-            self._github_client.get_commit(self._owner, self._repo, commit_sha, timeout=self._timeout)
+            self._github_client.get_commit(
+                self._owner, self._repo, commit_sha, timeout=self._timeout
+            )
         )
 
         tree_sha = commit_response.commit.tree.sha
@@ -250,7 +252,9 @@ class GithubRepositoryReader(BaseReader):
         :return: list of documents
         """
         branch_data: GitBranchResponseModel = self._loop.run_until_complete(
-            self._github_client.get_branch(self._owner, self._repo, branch, timeout=self._timeout)
+            self._github_client.get_branch(
+                self._owner, self._repo, branch, timeout=self._timeout
+            )
         )
 
         tree_sha = branch_data.commit.commit.tree.sha
