@@ -1,5 +1,16 @@
 # ChangeLog
 
+## v[0.0.73] - 2024-01-19
+
+### New Features
+- Create stock_market_data_query_engine (#845)
+- feat: Add full site BFS scraping loader (#827)
+
+### Bug Fixes / Nits
+- update judge llm (#869)
+- add some consistent doc ids (#868)
+- add back selenium
+
 ## v[0.0.72] - 2024-01-15
 
 ### New Features
