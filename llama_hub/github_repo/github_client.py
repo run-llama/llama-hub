@@ -271,6 +271,7 @@ class GithubClient:
         endpoint: str,
         method: str,
         headers: Dict[str, Any] = {},
+        timeout: Optional[int] = 5,
         **kwargs: Any,
     ) -> Any:
         """
@@ -283,6 +284,7 @@ class GithubClient:
             - `endpoint (str)`: Name of the endpoint to make the request to.
             - `method (str)`: HTTP method to use for the request.
             - `headers (dict)`: HTTP headers to include in the request.
+            - `timeout (int or None)`: Timeout for the request in seconds. Default is 5.
             - `**kwargs`: Keyword arguments to pass to the endpoint URL.
 
         Returns:
@@ -295,7 +297,7 @@ class GithubClient:
         Examples:
             >>> response = client.request("getTree", "GET",
                                 owner="owner", repo="repo",
-                                tree_sha="tree_sha")
+                                tree_sha="tree_sha", timeout=5)
         """
         try:
             import httpx
@@ -309,7 +311,9 @@ class GithubClient:
 
         _client: httpx.AsyncClient
         async with httpx.AsyncClient(
-            headers=_headers, base_url=self._base_url
+            headers=_headers,
+            base_url=self._base_url,
+            timeout=timeout,
         ) as _client:
             try:
                 response = await _client.request(
@@ -326,6 +330,7 @@ class GithubClient:
         repo: str,
         branch: Optional[str] = None,
         branch_name: Optional[str] = None,
+        timeout: Optional[int] = 5,
     ) -> GitBranchResponseModel:
         """
         Get information about a branch. (Github API endpoint: getBranch).
@@ -349,13 +354,22 @@ class GithubClient:
         return GitBranchResponseModel.from_json(
             (
                 await self.request(
-                    "getBranch", "GET", owner=owner, repo=repo, branch=branch
+                    "getBranch",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    branch=branch,
+                    timeout=timeout,
                 )
             ).text
         )
 
     async def get_tree(
-        self, owner: str, repo: str, tree_sha: str
+        self,
+        owner: str,
+        repo: str,
+        tree_sha: str,
+        timeout: Optional[int] = 5,
     ) -> GitTreeResponseModel:
         """
         Get information about a tree. (Github API endpoint: getTree).
@@ -364,6 +378,7 @@ class GithubClient:
             - `owner (str)`: Owner of the repository.
             - `repo (str)`: Name of the repository.
             - `tree_sha (str)`: SHA of the tree.
+            - `timeout (int or None)`: Timeout for the request in seconds. Default is 5.
 
         Returns:
             - `tree_info (GitTreeResponseModel)`: Information about the tree.
@@ -374,13 +389,22 @@ class GithubClient:
         return GitTreeResponseModel.from_json(
             (
                 await self.request(
-                    "getTree", "GET", owner=owner, repo=repo, tree_sha=tree_sha
+                    "getTree",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    tree_sha=tree_sha,
+                    timeout=timeout,
                 )
             ).text
         )
 
     async def get_blob(
-        self, owner: str, repo: str, file_sha: str
+        self,
+        owner: str,
+        repo: str,
+        file_sha: str,
+        timeout: Optional[int] = 5,
     ) -> GitBlobResponseModel:
         """
         Get information about a blob. (Github API endpoint: getBlob).
@@ -389,6 +413,7 @@ class GithubClient:
             - `owner (str)`: Owner of the repository.
             - `repo (str)`: Name of the repository.
             - `file_sha (str)`: SHA of the file.
+            - `timeout (int or None)`: Timeout for the request in seconds. Default is 5.
 
         Returns:
             - `blob_info (GitBlobResponseModel)`: Information about the blob.
@@ -399,13 +424,22 @@ class GithubClient:
         return GitBlobResponseModel.from_json(
             (
                 await self.request(
-                    "getBlob", "GET", owner=owner, repo=repo, file_sha=file_sha
+                    "getBlob",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    file_sha=file_sha,
+                    timeout=timeout,
                 )
             ).text
         )
 
     async def get_commit(
-        self, owner: str, repo: str, commit_sha: str
+        self,
+        owner: str,
+        repo: str,
+        commit_sha: str,
+        timeout: Optional[int] = 5,
     ) -> GitCommitResponseModel:
         """
         Get information about a commit. (Github API endpoint: getCommit).
@@ -414,6 +448,7 @@ class GithubClient:
             - `owner (str)`: Owner of the repository.
             - `repo (str)`: Name of the repository.
             - `commit_sha (str)`: SHA of the commit.
+            - `timeout (int or None)`: Timeout for the request in seconds. Default is 5.
 
         Returns:
             - `commit_info (GitCommitResponseModel)`: Information about the commit.
@@ -424,7 +459,12 @@ class GithubClient:
         return GitCommitResponseModel.from_json(
             (
                 await self.request(
-                    "getCommit", "GET", owner=owner, repo=repo, commit_sha=commit_sha
+                    "getCommit",
+                    "GET",
+                    owner=owner,
+                    repo=repo,
+                    commit_sha=commit_sha,
+                    timeout=timeout,
                 )
             ).text
         )

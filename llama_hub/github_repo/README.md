@@ -29,6 +29,7 @@ loader = GithubRepositoryReader(
     filter_file_extensions = ([".py"], GithubRepositoryReader.FilterType.INCLUDE),
     verbose =                True,
     concurrent_requests =    10,
+    timeout =                5,
 )
 
 docs = loader.load_data(branch="main")
@@ -74,6 +75,7 @@ if docs is None:
         filter_file_extensions = ([".py"], GithubRepositoryReader.FilterType.INCLUDE),
         verbose =                True,
         concurrent_requests =    10,
+        timeout =                5,
     )
 
     docs = loader.load_data(branch="main")
