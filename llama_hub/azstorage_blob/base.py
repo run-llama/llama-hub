@@ -7,6 +7,7 @@ import logging
 import math
 import tempfile
 import time
+import os
 from typing import Any, Dict, List, Optional, Union
 
 from llama_index import download_loader
@@ -89,7 +90,7 @@ class AzStorageBlobReader(BaseReader):
             if self.blob:
                 blob_client = container_client.get_blob_client(self.blob)
                 stream = blob_client.download_blob()
-                download_file_path = f"{temp_dir}/{stream.name}"
+                download_file_path = os.path.join(temp_dir, stream.name)
                 logger.info(f"Start download of {self.blob}")
                 start_time = time.time()
                 with open(file=download_file_path, mode="wb") as download_file:
@@ -107,7 +108,7 @@ class AzStorageBlobReader(BaseReader):
                     self.name_starts_with, self.include
                 )
                 for obj in blobs_list:
-                    download_file_path = f"{temp_dir}/{obj.name}"
+                    download_file_path = os.path.join(temp_dir, obj.name)
                     logger.info(f"Start download of {obj.name}")
                     start_time = time.time()
                     blob_client = container_client.get_blob_client(obj)
