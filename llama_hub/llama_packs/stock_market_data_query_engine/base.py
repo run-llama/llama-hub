@@ -43,12 +43,10 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
             stocks_market_data.append(hist)
         self.stocks_market_data = stocks_market_data
 
-        service_context = ServiceContext.from_defaults(
-            llm=llm or OpenAI(model="gpt-4")
-        )
+        service_context = ServiceContext.from_defaults(llm=llm or OpenAI(model="gpt-4"))
 
         df_price_query_engines = [
-            PandasQueryEngine(stock, service_context=service_context) 
+            PandasQueryEngine(stock, service_context=service_context)
             for stock in stocks_market_data
         ]
 
@@ -64,7 +62,9 @@ class StockMarketDataQueryEnginePack(BaseLlamaPack):
             for idx, df_engine in enumerate(df_price_query_engines)
         }
 
-        stock_price_vector_index = VectorStoreIndex(df_price_nodes, service_context=service_context)
+        stock_price_vector_index = VectorStoreIndex(
+            df_price_nodes, service_context=service_context
+        )
         stock_price_vector_retriever = stock_price_vector_index.as_retriever(
             similarity_top_k=1
         )
