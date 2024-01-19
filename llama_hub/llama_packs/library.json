@@ -257,5 +257,10 @@
     "id": "llama_packs/multi_tenancy_rag",
     "author": "ravi03071991",
     "keywords": ["multi-tenancy", "multi", "tenancy", "rag"]
+  },
+  "StockMarketDataQueryEnginePack": {
+    "id": "llama_packs/stock_market_data_query_engine",
+    "author": "anoopshrma",
+    "keywords": ["stock", "market", "data", "query", "engine"]
   }
 }
