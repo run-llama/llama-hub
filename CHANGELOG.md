@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v[0.0.74] - 2024-01-19
+
+### New Features
+
+- Add MangaDex loader (#870)
+
+### Bug Fixes / Nits
+
+- add timeout arg to github repo reader (#873)
+- use os.path to generate file paths (#866)
+- add args for trafilatrus loader (#872)
+
 ## v[0.0.73] - 2024-01-19
 
 ### New Features
