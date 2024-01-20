@@ -12,7 +12,9 @@ class GeniusReader(BaseReader):
         try:
             import lyricsgenius
         except ImportError:
-            raise ImportError("Please install lyricsgenius via 'pip install lyricsgenius'")
+            raise ImportError(
+                "Please install lyricsgenius via 'pip install lyricsgenius'"
+            )
         self.genius = lyricsgenius.Genius(access_token)
 
     def load_artist_songs(
