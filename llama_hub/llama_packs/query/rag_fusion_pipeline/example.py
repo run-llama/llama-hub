@@ -13,7 +13,7 @@ PDFReader = download_loader("PDFReader")
 
 # load documents
 loader = PDFReader()
-document_path = Path('./data/git-cheat-sheet.pdf') # replace with your own document
+document_path = Path('./data/101.pdf') # replace with your own document
 documents = loader.load_data(file=document_path)
 
 # create the pack
