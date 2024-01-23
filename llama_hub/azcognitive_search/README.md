@@ -43,11 +43,12 @@ documents = reader.load_data(
     documents = az_loader.load_data(query, field_name)
 
     index = VectorStoreIndex.from_documents(documents, service_context=service_context)
+    query_engine = index.as_query_engine()
 
     tools = [
         Tool(
             name="Azure cognitive search index",
-            func=lambda q: index.query(q),
+            func=lambda q: query_engine.query(q),
             description=f"Useful when you want answer questions about the text on azure cognitive search.",
         ),
     ]

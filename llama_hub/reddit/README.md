@@ -26,8 +26,9 @@ post_limit = 10
 loader = RedditReader()
 documents = loader.load_data(subreddits=subreddits, search_keys=search_keys, post_limit=post_limit)
 index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
 
-index.query("What are the pain points of PyTorch users?")
+query_engine.query("What are the pain points of PyTorch users?")
 ```
 
 ### LangChain
@@ -48,11 +49,12 @@ post_limit = 10
 loader = RedditReader()
 documents = loader.load_data(subreddits=subreddits, search_keys=search_keys, post_limit=post_limit)
 index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
 
 tools = [
     Tool(
         name="Reddit Index",
-        func=lambda q: index.query(q),
+        func=lambda q: query_engine.query(q),
         description=f"Useful when you want to read relevant posts and top-level comments in subreddits.",
     ),
 ]

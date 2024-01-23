@@ -19,8 +19,8 @@ token = os.getenv("READWISE_API_KEY")
 loader = ReadwiseReader(api_key=token)
 documents = loader.load_data()
 index = VectorStoreIndex.from_documents(documents)
-
-index.query("What was the paper 'Attention is all you need' about?")
+query_engine = index.as_query_engine()
+query_engine.query("What was the paper 'Attention is all you need' about?")
 ```
 
 You can also query for highlights that have been created after a certain time:
@@ -36,8 +36,9 @@ loader = ReadwiseReader(api_key=token)
 seven_days_ago = datetime.datetime.now() - datetime.timedelta(days=7)
 documents = loader.load_data(updated_after=seven_days_ago)
 index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
 
-index.query("What has Elon Musk done this time?")
+query_engine.query("What has Elon Musk done this time?")
 ```
 
 This loader is designed to be used as a way to load data into [LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent. See [here](https://github.com/emptycrown/llama-hub/tree/main) for examples.

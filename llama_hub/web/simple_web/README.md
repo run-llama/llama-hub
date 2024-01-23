@@ -29,7 +29,9 @@ SimpleWebPageReader = download_loader("SimpleWebPageReader")
 loader = SimpleWebPageReader()
 documents = loader.load_data(urls=['https://google.com'])
 index = VectorStoreIndex.from_documents(documents)
-index.query('What language is on this website?')
+query_engine = index.as_query_engine()
+
+query_engine.query('What language is on this website?')
 ```
 
 ### LangChain
@@ -47,11 +49,12 @@ SimpleWebPageReader = download_loader("SimpleWebPageReader")
 loader = SimpleWebPageReader()
 documents = loader.load_data(urls=['https://google.com'])
 index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
 
 tools = [
     Tool(
         name="Website Index",
-        func=lambda q: index.query(q),
+        func=lambda q: query_engine.query(q),
         description=f"Useful when you want answer questions about the text on websites.",
     ),
 ]

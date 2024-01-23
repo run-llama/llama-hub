@@ -31,5 +31,6 @@ GoogleCalendarReader = download_loader('GoogleCalendarReader')
 loader = GoogleCalendarReader()
 documents = loader.load_data()
 index = VectorStoreIndex.from_documents(documents)
-index.query('When am I meeting Gordon?')
+query_engine = index.as_query_engine()
+query_engine.query('When am I meeting Gordon?')
 ```

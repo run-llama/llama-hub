@@ -34,7 +34,8 @@ gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
 documents = loader.load_data(document_ids=gdoc_ids)
 index = VectorStoreIndex.from_documents(documents)
-index.query('Where did the author go to school?')
+query_engine = index.as_query_engine()
+query_engine.query('Where did the author go to school?')
 ```
 
 ### LlamaIndex Data Agent
@@ -93,7 +94,8 @@ gdoc_ids = ['1wf-y2pd9C878Oh-FmLH7Q_BQkljdm6TQal-c1pUfrec']
 loader = GoogleDocsReader()
 documents = loader.load_data(document_ids=gdoc_ids)
 index = VectorStoreIndex.from_documents(documents)
-index.query('Where did the author go to school?')
+query_engine = index.as_query_engine()
+query_engine.query('Where did the author go to school?')
 
 ```
 
@@ -145,7 +147,7 @@ rag_dataset, documents = download_llama_dataset(
 
 # build basic RAG system
 index = VectorStoreIndex.from_documents(documents=documents)
-query_engine = VectorStoreIndex.as_query_engine()
+query_engine = index.as_query_engine()
 
 # evaluate using the RagEvaluatorPack
 RagEvaluatorPack = download_llama_pack(

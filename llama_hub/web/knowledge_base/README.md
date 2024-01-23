@@ -51,7 +51,8 @@ documents = loader.load_data(
   subtitle_selector='.article-subtitle'
   )
 index = VectorStoreIndex.from_documents(documents)
-index.query('What languages does Intercom support?')
+query_engine = index.as_query_engine()
+query_engine.query('What languages does Intercom support?')
 ```
 
 ### LangChain
@@ -76,11 +77,12 @@ documents = loader.load_data(
   subtitle_selector='.article-subtitle'
   )
 index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
 
 tools = [
     Tool(
         name="Website Index",
-        func=lambda q: index.query(q),
+        func=lambda q: query_engine.query(q),
         description=f"Useful when you want answer questions about a product that has a public knowledge base.",
     ),
 ]
