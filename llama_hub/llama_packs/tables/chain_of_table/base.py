@@ -73,10 +73,10 @@ dynamic_plan_str = """\
 If the table needs an extra inferred column to answer the question, we use f_add_column() to
 add this column. For example,
 /*
-col : Week | When | Kickoff | Opponent | Results; Final score | Results; Team record
-row 1 : 1 | Saturday, April 13 | 7:00 p.m. | at Rhein Fire | W 27-21 | 1-0
-row 2 : 2 | Saturday, April 20 | 7:00 p.m. | London Monarchs | W 37-3 | 2-0
-row 3 : 3 | Sunday, April 28 | 6:00 p.m. | at Barcelona Dragons | W 33-29 | 3-0
+col : Week | When | Kickoff | Opponent | Results; Final score | Results; Team record | Attendance
+row 1 : 1 | Saturday, April 13 | 7:00 p.m. | at Rhein Fire | W 27-21 | 1-0 | 32092 supporters
+row 2 : 2 | Saturday, April 20 | 7:00 p.m. | London Monarchs | W 37-3 | 2-0 | 34186 supporters
+row 3 : 3 | Sunday, April 28 | 6:00 p.m. | at Barcelona Dragons | W 33-29 | 3-0 | 17503 supporters
 */
 Question : what is the date of the competition with highest attendance?
 The existing columns are: "Week", "When", "Kickoff", "Opponent", "Results; Final score",
@@ -97,7 +97,7 @@ row 3 : richmond | 20.17 (137) | fitzroy | 13.22 (100) | mcg | 27651
 Question : Whose home team score is higher, richmond or st kilda?
 Function : f_select_row(row 1, row 3)
 Explanation: The question asks about the home team score of richmond and st kilda. We need
-to know the the information of richmond and st kilda in row 1 and row 3. We select row 1
+to know the information of richmond and st kilda in row 1 and row 3. We select row 1
 and row 3.
 
 If the table only needs a few columns to answer the question, we use
@@ -124,7 +124,7 @@ row 3 : 3 | 4 | Pinki Pramanik (IND) | 53.06 | IND
 */
 Question: tell me the number of athletes from japan.
 Function : f_group_by(Country)
-Explanation: The question asks about the number of athletes from India. Each row is about
+Explanation: The question asks about the number of athletes from japan. Each row is about
 an athlete. We can group column "Country" to group the athletes from the same country.
 
 If the question asks about the order of items in a column, we use f_sort_by() to sort
@@ -162,7 +162,7 @@ Here are some examples.
 col : Date | Division | League | Regular Season | Playoffs | Open Cup
 row 1 : 2001/01/02 | 2 | USL A-League | 4th, Western | Quarterfinals | Did not qualify
 row 2 : 2002/08/06 | 2 | USL A-League | 2nd, Pacific | 1st Round | Did not qualify
-row 5 : 2005/03/24 | 2 | USL First Division | 5th | Quarterfinals | 4th Round
+row 5 : 2005/03/24 | 2 | USL A-League | 5th | Quarterfinals | 4th Round
 */
 Question: what was the last year where this team was a part of the usl a-league?
 Candidates: {candidates}
@@ -198,15 +198,15 @@ The added columns should have these data types:
 2. Datetype: the strings that describe a date, such as year, month, day
 3. String: other strings
 /*
-col : Week | When | Kickoff | Opponent | Results; Final score | Results; Team record
-row 1 : 1 | Saturday, April 13 | 7:00 p.m. | at Rhein Fire | W 27-21 | 1-0
-row 2 : 2 | Saturday, April 20 | 7:00 p.m. | London Monarchs | W 37-3 | 2-0
-row 3 : 3 | Sunday, April 28 | 6:00 p.m. | at Barcelona Dragons | W 33-29 | 3-0
+col : Week | When | Kickoff | Opponent | Results; Final score | Results; Team record | Attendance
+row 1 : 1 | Saturday, April 13 | 7:00 p.m. | at Rhein Fire | W 27-21 | 1-0 | 32092 supporters
+row 2 : 2 | Saturday, April 20 | 7:00 p.m. | London Monarchs | W 37-3 | 2-0 | 34186 supporters
+row 3 : 3 | Sunday, April 28 | 6:00 p.m. | at Barcelona Dragons | W 33-29 | 3-0 | 17503 supporters
 */
 Question: what is the date of the competition with highest attendance?
 The existing columns are: "Week", "When", "Kickoff", "Opponent", "Results; Final score",
 "Results; Team record", "Game site", "Attendance".
-Explanation: the question asks about the date of the competition with highest score. Each
+Explanation: the question asks about the date of the competition with attendance number. Each
 row is about one competition. We extract the value from column "Attendance" and create a
 different column "Attendance number" for each row. The datatype is Numerical.
 Therefore, the answer is: f_add_column(Attendance number). The value: 32092 | 34186 | 17503
@@ -333,37 +333,11 @@ class SelectColumnSchema(FunctionSchema):
 select_column_schema = SelectColumnSchema()
 
 
-# select_args_str = """\
-# Using f_select_row() to select relevant rows in the given table that support or oppose the
-# statement.
-# Please use f_select_row([*]) to select all rows in the table.
-# /*
-# table caption : 1972 vfl season.
-# col : home team | home team score | away team | away team score | venue | crowd
-# row 1 : st kilda | 13.12 (90) | melbourne | 13.11 (89) | moorabbin oval | 18836
-# row 2 : south melbourne | 9.12 (66) | footscray | 11.13 (79) | lake oval | 9154
-# row 3 : richmond | 20.17 (137) | fitzroy | 13.22 (100) | mcg | 27651
-# row 4 : geelong | 17.10 (112) | collingwood | 17.9 (111) | kardinia park | 23108
-# row 5 : north melbourne | 8.12 (60) | carlton | 23.11 (149) | arden street oval | 11271
-# row 6 : hawthorn | 15.16 (106) | essendon | 12.15 (87) | vfl park | 36749
-# */
-# statement : what is the away team with the highest score?
-# explain : the statement want to ask the away team of highest away team score. the highest
-# away team score is 23.11 (149). it is on the row 5.so we need row 5.
-# The answer is : f_select_row([row 5])
-# """
-# select_args_prompt = PromptTemplate(select_args_str)
-# select_args_schema = FunctionSchema(
-#     prompt=select_args_str,
-#     regex="f_select_row\([(.*)]\)",
-# )
-
 select_row_str = """\
 Using f_select_row() to select relevant rows in the given table that support or oppose the
 statement.
 Please use f_select_row([*]) to select all rows in the table.
 /*
-table caption : 1972 vfl season.
 col : home team | home team score | away team | away team score | venue | crowd
 row 1 : st kilda | 13.12 (90) | melbourne | 13.11 (89) | moorabbin oval | 18836
 row 2 : south melbourne | 9.12 (66) | footscray | 11.13 (79) | lake oval | 9154
@@ -374,7 +348,7 @@ row 6 : hawthorn | 15.16 (106) | essendon | 12.15 (87) | vfl park | 36749
 */
 statement : what is the away team with the highest score?
 explain : the statement want to ask the away team of highest away team score. the highest
-away team score is 23.11 (149). it is on the row 5.so we need row 5.
+away team score is 23.11 (149). it is on the row 5. so we need row 5.
 The answer is : f_select_row([row 5])
 
 {serialized_table}
@@ -422,9 +396,9 @@ row 4 : 4 | 1 | Tang Xiaoyin (CHN) | 53.66 | CHN
 row 5 : 5 | 8 | Marina Maslyonko (KAZ) | 53.99 | KAZ
 */
 Question: tell me the number of athletes from japan.
+Explanation: The question asks about the number of athletes from japan.
 The existing columns are: Rank, Lane, Athlete, Time, Country.
-Explanation: The question asks about the number of athletes from India. Each row is about
-an athlete. We can group column "Country" to group the athletes from the same country.
+And each row is about an athlete. We can group column "Country" to group the athletes from the same country.
 Therefore, the answer is: f_group_by(Country).
 
 {serialized_table}
@@ -460,18 +434,11 @@ group_by_schema = GroupBySchema()
 
 sort_by_str = """\
 To answer the question, we can first use f_sort_by() to sort the values in a column to get
-the
-order of the items. The order can be "large to small" or "small to large".
+the order of the items. The order can be "large to small" or "small to large".
 The column to sort should have these data types:
 1. Numerical: the numerical strings that can be used in sort
 2. DateType: the strings that describe a date, such as year, month, day
 3. String: other strings
-/*
-col : Position | Club | Played | Points | Wins | Draws | Losses | Goals for | Goals against
-row 1 : 1 | Malaga CF | 42 | 79 | 22 | 13 | 7 | 72 | 47
-row 10 : 10 | CP Merida | 42 | 59 | 15 | 14 | 13 | 48 | 41
-row 3 : 3 | CD Numancia | 42 | 73 | 21 | 10 | 11 | 68 | 40
-*/
 
 More rules:
 - The answer MUST be in the format "the answer is: f_sort_by(Arg1)", where Arg1 is the
@@ -479,12 +446,18 @@ column name.
 - The answer CANNOT include multiple columns
 - You CANNOT run f_sort_by on a row. For instance, f_sort_by(row 1) is not allowed.
 
+/*
+col : Position | Club | Played | Points | Wins | Draws | Losses | Goals for | Goals against
+row 1 : 1 | Malaga CF | 42 | 79 | 22 | 13 | 7 | 72 | 47
+row 10 : 10 | CP Merida | 42 | 59 | 15 | 14 | 13 | 48 | 41
+row 3 : 3 | CD Numancia | 42 | 73 | 21 | 10 | 11 | 68 | 40
+*/
 Question: what club placed in the last position?
+Explanation: the question asks about the club in the last position.
 The existing columns are: Position, Club, Played, Points, Wins, Draws, Losses, Goals for,
-Goals against
-Explanation: the question asks about the club in the last position. Each row is about a
-club. We need to know the order of position from last to front. There is a column for
-position and the column name is Position. The datatype is Numerical.
+Goals against.
+And Each row is about a club. We need to know the order of position from last to front.
+There is a column for position and the column name is Position. The datatype is Numerical.
 Therefore, the answer is: f_sort_by(Position), the order is "large to small".
 
 {serialized_table}
@@ -523,16 +496,9 @@ query_prompt_str = """\
 Here is the table to answer this question. Please understand the table and answer the
 question:
 /*
-col : Rank | City | Passengers Number | Ranking | Airline
-row 1 : 1 | United States, Los Angeles | 14749 | 2 | Alaska Airlines
-row 2 : 2 | United States, Houston | 5465 | 8 | United Express
-row 3 : 3 | Canada, Calgary | 3761 | 5 | Air Transat, WestJet
-row 4 : 4 | Canada, Saskatoon | 2282 | 4 |
-row 5 : 5 | Canada, Vancouver | 2103 | 2 | Air Transat
-row 6 : 6 | United States, Phoenix | 1829 | 1 | US Airways
-row 7 : 7 | Canada, Toronto | 1202 | 1 | Air Transat, CanJet
-row 8 : 8 | Canada, Edmonton | 110 | 2 |
-row 9 : 9 | United States, Oakland | 107 | 5 |
+col : City | Passengers Number
+row 1 : United States, Los Angeles | 14749
+row 2 : Canada, Saskatoon | 2282
 */
 Question: how many more passengers flew to los angeles than to saskatoon from manzanillo
 airport in 2013?
