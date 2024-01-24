@@ -69,8 +69,8 @@ class RAGatouilleRetrieverPack(BaseLlamaPack):
             )
 
         doc_txts = [doc.get_content() for doc in documents]
-        doc_ids = [doc._ids for doc in documents]
-        doc_metadatas = [doc.get_metadata() for doc in documents]
+        doc_ids = [doc.doc_id for doc in documents]
+        doc_metadatas = [doc.metadata for doc in documents]
 
         # index the documents
         if index_path is None:
@@ -98,8 +98,8 @@ class RAGatouilleRetrieverPack(BaseLlamaPack):
         """Add documents."""
 
         doc_txts = [doc.get_content() for doc in documents]
-        doc_ids = [doc._ids for doc in documents]
-        doc_metadatas = [doc.get_metadata() for doc in documents]
+        doc_ids = [doc.doc_id for doc in documents]
+        doc_metadatas = [doc.metadata for doc in documents]
 
         self.RAG.add_to_index(new_collection=doc_txts, 
                             new_document_ids=doc_ids,
@@ -108,7 +108,7 @@ class RAGatouilleRetrieverPack(BaseLlamaPack):
     def delete_documents(self, documents: List[Document]) -> None:
         """Delete documents."""
 
-        doc_ids = [doc._ids for doc in documents]
+        doc_ids = [doc.doc_id for doc in documents]
 
         self.RAG.delete_from_index(document_ids=doc_ids)
 
