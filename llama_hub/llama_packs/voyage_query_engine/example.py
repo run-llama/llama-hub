@@ -5,14 +5,12 @@ from llama_index import download_loader
 from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
-VoyageQueryEnginePack = download_llama_pack(
-  "VoyageQueryEnginePack", "./voyage_pack"
-)
+VoyageQueryEnginePack = download_llama_pack("VoyageQueryEnginePack", "./voyage_pack")
 PDFReader = download_loader("PDFReader")
 
 # load documents
 loader = PDFReader()
-document_path = Path('./data/101.pdf') # replace with your own document
+document_path = Path("./data/101.pdf")  # replace with your own document
 documents = loader.load_data(file=document_path)
 
 # create the pack
