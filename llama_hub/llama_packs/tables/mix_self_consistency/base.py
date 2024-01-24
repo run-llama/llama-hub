@@ -17,7 +17,7 @@ from llama_index.llms.utils import LLMType, resolve_llm
 from llama_index.output_parsers.base import ChainableOutputParser
 from llama_index.prompts import PromptTemplate
 from llama_index.query_engine.custom import CustomQueryEngine
-from llama_index.query_engine.pandas_query_engine import PandasQueryEngine
+from llama_index.query_engine import PandasQueryEngine
 from llama_index.query_pipeline import QueryPipeline as QP
 from llama_index.response.schema import RESPONSE_TYPE
 

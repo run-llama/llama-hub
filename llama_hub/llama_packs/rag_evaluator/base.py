@@ -47,7 +47,7 @@ class RagEvaluatorPack(BaseLlamaPack):
         self.rag_dataset = rag_dataset
         self._num_examples = len(self.rag_dataset.examples)
         if judge_llm is None:
-            self.judge_llm = OpenAI(temperature=0, model="gpt-4")
+            self.judge_llm = OpenAI(temperature=0, model="gpt-4-1106-preview")
         else:
             assert isinstance(judge_llm, LLM)
             self.judge_llm = judge_llm

@@ -1,5 +1,34 @@
 # ChangeLog
 
+## v[0.0.75] - 2024-01-20
+
+### New Features
+
+- add vanna pack (#889)
+
+## v[0.0.74] - 2024-01-19
+
+### New Features
+
+- Add MangaDex loader (#870)
+
+### Bug Fixes / Nits
+
+- add timeout arg to github repo reader (#873)
+- use os.path to generate file paths (#866)
+- add args for trafilatrus loader (#872)
+
+## v[0.0.73] - 2024-01-19
+
+### New Features
+- Create stock_market_data_query_engine (#845)
+- feat: Add full site BFS scraping loader (#827)
+
+### Bug Fixes / Nits
+- update judge llm (#869)
+- add some consistent doc ids (#868)
+- add back selenium
+
 ## v[0.0.72] - 2024-01-15
 
 ### New Features

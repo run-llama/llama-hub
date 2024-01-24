@@ -188,6 +188,7 @@ class SlackReader(BaseReader):
                 results.append(
                     Document(
                         text=message_content["text"],
+                        id_=channel_id,
                         extra_info={
                             "channel": channel_id,
                             "timestamp": timestamp,

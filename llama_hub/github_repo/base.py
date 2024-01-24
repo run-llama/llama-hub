@@ -72,6 +72,7 @@ class GithubRepositoryReader(BaseReader):
         use_parser: bool = False,
         verbose: bool = False,
         concurrent_requests: int = 5,
+        timeout: Optional[int] = 5,
         filter_directories: Optional[Tuple[List[str], FilterType]] = None,
         filter_file_extensions: Optional[Tuple[List[str], FilterType]] = None,
     ):
@@ -87,6 +88,7 @@ class GithubRepositoryReader(BaseReader):
             - verbose (bool): Whether to print verbose messages.
             - concurrent_requests (int): Number of concurrent requests to
                 make to the Github API.
+            - timeout (int or None): Timeout for the requests to the Github API. Default is 5.
             - filter_directories (Optional[Tuple[List[str], FilterType]]): Tuple
                 containing a list of directories and a FilterType. If the FilterType
                 is INCLUDE, only the files in the directories in the list will be
@@ -109,6 +111,7 @@ class GithubRepositoryReader(BaseReader):
         self._use_parser = use_parser
         self._verbose = verbose
         self._concurrent_requests = concurrent_requests
+        self._timeout = timeout
         self._filter_directories = filter_directories
         self._filter_file_extensions = filter_file_extensions
 
@@ -224,7 +227,9 @@ class GithubRepositoryReader(BaseReader):
         :return: list of documents
         """
         commit_response: GitCommitResponseModel = self._loop.run_until_complete(
-            self._github_client.get_commit(self._owner, self._repo, commit_sha)
+            self._github_client.get_commit(
+                self._owner, self._repo, commit_sha, timeout=self._timeout
+            )
         )
 
         tree_sha = commit_response.commit.tree.sha
@@ -247,7 +252,9 @@ class GithubRepositoryReader(BaseReader):
         :return: list of documents
         """
         branch_data: GitBranchResponseModel = self._loop.run_until_complete(
-            self._github_client.get_branch(self._owner, self._repo, branch)
+            self._github_client.get_branch(
+                self._owner, self._repo, branch, timeout=self._timeout
+            )
         )
 
         tree_sha = branch_data.commit.commit.tree.sha
@@ -319,7 +326,7 @@ class GithubRepositoryReader(BaseReader):
         )
 
         tree_data: GitTreeResponseModel = await self._github_client.get_tree(
-            self._owner, self._repo, tree_sha
+            self._owner, self._repo, tree_sha, timeout=self._timeout
         )
         print_if_verbose(
             self._verbose, "\t" * current_depth + f"tree data: {tree_data}"
