@@ -262,5 +262,10 @@
     "id": "llama_packs/stock_market_data_query_engine",
     "author": "anoopshrma",
     "keywords": ["stock", "market", "data", "query", "engine"]
+  },
+  "VannaPack": {
+    "id": "llama_packs/vanna",
+    "author": "jerryjliu",
+    "keywords": ["vanna", "sql", "ai", "text-to-sql"]
   }
 }
