@@ -5,14 +5,11 @@ Uses: https://vanna.ai/.
 """
 
 
-from typing import Any, Dict, Optional, cast, Type
+from typing import Any, Dict, Optional, cast
 
 from llama_index.llama_pack.base import BaseLlamaPack
-from llama_index.llms import Replicate
 from llama_index.query_engine import CustomQueryEngine
 import pandas as pd
-from llama_index.bridge.pydantic import PrivateAttr
-from llama_index.schema import QueryBundle
 from llama_index.response.schema import RESPONSE_TYPE, Response
 
 
@@ -20,12 +17,12 @@ class VannaQueryEngine(CustomQueryEngine):
     """Vanna query engine.
 
     Uses chromadb and OpenAI.
-    
+
     """
 
     openai_api_key: str
     sql_db_url: str
-    
+
     ask_kwargs: Dict[str, Any]
     vn: Any
 
@@ -47,17 +44,15 @@ class VannaQueryEngine(CustomQueryEngine):
                 ChromaDB_VectorStore.__init__(self, config=config)
                 OpenAI_Chat.__init__(self, config=config)
 
-        vn = MyVanna(
-            config={'api_key': openai_api_key, 'model': openai_model}
-        )
+        vn = MyVanna(config={"api_key": openai_api_key, "model": openai_model})
         vn.connect_to_sqlite(sql_db_url)
         if verbose:
             print(f"> Connected to db: {sql_db_url}")
 
         # get every table DDL from db
         sql_results = cast(
-            pd.DataFrame, 
-            vn.run_sql("SELECT sql FROM sqlite_master WHERE type='table';")
+            pd.DataFrame,
+            vn.run_sql("SELECT sql FROM sqlite_master WHERE type='table';"),
         )
         # go through every sql statement, do vn.train(ddl=ddl) on it
         for idx, sql_row in sql_results.iterrows():
@@ -66,21 +61,19 @@ class VannaQueryEngine(CustomQueryEngine):
             vn.train(ddl=sql_row["sql"])
 
         super().__init__(
-            openai_api_key=openai_api_key, sql_db_url=sql_db_url, 
+            openai_api_key=openai_api_key,
+            sql_db_url=sql_db_url,
             vn=vn,
             ask_kwargs=ask_kwargs or {},
-            **kwargs
+            **kwargs,
         )
-        
 
     def custom_query(self, query_str: str) -> RESPONSE_TYPE:
         """Query."""
         from vanna.base import VannaBase
+
         vn = cast(VannaBase, self.vn)
-        ask_kwargs = {
-            "visualize": False,
-            "print_results": False
-        }
+        ask_kwargs = {"visualize": False, "print_results": False}
         ask_kwargs.update(self.ask_kwargs)
         sql = vn.generate_sql(
             query_str,
@@ -90,9 +83,8 @@ class VannaQueryEngine(CustomQueryEngine):
         if result is None:
             raise ValueError("Vanna returned None.")
         sql, df, _ = result
-        
+
         return Response(response=str(df), metadata={"sql": sql, "df": df})
-    
 
 
 class VannaPack(BaseLlamaPack):
@@ -101,7 +93,7 @@ class VannaPack(BaseLlamaPack):
     Uses OpenAI and ChromaDB. Of course Vanna.AI allows you to connect to many more dbs
     and use more models - feel free to refer to their page for more details:
     https://vanna.ai/docs/snowflake-openai-vanna-vannadb.html
-    
+
     """
 
     def __init__(
@@ -115,7 +107,6 @@ class VannaPack(BaseLlamaPack):
         self.vanna_query_engine = VannaQueryEngine(
             openai_api_key=openai_api_key, sql_db_url=sql_db_url, **kwargs
         )
-        
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
