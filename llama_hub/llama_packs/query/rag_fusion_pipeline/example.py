@@ -7,13 +7,13 @@ from llama_index.llms.openai import OpenAI
 
 # download and install dependencies
 RAGFusionPipelinePack = download_llama_pack(
-  "RAGFusionPipelinePack", "./rag_fusion_pipeline_pack"
+    "RAGFusionPipelinePack", "./rag_fusion_pipeline_pack"
 )
 PDFReader = download_loader("PDFReader")
 
 # load documents
 loader = PDFReader()
-document_path = Path('./data/101.pdf') # replace with your own document
+document_path = Path("./data/101.pdf")  # replace with your own document
 documents = loader.load_data(file=document_path)
 
 # create the pack
