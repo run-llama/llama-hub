@@ -1,6 +1,7 @@
 import pytest
 
 from llama_hub.file.xml import XMLReader
+import xml.etree.ElementTree as ET
 
 # Sample XML data for testing
 SAMPLE_XML = """<?xml version="1.0" encoding="UTF-8"?>
@@ -47,10 +48,11 @@ def test_xml_reader_init():
 
 
 def test_parse_xml_to_document():
-    reader = XMLReader()
-    document = reader._parse_xmlelt_to_document(SAMPLE_XML)
-    assert "Fresh Produce Ltd." in document.text
-    assert "fruit" in document.text
+    reader = XMLReader(1)
+    root = ET.fromstring(SAMPLE_XML)
+    documents = reader._parse_xmlelt_to_document(root)
+    assert "Fresh Produce Ltd." in documents[-1].text
+    assert "fruit" in documents[0].text
 
 
 def test_load_data_xml(xml_file):
