@@ -17,12 +17,6 @@ class CouchbaseReader(BaseReader):
         connection_string (Optional[str]): The connection string to the Couchbase cluster.
         db_username (Optional[str]): The username to connect to the Couchbase cluster.
         db_password (Optional[str]): The password to connect to the Couchbase cluster.
-        query (str): The SQL++ query to execute.
-        page_content_fields (Optional[List[str]]): The columns to write into the
-            `page_content` field of the document. By default, all columns are
-            written.
-        metadata_fields (Optional[List[str]]): The columns to write into the
-            `metadata` field of the document. By default, no columns are written.
     """
 
     def __init__(
@@ -59,10 +53,19 @@ class CouchbaseReader(BaseReader):
     def lazy_load_data(
         self,
         query: str,
-        page_content_fields: Optional[List[str]] = None,
-        metadata_fields: Optional[List[str]] = None,
+        text_fields: Optional[List[str]] = None,
+        metadata_fields: Optional[List[str]] = [],
     ) -> Iterable[Document]:
-        """Load data from the Couchbase cluster lazily."""
+        """Load data from the Couchbase cluster lazily.
+
+        Args:
+            query (str): The SQL++ query to execute.
+            text_fields (Optional[List[str]]): The columns to write into the
+                `text` field of the document. By default, all columns are
+                written.
+            metadata_fields (Optional[List[str]]): The columns to write into the
+                `metadata` field of the document. By default, no columns are written.
+        """
         from datetime import timedelta
 
         if not query:
@@ -74,16 +77,13 @@ class CouchbaseReader(BaseReader):
         # Run SQL++ Query
         result = self._client.query(query)
         for row in result:
-            if not page_content_fields:
-                page_content_fields = list(row.keys())
-
-            if not metadata_fields:
-                metadata_fields = []
+            if not text_fields:
+                text_fields = list(row.keys())
 
             metadata = {field: row[field] for field in metadata_fields}
 
             document = "\n".join(
-                f"{k}: {v}" for k, v in row.items() if k in page_content_fields
+                f"{k}: {v}" for k, v in row.items() if k in text_fields
             )
 
             yield (Document(text=document, metadata=metadata))
@@ -91,7 +91,17 @@ class CouchbaseReader(BaseReader):
     def load_data(
         self,
         query: str,
-        page_content_fields: Optional[List[str]] = None,
+        text_fields: Optional[List[str]] = None,
         metadata_fields: Optional[List[str]] = None,
     ) -> List[Document]:
-        return list(self.lazy_load_data(query, page_content_fields, metadata_fields))
+        """Load data from the Couchbase cluster.
+
+        Args:
+            query (str): The SQL++ query to execute.
+            text_fields (Optional[List[str]]): The columns to write into the
+                `text` field of the document. By default, all columns are
+                written.
+            metadata_fields (Optional[List[str]]): The columns to write into the
+                `metadata` field of the document. By default, no columns are written.
+        """
+        return list(self.lazy_load_data(query, text_fields, metadata_fields))
