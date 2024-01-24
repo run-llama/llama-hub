@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v[0.0.75] - 2024-01-20
+
+### New Features
+
+- add vanna pack (#889)
+
 ## v[0.0.74] - 2024-01-19
 
 ### New Features
