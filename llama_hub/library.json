@@ -1219,5 +1219,9 @@
   "TelegramReader": {
     "id": "telegram",
     "author": "diicell"
+  },
+  "XMLReader": {
+    "id": "file/xml",
+    "author": "mmaatouk"
   }
 }
