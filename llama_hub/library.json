@@ -1223,7 +1223,7 @@
   "SimpleArangoDBReader": {
     "id": "arangodb",
     "author": "mmaatouk"
-  }
+  },
   "XMLReader": {
     "id": "file/xml",
     "author": "mmaatouk"
