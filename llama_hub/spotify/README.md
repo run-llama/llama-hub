@@ -36,5 +36,7 @@ SpotifyReader = download_loader('SpotifyReader')
 loader = SpotifyReader()
 documents = loader.load_data()
 index = VectorStoreIndex.from_documents(documents)
-index.query('When are some other artists i might like based on what i listen to ?')
+query_engine = index.as_query_engine()
+
+query_engine.query('When are some other artists i might like based on what i listen to ?')
 ```

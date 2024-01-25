@@ -39,7 +39,9 @@ loader = ReadabilityWebPageReader()
 documents = loader.load_data(url='https://support.squarespace.com/hc/en-us/articles/206795137-Pages-and-content-basics')
 
 index = VectorStoreIndex.from_documents(documents)
-print(index.query('What is pages?'))
+query_engine = index.as_query_engine()
+
+print(query_engine.query('What is pages?'))
 
 ```
 
@@ -59,11 +61,12 @@ loader = ReadabilityWebPageReader()
 documents = loader.load_data(url='https://support.squarespace.com/hc/en-us/articles/206795137-Pages-and-content-basics')
 
 index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
 
 tools = [
     Tool(
         name="Website Index",
-        func=lambda q: index.query(q),
+        func=lambda q: query_engine.query(q),
         description=f"Useful when you want answer questions about the text on websites.",
     ),
 ]

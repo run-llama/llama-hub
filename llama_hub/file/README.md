@@ -34,7 +34,8 @@ from llama_index import VectorStoreIndex
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
 index = VectorStoreIndex.from_documents(documents)
-index.query('What are these files about?')
+query_engine = index.as_query_engine()
+query_engine.query('What are these files about?')
 ```
 
 ### LangChain
@@ -55,11 +56,12 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 loader = SimpleDirectoryReader('./data', recursive=True, exclude_hidden=True)
 documents = loader.load_data()
 index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
 
 tools = [
     Tool(
         name="Local Directory Index",
-        func=lambda q: index.query(q),
+        func=lambda q: query_engine.query(q),
         description=f"Useful when you want answer questions about the files in your local directory.",
     ),
 ]

@@ -102,7 +102,9 @@ loader.load_data()
 
 documents = SimpleDirectoryReader("data\TSLA\2022").load_data()
 index = VectorStoreIndex.from_documents(documents)
-index.query('What are the risk factors of Tesla for the year 2022?')
+query_engine = index.as_query_engine()
+
+query_enginee.query('What are the risk factors of Tesla for the year 2022?')
 
 ```
 

@@ -18,6 +18,7 @@ JsonDataReader = download_loader("JsonDataReader")
 loader = JsonDataReader()
 documents = loader.load_data(data)
 index = VectorStoreIndex.from_documents(documents)
-index.query("Question about your data")
+query_engine = index.as_query_engine()
+query_engine.query("Question about your data")
 ```
 

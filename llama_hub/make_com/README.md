@@ -19,7 +19,8 @@ index = VectorStoreIndex.load_from_disk('../vector_indices/index_simple.json')
 
 # query index
 query_str = "What did the author do growing up?"
-response = index.query(query_str)
+query_engine = index.as_query_engine()
+response = query_engine.query(query_str)
 
 # Send response to Make.com webhook
 wrapper = MakeWrapper()
