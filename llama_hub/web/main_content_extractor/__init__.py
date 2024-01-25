@@ -1,5 +1,5 @@
 """Init file."""
-from llama_hub.web.simple_web.base import (
+from llama_hub.web.main_content_extractor.base import (
     MainContentExtractorReader,
 )
 
