@@ -1221,7 +1221,7 @@
     "author": "diicell"
   },
   "SimpleArangoDBReader": {
-    "id": "arangodb",
+    "id": "arango_db",
     "author": "mmaatouk"
   },
   "XMLReader": {
