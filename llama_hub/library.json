@@ -1223,5 +1223,9 @@
   "XMLReader": {
     "id": "file/xml",
     "author": "mmaatouk"
+  },
+  "SimpleArangoDBReader": {
+    "id": "arango_db",
+    "author": "mmaatouk"
   }
 }
