@@ -19,12 +19,19 @@ class ExaToolSpec(BaseToolSpec):
         "current_date",
     ]
 
-    def __init__(self, api_key: str, verbose: bool = True) -> None:
+    def __init__(
+        self,
+        api_key: str,
+        verbose: bool = True,
+        max_characters: int = 2000,
+    ) -> None:
         """Initialize with parameters."""
         from exa_py import Exa
 
         self.client = Exa(api_key=api_key, user_agent="llama-index")
         self._verbose = verbose
+        # max characters for the text field in the search_and_contents function
+        self._max_characters = max_characters
 
     def search(
         self,
@@ -128,7 +135,7 @@ class ExaToolSpec(BaseToolSpec):
             start_published_date=start_published_date,
             end_published_date=end_published_date,
             use_autoprompt=True,
-            text={"max_characters": 500},
+            text={"max_characters": self._max_characters},
         )
         if self._verbose:
             print(f"[Exa Tool] Autoprompt: {response.autoprompt_string}")
