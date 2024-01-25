@@ -64,14 +64,14 @@ class ExaToolSpec(BaseToolSpec):
 
     def retrieve_documents(self, ids: List[str]) -> List[Document]:
         """
-        Retrieve a list of document summaries returned by `exa_search`, using the ID field
+        Retrieve a list of document texts returned by `exa_search`, using the ID field
 
         args:
             ids (List(str)): the ids of the documents to retrieve
         """
 
         response = self.client.get_contents(ids)
-        return [Document(text=con.extract) for con in response.contents]
+        return [Document(text=result.text) for result in response.results]
 
     def find_similar(
         self,
