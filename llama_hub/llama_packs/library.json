@@ -88,7 +88,8 @@
   "VoyageQueryEnginePack": {
     "id": "llama_packs/voyage_query_engine",
     "author": "Liuhong99",
-    "keywords": ["voyage", "query", "retrieval", "embeddings"]
+    "keywords": ["voyage", "query", "retrieval", "embeddings"],
+    "example": true
   },
   "VectaraRagPack": {
     "id": "llama_packs/vectara_rag",
@@ -153,7 +154,8 @@
   "RagEvaluatorPack": {
     "id": "llama_packs/rag_evaluator",
     "author": "nerdai",
-    "keywords": ["rag", "evaluation", "benchmarks"]
+    "keywords": ["rag", "evaluation", "benchmarks"],
+    "example": true
   },
   "LlamaDatasetMetadataPack": {
     "id": "llama_packs/llama_dataset_metadata",
@@ -236,7 +238,8 @@
   "RAGFusionPipelinePack": {
     "id": "llama_packs/query/rag_fusion_pipeline",
     "author": "jerryjliu",
-    "keywords": ["rag", "fusion", "pipeline", "query"]
+    "keywords": ["rag", "fusion", "pipeline", "query"],
+    "example": true
   },
   "AgentSearchRetrieverPack": {
     "id": "llama_packs/agent_search_retriever",
