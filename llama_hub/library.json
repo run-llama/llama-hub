@@ -1219,5 +1219,12 @@
   "TelegramReader": {
     "id": "telegram",
     "author": "diicell"
+  },
+  "OpsgenieReader": {
+    "id": "opsgenie",
+    "author": "ns-gsa",
+    "keywords": [
+      "opsgenie"
+    ]
   }
 }
