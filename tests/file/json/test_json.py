@@ -12,6 +12,7 @@ SAMPLE_JSON = {
 
 SAMPLE_JSONL = [json.dumps(SAMPLE_JSON), json.dumps({"name": "Jane Doe", "age": 25})]
 
+
 # Fixture to create a temporary JSON file
 @pytest.fixture
 def json_file(tmp_path):
