@@ -1220,6 +1220,10 @@
     "id": "telegram",
     "author": "diicell"
   },
+  "SimpleArangoDBReader": {
+    "id": "arango_db",
+    "author": "mmaatouk"
+  },
   "XMLReader": {
     "id": "file/xml",
     "author": "mmaatouk"
