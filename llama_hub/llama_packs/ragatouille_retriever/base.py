@@ -75,10 +75,12 @@ class RAGatouilleRetrieverPack(BaseLlamaPack):
         # index the documents
         if index_path is None:
             RAG = RAGPretrainedModel.from_pretrained("colbert-ir/colbertv2.0")
-            index_path = RAG.index(index_name=index_name, 
-                                   collection=doc_txts, 
-                                   document_ids=doc_ids,
-                                   document_metadatas=doc_metadatas)
+            index_path = RAG.index(
+                index_name=index_name,
+                collection=doc_txts,
+                document_ids=doc_ids,
+                document_metadatas=doc_metadatas,
+            )
         else:
             RAG = RAGPretrainedModel.from_index(index_path)
 
@@ -101,10 +103,12 @@ class RAGatouilleRetrieverPack(BaseLlamaPack):
         doc_ids = [doc.doc_id for doc in documents]
         doc_metadatas = [doc.metadata for doc in documents]
 
-        self.RAG.add_to_index(new_collection=doc_txts, 
-                            new_document_ids=doc_ids,
-                            new_document_metadatas=doc_metadatas)
-        
+        self.RAG.add_to_index(
+            new_collection=doc_txts,
+            new_document_ids=doc_ids,
+            new_document_metadatas=doc_metadatas,
+        )
+
     def delete_documents(self, documents: List[Document]) -> None:
         """Delete documents."""
 
