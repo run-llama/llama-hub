@@ -27,7 +27,7 @@ class SimpleArangoDBReader(BaseReader):
 
         host = host or "http://127.0.0.1:8529"
         self.client = client or ArangoClient(hosts=host)
-        self.client = cast(ArangoClient, client)
+        self.client = cast(ArangoClient, self.client)
 
     def _flatten(self, texts: List[Union[str, List[str]]]) -> List[str]:
         result = []
@@ -42,9 +42,9 @@ class SimpleArangoDBReader(BaseReader):
         db_name: str,
         collection_name: str,
         field_names: List[str] = ["text"],
-        separator: str = "",
-        query_dict: Optional[Dict] = None,
-        max_docs: int = 0,
+        separator: str = " ",
+        query_dict: Optional[Dict] = {},
+        max_docs: int = None,
         metadata_names: Optional[List[str]] = None,
     ) -> Iterator[Document]:
         """Lazy load data from ArangoDB.
@@ -56,12 +56,12 @@ class SimpleArangoDBReader(BaseReader):
             field_names(List[str]): names of the fields to be concatenated.
                 Defaults to ["text"]
             separator (str): separator to be used between fields.
-                Defaults to ""
+                Defaults to " "
             query_dict (Optional[Dict]): query to filter documents. Read more
             at [docs](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.find)
-                Defaults to None
+                Defaults to empty dict
             max_docs (int): maximum number of documents to load.
-                Defaults to 0 (no limit)
+                Defaults to None (no limit)
             metadata_names (Optional[List[str]]): names of the fields to be added
                 to the metadata attribute of the Document. Defaults to None
         Returns:
@@ -69,7 +69,7 @@ class SimpleArangoDBReader(BaseReader):
         """
         db = self.client.db(name=db_name, username=username, password=password)
         collection = db.collection(collection_name)
-        cursor = collection.find(filter=query_dict or {}, limit=max_docs)
+        cursor = collection.find(filters=query_dict, limit=max_docs)
         for item in cursor:
             try:
                 texts = [str(item[name]) for name in field_names]
@@ -99,8 +99,8 @@ class SimpleArangoDBReader(BaseReader):
         collection_name: str,
         field_names: List[str] = ["text"],
         separator: str = " ",
-        query_dict: Optional[Dict] = None,
-        max_docs: int = 0,
+        query_dict: Optional[Dict] = {},
+        max_docs: int = None,
         metadata_names: Optional[List[str]] = None,
     ) -> List[Document]:
         """Load data from the ArangoDB.
@@ -115,7 +115,7 @@ class SimpleArangoDBReader(BaseReader):
                 Defaults to ""
             query_dict (Optional[Dict]): query to filter documents. Read more
             at [docs](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.find)
-                Defaults to None
+                Defaults to empty dict
             max_docs (int): maximum number of documents to load.
                 Defaults to 0 (no limit)
             metadata_names (Optional[List[str]]): names of the fields to be added
@@ -125,9 +125,9 @@ class SimpleArangoDBReader(BaseReader):
         """
         return list(
             self.lazy_load(
-                db_name,
                 username,
                 password,
+                db_name,
                 collection_name,
                 field_names,
                 separator,
