@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v[0.0.76] - 2024-01-26
+
+### New Features
+- Convert Metaphor documentation to Exa (#896)
+- Add XML loader (#887)
+
+### Bug Fixes / Nits
+- feat: add example option for llamapack library (#895)
+- fix import main_content_extractor (#891)
+- feat: example for rag evaluator pack (#882)
+- feat: example for voyage query engine pack (#880)
+
 ## v[0.0.75] - 2024-01-20
 
 ### New Features
