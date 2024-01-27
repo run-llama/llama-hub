@@ -1223,5 +1223,14 @@
   "XMLReader": {
     "id": "file/xml",
     "author": "mmaatouk"
+  },
+  "CouchbaseReader": {
+    "id": "couchbase",
+    "author": "nithishr",
+    "keywords": [
+      "Couchbase",
+      "Capella",
+      "NoSQL"
+    ]
   }
 }
