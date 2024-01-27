@@ -6,6 +6,7 @@
 - Convert Metaphor documentation to Exa (#896)
 - Add XML loader (#887)
 - Add Couchbase Reader (#892)
+- Support ArangoDB simple loader (#900)
 
 ### Smaller Features + Bug Fixes / Nits
 - feat: add example option for llamapack library (#895)
