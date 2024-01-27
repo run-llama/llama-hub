@@ -55,6 +55,10 @@
     "id": "tools/metaphor",
     "author": "ajhofmann"
   },
+  "ExaToolSpec": {
+    "id": "tools/exa",
+    "author": "jeffzwang"
+  },
   "MultionToolSpec": {
     "id": "tools/multion",
     "author": "ajhofmann"
