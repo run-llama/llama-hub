@@ -169,5 +169,17 @@
       "openai",
       "gpt-3"
     ]
+  },
+
+  "YahooFinanceToolSpec": {
+    "id": "tools/yahoo_finance",
+    "author": "dwightfoster",
+    "keywords": [
+      "finance",
+      "stock",
+      "market",
+      "yahoo"
+    ]
   }
+
 }
