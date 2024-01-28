@@ -56,6 +56,7 @@ class OpsgenieReader(BaseReader):
             if response.status_code == 200:
                 alerts = response.json()
                 all_alerts.extend(alerts.get("data", []))
+                print (f"Retrieved {len(alerts.get('data', []))} alerts. Total alerts: {len(all_alerts)}")
                 paging = alerts['paging']
                 try:
                     list_alerts_url = paging['next']
