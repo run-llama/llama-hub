@@ -51,7 +51,7 @@ class OpsgenieReader(BaseReader):
         all_alerts = []
         list_alerts_url = f"{self.api_url}/v2/alerts"
 
-        while list_alerts_url and len(all_alerts) < self.max_alerts:
+        while list_alerts_url and len(all_alerts) <= self.max_alerts:
             response = requests.get(list_alerts_url, headers=self.headers, params={'query': json.dumps(query_params)}, timeout=30)
             if response.status_code == 200:
                 alerts = response.json()
