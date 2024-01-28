@@ -1,10 +1,6 @@
 from llama_index.schema import Document
 from llama_index.readers.base import BaseReader
-
-try:
-    from llama_hub.sec_filings.secData import sec_main
-except:
-    from secData import sec_main
+from llama_hub.sec_filings.secData import sec_main
 from datetime import datetime
 from typing import List
 

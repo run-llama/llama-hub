@@ -48,7 +48,7 @@ def sec_main(
             no_dashes_acc_num = re.sub("-", "", acc_num)
             form_lists.append([no_dashes_acc_num, form_name, filing_date, report_date])
 
-    acc_nums_list = [l[0] for l in form_lists]
+    acc_nums_list = [fl[0] for fl in form_lists]
 
     get_filing_partial = partial(
         get_filing,
