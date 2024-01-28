@@ -7,12 +7,13 @@ from llama_index.schema import Document
 
 class OpsgenieReader(BaseReader):
     """
-    Opsgenie Reader. Get open alerts from Opsgenie.
+    Opsgenie Reader. Get alerts from Opsgenie.
     """
 
     def __init__(self,
-                 api_key: Optional[str] = None,
-                 api_url: Optional[str] = None
+                 api_key: str,
+                 api_url: str,
+                 max_alerts: Optional[int] = 3000,
     ) -> None:
         self.api_key = api_key
         self.api_url = api_url
@@ -20,18 +21,13 @@ class OpsgenieReader(BaseReader):
             "Authorization": f"GenieKey {self.api_key}",
             "Content-Type": "application/json",
         }
-        self.params = {
-            'query': 'status:open'
-        }
+        self.max_alerts = max_alerts
 
     def load_data(self) -> List[Document]:
-        """Load data from Opsgenie API.
-
-        Args:
-            query: Query to be passed to Opsgenie API.
+        """Load data by calling Opsgenie alerts API.
 
         Returns:
-            List of documents.
+            List of alerts.
         """
         alerts = []
         all_opsgenie_alerts = self.get_all_alerts()
@@ -45,16 +41,34 @@ class OpsgenieReader(BaseReader):
         return alerts
     
     def get_all_alerts(self):
-        response = requests.get(
-            f"{self.api_url}/v2/alerts", headers=self.headers, params=self.params, timeout=30)
+        """Get all alerts from Opsgenie."""
 
-        if response.status_code == 200:
-            alerts = response.json().get("data", [])
-            return alerts
-        else:
-            raise ValueError("Problem getting list of alerts from Opsgenie. Check API key and URL.")
+        query_params = {
+            'sort': 'createdAt',
+            'order': 'desc'
+        }
+
+        all_alerts = []
+        list_alerts_url = f"{self.api_url}/v2/alerts"
+
+        while list_alerts_url and len(all_alerts) < self.max_alerts:
+            response = requests.get(list_alerts_url, headers=self.headers, params={'query': json.dumps(query_params)}, timeout=30)
+            if response.status_code == 200:
+                alerts = response.json()
+                all_alerts.extend(alerts.get("data", []))
+                paging = alerts['paging']
+                try:
+                    list_alerts_url = paging['next']
+                except KeyError:
+                    list_alerts_url = None
+            else:
+                raise ValueError(f"Problem getting list of alerts from Opsgenie.Error: {response.status_code}, {response.text}")
+
+        return all_alerts
 
     def get_alert_details(self, alert_id):
+        """Get alert detail"""
+
         response = requests.get(
             f"{self.api_url}/v2/alerts/{alert_id}", headers=self.headers, timeout=30)
 
@@ -62,4 +76,4 @@ class OpsgenieReader(BaseReader):
             details = response.json().get("data", {})
             return details
         else:
-            raise ValueError("Problem getting alert details for alert_id from Opsgenie. Check API key and URL.")
+            raise ValueError(f"Problem getting alert details for {alert_id} from Opsgenie .Error: {response.status_code}, {response.text}")
