@@ -1,13 +1,16 @@
 from typing import Any, Dict, List, Tuple
 import numpy as np
 
-from llama_cpp import Llama
 from llama_index import Response
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.bridge.pydantic import Field
 from llama_index.query_engine import CustomQueryEngine
 from llama_index.core.base_retriever import BaseRetriever
 from llama_index.utils import print_text
+
+_IMPORT_ERROR_MSG = (
+    "`llama_cpp` package not found, please run `pip install llama_cpp_python`"
+)
 
 _RELEVANCE_TOKENS = ["[Irrelevant]", "[Relevant]"]
 
@@ -154,9 +157,9 @@ def _is_useful_score(
 class SelfRAGQueryEngine(CustomQueryEngine):
     """Simple short form self RAG query engine."""
 
-    llm: Llama = Field(default=None, description="llm")
-    generate_kwargs: Dict = Field(default=None, description="llm generation arguments")
+    llm: Any = Field(default=None, description="llm")
     retreiver: BaseRetriever = Field(default=None, description="Retreiver")
+    generate_kwargs: Dict = Field(default=None, description="llm generation arguments")
     verbose: bool = Field(default=True, description="Verbose.")
 
     def __init__(
@@ -172,7 +175,10 @@ class SelfRAGQueryEngine(CustomQueryEngine):
         super().__init__(verbose=verbose, **kwargs)
         model_kwargs = model_kwargs or _MODEL_KWARGS
         self.generate_kwargs = generate_kwargs or _GENERATE_KWARGS
-
+        try:
+            from llama_cpp import Llama  # noqa: F401
+        except ImportError:
+            raise ImportError(_IMPORT_ERROR_MSG)
         self.llm = Llama(model_path=model_path, verbose=verbose, **model_kwargs)
         self.retreiver = retreiver
 
