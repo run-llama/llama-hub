@@ -43,16 +43,11 @@ class OpsgenieReader(BaseReader):
     def get_all_alerts(self):
         """Get all alerts from Opsgenie."""
 
-        query_params = {
-            'sort': 'createdAt',
-            'order': 'desc'
-        }
-
         all_alerts = []
         list_alerts_url = f"{self.api_url}/v2/alerts"
 
         while list_alerts_url and len(all_alerts) <= self.max_alerts:
-            response = requests.get(list_alerts_url, headers=self.headers, params={'query': json.dumps(query_params)}, timeout=30)
+            response = requests.get(list_alerts_url, headers=self.headers, params={}, timeout=30)
             if response.status_code == 200:
                 alerts = response.json()
                 all_alerts.extend(alerts.get("data", []))
