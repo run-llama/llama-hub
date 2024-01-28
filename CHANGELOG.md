@@ -1,5 +1,20 @@
 # ChangeLog
 
+## v[0.0.76] - 2024-01-26
+
+### New Features
+- Convert Metaphor documentation to Exa (#896)
+- Add XML loader (#887)
+- Add Couchbase Reader (#892)
+- Support ArangoDB simple loader (#900)
+
+### Smaller Features + Bug Fixes / Nits
+- feat: add example option for llamapack library (#895)
+- fix import main_content_extractor (#891)
+- feat: example for rag evaluator pack (#882)
+- feat: example for voyage query engine pack (#880)
+- RAGatouille metadata support (#893)
+
 ## v[0.0.75] - 2024-01-20
 
 ### New Features
