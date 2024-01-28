@@ -13,10 +13,9 @@ python install -r requirements.txt
 The SEC Downloader expects 5 attributes
 
 * tickers: It is a list of valid tickers
-* amount: Number of documents that you want to download
-* filing_type: 10-K or 10-Q filing type
-* num_workers: It is for multithreading and multiprocessing. We have multi-threading at the ticker level and multi-processing at the year level for a given ticker
+* forms (List): 10-K or 10-Q or S-1 filing type 
 * include_amends: To include amendments or not.
+* year: The year for which you need the data
 
 ## Usage
 ```python
@@ -24,67 +23,17 @@ from llama_index import download_loader
 
 SECFilingsLoader = download_loader('SECFilingsLoader')
 
-loader = SECFilingsLoader(tickers=['TSLA'],amount=3,filing_type="10-K")
-loader.load_data()
-```
-It will download the data in the following directories and sub-directories
-
-```python
-- AAPL
-  - 2018
-    - 10-K.json
-  - 2019
-    - 10-K.json
-  - 2020
-    - 10-K.json
-  - 2021
-    - 10-K.json
-    - 10-Q_12.json
-  - 2022
-    - 10-K.json
-    - 10-Q_03.json
-    - 10-Q_06.json
-    - 10-Q_12.json
-  - 2023
-    - 10-Q_04.json
-- GOOGL
-  - 2018
-    - 10-K.json
-  - 2019
-    - 10-K.json
-  - 2020
-    - 10-K.json
-  - 2021
-    - 10-K.json
-    - 10-Q_09.json
-  - 2022
-    - 10-K.json
-    - 10-Q_03.json
-    - 10-Q_06.json
-    - 10-Q_09.json
-  - 2023
-    - 10-Q_03.json
-- TSLA
-  - 2018
-    - 10-K.json
-  - 2019
-    - 10-K.json
-  - 2020
-    - 10-K.json
-  - 2021
-    - 10-K.json
-    - 10-KA.json
-    - 10-Q_09.json
-  - 2022
-    - 10-K.json
-    - 10-Q_03.json
-    - 10-Q_06.json
-    - 10-Q_09.json
-  - 2023
-    - 10-Q_03.json
+loader = SECFilingsLoader(tickers='TSLA',year=2023,forms=["10-K","10-Q"],include_amends=True)
+docs = loader.load_data()
 ```
 
-Here for each ticker we have separate folders with 10-K data inside respective years and 10-Q data is saved in the respective year along with the month. `10-Q_03.json` means March data of 10-Q document. Also, the amended documents are stored in their respective year
+It also returns the following metadata
+
+* Filing Date of the filing
+* Reporting date of the filing
+* Accession number of the filing (unique identifier of the filing)
+* form type: "10-K" or "10-Q1", "10-Q2", "10-Q3"
+* Section name of the text
 
 ## EXAMPLES
 
@@ -97,10 +46,9 @@ from llama_index import SimpleDirectoryReader
 
 SECFilingsLoader = download_loader('SECFilingsLoader')
 
-loader = SECFilingsLoader(tickers=['TSLA'],amount=3,filing_type="10-K")
-loader.load_data()
+loader = SECFilingsLoader(tickers='TSLA',year=2023,forms=["10-K","10-Q"],include_amends=True)
+documents = loader.load_data()
 
-documents = SimpleDirectoryReader("data\TSLA\2022").load_data()
 index = VectorStoreIndex.from_documents(documents)
 index.query('What are the risk factors of Tesla for the year 2022?')
 
@@ -117,12 +65,10 @@ from langchain.indexes import VectorstoreIndexCreator
 
 SECFilingsLoader = download_loader('SECFilingsLoader')
 
-loader = SECFilingsLoader(tickers=['TSLA'],amount=3,filing_type="10-K")
-loader.load_data()
+loader = SECFilingsLoader(tickers='TSLA',year=2023,forms=["10-K","10-Q"],include_amends=True)
+documents = loader.load_data()
 
-dir_loader = DirectoryLoader("data\TSLA\2022")
-
-index = VectorstoreIndexCreator().from_loaders([dir_loader])
+index = VectorstoreIndexCreator().from_documents(documents)
 retriever = index.vectorstore.as_retriever()
 qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=retriever)
 
@@ -131,5 +77,5 @@ qa.run(query)
 ```
 ## REFERENCES
 1. Unstructured SEC Filings API: [repo link](https://github.com/Unstructured-IO/pipeline-sec-filings/tree/main)
-2. SEC Edgar Downloader: [repo link](https://github.com/jadchaar/sec-edgar-downloader)
+
 
