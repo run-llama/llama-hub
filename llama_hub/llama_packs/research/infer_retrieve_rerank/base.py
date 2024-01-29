@@ -107,6 +107,9 @@ class InferRetrieveRerankPack(BaseLlamaPack):
         llm: Optional[LLM] = None,
         pred_context: str = "",
         reranker_top_n: int = 3,
+        infer_prompt: Optional[PromptTemplate] = None,
+        rerank_prompt: Optional[PromptTemplate] = None,
+        verbose: bool = False
     ) -> None:
         """Init params."""
         # NOTE: we use 16k model by default to fit longer contexts
@@ -115,10 +118,14 @@ class InferRetrieveRerankPack(BaseLlamaPack):
         pipeline = IngestionPipeline(transformations=[OpenAIEmbedding()])
         label_nodes_w_embed = pipeline.run(documents=label_nodes)
 
-        index = VectorStoreIndex(label_nodes_w_embed)
+        index = VectorStoreIndex(label_nodes_w_embed, show_progress=verbose)
         self.label_retriever = index.as_retriever(similarity_top_k=2)
         self.pred_context = pred_context
         self.reranker_top_n = reranker_top_n
+        self.verbose = verbose
+
+        self.infer_prompt = infer_prompt or INFER_PROMPT_TMPL
+        self.rerank_prompt = rerank_prompt or RERANK_PROMPT_TMPL
 
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
@@ -132,13 +139,19 @@ class InferRetrieveRerankPack(BaseLlamaPack):
         inputs = kwargs.get("inputs", [])
         pred_reactions = []
         for idx, input in enumerate(inputs):
+            if self.verbose:
+                print(f"\n\n> Generating predictions for input {idx}: {input[:300]}")
             cur_pred_reactions = infer_retrieve_rerank(
                 input,
                 self.label_retriever,
                 self.llm,
                 self.pred_context,
+                self.infer_prompt,
+                self.rerank_prompt,
                 reranker_top_n=self.reranker_top_n
             )
+            if self.verbose:
+                print(f"> Generated predictions: {cur_pred_reactions}")
 
             pred_reactions.append(cur_pred_reactions)
 
