@@ -62,7 +62,7 @@ class JiraReader(BaseReader):
     def load_data(self, query: str) -> List[Document]:
         relevant_issues = []
         start_at = 0
-        max_results = 100
+        max_results = 50
         while True:
             chunk_issues = self.jira.search_issues(query, startAt=start_at, maxResults=max_results)
             relevant_issues.extend(chunk_issues)
@@ -100,7 +100,7 @@ class JiraReader(BaseReader):
 
             issues.append(
                 Document(
-                    text=f"{issue.fields.summary} \n {issue.fields.description}",
+                    text=f"{issue.key} {issue.fields.summary} \n {issue.fields.description}",
                     extra_info={
                         "id": issue.id,
                         "title": issue.fields.summary,
