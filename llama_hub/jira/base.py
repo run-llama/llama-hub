@@ -60,7 +60,15 @@ class JiraReader(BaseReader):
             )
 
     def load_data(self, query: str) -> List[Document]:
-        relevant_issues = self.jira.search_issues(query)
+        relevant_issues = []
+        start_at = 0
+        max_results = 100
+        while True:
+            chunk_issues = self.jira.search_issues(query, startAt=start_at, maxResults=max_results)
+            relevant_issues.extend(chunk_issues)
+            if len(chunk_issues) < max_results:
+                break
+            start_at += max_results
 
         issues = []
 
