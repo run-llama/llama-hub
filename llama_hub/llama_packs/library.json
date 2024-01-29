@@ -277,5 +277,10 @@
     "id": "llama_packs/vanna",
     "author": "jerryjliu",
     "keywords": ["vanna", "sql", "ai", "text-to-sql"]
+  },
+  "InferRetrieveRerankPack": {
+    "id": "llama_packs/research/infer_retrieve_rerank",
+    "author": "jerryjliu",
+    "keywords": ["infer", "retrieve", "rerank", "retriever", "rag"]
   }
 }
