@@ -53,10 +53,10 @@ preds_output_parser = PredsOutputParser()
 
 
 RERANK_PROMPT_STR = """\
-Given a piece of text, rank the {num} passages above based on their relevance \
-to this piece of text. The passages \
+Given a piece of text, rank the {num} labels above based on their relevance \
+to this piece of text. The labels \
 should be listed in descending order using identifiers. \
-The most relevant passages should be listed first. \
+The most relevant labels should be listed first. \
 The output format should be [] > [], e.g., [1] > [2]. \
 Only response the ranking results, \
 do not say any word or explain. \
