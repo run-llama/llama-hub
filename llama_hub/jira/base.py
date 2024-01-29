@@ -64,7 +64,9 @@ class JiraReader(BaseReader):
         start_at = 0
         max_results = 50
         while True:
-            chunk_issues = self.jira.search_issues(query, startAt=start_at, maxResults=max_results)
+            chunk_issues = self.jira.search_issues(
+                query, startAt=start_at, maxResults=max_results
+            )
             relevant_issues.extend(chunk_issues)
             if len(chunk_issues) < max_results:
                 break
