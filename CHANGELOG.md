@@ -1,5 +1,14 @@
 # ChangeLog
 
+## v[0.0.77] - 2024-01-29
+
+### New Features
+- add infer-retrieve-rerank  pack  (#911)
+- feat/add-llama-retriver-examples (#910)
+
+### Smaller Features + Bug Fixes / Nits
+- fix tools/openai_image_generation import (#906)
+
 ## v[0.0.76] - 2024-01-26
 
 ### New Features
