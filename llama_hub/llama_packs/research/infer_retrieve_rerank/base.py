@@ -8,7 +8,6 @@ Taken from this paper: https://arxiv.org/pdf/2401.12178.pdf.
 from typing import Any, Dict, Optional
 
 from llama_index.llama_pack.base import BaseLlamaPack
-from llama_index.llms import Replicate
 from llama_index.schema import TextNode
 from llama_index.embeddings import OpenAIEmbedding
 from llama_index.ingestion import IngestionPipeline
@@ -18,7 +17,6 @@ from llama_index.llms.llm import LLM
 from llama_index.llms import OpenAI
 from llama_index.prompts import PromptTemplate
 from llama_index.query_pipeline import QueryPipeline
-from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.postprocessor.rankGPT_rerank import RankGPTRerank
 from llama_index.output_parsers import ChainableOutputParser
 from typing import List
@@ -48,6 +46,7 @@ class PredsOutputParser(ChainableOutputParser):
         """Parse predictions."""
         tokens = output.split(",")
         return [t.strip() for t in tokens]
+
 
 preds_output_parser = PredsOutputParser()
 
@@ -109,12 +108,12 @@ class InferRetrieveRerankPack(BaseLlamaPack):
         reranker_top_n: int = 3,
         infer_prompt: Optional[PromptTemplate] = None,
         rerank_prompt: Optional[PromptTemplate] = None,
-        verbose: bool = False
+        verbose: bool = False,
     ) -> None:
         """Init params."""
         # NOTE: we use 16k model by default to fit longer contexts
         self.llm = llm or OpenAI(model="gpt-3.5-turbo-16k")
-        label_nodes = [TextNode(text=l) for l in labels]
+        label_nodes = [TextNode(text=label) for label in labels]
         pipeline = IngestionPipeline(transformations=[OpenAIEmbedding()])
         label_nodes_w_embed = pipeline.run(documents=label_nodes)
 
@@ -148,7 +147,7 @@ class InferRetrieveRerankPack(BaseLlamaPack):
                 self.pred_context,
                 self.infer_prompt,
                 self.rerank_prompt,
-                reranker_top_n=self.reranker_top_n
+                reranker_top_n=self.reranker_top_n,
             )
             if self.verbose:
                 print(f"> Generated predictions: {cur_pred_reactions}")
