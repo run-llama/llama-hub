@@ -1,7 +1,4 @@
 # Required Environment Variables: OPENAI_API_KEY, CS_TOKEN, CS_API_KEY
-
-import warnings
-warnings.filterwarnings("ignore")
 import os
 from llama_index.llama_pack import download_llama_pack
 
