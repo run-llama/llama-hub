@@ -16,6 +16,7 @@ olefile
 chromadb
 snowflake-sqlalchemy
 selenium
+python-arango
 
 # hotfix
 psutil

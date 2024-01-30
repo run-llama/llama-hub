@@ -104,7 +104,8 @@
   "ArizePhoenixQueryEnginePack": {
     "id": "llama_packs/arize_phoenix_query_engine",
     "author": "axiomofjoy",
-    "keywords": ["arize", "phoenix", "query", "engine", "index"]
+    "keywords": ["arize", "phoenix", "query", "engine", "index"],
+    "example": true
   },
   "FuzzyCitationEnginePack": {
     "id": "llama_packs/fuzzy_citation",
@@ -114,17 +115,20 @@
   "AutoMergingRetrieverPack": {
     "id": "llama_packs/auto_merging_retriever",
     "author": "jerryjliu",
-    "keywords": ["auto", "merging", "retriever", "index", "automerging"]
+    "keywords": ["auto", "merging", "retriever", "index", "automerging"],
+    "example": true
   },
   "HybridFusionRetrieverPack": {
     "id": "llama_packs/fusion_retriever/hybrid_fusion",
     "author": "jerryjliu",
-    "keywords": ["hybrid", "fusion", "retriever"]
+    "keywords": ["hybrid", "fusion", "retriever"],
+    "example": true
   },
   "QueryRewritingRetrieverPack": {
     "id": "llama_packs/fusion_retriever/query_rewrite",
     "author": "jerryjliu",
-    "keywords": ["query", "rewriting", "retriever"]
+    "keywords": ["query", "rewriting", "retriever"],
+    "example": true
   },
   "MultiDocumentAgentsPack": {
     "id": "llama_packs/multi_document_agents",
@@ -175,7 +179,8 @@
   "DenseXRetrievalPack": {
     "id": "llama_packs/dense_x_retrieval",
     "author": "logan-markewich",
-    "tags": ["retriever", "retrieval", "query", "chunking", "splitting", "parsing"]
+    "tags": ["retriever", "retrieval", "query", "chunking", "splitting", "parsing"],
+    "example": true
   },
   "SnowflakeQueryEnginePack": {
     "id": "llama_packs/snowflake_query_engine",
@@ -201,7 +206,8 @@
       "neural",
       "symbolic",
       "embedding"
-    ]
+    ],
+    "example": true
   },
   "MultiDocAutoRetrieverPack": {
     "id": "llama_packs/multidoc_autoretrieval",
@@ -244,7 +250,8 @@
   "AgentSearchRetrieverPack": {
     "id": "llama_packs/agent_search_retriever",
     "author": "logan-markewich",
-    "keywords": ["agent", "search", "retriever"]
+    "keywords": ["agent", "search", "retriever"],
+    "example": true
   },
   "ChainOfTablePack": {
     "id": "llama_packs/tables/chain_of_table",
@@ -270,5 +277,10 @@
     "id": "llama_packs/vanna",
     "author": "jerryjliu",
     "keywords": ["vanna", "sql", "ai", "text-to-sql"]
+  },
+  "InferRetrieveRerankPack": {
+    "id": "llama_packs/research/infer_retrieve_rerank",
+    "author": "jerryjliu",
+    "keywords": ["infer", "retrieve", "rerank", "retriever", "rag"]
   }
 }
