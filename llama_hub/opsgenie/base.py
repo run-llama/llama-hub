@@ -12,7 +12,7 @@ class OpsgenieReader(BaseReader):
     """
 
     def __init__(
-        self, api_key: str, api_url: str, max_alerts: Optional[int] = 3000
+        self, api_key: str, api_url: str, max_alerts: Optional[int] = 300
     ) -> None:
         self.api_key = api_key
         self.api_url = api_url
@@ -64,6 +64,8 @@ class OpsgenieReader(BaseReader):
                 raise ValueError(
                     f"Problem getting list of alerts from Opsgenie.Error: {response.status_code}, {response.text}"
                 )
+
+        print(f"Total alerts retrieved: {len(all_alerts)}")
 
         return all_alerts
 
