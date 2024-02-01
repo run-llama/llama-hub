@@ -44,17 +44,17 @@ class OpsgenieReader(BaseReader):
 
         all_alerts = []
         list_alerts_url = f"{self.api_url}/v2/alerts"
+        print(f"Max alerts {len(self.max_alerts)}")
 
         while list_alerts_url and len(all_alerts) <= self.max_alerts:
+            print(f"Alerts read so far {len(all_alerts)}")
+            print(f"Retrieving alerts from {list_alerts_url}")
             response = requests.get(
                 list_alerts_url, headers=self.headers, params={}, timeout=30
             )
             if response.status_code == 200:
                 alerts = response.json()
                 all_alerts.extend(alerts.get("data", []))
-                print(
-                    f"Retrieved {len(alerts.get('data', []))} alerts. Total alerts: {len(all_alerts)}"
-                )
                 paging = alerts["paging"]
                 try:
                     list_alerts_url = paging["next"]
@@ -65,7 +65,7 @@ class OpsgenieReader(BaseReader):
                     f"Problem getting list of alerts from Opsgenie.Error: {response.status_code}, {response.text}"
                 )
 
-        print(f"Total alerts retrieved: {len(all_alerts)}")
+        print(f"Final Total alerts retrieved: {len(all_alerts)}")
 
         return all_alerts
 
