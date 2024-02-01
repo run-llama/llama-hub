@@ -10,7 +10,7 @@ Install the required dependencies
 python install -r requirements.txt
 ```
 
-The SEC Downloader expects 5 attributes
+The SEC Downloader expects 4 attributes
 
 * tickers: It is a list of valid tickers
 * forms (List): 10-K or 10-Q or S-1 filing type 
