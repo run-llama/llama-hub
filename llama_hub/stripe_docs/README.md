@@ -1,4 +1,4 @@
-# StripeDocs Loader
+# StripeDocsReader
 
 This loader asynchronously loads data from the [Stripe documentation](https://stripe.com/docs). It iterates through the Stripe sitemap to get all `/docs` references.
 
