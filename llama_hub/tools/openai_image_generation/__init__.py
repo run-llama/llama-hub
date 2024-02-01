@@ -1,5 +1,5 @@
 ## init file
-from llama_hub.tools.openai.image_generation.base import (
+from llama_hub.tools.openai_image_generation.base import (
     OpenAIImageGenerationToolSpec,
 )
 

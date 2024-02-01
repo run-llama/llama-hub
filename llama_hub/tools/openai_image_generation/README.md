@@ -8,7 +8,7 @@ This tool has a more extensive example usage documented in a Jupyter notebook [h
 
 ### Usage with Agent
 ```python
-from llama_hub.tools.openai.image_generation import OpenAIImageGenerationToolSpec
+from llama_hub.tools.openai_image_generation import OpenAIImageGenerationToolSpec
 
 image_generation_tool = OpenAIImageGenerationToolSpec(api_key=os.environ["OPENAI_API_KEY"])
 
@@ -24,7 +24,7 @@ print(response)
 
 ### Usage directly
 ```python
-from llama_hub.tools.openai.image_generation import OpenAIImageGenerationToolSpec
+from llama_hub.tools.openai_image_generation import OpenAIImageGenerationToolSpec
 
 image_generation_tool = OpenAIImageGenerationToolSpec(api_key=os.environ["OPENAI_API_KEY"])
 
