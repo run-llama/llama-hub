@@ -44,7 +44,8 @@ class OpsgenieReader(BaseReader):
 
         all_alerts = []
         list_alerts_url = f"{self.api_url}/v2/alerts"
-        print(f"Max alerts {len(self.max_alerts)}")
+
+        print(f"max_alerts: {self.max_alerts}")
 
         while list_alerts_url and len(all_alerts) <= self.max_alerts:
             print(f"Alerts read so far {len(all_alerts)}")
