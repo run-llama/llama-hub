@@ -31,7 +31,7 @@ class PagedCSVReader(BaseReader):
         file: Path,
         extra_info: Optional[Dict] = None,
         delimiter: str = ",",
-        quotechar: str | None = '"',
+        quotechar: str = '"',
     ) -> List[Document]:
         """Parse file."""
         import csv
