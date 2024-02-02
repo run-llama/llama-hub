@@ -3,6 +3,7 @@
 A parser for tabular data files.
 
 """
+
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -26,7 +27,11 @@ class PagedCSVReader(BaseReader):
         self._encoding = encoding
 
     def load_data(
-        self, file: Path, extra_info: Optional[Dict] = None, delimiter: str = ",", quotechar: str | None = '"'
+        self,
+        file: Path,
+        extra_info: Optional[Dict] = None,
+        delimiter: str = ",",
+        quotechar: str | None = '"',
     ) -> List[Document]:
         """Parse file."""
         import csv
