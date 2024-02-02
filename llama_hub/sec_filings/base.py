@@ -60,7 +60,8 @@ class SECFilingsLoader(BaseReader):
                 )
         return docs
 
-#Test case file test.py
+
+# Test case file test.py
 
 # from base import SECFilingsLoader
 
