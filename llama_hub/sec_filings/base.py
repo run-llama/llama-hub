@@ -3,11 +3,18 @@ from llama_index.readers.base import BaseReader
 from llama_hub.sec_filings.secData import sec_main
 from datetime import datetime
 from typing import List
+import warnings
+import sys
 
 
 class SECFilingsLoader(BaseReader):
     def __init__(
-        self, ticker: str, year: int, forms: List[str], include_amends: bool = True
+        self,
+        ticker: str,
+        year: int,
+        filing_type: List[str],
+        include_amends: bool = True,
+        amount: int = None,
     ):
         """SEC Filings loader for 10-K, 10-Q and S-1 filings
 
@@ -20,11 +27,17 @@ class SECFilingsLoader(BaseReader):
 
         self.ticker = ticker
         self.year = str(year)
-        self.forms = forms
+        self.forms = filing_type
         self.include_amends = include_amends
+        if amount is not None:
+            warnings.warn(
+                "The 'amount' attribute is deprecated and is removed in the current implementation. Please avoid using it, rather provide the specific year.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            sys.exit(1)
 
     def load_data(self) -> List[Document]:
-
         section_texts = sec_main(
             self.ticker, self.year, self.forms, self.include_amends
         )
@@ -46,3 +59,12 @@ class SECFilingsLoader(BaseReader):
                     )
                 )
         return docs
+
+#Test case file test.py
+
+# from base import SECFilingsLoader
+
+# if __name__ == '__main__':
+#     docs = SECFilingsLoader(ticker="AAPL",year=2023,filing_type=["10-K"])
+#     d = docs.load_data()
+#     print(d)
