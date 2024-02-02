@@ -1,19 +1,11 @@
 from llama_index.tools.tool_spec.base import BaseToolSpec
 import yfinance as yf
-import pandas as pd
 
 
 class YahooFinanceToolSpec(BaseToolSpec):
     """Yahoo Finance tool spec."""
-
-    spec_functions = [
-        "balance_sheet",
-        "income_statement",
-        "cash_flow",
-        "stock_basic_info",
-        "stock_analyst_recommendations",
-        "stock_news",
-    ]
+    spec_functions = ["balance_sheet", "income_statement", "cash_flow", "stock_basic_info",
+                      "stock_analyst_recommendations", "stock_news"]
 
     def __init__(self):
         """Initialize the Yahoo Finance tool spec."""
@@ -27,10 +19,7 @@ class YahooFinanceToolSpec(BaseToolSpec):
 
         """
         stock = yf.Ticker(ticker)
-        balance_sheet = stock.balance_sheet
-        balance_sheet = pd.DataFrame(balance_sheet)
-
-        return "Balance Sheet: \n" + balance_sheet.to_string()
+        return "Balance Sheet: \n" + str(stock.balance_sheet)
 
     def income_statement(self, ticker: str) -> str:
         """
@@ -88,5 +77,5 @@ class YahooFinanceToolSpec(BaseToolSpec):
         news = stock.news
         out = "News: \n"
         for i in news:
-            out += i["title"] + "\n"
+            out += i['title'] + "\n"
         return out
