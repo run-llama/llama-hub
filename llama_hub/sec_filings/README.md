@@ -35,6 +35,14 @@ It also returns the following metadata
 * form type: "10-K" or "10-Q1", "10-Q2", "10-Q3"
 * Section name of the text
 
+There are also section names in different document types. You can check it by running
+
+```python
+from llama_hub.sec_filings.section_names import SECTIONS_10K, SECTION_10Q
+
+print(SECTIONS_10K)
+```
+
 ## EXAMPLES
 
 This loader is can be used with both Langchain and LlamaIndex.

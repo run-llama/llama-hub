@@ -930,6 +930,11 @@
   "SECFilingsLoader": {
     "id": "sec_filings",
     "author": "Athe-kunal",
+    "extra_files":[
+      "secData.py",
+      "sec_filings_extractor.py",
+      "section_names.py"
+    ],
     "keywords": [
       "finance",
       "SEC Filings",
