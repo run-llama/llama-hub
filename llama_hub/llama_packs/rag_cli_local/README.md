@@ -25,14 +25,22 @@ from llama_index.llama_pack import download_llama_pack
 
 # download and install dependencies
 download_llama_pack(
-  "LocalRAGCLIPack", "./local_rag_cli_pack"
+  "LocalRAGCLIPack", "./local_rag_cli_pack", skip_load=True
 )
 ```
 
-From here, you can use the pack. The most straightforward way is through the CLI.
+From here, you can use the pack. The most straightforward way is through the CLI. You can directly run base.py, or run the `setup_cli.sh` script.
 
-```python
-TODO
+```bash
+cd local_rag_cli_pack
+
+# option 1
+python base.py rag -h
+
+# option 2 - you may need sudo
+# default name is lcli_local
+sudo sh setup_cli.sh
+lcli_local rag -h
 
 ```
 

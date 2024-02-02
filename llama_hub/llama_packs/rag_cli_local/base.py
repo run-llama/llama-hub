@@ -42,7 +42,7 @@ def init_local_rag_cli(
     llm = Ollama(model=llm_model_name, request_timeout=30.0)
     print("> LLM initialized")
     embed_model = HuggingFaceEmbedding(model_name=embed_model_name)
-    print('> Embedding model initialized')
+    print("> Embedding model initialized")
 
     ingestion_pipeline = IngestionPipeline(
         transformations=[SentenceSplitter(), embed_model],
@@ -76,7 +76,7 @@ def init_local_rag_cli(
         llm=llm,  # optional
         persist_dir=persist_dir,
         query_pipeline=query_pipeline,
-        verbose=False
+        verbose=False,
     )
     return rag_cli_instance
 
@@ -97,10 +97,10 @@ class LocalRagCLIPack(BaseLlamaPack):
         self.llm_model_name = llm_model_name
         self.embed_model_name = embed_model_name
         self.rag_cli = init_local_rag_cli(
-            persist_dir=self.persist_dir, 
+            persist_dir=self.persist_dir,
             verbose=self.verbose,
             llm_model_name=self.llm_model_name,
-            embed_model_name=self.embed_model_name
+            embed_model_name=self.embed_model_name,
         )
 
     def get_modules(self) -> Dict[str, Any]:
