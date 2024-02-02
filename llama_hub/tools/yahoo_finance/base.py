@@ -4,24 +4,45 @@ import yfinance as yf
 
 class YahooFinanceToolSpec(BaseToolSpec):
     """Yahoo Finance tool spec."""
-    spec_functions = ["stock_financials", "stock_basic_info", "stock_analyst_recommendations", "stock_news"]
+    spec_functions = ["balance_sheet", "income_statement", "cash_flow", "stock_basic_info",
+                      "stock_analyst_recommendations", "stock_news"]
 
     def __init__(self):
         """Initialize the Yahoo Finance tool spec."""
 
-    def stock_financials(self, ticker: str) -> str:
+    def balance_sheet(self, ticker: str) -> str:
         """
-        Get the income statement, balance sheet, and statement of cash flow of a stock.
+        Return the balance sheet of the stock.
 
         Args:
           ticker (str): the stock ticker to be given to yfinance
 
         """
         stock = yf.Ticker(ticker)
-        financials = "Financials:\nIncome Statement:\n"
-        financials += str(stock.income_stmt) + "\n Balance Sheet:\n" + str(
-            stock.balance_sheet) + "\n Cash Flow:\n" + str(stock.cashflow)
-        return financials
+        return "Balance Sheet: \n" + str(stock.balance_sheet)
+
+    def income_statement(self, ticker: str) -> str:
+        """
+        Return the income statement of the stock.
+
+        Args:
+          ticker (str): the stock ticker to be given to yfinance
+
+        """
+        stock = yf.Ticker(ticker)
+        return "Income Statement: \n" + str(stock.income_stmt)
+
+    def cash_flow(self, ticker: str) -> str:
+        """
+        Return the cash flow of the stock.
+
+        Args:
+          ticker (str): the stock ticker to be given to yfinance
+
+        """
+
+        stock = yf.Ticker(ticker)
+        return "Cash Flow: \n" + str(stock.cashflow)
 
     def stock_basic_info(self, ticker: str) -> str:
         """
