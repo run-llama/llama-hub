@@ -17,6 +17,7 @@ chromadb
 snowflake-sqlalchemy
 selenium
 python-arango
+ionic-api-sdk
 
 # hotfix
 psutil
