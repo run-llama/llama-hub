@@ -1,8 +1,8 @@
 # Simple self-RAG short form pack
 
-This LlamaPack implements short form the [self-RAG paper by Akari et al.](https://arxiv.org/pdf/2310.11511.pdf).
+This LlamaPack implements (*in short form) the [self-RAG paper by Akari et al.](https://arxiv.org/pdf/2310.11511.pdf).
 
-Novel framework called Self-Reflective Retrieval-Augmented Generation (SELF-RAG). Which aims to enhance the quality and factuality of large language models (LLMs) by combining retrieval and self-reflection mechanisms.
+This paper presents a novel framework called Self-Reflective Retrieval-Augmented Generation (SELF-RAG). Which aims to enhance the quality and factuality of large language models (LLMs) by combining retrieval and self-reflection mechanisms.
 
 The implementation is adapted from the author [implementation](https://github.com/AkariAsai/self-rag)
 A full notebook guide can be found [here](https://github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/self_rag/self_rag.ipynb).
@@ -43,7 +43,7 @@ has been added to your system path).
 ```python
 from self_rag_pack.base import SelfRAGQueryEngine
 
-query_engine = SelfRAGQueryEngine(model_path=model_path, retriever=retreiver, verbose=True)
+query_engine = SelfRAGQueryEngine(model_path=model_path, retriever=retriever, verbose=True)
 
 response = query_engine.query("Who won best Director in the 1972 Academy Awards?")
 ```
@@ -53,7 +53,7 @@ You can also use/initialize the pack directly.
 ```python
 from llm_compiler_agent_pack.base import SelfRAGPack
 
-agent_pack = SelfRAGPack(model_path=model_path, retriever=retreiver, verbose=True)
+agent_pack = SelfRAGPack(model_path=model_path, retriever=retriever, verbose=True)
 ```
 
 The `run()` function is a light wrapper around `agent.chat()`.
