@@ -1,11 +1,19 @@
 from llama_index.tools.tool_spec.base import BaseToolSpec
 import yfinance as yf
+import pandas as pd
 
 
 class YahooFinanceToolSpec(BaseToolSpec):
     """Yahoo Finance tool spec."""
-    spec_functions = ["balance_sheet", "income_statement", "cash_flow", "stock_basic_info",
-                      "stock_analyst_recommendations", "stock_news"]
+
+    spec_functions = [
+        "balance_sheet",
+        "income_statement",
+        "cash_flow",
+        "stock_basic_info",
+        "stock_analyst_recommendations",
+        "stock_news",
+    ]
 
     def __init__(self):
         """Initialize the Yahoo Finance tool spec."""
@@ -19,7 +27,8 @@ class YahooFinanceToolSpec(BaseToolSpec):
 
         """
         stock = yf.Ticker(ticker)
-        return "Balance Sheet: \n" + str(stock.balance_sheet)
+        balance_sheet = pd.DataFrame(stock.balance_sheet)
+        return "Balance Sheet: \n" + balance_sheet.to_string()
 
     def income_statement(self, ticker: str) -> str:
         """
@@ -30,7 +39,8 @@ class YahooFinanceToolSpec(BaseToolSpec):
 
         """
         stock = yf.Ticker(ticker)
-        return "Income Statement: \n" + str(stock.income_stmt)
+        income_statement = pd.DataFrame(stock.income_stmt)
+        return "Income Statement: \n" + income_statement.to_string()
 
     def cash_flow(self, ticker: str) -> str:
         """
@@ -42,7 +52,8 @@ class YahooFinanceToolSpec(BaseToolSpec):
         """
 
         stock = yf.Ticker(ticker)
-        return "Cash Flow: \n" + str(stock.cashflow)
+        cash_flow = pd.DataFrame(stock.cashflow)
+        return "Cash Flow: \n" + cash_flow.to_string()
 
     def stock_basic_info(self, ticker: str) -> str:
         """
@@ -77,5 +88,5 @@ class YahooFinanceToolSpec(BaseToolSpec):
         news = stock.news
         out = "News: \n"
         for i in news:
-            out += i['title'] + "\n"
+            out += i["title"] + "\n"
         return out
