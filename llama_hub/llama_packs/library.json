@@ -271,7 +271,7 @@
   "StockMarketDataQueryEnginePack": {
     "id": "llama_packs/stock_market_data_query_engine",
     "author": "anoopshrma",
-    "keywords": ["stock", "market", "data", "query", "engine"]
+    "keywords": ["stock", "market","yahoo","finance","yahoo finance", "data", "query", "engine"]
   },
   "VannaPack": {
     "id": "llama_packs/vanna",
