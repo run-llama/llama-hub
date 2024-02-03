@@ -17,13 +17,14 @@ class PrometheusReader(BaseReader):
 
     
     def load_data(self, 
-                  query: str, 
-                  start_time: Optional[datetime], 
-                  end_time: Optional[datetime], 
-                  step: Optional[str],  
-                  get_pararameters: Optional[dict],
-                  metadata_fields: Optional[list]=[]
-                  ) -> List[Document]:
+                query: str, 
+                start_time: Optional[datetime], 
+                end_time: Optional[datetime], 
+                step: Optional[str],  
+                get_pararameters: Optional[dict],
+                metadata_fields: Optional[list]=[],
+                additional_metadata: Optional[dict]={}
+                ) -> List[Document]:
         
         if start_time is not None and end_time is not None:
             params = {
@@ -53,11 +54,11 @@ class PrometheusReader(BaseReader):
                 if key_value in metadata_fields:
                     metadata[key_value] = row['metric'][key_value]
             for value in row['values']:
-                current_metadata = metadata.copy()
+                current_metadata = metadata | additional_metadata
                 current_metadata['timestamp'] = value[0]
                 documents.append(
                     Document(text=value[1], extra_info=current_metadata, embedding=None)
                 )
-            return documents
+        return documents
 
         
