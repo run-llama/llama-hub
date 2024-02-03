@@ -12,7 +12,7 @@ class SECFilingsLoader(BaseReader):
         self,
         ticker: str,
         year: int,
-        filing_type: List[str],
+        filing_types: List[str],
         include_amends: bool = True,
         amount: int = None,
     ):
@@ -27,7 +27,7 @@ class SECFilingsLoader(BaseReader):
 
         self.ticker = ticker
         self.year = str(year)
-        self.forms = filing_type
+        self.filing_types = filing_types
         self.include_amends = include_amends
         if amount is not None:
             warnings.warn(
@@ -39,7 +39,7 @@ class SECFilingsLoader(BaseReader):
 
     def load_data(self) -> List[Document]:
         section_texts = sec_main(
-            self.ticker, self.year, self.forms, self.include_amends
+            self.ticker, self.year, self.filing_types, self.include_amends
         )
         docs = []
         for filings in section_texts:

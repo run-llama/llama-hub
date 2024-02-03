@@ -9,15 +9,17 @@ from llama_hub.sec_filings.prepline_sec_filings.fetch import get_filing
 
 
 def sec_main(
-    ticker: str, year: str, forms: List[str] = ["10-K", "10-Q"], include_amends=True
+    ticker: str, year: str, filing_types: List[str] = ["10-K", "10-Q"], include_amends=True
 ):
     cik = get_cik_by_ticker(ticker)
     rgld_cik = int(cik.strip("0"))
-
+    forms = []
     if include_amends:
-        for form in forms:
+        for form in filing_types:
+            forms.append(form)
             forms.append(form + "/A")
-
+    else:
+        forms = filing_types
     url = f"https://data.sec.gov/submissions/CIK{cik}.json"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"

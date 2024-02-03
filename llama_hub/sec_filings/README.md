@@ -13,7 +13,7 @@ python install -r requirements.txt
 The SEC Downloader expects 4 attributes
 
 * tickers: It is a list of valid tickers
-* forms (List): 10-K or 10-Q or S-1 filing type 
+* filing_types (List): 10-K or 10-Q or S-1 filing type 
 * include_amends: To include amendments or not.
 * year: The year for which you need the data
 
