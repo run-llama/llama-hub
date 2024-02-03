@@ -9,7 +9,10 @@ from llama_hub.sec_filings.prepline_sec_filings.fetch import get_filing
 
 
 def sec_main(
-    ticker: str, year: str, filing_types: List[str] = ["10-K", "10-Q"], include_amends=True
+    ticker: str,
+    year: str,
+    filing_types: List[str] = ["10-K", "10-Q"],
+    include_amends=True,
 ):
     cik = get_cik_by_ticker(ticker)
     rgld_cik = int(cik.strip("0"))
