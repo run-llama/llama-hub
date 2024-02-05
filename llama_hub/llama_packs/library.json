@@ -278,6 +278,11 @@
     "author": "jerryjliu",
     "keywords": ["vanna", "sql", "ai", "text-to-sql"]
   },
+  "SelfRAGPack": {
+    "id": "llama_packs/self_rag",
+    "author": "mmaatouk",
+    "keywords": ["self-RAG", "llm", "smart-retreiver"]
+  },
   "InferRetrieveRerankPack": {
     "id": "llama_packs/research/infer_retrieve_rerank",
     "author": "jerryjliu",
