@@ -47,9 +47,9 @@ lcli_local rag -h
 You can also directly get modules from the pack.
 
 ```python
-from local_rag_cli_pack.base import LocalRagCLIPack
+from local_rag_cli_pack.base import LocalRAGCLIPack
 
-pack = LocalRagCLIPack(verbose=True, llm_model_name="mistral", embed_model_name="BAAI/bge-m3")
+pack = LocalRAGCLIPack(verbose=True, llm_model_name="mistral", embed_model_name="BAAI/bge-m3")
 # will spin up the CLI
 pack.run()
 

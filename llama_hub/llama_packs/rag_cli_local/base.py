@@ -81,7 +81,7 @@ def init_local_rag_cli(
     return rag_cli_instance
 
 
-class LocalRagCLIPack(BaseLlamaPack):
+class LocalRAGCLIPack(BaseLlamaPack):
     """Local RAG CLI Pack."""
 
     def __init__(
