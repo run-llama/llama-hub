@@ -379,6 +379,17 @@ wrapt = ">=1.10,<2"
 dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "sphinx (<2)", "tox"]
 
 [[package]]
+name = "dirtyjson"
+version = "1.0.8"
+description = "JSON decoder for Python that can extract data from the muck"
+optional = false
+python-versions = "*"
+files = [
+    {file = "dirtyjson-1.0.8-py3-none-any.whl", hash = "sha256:125e27248435a58acace26d5c2c4c11a1c0de0a9c5124c5a94ba78e517d74f53"},
+    {file = "dirtyjson-1.0.8.tar.gz", hash = "sha256:90ca4a18f3ff30ce849d100dcf4a003953c79d3a2348ef056f1d9c22231a25fd"},
+]
+
+[[package]]
 name = "distro"
 version = "1.9.0"
 description = "Distro - an OS platform information API"
@@ -714,19 +725,20 @@ files = [
 
 [[package]]
 name = "llama-index"
-version = "0.9.39"
+version = "0.9.44"
 description = "Interface between LLMs and your data"
 optional = false
 python-versions = ">=3.8.1,<4.0"
 files = [
-    {file = "llama_index-0.9.39-py3-none-any.whl", hash = "sha256:73e19bf664b0643e3c1b88229d4bcaad841f4c6e882a63b27f637386c54d5353"},
-    {file = "llama_index-0.9.39.tar.gz", hash = "sha256:c0d4093cd1c6d6056275f96d6acba56f383ef98925c9ce3fc8cde9fb4dee1f75"},
+    {file = "llama_index-0.9.44-py3-none-any.whl", hash = "sha256:678ee2cdbc95b718f474ce475dcae1d7e4fcb7acd71dccb8581f7a396d46c02c"},
+    {file = "llama_index-0.9.44.tar.gz", hash = "sha256:9c5261e7016f5c5898970c3f8932e01daeaa80f62e9efa1405f0d7364f3aea33"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.8.6,<4.0.0"
 dataclasses-json = "*"
 deprecated = ">=1.2.9.3"
+dirtyjson = ">=1.0.8,<2.0.0"
 fsspec = ">=2023.5.0"
 httpx = "*"
 nest-asyncio = ">=1.5.8,<2.0.0"
@@ -1095,8 +1107,8 @@ files = [
 [package.dependencies]
 numpy = [
     {version = ">=1.20.3", markers = "python_version < \"3.10\""},
-    {version = ">=1.21.0", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
     {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
 ]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
@@ -2145,4 +2157,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.12"
-content-hash = "32db2f1fe0f22f0387ca768712f877fdd723f6d2d12ad4a5d01efad154ff5646"
+content-hash = "cdee3348a99cb5fc26020c1f818f1950c8027301d6a65c37497dd1ebb0d0baf6"
