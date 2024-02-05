@@ -166,6 +166,14 @@
       "spreadsheet"
     ]
   },
+  "MintterPublicationsReader": {
+    "id": "mintter",
+    "author": "elsatch",
+    "keywords": [
+      "hypertext",
+      "hypermedia"
+    ]
+  },
   "PagedCSVReader": {
     "id": "file/paged_csv",
     "author": "thejessezhang",
