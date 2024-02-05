@@ -59,12 +59,13 @@ class FuzzyCitationQueryEngine(CustomQueryEngine):
             # concat nearby sentences
             top_chunks = defaultdict(list)
             prev_idx = -1
+            prev_response_sent_idx = -1
             for response_sent_idx, node_sent_idx in sorted(top_sentences.keys()):
                 if prev_idx == -1:
                     top_chunks[response_sent_idx].append(
                         top_sentences[(response_sent_idx, node_sent_idx)]
                     )
-                elif node_sent_idx - prev_idx == 1:
+                elif prev_response_sent_idx == response_sent_idx and node_sent_idx - prev_idx == 1:
                     top_chunks[response_sent_idx][-1] += top_sentences[
                         (response_sent_idx, node_sent_idx)
                     ]
@@ -73,6 +74,7 @@ class FuzzyCitationQueryEngine(CustomQueryEngine):
                         top_sentences[(response_sent_idx, node_sent_idx)]
                     )
                 prev_idx = node_sent_idx
+                prev_response_sent_idx = response_sent_idx
 
             # associate chunks with their nodes
             for response_sent_idx, chunks in top_chunks.items():
