@@ -32,7 +32,7 @@ It also returns the following metadata
 * Filing Date of the filing
 * Reporting date of the filing
 * Accession number of the filing (unique identifier of the filing)
-* form type: "10-K" or "10-Q1", "10-Q2", "10-Q3"
+* form type: "10-K" or "10-Q1", "10-Q2", "10-Q3" and for amended documents, it will end with /A
 * Section name of the text
 
 There are also section names in different document types. You can check it by running

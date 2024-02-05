@@ -6,6 +6,8 @@ from functools import partial
 from llama_hub.sec_filings.prepline_sec_filings.fetch import get_cik_by_ticker
 import requests
 from llama_hub.sec_filings.prepline_sec_filings.fetch import get_filing
+import pandas as pd
+from datetime import datetime
 
 
 def sec_main(
@@ -39,17 +41,17 @@ def sec_main(
     form_lists = []
     filings = json_data["filings"]
     recent_filings = filings["recent"]
-    quarter_val = 3
     for acc_num, form_name, filing_date, report_date in zip(
         recent_filings["accessionNumber"],
         recent_filings["form"],
         recent_filings["filingDate"],
         recent_filings["reportDate"],
     ):
-        if form_name in forms and filing_date.startswith(str(year)):
+        if form_name in forms and report_date.startswith(str(year)):
             if form_name == "10-Q":
-                form_name += str(quarter_val)
-                quarter_val -= 1
+                datetime_obj = datetime.strptime(report_date, "%Y-%m-%d")
+                quarter = pd.Timestamp(datetime_obj).quarter
+                form_name += str(quarter)
             no_dashes_acc_num = re.sub("-", "", acc_num)
             form_lists.append([no_dashes_acc_num, form_name, filing_date, report_date])
 
