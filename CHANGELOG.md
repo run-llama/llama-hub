@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v[0.0.78] - 2024-02-05
+
+### New Features
+- add local RAG CLI variant  (#916)
+- Simple short-form Self-RAG Pack (#907)
+
+### Smaller Features + Bug Fixes / Nits
+- fix: store the str path instead of the Path object (#917)
+- Update base.py in paged_csv (#839)
+- Fix to confluence loader documentation. (#920)
+- yahoo finance key word addition to read me file for better search experience in llamahub (#897)
+
 ## v[0.0.77] - 2024-01-29
 
 ### New Features
