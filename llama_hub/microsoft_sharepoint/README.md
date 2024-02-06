@@ -20,12 +20,18 @@ More info on Microsoft Graph APIs - [Refer here](https://learn.microsoft.com/en-
 
 To use this loader `client_id`, `client_secret` and `tenant_id` of the registered app in Microsoft Azure Portal is required.
 
+This loader can:
+- Load files present in a specific folder in SharePoint
+- Load all files present in the drive of a SharePoint
+- Load all pages under a SharePoint site
+
 This loader loads the files present in a specific folder in sharepoint.
 
 If the files are present in the `Test` folder in SharePoint Site under `root` directory, then the input for the loader for  `file_path` is `Test`
 
 ![FilePath](file_path_info.png)
 
+### Example loading a single folder
 ```python
 from llama_index import download_loader 
 SharePointLoader = download_loader("SharePointReader")
@@ -40,6 +46,41 @@ documents = loader.load_data(
             sharepoint_site_name: "<Sharepoint Site Name>",
             sharepoint_folder_path: "<Folder Path>",
             recursive = True,
+)
+```
+
+### Example loading all files, no pages
+```python
+from llama_index import download_loader 
+SharePointLoader = download_loader("SharePointReader")
+
+loader = SharePointLoader(
+            client_id = "<Client ID of the app>",
+            client_secret = "<Client Secret of the app>",
+            tenant_id = "<Tenant ID of the Micorsoft Azure Directory>"
+            )
+
+documents = loader.load_data(
+            sharepoint_site_name: "<Sharepoint Site Name>",
+            recursive = True,
+)
+```
+
+### Example loading all files and pages
+```python
+from llama_index import download_loader 
+SharePointLoader = download_loader("SharePointReader")
+
+loader = SharePointLoader(
+            client_id = "<Client ID of the app>",
+            client_secret = "<Client Secret of the app>",
+            tenant_id = "<Tenant ID of the Micorsoft Azure Directory>"
+            )
+
+documents = loader.load_data(
+            sharepoint_site_name: "<Sharepoint Site Name>",
+            recursive = True,
+            include_pages = True
 )
 ```
 

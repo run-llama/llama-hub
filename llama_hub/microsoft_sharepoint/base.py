@@ -43,6 +43,13 @@ class SharePointReader(BaseReader):
         self.tenant_id = tenant_id
         self._authorization_headers = None
 
+    def _setup_site_config(self, sharepoint_site_name: str):
+        access_token = self._get_access_token()
+
+        self._site_id_with_host_name = self._get_site_id_with_host_name(
+            access_token, sharepoint_site_name
+        )
+
     def _get_access_token(self) -> str:
         """
         Gets the access_token for accessing file from SharePoint.
@@ -154,9 +161,14 @@ class SharePointReader(BaseReader):
         Returns:
             str: The ID of the SharePoint site folder.
         """
-        folder_id_endpoint = (
-            f"{self._drive_id_endpoint}/{self._drive_id}/root:/{folder_path}"
-        )
+        if folder_path == 'root':
+            folder_id_endpoint = (
+                f"{self._drive_id_endpoint}/{self._drive_id}/root"
+            )
+        else:
+            folder_id_endpoint = (
+                f"{self._drive_id_endpoint}/{self._drive_id}/root:/{folder_path}"
+            )
 
         response = requests.get(
             url=folder_id_endpoint,
@@ -218,6 +230,83 @@ class SharePointReader(BaseReader):
         else:
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error"])
+        
+    def _download_pages_and_extract_metadata(
+            self,
+            download_dir,
+        ):
+        pages_endpoint = f"https://graph.microsoft.com/beta/sites/{self._site_id_with_host_name}/pages"
+
+        data = self._get_results_with_odatanext(pages_endpoint)
+        metadata = {}
+        for item in data:
+            file_metadata = self._extract_page(item, download_dir)
+            if file_metadata:
+                metadata.update(file_metadata)
+        return metadata
+
+    def _extract_page(self, item, download_dir) -> None|Dict[str, Dict[str, str]]:
+        page_endpoint: str = f"https://graph.microsoft.com/beta/sites/{self._site_id_with_host_name}/pages/{item['id']}/microsoft.graph.sitepage/webparts"
+        file_name = item['name'].replace('.aspx', '.html')
+
+        response = requests.get(url=page_endpoint, headers=self._authorization_headers)
+        metadata = {}
+
+        if response.status_code == 200:
+
+            html_content = "\n".join(
+                [
+                    i["innerHtml"]
+                    for i in response.json()['value']
+                    if i["@odata.type"] == "#microsoft.graph.textWebPart"
+                ]
+            )
+            if html_content == "":
+                return None
+
+            # Create the directory if it does not exist and save the file.
+            if not os.path.exists(download_dir):
+                os.makedirs(download_dir)
+            file_path = os.path.join(download_dir, file_name)
+            with open(file_path, "w") as f:
+                f.write(html_content)
+            metadata[file_path] = self._extract_metadata_for_file(item)
+            return metadata
+        else:
+            logger.error(response.json()["error"])
+            raise ValueError(response.json()["error"])
+
+    def _get_results_with_odatanext(self, request: str, **kwargs):
+        """
+        Given a request, checks if the result contains `@odata.nextLink` in the result.
+        If true, this function returns itself calling the @odata.nextLink.
+        If false, this function returns a list of all retrieved values.
+
+        Args:
+            request (str): A GET request to be made, that might include a field '@odata.nextLink'
+
+        Returns:
+            Dict[str, str]: A dictionary containing the metadata of the pages to be extracted
+        """  
+        if "prev_responses" not in kwargs.keys():
+            prev_responses = []
+        else:
+            prev_responses = kwargs["prev_responses"]
+        response = requests.get(url=request, headers=self._authorization_headers)
+        if response.status_code == 200:
+            result: Dict[str, Any] = response.json()
+            prev_responses += result["value"]
+            if "@odata.nextLink" in result.keys():
+                return self._get_results_with_odatanext(
+                    request=result["@odata.nextLink"],
+                    prev_responses=prev_responses,
+                )
+            else:
+                return prev_responses
+        else:
+            logger.error(response.json()["error"])
+            raise ValueError(response.json()["error"])
+
 
     def _download_file_by_url(self, item: Dict[str, Any], download_dir: str) -> str:
         """
@@ -278,10 +367,11 @@ class SharePointReader(BaseReader):
         metadata[file_path] = self._extract_metadata_for_file(item)
         return metadata
 
+
+
     def _download_files_from_sharepoint(
         self,
         download_dir: str,
-        sharepoint_site_name: str,
         sharepoint_folder_path: str,
         recursive: bool,
     ) -> Dict[str, str]:
@@ -298,11 +388,7 @@ class SharePointReader(BaseReader):
             Dict[str, str]: A dictionary containing the metadata of the downloaded files.
 
         """
-        access_token = self._get_access_token()
 
-        self._site_id_with_host_name = self._get_site_id_with_host_name(
-            access_token, sharepoint_site_name
-        )
 
         self._drive_id = self._get_drive_id()
 
@@ -351,8 +437,10 @@ class SharePointReader(BaseReader):
     def load_data(
         self,
         sharepoint_site_name: str,
-        sharepoint_folder_path: str,
+        sharepoint_folder_path: str = "root",
         recursive: bool = False,
+        include_documents: bool = True,
+        include_pages: bool = False
     ) -> List[Document]:
         """
         Loads the files from the specified folder in the SharePoint site.
@@ -360,7 +448,12 @@ class SharePointReader(BaseReader):
         Args:
             sharepoint_site_name (str): The name of the SharePoint site.
             sharepoint_folder_path (str): The path of the folder in the SharePoint site.
+                                          If `root`, loads data from the root folder of the 
+                                          SharePoint site.
             recursive (bool): If True, files from all subfolders are downloaded.
+            include_documents (bool): If True, loads documents for the given 
+                                      sharepoint_site_name and sharepoint_folder_path.
+            include_pages (bool): If True, loads SharePoint pages for the given site_name.
 
         Returns:
             List[Document]: A list containing the documents with metadata.
@@ -370,13 +463,20 @@ class SharePointReader(BaseReader):
         """
         try:
             with tempfile.TemporaryDirectory() as temp_dir:
-                files_metadata = self._download_files_from_sharepoint(
-                    temp_dir, sharepoint_site_name, sharepoint_folder_path, recursive
-                )
+                self._setup_site_config(sharepoint_site_name)
+                files_metadata = {}
+                if include_documents:
+                    files_metadata.update(self._download_files_from_sharepoint(
+                        temp_dir, sharepoint_folder_path, recursive
+                    ))
+                if include_pages:
+                    files_metadata.update(self._download_pages_and_extract_metadata(
+                        temp_dir
+                    ))
                 # return self.files_metadata
                 return self._load_documents_with_metadata(
-                    files_metadata, temp_dir, recursive
-                )
+                    files_metadata, temp_dir, recursive)
+                
 
         except Exception as exp:
-            logger.error("An error occurred while accessing SharePoint: %s", exp)
+            logger.error("An error occurred while accessing SharePoint: ", exc_info=True)
