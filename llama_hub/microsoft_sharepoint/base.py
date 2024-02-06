@@ -161,10 +161,8 @@ class SharePointReader(BaseReader):
         Returns:
             str: The ID of the SharePoint site folder.
         """
-        if folder_path == 'root':
-            folder_id_endpoint = (
-                f"{self._drive_id_endpoint}/{self._drive_id}/root"
-            )
+        if folder_path == "root":
+            folder_id_endpoint = f"{self._drive_id_endpoint}/{self._drive_id}/root"
         else:
             folder_id_endpoint = (
                 f"{self._drive_id_endpoint}/{self._drive_id}/root:/{folder_path}"
@@ -185,7 +183,7 @@ class SharePointReader(BaseReader):
         folder_id: str,
         download_dir: str,
         include_subfolders: bool,
-        file_types: List[str]
+        file_types: List[str],
     ) -> Dict[str, str]:
         """
         Downloads files from the specified folder ID and extracts metadata.
@@ -221,13 +219,13 @@ class SharePointReader(BaseReader):
                         folder_id=item["id"],
                         download_dir=sub_folder_download_dir,
                         include_subfolders=include_subfolders,
-                        file_types=file_types
+                        file_types=file_types,
                     )
 
                     metadata.update(subfolder_metadata)
 
                 elif "file" in item:
-                    file_type = item['name'].split('.')[-1]
+                    file_type = item["name"].split(".")[-1]
                     if not file_types or (file_type in file_types):
                         file_metadata = self._download_file(item, download_dir)
                         metadata.update(file_metadata)
@@ -235,11 +233,11 @@ class SharePointReader(BaseReader):
         else:
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error"])
-        
+
     def _download_pages_and_extract_metadata(
-            self,
-            download_dir,
-        ):
+        self,
+        download_dir,
+    ):
         """
         Downloads Sharepoint pages as HTML files and extracts metadata.
 
@@ -262,13 +260,13 @@ class SharePointReader(BaseReader):
                 metadata.update(file_metadata)
         return metadata
 
-    def _extract_page(self, item, download_dir) -> None|Dict[str, Dict[str, str]]:
+    def _extract_page(self, item, download_dir) -> None | Dict[str, Dict[str, str]]:
         """
-        Retrieves the HTML content of the SharePoint page referenced by the 'item' argument 
+        Retrieves the HTML content of the SharePoint page referenced by the 'item' argument
         from the Microsoft Graph. Stores the content as an .html file in the download_dir.
 
         Args:
-            item (Dict[str, Any]): a sharepoint item that contains 
+            item (Dict[str, Any]): a sharepoint item that contains
                   the fields 'id', 'name' and 'webUrl'
             download_dir (str): A directory to download the file to.
 
@@ -276,7 +274,7 @@ class SharePointReader(BaseReader):
             The metadata of the item
         """
         page_endpoint: str = f"https://graph.microsoft.com/beta/sites/{self._site_id_with_host_name}/pages/{item['id']}/microsoft.graph.sitepage/webparts"
-        file_name = item['name'].replace('.aspx', '.html')
+        file_name = item["name"].replace(".aspx", ".html")
 
         response = requests.get(url=page_endpoint, headers=self._authorization_headers)
         metadata = {}
@@ -286,7 +284,7 @@ class SharePointReader(BaseReader):
             html_content = "\n".join(
                 [
                     i["innerHtml"]
-                    for i in response.json()['value']
+                    for i in response.json()["value"]
                     if i["@odata.type"] == "#microsoft.graph.textWebPart"
                 ]
             )
@@ -316,7 +314,7 @@ class SharePointReader(BaseReader):
 
         Returns:
             Dict[str, str]: A dictionary containing the metadata of the pages to be extracted
-        """  
+        """
         if "prev_responses" not in kwargs.keys():
             prev_responses = []
         else:
@@ -335,7 +333,6 @@ class SharePointReader(BaseReader):
         else:
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error"])
-
 
     def _download_file_by_url(self, item: Dict[str, Any], download_dir: str) -> str:
         """
@@ -391,10 +388,10 @@ class SharePointReader(BaseReader):
     ):
         """
         Downloads a file to the temporary download folder and returns
-        its metadata. 
+        its metadata.
 
         Args:
-            item (Dict[str, Any]): a sharepoint item that contains 
+            item (Dict[str, Any]): a sharepoint item that contains
                   the fields 'id', 'name' and 'webUrl'
             download_dir (str): A directory to download the file to.
 
@@ -408,14 +405,12 @@ class SharePointReader(BaseReader):
         metadata[file_path] = self._extract_metadata_for_file(item)
         return metadata
 
-
-
     def _download_files_from_sharepoint(
         self,
         download_dir: str,
         sharepoint_folder_path: str,
         recursive: bool,
-        file_types: List[str]
+        file_types: List[str],
     ) -> Dict[str, str]:
         """
         Downloads files from the specified folder and returns the metadata for the downloaded files.
@@ -432,7 +427,6 @@ class SharePointReader(BaseReader):
 
         """
 
-
         self._drive_id = self._get_drive_id()
 
         self.sharepoint_folder_id = self._get_sharepoint_folder_id(
@@ -440,10 +434,10 @@ class SharePointReader(BaseReader):
         )
 
         metadata = self._download_files_and_extract_metadata(
-            folder_id=self.sharepoint_folder_id, 
-            download_dir=download_dir, 
-            include_subfolders=recursive, 
-            file_types=file_types
+            folder_id=self.sharepoint_folder_id,
+            download_dir=download_dir,
+            include_subfolders=recursive,
+            file_types=file_types,
         )
 
         return metadata
@@ -485,8 +479,8 @@ class SharePointReader(BaseReader):
         sharepoint_site_name: str,
         sharepoint_folder_path: str = "root",
         recursive: bool = False,
-        include: List[str] = ['documents', 'pages'],
-        file_types: List[str] = []
+        include: List[str] = ["documents", "pages"],
+        file_types: List[str] = [],
     ) -> List[Document]:
         """
         Loads the files from the specified folder in the SharePoint site.
@@ -494,10 +488,10 @@ class SharePointReader(BaseReader):
         Args:
             sharepoint_site_name (str): The name of the SharePoint site.
             sharepoint_folder_path (str): The path of the folder in the SharePoint site.
-                                          If `root`, loads data from the root folder of the 
+                                          If `root`, loads data from the root folder of the
                                           SharePoint site.
             recursive (bool): If True, files from all subfolders are downloaded.
-            include (List[str]): list of Sharepoint objects to include. 
+            include (List[str]): list of Sharepoint objects to include.
                                   Must contain at least 'pages' or 'documents' or both.
             file_types (List[str]): list of file extensions to include when downloading from
                                      the Sharepoint Drive. Leave empty to download all filetypes.
@@ -509,25 +503,36 @@ class SharePointReader(BaseReader):
             Exception: If an error occurs while accessing SharePoint site.
         """
         if not include:
-            raise ValueError("'include' should not be an empty list, and include either 'documents' and/or 'pages'")
-        if any([i not in ['documents', 'pages'] for i in include]):
-            raise ValueError("'include' contains an unexpected value. " +
-                             f"Valid values are ['documents', 'pages'], but got {include}")
-        if 'documents' not in include and (recursive or file_types):
-            logger.warning("'documents' is not in 'included', so 'recursive' and 'file_types' have no effect.")
+            raise ValueError(
+                "'include' should not be an empty list, and include either 'documents' and/or 'pages'"
+            )
+        if any([i not in ["documents", "pages"] for i in include]):
+            raise ValueError(
+                "'include' contains an unexpected value. "
+                + f"Valid values are ['documents', 'pages'], but got {include}"
+            )
+        if "documents" not in include and (recursive or file_types):
+            logger.warning(
+                "'documents' is not in 'included', so 'recursive' and 'file_types' have no effect."
+            )
         try:
             with tempfile.TemporaryDirectory() as temp_dir:
                 self._setup_site_config(sharepoint_site_name)
                 files_metadata = {}
-                if 'documents' in include:
-                    files_metadata.update(self._download_files_from_sharepoint(
-                        temp_dir, sharepoint_folder_path, recursive, file_types
-                    ))
-                if 'pages' in include:
-                    files_metadata.update(self._download_pages_and_extract_metadata(
-                        temp_dir
-                    ))
+                if "documents" in include:
+                    files_metadata.update(
+                        self._download_files_from_sharepoint(
+                            temp_dir, sharepoint_folder_path, recursive, file_types
+                        )
+                    )
+                if "pages" in include:
+                    files_metadata.update(
+                        self._download_pages_and_extract_metadata(temp_dir)
+                    )
                 return self._load_documents_with_metadata(
-                    files_metadata, temp_dir, recursive)
+                    files_metadata, temp_dir, recursive
+                )
         except Exception as exp:
-            logger.error("An error occurred while accessing SharePoint: ", exc_info=True)
+            logger.error(
+                "An error occurred while accessing SharePoint: %s", exp, exc_info=True
+            )
