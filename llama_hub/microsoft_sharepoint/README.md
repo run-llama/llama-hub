@@ -49,23 +49,6 @@ documents = loader.load_data(
 )
 ```
 
-### Example loading all files, no pages
-```python
-from llama_index import download_loader 
-SharePointLoader = download_loader("SharePointReader")
-
-loader = SharePointLoader(
-            client_id = "<Client ID of the app>",
-            client_secret = "<Client Secret of the app>",
-            tenant_id = "<Tenant ID of the Micorsoft Azure Directory>"
-            )
-
-documents = loader.load_data(
-            sharepoint_site_name: "<Sharepoint Site Name>",
-            recursive = True,
-)
-```
-
 ### Example loading all files and pages
 ```python
 from llama_index import download_loader 
@@ -80,7 +63,62 @@ loader = SharePointLoader(
 documents = loader.load_data(
             sharepoint_site_name: "<Sharepoint Site Name>",
             recursive = True,
-            include_pages = True
+            include= ['pages', 'documents']
+)
+```
+
+### Example loading just pages
+```python
+from llama_index import download_loader 
+SharePointLoader = download_loader("SharePointReader")
+
+loader = SharePointLoader(
+            client_id = "<Client ID of the app>",
+            client_secret = "<Client Secret of the app>",
+            tenant_id = "<Tenant ID of the Micorsoft Azure Directory>"
+            )
+
+documents = loader.load_data(
+            sharepoint_site_name: "<Sharepoint Site Name>",
+            recursive = True,
+            include = ['pages']
+)
+```
+
+### Example loading just documents
+```python
+from llama_index import download_loader 
+SharePointLoader = download_loader("SharePointReader")
+
+loader = SharePointLoader(
+            client_id = "<Client ID of the app>",
+            client_secret = "<Client Secret of the app>",
+            tenant_id = "<Tenant ID of the Micorsoft Azure Directory>"
+            )
+
+documents = loader.load_data(
+            sharepoint_site_name: "<Sharepoint Site Name>",
+            recursive = True,
+            include = ['documents']
+)
+```
+
+### Example loading just documents with filetype .docx or .pdf
+```python
+from llama_index import download_loader 
+SharePointLoader = download_loader("SharePointReader")
+
+loader = SharePointLoader(
+            client_id = "<Client ID of the app>",
+            client_secret = "<Client Secret of the app>",
+            tenant_id = "<Tenant ID of the Micorsoft Azure Directory>"
+            )
+
+documents = loader.load_data(
+            sharepoint_site_name: "<Sharepoint Site Name>",
+            recursive = True,
+            include = ['documents'],
+            file_types = ['docx', 'pdf']
 )
 ```
 

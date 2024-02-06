@@ -184,7 +184,8 @@ class SharePointReader(BaseReader):
         self,
         folder_id: str,
         download_dir: str,
-        include_subfolders: bool = False,
+        include_subfolders: bool,
+        file_types: List[str]
     ) -> Dict[str, str]:
         """
         Downloads files from the specified folder ID and extracts metadata.
@@ -193,6 +194,7 @@ class SharePointReader(BaseReader):
             folder_id (str): The ID of the folder from which the files should be downloaded.
             download_dir (str): The directory where the files should be downloaded.
             include_subfolders (bool): If True, files from all subfolders are downloaded.
+            file_types: (List[str]): A set of file types to load. If empty, loads all file types.
 
         Returns:
             Dict[str, str]: A dictionary containing the metadata of the downloaded files.
@@ -219,13 +221,16 @@ class SharePointReader(BaseReader):
                         folder_id=item["id"],
                         download_dir=sub_folder_download_dir,
                         include_subfolders=include_subfolders,
+                        file_types=file_types
                     )
 
                     metadata.update(subfolder_metadata)
 
                 elif "file" in item:
-                    file_metadata = self._download_file(item, download_dir)
-                    metadata.update(file_metadata)
+                    file_type = item['name'].split('.')[-1]
+                    if not file_types or (file_type in file_types):
+                        file_metadata = self._download_file(item, download_dir)
+                        metadata.update(file_metadata)
             return metadata
         else:
             logger.error(response.json()["error"])
@@ -374,6 +379,7 @@ class SharePointReader(BaseReader):
         download_dir: str,
         sharepoint_folder_path: str,
         recursive: bool,
+        file_types: List[str]
     ) -> Dict[str, str]:
         """
         Downloads files from the specified folder and returns the metadata for the downloaded files.
@@ -383,6 +389,7 @@ class SharePointReader(BaseReader):
             sharepoint_site_name (str): The name of the SharePoint site.
             sharepoint_folder_path (str): The path of the folder in the SharePoint site.
             recursive (bool): If True, files from all subfolders are downloaded.
+            file_types: (List[str]): A set of file types to load. If empty, loads all file types.
 
         Returns:
             Dict[str, str]: A dictionary containing the metadata of the downloaded files.
@@ -397,7 +404,10 @@ class SharePointReader(BaseReader):
         )
 
         metadata = self._download_files_and_extract_metadata(
-            self.sharepoint_folder_id, download_dir, recursive
+            folder_id=self.sharepoint_folder_id, 
+            download_dir=download_dir, 
+            include_subfolders=recursive, 
+            file_types=file_types
         )
 
         return metadata
@@ -439,8 +449,8 @@ class SharePointReader(BaseReader):
         sharepoint_site_name: str,
         sharepoint_folder_path: str = "root",
         recursive: bool = False,
-        include_documents: bool = True,
-        include_pages: bool = False
+        include: List[str] = ['documents', 'pages'],
+        file_types: List[str] = []
     ) -> List[Document]:
         """
         Loads the files from the specified folder in the SharePoint site.
@@ -451,9 +461,10 @@ class SharePointReader(BaseReader):
                                           If `root`, loads data from the root folder of the 
                                           SharePoint site.
             recursive (bool): If True, files from all subfolders are downloaded.
-            include_documents (bool): If True, loads documents for the given 
-                                      sharepoint_site_name and sharepoint_folder_path.
-            include_pages (bool): If True, loads SharePoint pages for the given site_name.
+            include (List[str]): list of Sharepoint objects to include. 
+                                  Must contain at least 'pages' or 'documents' or both.
+            file_types (List[str]): list of file extensions to include when downloading from
+                                     the Sharepoint Drive. Leave empty to download all filetypes.
 
         Returns:
             List[Document]: A list containing the documents with metadata.
@@ -461,22 +472,26 @@ class SharePointReader(BaseReader):
         Raises:
             Exception: If an error occurs while accessing SharePoint site.
         """
+        if not include:
+            raise ValueError("'include' should not be an empty list, and include either 'documents' and/or 'pages'")
+        if any([i not in ['documents', 'pages'] for i in include]):
+            raise ValueError("'include' contains an unexpected value. " +
+                             f"Valid values are ['documents', 'pages'], but got {include}")
+        if 'documents' not in include and (recursive or file_types):
+            logger.warning("'documents' is not in 'included', so 'recursive' and 'file_types' have no effect.")
         try:
             with tempfile.TemporaryDirectory() as temp_dir:
                 self._setup_site_config(sharepoint_site_name)
                 files_metadata = {}
-                if include_documents:
+                if 'documents' in include:
                     files_metadata.update(self._download_files_from_sharepoint(
-                        temp_dir, sharepoint_folder_path, recursive
+                        temp_dir, sharepoint_folder_path, recursive, file_types
                     ))
-                if include_pages:
+                if 'pages' in include:
                     files_metadata.update(self._download_pages_and_extract_metadata(
                         temp_dir
                     ))
-                # return self.files_metadata
                 return self._load_documents_with_metadata(
                     files_metadata, temp_dir, recursive)
-                
-
         except Exception as exp:
             logger.error("An error occurred while accessing SharePoint: ", exc_info=True)
