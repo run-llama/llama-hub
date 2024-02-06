@@ -240,6 +240,18 @@ class SharePointReader(BaseReader):
             self,
             download_dir,
         ):
+        """
+        Downloads Sharepoint pages as HTML files and extracts metadata.
+
+        Args:
+            download_dir (str): The directory where the files should be downloaded.
+
+        Returns:
+            Dict[str, str]: A dictionary containing the metadata of the downloaded Sharepoint pages.
+
+        Raises:
+            ValueError: If there is an error in downloading the files.
+        """
         pages_endpoint = f"https://graph.microsoft.com/beta/sites/{self._site_id_with_host_name}/pages"
 
         data = self._get_results_with_odatanext(pages_endpoint)
@@ -251,6 +263,18 @@ class SharePointReader(BaseReader):
         return metadata
 
     def _extract_page(self, item, download_dir) -> None|Dict[str, Dict[str, str]]:
+        """
+        Retrieves the HTML content of the SharePoint page referenced by the 'item' argument 
+        from the Microsoft Graph. Stores the content as an .html file in the download_dir.
+
+        Args:
+            item (Dict[str, Any]): a sharepoint item that contains 
+                  the fields 'id', 'name' and 'webUrl'
+            download_dir (str): A directory to download the file to.
+
+        Returns:
+            The metadata of the item
+        """
         page_endpoint: str = f"https://graph.microsoft.com/beta/sites/{self._site_id_with_host_name}/pages/{item['id']}/microsoft.graph.sitepage/webparts"
         file_name = item['name'].replace('.aspx', '.html')
 
@@ -365,6 +389,18 @@ class SharePointReader(BaseReader):
         item: Dict[str, Any],
         download_dir: str,
     ):
+        """
+        Downloads a file to the temporary download folder and returns
+        its metadata. 
+
+        Args:
+            item (Dict[str, Any]): a sharepoint item that contains 
+                  the fields 'id', 'name' and 'webUrl'
+            download_dir (str): A directory to download the file to.
+
+        Returns:
+            The metadata of the item
+        """
         metadata = {}
 
         file_path = self._download_file_by_url(item, download_dir)
