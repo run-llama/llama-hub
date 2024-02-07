@@ -50,12 +50,7 @@
   "AzStorageBlobReader": {
     "id": "azstorage_blob",
     "author": "rivms",
-    "keywords": [
-      "azure storage",
-      "blob",
-      "container",
-      "azure"
-    ]
+    "keywords": ["azure storage", "blob", "container", "azure"]
   },
   "AzCognitiveSearchReader": {
     "id": "azcognitive_search",
@@ -84,11 +79,7 @@
   "CJKPDFReader": {
     "id": "file/cjk_pdf",
     "author": "JiroShimaya",
-    "keywords": [
-      "Japanese",
-      "Chinese",
-      "Korean"
-    ]
+    "keywords": ["Japanese", "Chinese", "Korean"]
   },
   "DocxReader": {
     "id": "file/docx",
@@ -101,26 +92,17 @@
   "PptxSlideReader": {
     "id": "file/pptx_slide",
     "author": "tewnut",
-    "keywords": [
-      "presentation",
-      "slide",
-      "pptx"
-    ]
+    "keywords": ["presentation", "slide", "pptx"]
   },
   "ImageReader": {
     "id": "file/image",
     "author": "ravi03071991",
-    "keywords": [
-      "invoice",
-      "receipt"
-    ]
+    "keywords": ["invoice", "receipt"]
   },
   "HubspotReader": {
     "id": "hubspot",
     "author": "ykhli",
-    "keywords": [
-      "hubspot"
-    ]
+    "keywords": ["hubspot"]
   },
   "EpubReader": {
     "id": "file/epub",
@@ -149,11 +131,7 @@
   "MainContentExtractorReader": {
     "id": "web/main_content_extractor",
     "author": "HawkClaws",
-    "keywords": [
-      "main content extractor",
-      "web",
-      "web reader"
-    ]
+    "keywords": ["main content extractor", "web", "web reader"]
   },
   "AudioTranscriber": {
     "id": "file/audio",
@@ -162,31 +140,22 @@
   "SimpleCSVReader": {
     "id": "file/simple_csv",
     "author": "vguillet",
-    "keywords": [
-      "spreadsheet"
-    ]
+    "keywords": ["spreadsheet"]
   },
   "PagedCSVReader": {
     "id": "file/paged_csv",
     "author": "thejessezhang",
-    "keywords": [
-      "spreadsheet"
-    ]
+    "keywords": ["spreadsheet"]
   },
   "PandasCSVReader": {
     "id": "file/pandas_csv",
     "author": "ephe-meral",
-    "keywords": [
-      "spreadsheet"
-    ]
+    "keywords": ["spreadsheet"]
   },
   "SDLReader": {
     "id": "file/sdl",
     "author": "ajhofmann",
-    "keywords": [
-      "graphql",
-      "schema"
-    ]
+    "keywords": ["graphql", "schema"]
   },
   "SimpleWebPageReader": {
     "id": "web/simple_web",
@@ -199,64 +168,37 @@
   "ReadabilityWebPageReader": {
     "id": "web/readability_web",
     "author": "pandazki",
-    "extra_files": [
-      "Readability.js"
-    ]
+    "extra_files": ["Readability.js"]
   },
   "BeautifulSoupWebReader": {
     "id": "web/beautiful_soup_web",
     "author": "thejessezhang",
-    "keywords": [
-      "substack",
-      "readthedocs",
-      "documentation"
-    ]
+    "keywords": ["substack", "readthedocs", "documentation"]
   },
   "RssReader": {
     "id": "web/rss",
     "author": "bborn",
-    "keywords": [
-      "feed",
-      "rss",
-      "atom"
-    ]
+    "keywords": ["feed", "rss", "atom"]
   },
   "SitemapReader": {
     "id": "web/sitemap",
     "author": "selamanse",
-    "keywords": [
-      "sitemap",
-      "website",
-      "seo"
-    ]
+    "keywords": ["sitemap", "website", "seo"]
   },
   "DatabaseReader": {
     "id": "database",
     "author": "kevinqz",
-    "keywords": [
-      "sql",
-      "postgres",
-      "snowflake",
-      "aws rds"
-    ]
+    "keywords": ["sql", "postgres", "snowflake", "aws rds"]
   },
   "GraphQLReader": {
     "id": "graphql",
     "author": "jexp",
-    "keywords": [
-      "graphql",
-      "gql",
-      "apollo"
-    ]
+    "keywords": ["graphql", "gql", "apollo"]
   },
   "GraphDBCypherReader": {
     "id": "graphdb_cypher",
     "author": "jexp",
-    "keywords": [
-      "graph",
-      "neo4j",
-      "cypher"
-    ]
+    "keywords": ["graph", "neo4j", "cypher"]
   },
   "GladiaAudioTranscriber": {
     "id": "file/audio_gladia",
@@ -333,9 +275,7 @@
   "YoutubeTranscriptReader": {
     "id": "youtube_transcript",
     "author": "ravi03071991",
-    "keywords": [
-      "video"
-    ]
+    "keywords": ["video"]
   },
   "MakeWrapper": {
     "id": "make_com"
@@ -369,44 +309,27 @@
   "KnowledgeBaseWebReader": {
     "id": "web/knowledge_base",
     "author": "jasonwcfan",
-    "keywords": [
-      "documentation"
-    ]
+    "keywords": ["documentation"]
   },
   "S3Reader": {
     "id": "s3",
     "author": "thejessezhang",
-    "keywords": [
-      "aws s3",
-      "bucket",
-      "amazon web services"
-    ]
+    "keywords": ["aws s3", "bucket", "amazon web services"]
   },
   "RemoteReader": {
     "id": "remote",
     "author": "thejessezhang",
-    "keywords": [
-      "hosted",
-      "url",
-      "gutenberg"
-    ]
+    "keywords": ["hosted", "url", "gutenberg"]
   },
   "RemoteDepthReader": {
     "id": "remote_depth",
     "author": "simonMoisselin",
-    "keywords": [
-      "hosted",
-      "url",
-      "multiple"
-    ]
+    "keywords": ["hosted", "url", "multiple"]
   },
   "DadJokesReader": {
     "id": "dad_jokes",
     "author": "sidu",
-    "keywords": [
-      "jokes",
-      "dad jokes"
-    ]
+    "keywords": ["jokes", "dad jokes"]
   },
   "WordLiftLoader": {
     "id": "wordlift",
@@ -422,10 +345,7 @@
   "WhatsappChatLoader": {
     "id": "whatsapp",
     "author": "batmanscode",
-    "keywords": [
-      "whatsapp",
-      "chat"
-    ]
+    "keywords": ["whatsapp", "chat"]
   },
   "BilibiliTranscriptReader": {
     "id": "bilibili",
@@ -434,28 +354,17 @@
   "RedditReader": {
     "id": "reddit",
     "author": "vanessahlyan",
-    "keywords": [
-      "reddit",
-      "subreddit",
-      "search",
-      "comments"
-    ]
+    "keywords": ["reddit", "subreddit", "search", "comments"]
   },
   "MemosReader": {
     "id": "memos",
     "author": "bubu",
-    "keywords": [
-      "memos",
-      "note"
-    ]
+    "keywords": ["memos", "note"]
   },
   "SpotifyReader": {
     "id": "spotify",
     "author": "ong",
-    "keywords": [
-      "spotify",
-      "music"
-    ]
+    "keywords": ["spotify", "music"]
   },
   "GithubRepositoryReader": {
     "id": "github_repo",
@@ -468,79 +377,47 @@
       "source code",
       "placeholder"
     ],
-    "extra_files": [
-      "github_client.py",
-      "utils.py",
-      "__init__.py"
-    ]
+    "extra_files": ["github_client.py", "utils.py", "__init__.py"]
   },
   "RDFReader": {
     "id": "file/rdf",
     "author": "mommi84",
-    "keywords": [
-      "rdf",
-      "n-triples",
-      "graph",
-      "knowledge graph"
-    ]
+    "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
   },
   "ReadwiseReader": {
     "id": "readwise",
     "author": "alexbowe",
-    "keywords": [
-      "readwise",
-      "highlights",
-      "reading",
-      "pkm"
-    ]
+    "keywords": ["readwise", "highlights", "reading", "pkm"]
   },
   "PandasExcelReader": {
     "id": "file/pandas_excel",
     "author": "maccarini",
-    "keywords": [
-      "spreadsheet"
-    ]
+    "keywords": ["spreadsheet"]
   },
   "ZendeskReader": {
     "id": "zendesk",
     "author": "bbornsztein",
-    "keywords": [
-      "zendesk",
-      "knowledge base",
-      "help center"
-    ]
+    "keywords": ["zendesk", "knowledge base", "help center"]
   },
   "IntercomReader": {
     "id": "intercom",
     "author": "bbornsztein",
-    "keywords": [
-      "intercom",
-      "knowledge base",
-      "help center"
-    ]
+    "keywords": ["intercom", "knowledge base", "help center"]
   },
   "WordpressReader": {
     "id": "wordpress",
     "author": "bbornsztein",
-    "keywords": [
-      "wordpress",
-      "blog"
-    ]
+    "keywords": ["wordpress", "blog"]
   },
   "GmailReader": {
     "id": "gmail",
     "author": "bbornsztein",
-    "keywords": [
-      "gmail",
-      "email"
-    ]
+    "keywords": ["gmail", "email"]
   },
   "SteamshipFileReader": {
     "id": "steamship",
     "author": "douglas-reid",
-    "keywords": [
-      "steamship"
-    ]
+    "keywords": ["steamship"]
   },
   "GPTRepoReader": {
     "id": "gpt_repo",
@@ -553,41 +430,27 @@
   "HatenaBlogReader": {
     "id": "hatena_blog",
     "author": "Shoya SHIRAKI",
-    "keywords": [
-      "hatena",
-      "blog"
-    ]
+    "keywords": ["hatena", "blog"]
   },
   "OpendalReader": {
     "id": "opendal_reader",
     "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage"
-    ]
+    "keywords": ["storage"]
   },
   "OpendalS3Reader": {
     "id": "opendal_reader/s3",
     "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage",
-      "s3"
-    ]
+    "keywords": ["storage", "s3"]
   },
   "OpendalAzblobReader": {
     "id": "opendal_reader/azblob",
     "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage",
-      "azblob"
-    ]
+    "keywords": ["storage", "azblob"]
   },
   "OpendalGcsReader": {
     "id": "opendal_reader/gcs",
     "author": "OpenDAL Contributors",
-    "keywords": [
-      "storage",
-      "gcs"
-    ]
+    "keywords": ["storage", "gcs"]
   },
   "ConfluenceReader": {
     "id": "confluence",
@@ -600,28 +463,22 @@
   "JiraReader": {
     "id": "jira",
     "author": "bearguy",
-    "keywords": [
-      "jira"
-    ]
+    "keywords": ["jira"]
   },
   "UnstructuredURLLoader": {
     "id": "web/unstructured_web",
     "author": "kravetsmic",
-    "keywords": [
-      "unstructured.io",
-      "url"
-    ]
+    "keywords": ["unstructured.io", "url"]
   },
   "WholeSiteReader": {
     "id": "web/whole_site",
     "author": "an-bluecat",
-    "keywords": [
-      "selenium",
-      "scraper",
-      "BFS",
-      "web",
-      "web reader"
-    ]
+    "keywords": ["selenium", "scraper", "BFS", "web", "web reader"]
+  },
+  "WholeSiteReader": {
+    "id": "web/whole_site",
+    "author": "an-bluecat",
+    "keywords": ["selenium", "scraper", "BFS", "web", "web reader"]
   },
   "GoogleSheetsReader": {
     "id": "google_sheets",
@@ -630,44 +487,27 @@
   "FeedlyRssReader": {
     "id": "feedly_rss",
     "author": "kychanbp",
-    "keywords": [
-      "feedly",
-      "rss"
-    ]
+    "keywords": ["feedly", "rss"]
   },
   "FlatPdfReader": {
     "id": "file/flat_pdf",
     "author": "emmanuel-oliveira",
-    "keywords": [
-      "pdf",
-      "flat",
-      "flattened"
-    ]
+    "keywords": ["pdf", "flat", "flattened"]
   },
   "PDFMinerReader": {
     "id": "file/pdf_miner",
     "author": "thunderbug1",
-    "keywords": [
-      "pdf"
-    ]
+    "keywords": ["pdf"]
   },
   "PDFPlumberReader": {
     "id": "file/pdf_plumber",
     "author": "JAlexMcGraw",
-    "keywords": [
-      "pdf",
-      "reader"
-    ]
+    "keywords": ["pdf", "reader"]
   },
   "PreprocessReader": {
     "id": "preprocess",
     "author": "preprocess",
-    "keywords": [
-      "preprocess",
-      "chunking",
-      "chunk",
-      "documents"
-    ]
+    "keywords": ["preprocess", "chunking", "chunk", "documents"]
   },
   "MilvusReader": {
     "id": "milvus",
@@ -676,11 +516,7 @@
   "StackoverflowReader": {
     "id": "stackoverflow",
     "author": "allen-munsch",
-    "keywords": [
-      "posts",
-      "questions",
-      "answers"
-    ]
+    "keywords": ["posts", "questions", "answers"]
   },
   "ZulipReader": {
     "id": "zulip",
@@ -689,174 +525,102 @@
   "OutlookLocalCalendarReader": {
     "id": "outlook_localcalendar",
     "author": "tevslin",
-    "keywords": [
-      "calendar",
-      "outlook"
-    ]
+    "keywords": ["calendar", "outlook"]
   },
   "ApifyActor": {
     "id": "apify/actor",
     "author": "drobnikj",
-    "keywords": [
-      "apify",
-      "scraper",
-      "scraping",
-      "crawler"
-    ]
+    "keywords": ["apify", "scraper", "scraping", "crawler"]
   },
   "ApifyDataset": {
     "id": "apify/dataset",
     "author": "drobnikj",
-    "keywords": [
-      "apify",
-      "scraper",
-      "scraping",
-      "crawler"
-    ]
+    "keywords": ["apify", "scraper", "scraping", "crawler"]
   },
   "TrelloReader": {
     "id": "trello",
     "author": "bluzir",
-    "keywords": [
-      "trello"
-    ]
+    "keywords": ["trello"]
   },
   "DeepLakeReader": {
     "id": "deeplake",
     "author": "adolkhan",
-    "keywords": [
-      "deeplake"
-    ]
+    "keywords": ["deeplake"]
   },
   "ImageCaptionReader": {
     "id": "file/image_blip",
     "author": "FarisHijazi",
-    "keywords": [
-      "image"
-    ]
+    "keywords": ["image"]
   },
   "ImageVisionLLMReader": {
     "id": "file/image_blip2",
     "author": "FarisHijazi",
-    "keywords": [
-      "image"
-    ]
+    "keywords": ["image"]
   },
   "ImageTabularChartReader": {
     "id": "file/image_deplot",
     "author": "jon-chuang",
-    "keywords": [
-      "image",
-      "chart",
-      "tabular",
-      "figure"
-    ]
+    "keywords": ["image", "chart", "tabular", "figure"]
   },
   "IPYNBReader": {
     "id": "file/ipynb",
     "author": "FarisHijazi",
-    "keywords": [
-      "jupyter",
-      "notebook",
-      "ipynb"
-    ]
+    "keywords": ["jupyter", "notebook", "ipynb"]
   },
   "HuggingFaceFSReader": {
     "id": "huggingface/fs",
     "author": "jerryjliu",
-    "keywords": [
-      "hugging",
-      "face",
-      "huggingface",
-      "filesystem",
-      "fs"
-    ]
+    "keywords": ["hugging", "face", "huggingface", "filesystem", "fs"]
   },
   "DeepDoctectionReader": {
     "id": "file/deepdoctection",
     "author": "jerryjliu",
-    "keywords": [
-      "doctection",
-      "doc"
-    ]
+    "keywords": ["doctection", "doc"]
   },
   "PandasAIReader": {
     "id": "pandas_ai",
     "author": "jerryjliu",
-    "keywords": [
-      "pandas",
-      "ai"
-    ]
+    "keywords": ["pandas", "ai"]
   },
   "MetalReader": {
     "id": "metal",
     "author": "getmetal",
-    "keywords": [
-      "metal",
-      "retriever",
-      "storage"
-    ]
+    "keywords": ["metal", "retriever", "storage"]
   },
   "BoardDocsReader": {
     "id": "boarddocs",
     "author": "dweekly",
-    "keywords": [
-      "board",
-      "boarddocs"
-    ]
+    "keywords": ["board", "boarddocs"]
   },
   "PyMuPDFReader": {
     "id": "file/pymu_pdf",
     "author": "iamarunbrahma",
-    "keywords": [
-      "pymupdf",
-      "pdf"
-    ]
+    "keywords": ["pymupdf", "pdf"]
   },
   "MondayReader": {
     "id": "mondaydotcom",
     "author": "nadavgr",
-    "keywords": [
-      "monday",
-      "mondaydotcom"
-    ]
+    "keywords": ["monday", "mondaydotcom"]
   },
   "MangoppsGuidesReader": {
     "id": "mangoapps_guides",
     "author": "mangoapps",
-    "keywords": [
-      "mangoapps"
-    ]
+    "keywords": ["mangoapps"]
   },
   "DocugamiReader": {
     "id": "docugami",
     "author": "tjaffri",
-    "keywords": [
-      "docugami",
-      "docx",
-      "doc",
-      "pdf",
-      "xml"
-    ]
+    "keywords": ["docugami", "docx", "doc", "pdf", "xml"]
   },
   "WeatherReader": {
     "id": "weather",
     "author": "iamadhee",
-    "keywords": [
-      "weather",
-      "openweather"
-    ]
+    "keywords": ["weather", "openweather"]
   },
   "OpenMap": {
     "id": "maps",
     "author": "carrotpy",
-    "keywords": [
-      "open maps",
-      "maps",
-      "open street maps",
-      "overpass api",
-      "geo"
-    ]
+    "keywords": ["open maps", "maps", "open street maps", "overpass api", "geo"]
   },
   "KalturaESearchReader": {
     "id": "kaltura/esearch",
@@ -876,10 +640,7 @@
   "FirestoreReader": {
     "id": "firestore",
     "author": "rayzhudev",
-    "keywords": [
-      "firestore",
-      "datastore"
-    ]
+    "keywords": ["firestore", "datastore"]
   },
   "KibelaReader": {
     "id": "kibela",
@@ -888,24 +649,13 @@
   "GitHubRepositoryIssuesReader": {
     "id": "github_repo_issues",
     "author": "moncho",
-    "keywords": [
-      "github",
-      "repository",
-      "issues"
-    ],
-    "extra_files": [
-      "github_client.py",
-      "__init__.py"
-    ]
+    "keywords": ["github", "repository", "issues"],
+    "extra_files": ["github_client.py", "__init__.py"]
   },
   "FirebaseRealtimeDatabaseReader": {
     "id": "firebase_realtimedb",
     "author": "ajay",
-    "keywords": [
-      "firebase",
-      "realtimedb",
-      "database"
-    ]
+    "keywords": ["firebase", "realtimedb", "database"]
   },
   "FeishuDocsReader": {
     "id": "feishu_docs",
@@ -914,143 +664,82 @@
   "GoogleKeepReader": {
     "id": "google_keep",
     "author": "pycui",
-    "keywords": [
-      "google keep",
-      "google notes"
-    ]
+    "keywords": ["google keep", "google notes"]
   },
   "SingleStoreReader": {
     "id": "singlestore",
     "author": "singlestore",
-    "keywords": [
-      "singlestore",
-      "memsql"
-    ]
+    "keywords": ["singlestore", "memsql"]
   },
   "SECFilingsLoader": {
     "id": "sec_filings",
     "author": "Athe-kunal",
-    "keywords": [
-      "finance",
-      "SEC Filings",
-      "10-K",
-      "10-Q"
-    ]
+    "keywords": ["finance", "SEC Filings", "10-K", "10-Q"]
   },
   "GuruReader": {
     "id": "guru",
     "author": "mcclain-thiel",
-    "keywords": [
-      "guru",
-      "knowledge base",
-      "getguru"
-    ]
+    "keywords": ["guru", "knowledge base", "getguru"]
   },
   "MinioReader": {
     "id": "minio/minio-client",
     "author": "semoal",
-    "keywords": [
-      "minio",
-      "bucket",
-      "storage"
-    ]
+    "keywords": ["minio", "bucket", "storage"]
   },
   "BotoMinioReader": {
     "id": "minio/boto3-client",
     "author": "webcoderz",
-    "keywords": [
-      "minio",
-      "bucket",
-      "storage",
-      "boto"
-    ]
+    "keywords": ["minio", "bucket", "storage", "boto"]
   },
   "NewsArticleReader": {
     "id": "web/news",
     "author": "ruze00",
-    "keywords": [
-      "news",
-      "article"
-    ]
+    "keywords": ["news", "article"]
   },
   "RssNewsReader": {
     "id": "web/rss_news",
     "author": "ruze00",
-    "keywords": [
-      "news",
-      "article",
-      "rss",
-      "feed"
-    ]
+    "keywords": ["news", "article", "rss", "feed"]
   },
   "SemanticScholarReader": {
     "id": "semanticscholar",
     "author": "shauryr",
-    "keywords": [
-      "semantic",
-      "scholar",
-      "research",
-      "paper"
-    ]
+    "keywords": ["semantic", "scholar", "research", "paper"]
   },
   "ZepReader": {
     "id": "zep",
     "author": "zep",
-    "keywords": [
-      "zep",
-      "retriever",
-      "memory",
-      "storage"
-    ]
+    "keywords": ["zep", "retriever", "memory", "storage"]
   },
   "MacrometaGDNReader": {
     "id": "macrometa_gdn",
     "author": "Dain Im",
-    "keywords": [
-      "macrometa"
-    ]
+    "keywords": ["macrometa"]
   },
   "BagelReader": {
     "id": "bagel",
     "author": "asif",
-    "keywords": [
-      "vector",
-      "database",
-      "bagelDB",
-      "storage"
-    ]
+    "keywords": ["vector", "database", "bagelDB", "storage"]
   },
   "PDFTableReader": {
     "id": "pdf_table",
     "author": "yy0867",
-    "keywords": [
-      "table",
-      "pdf",
-      "pdf table"
-    ]
+    "keywords": ["table", "pdf", "pdf table"]
   },
   "LinearReader": {
     "id": "linear",
     "author": "Sushmithamallesh",
-    "keywords": [
-      "linear"
-    ]
+    "keywords": ["linear"]
   },
   "HWPReader": {
     "id": "hwp",
     "author": "sangwongenip",
-    "keywords": [
-      "hwp"
-    ]
+    "keywords": ["hwp"]
   },
   "GitHubRepositoryCollaboratorsReader": {
     "id": "github_repo_collaborators",
     "author": "rwood-97",
-    "keywords": [
-      "github",
-      "repository",
-      "collaborators"
-    ]
+    "keywords": ["github", "repository", "collaborators"]
   },
   "LilacReader": {
     "id": "lilac_reader",
@@ -1059,46 +748,27 @@
   "IMDBReviews": {
     "id": "imdb_review",
     "author": "Athe-kunal",
-    "keywords": [
-      "movies",
-      "reviews",
-      "IMDB"
-    ]
+    "keywords": ["movies", "reviews", "IMDB"]
   },
   "PDFNougatOCR": {
     "id": "nougat_ocr",
     "author": "mdarshad1000",
-    "keywords": [
-      "pdf",
-      "ocr",
-      "academic papers"
-    ]
+    "keywords": ["pdf", "ocr", "academic papers"]
   },
   "BitbucketReader": {
     "id": "bitbucket",
     "author": "lejdiprifti",
-    "keywords": [
-      "bitbucket",
-      "project",
-      "repository"
-    ]
+    "keywords": ["bitbucket", "project", "repository"]
   },
   "RayyanReader": {
     "id": "rayyan",
     "author": "hammady",
-    "keywords": [
-      "rayyan",
-      "systematic review"
-    ]
+    "keywords": ["rayyan", "systematic review"]
   },
   "AthenaReader": {
     "id": "athena",
     "author": "mattick27",
-    "keywords": [
-      "aws athena",
-      "sql",
-      "datalake"
-    ]
+    "keywords": ["aws athena", "sql", "datalake"]
   },
   "OpenAlexReader": {
     "id": "openalex",
@@ -1113,28 +783,17 @@
   "PatentsviewReader": {
     "id": "patentsview",
     "author": "shao-shuai",
-    "keywords": [
-      "patent"
-    ]
+    "keywords": ["patent"]
   },
   "SmartPDFLoader": {
     "id": "smart_pdf_loader",
     "author": "ansukla",
-    "keywords": [
-      "pdf",
-      "pdf table",
-      "pdf layout"
-    ]
+    "keywords": ["pdf", "pdf table", "pdf layout"]
   },
   "PdbAbstractReader": {
     "id": "pdb",
     "author": "joshuakto",
-    "keywords": [
-      "pdb",
-      "Protein Data Bank",
-      "proteins",
-      "academic papers"
-    ]
+    "keywords": ["pdb", "Protein Data Bank", "proteins", "academic papers"]
   },
   "OneDriveReader": {
     "id": "microsoft_onedrive",
@@ -1151,28 +810,17 @@
   "TrafilaturaWebReader": {
     "id": "web/trafilatura_web",
     "author": "NA",
-    "keywords": [
-      "trafilatura",
-      "web",
-      "web reader"
-    ]
+    "keywords": ["trafilatura", "web", "web reader"]
   },
   "StripeDocsReader": {
     "id": "stripe_docs",
     "author": "amorriscode",
-    "keywords": [
-      "stripe",
-      "documentation"
-    ]
+    "keywords": ["stripe", "documentation"]
   },
   "EarningsCallTranscript": {
     "id": "earnings_call_transcript",
     "author": "Athe-kunal",
-    "keywords": [
-      "Finance",
-      "Investor",
-      "Earning calls"
-    ]
+    "keywords": ["Finance", "Investor", "Earning calls"]
   },
   "OpensearchReader": {
     "id": "opensearch",
@@ -1181,40 +829,22 @@
   "HiveReader": {
     "id": "hive",
     "author": "kasen",
-    "keywords": [
-      "Hive",
-      "Hadoop",
-      "HDFS"
-    ]
+    "keywords": ["Hive", "Hadoop", "HDFS"]
   },
   "SharePointReader": {
     "id": "microsoft_sharepoint",
     "author": "arun-soliton",
-    "keywords": [
-      "sharepoint",
-      "microsoft 365",
-      "microsoft365"
-    ]
+    "keywords": ["sharepoint", "microsoft 365", "microsoft365"]
   },
   "DocstringWalker": {
     "id": "docstring_walker",
     "author": "Filip Wojcik",
-    "keywords": [
-      "docstring",
-      "python",
-      "code",
-      "source code"
-    ]
+    "keywords": ["docstring", "python", "code", "source code"]
   },
   "SnowflakeReader": {
     "id": "snowflake",
     "author": "godwin3737",
-    "keywords": [
-      "snowflake",
-      "database",
-      "data warehouse",
-      "warehouse"
-    ]
+    "keywords": ["snowflake", "database", "data warehouse", "warehouse"]
   },
   "TelegramReader": {
     "id": "telegram",
