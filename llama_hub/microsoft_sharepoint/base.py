@@ -44,10 +44,11 @@ class SharePointReader(BaseReader):
         self._authorization_headers = None
 
     def _setup_site_config(self, sharepoint_site_name: str):
-        access_token = self._get_access_token()
-
+        self._authorization_headers = {
+            "Authorization": f"Bearer {self._get_access_token()}"
+        }
         self._site_id_with_host_name = self._get_site_id_with_host_name(
-            access_token, sharepoint_site_name
+            sharepoint_site_name
         )
 
     def _get_access_token(self) -> str:
@@ -81,11 +82,12 @@ class SharePointReader(BaseReader):
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error_description"])
 
-    def _get_site_id_with_host_name(self, access_token, sharepoint_site_name) -> str:
+    def _get_site_id_with_host_name(self, sharepoint_site_name: str) -> str:
         """
         Retrieves the site ID of a SharePoint site using the provided site name.
 
         Args:
+            access_token (str): access_token
             sharepoint_site_name (str): The name of the SharePoint site.
 
         Returns:
@@ -97,7 +99,6 @@ class SharePointReader(BaseReader):
         site_information_endpoint = (
             f"https://graph.microsoft.com/v1.0/sites?search={sharepoint_site_name}"
         )
-        self._authorization_headers = {"Authorization": f"Bearer {access_token}"}
 
         response = requests.get(
             url=site_information_endpoint,
@@ -184,7 +185,7 @@ class SharePointReader(BaseReader):
         download_dir: str,
         include_subfolders: bool,
         file_types: List[str],
-    ) -> Dict[str, str]:
+    ) -> Dict[str, Dict[str, str]]:
         """
         Downloads files from the specified folder ID and extracts metadata.
 
@@ -195,7 +196,7 @@ class SharePointReader(BaseReader):
             file_types: (List[str]): A set of file types to load. If empty, loads all file types.
 
         Returns:
-            Dict[str, str]: A dictionary containing the metadata of the downloaded files.
+            Dict[str, Dict[str, str]]: A dictionary containing the metadata of the downloaded files.
 
         Raises:
             ValueError: If there is an error in downloading the files.
@@ -236,8 +237,8 @@ class SharePointReader(BaseReader):
 
     def _download_pages_and_extract_metadata(
         self,
-        download_dir,
-    ):
+        download_dir: str,
+    ) -> Dict[str, Dict[str, str]]:
         """
         Downloads Sharepoint pages as HTML files and extracts metadata.
 
@@ -245,7 +246,7 @@ class SharePointReader(BaseReader):
             download_dir (str): The directory where the files should be downloaded.
 
         Returns:
-            Dict[str, str]: A dictionary containing the metadata of the downloaded Sharepoint pages.
+            Dict[str, Dict[str, str]]: A dictionary containing the metadata of the downloaded Sharepoint pages.
 
         Raises:
             ValueError: If there is an error in downloading the files.
@@ -257,9 +258,14 @@ class SharePointReader(BaseReader):
         # see https://learn.microsoft.com/en-us/graph/json-batching
         batch_size = 20
         metadata = {}
+
+        # request the page content for a batch of 20 pages
         for i in range(0, len(data), batch_size):
+            # Create a dict using enumerate to index each item in the batch, to later correlate the result with the original data
             batch = dict(enumerate(data[i : i + batch_size]))
             batch_endpoint: str = "https://graph.microsoft.com/beta/$batch"
+
+            # set-up the requests to be made
             body = {
                 "requests": [
                     {
@@ -273,6 +279,9 @@ class SharePointReader(BaseReader):
             batch_response = requests.post(
                 url=batch_endpoint, json=body, headers=self._authorization_headers
             )
+
+            # the result should contain results for all pages.
+            # If something went wrong, this is indicated in the response per page
             for response in batch_response.json()["responses"]:
                 try:
                     file_metadata = self._extract_page(
@@ -285,20 +294,23 @@ class SharePointReader(BaseReader):
                     pass
         return metadata
 
-    def _extract_page(self, item, response, download_dir) -> Dict[str, Dict[str, str]]:
+    def _extract_page(
+        self, item: Dict[str, Any], response: Dict[str, Any], download_dir: str
+    ) -> Dict[str, Dict[str, str]]:
         """
         Retrieves the HTML content of the SharePoint page referenced by the 'item' argument
         from the Microsoft Graph batch response. Stores the content as an .html file in the download_dir.
 
         Args:
             item (Dict[str, Any]): a sharepoint item that contains
-                  the fields 'id', 'name' and 'webUrl'
+                  the fields 'id', 'name' and 'webUrl'.
             response (Dict[str, Any]): A single Microsoft Graph response from a batch request.
                                        Expected to be correlated with the given item.
             download_dir (str): A directory to download the file to.
 
         Returns:
-            The metadata of the item
+            Dict[str, Dict[str, str]]: The file_name of the page stored in the download_dir as key
+                                       and the metadata of the page (item) as value
         """
         file_name = item["name"].replace(".aspx", ".html")
         metadata = {}
@@ -331,7 +343,9 @@ class SharePointReader(BaseReader):
                 f"status: {response['status']}, body: {response['body']['error']}"
             )
 
-    def _get_results_with_odatanext(self, request: str, **kwargs):
+    def _get_results_with_odatanext(
+        self, request: str, **kwargs
+    ) -> List[Dict[str, Any]]:
         """
         Given a request, checks if the result contains `@odata.nextLink` in the result.
         If true, this function returns itself calling the @odata.nextLink.
@@ -341,7 +355,7 @@ class SharePointReader(BaseReader):
             request (str): A GET request to be made, that might include a field '@odata.nextLink'
 
         Returns:
-            Dict[str, str]: A dictionary containing the metadata of the pages to be extracted
+            List[Dict[str, Any]]: A List with containing the metadata in Dict[str, Any] form of the pages to be extracted
         """
         if "prev_responses" not in kwargs.keys():
             prev_responses = []
@@ -413,7 +427,7 @@ class SharePointReader(BaseReader):
         self,
         item: Dict[str, Any],
         download_dir: str,
-    ):
+    ) -> Dict[str, Dict[str, str]]:
         """
         Downloads a file to the temporary download folder and returns
         its metadata.
@@ -439,7 +453,7 @@ class SharePointReader(BaseReader):
         sharepoint_folder_path: str,
         recursive: bool,
         file_types: List[str],
-    ) -> Dict[str, str]:
+    ) -> Dict[str, Dict[str, str]]:
         """
         Downloads files from the specified folder and returns the metadata for the downloaded files.
 
@@ -451,7 +465,8 @@ class SharePointReader(BaseReader):
             file_types: (List[str]): A set of file types to load. If empty, loads all file types.
 
         Returns:
-            Dict[str, str]: A dictionary containing the metadata of the downloaded files.
+            Dict[str,Dict[str, str]]: A dictionary containing file_name of the stored file
+                                      as key and the metadata of the downloaded files as value.
 
         """
 
