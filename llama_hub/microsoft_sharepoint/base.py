@@ -291,7 +291,9 @@ class SharePointReader(BaseReader):
                 ]
             )
             if html_content == "":
-                raise ValueError(f"The page {item['name']} does not contain a textWebPart.")
+                raise ValueError(
+                    f"The page {item['name']} does not contain a textWebPart."
+                )
 
             # Create the directory if it does not exist and save the file.
             if not os.path.exists(download_dir):
