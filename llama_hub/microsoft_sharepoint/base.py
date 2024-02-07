@@ -255,12 +255,14 @@ class SharePointReader(BaseReader):
         data = self._get_results_with_odatanext(pages_endpoint)
         metadata = {}
         for item in data:
-            file_metadata = self._extract_page(item, download_dir)
-            if file_metadata:
+            try:
+                file_metadata = self._extract_page(item, download_dir)
                 metadata.update(file_metadata)
+            except ValueError:
+                pass
         return metadata
 
-    def _extract_page(self, item, download_dir) -> None | Dict[str, Dict[str, str]]:
+    def _extract_page(self, item, download_dir) -> Dict[str, Dict[str, str]]:
         """
         Retrieves the HTML content of the SharePoint page referenced by the 'item' argument
         from the Microsoft Graph. Stores the content as an .html file in the download_dir.
@@ -289,7 +291,7 @@ class SharePointReader(BaseReader):
                 ]
             )
             if html_content == "":
-                return None
+                raise ValueError(f"The page {item['name']} does not contain a textWebPart.")
 
             # Create the directory if it does not exist and save the file.
             if not os.path.exists(download_dir):
