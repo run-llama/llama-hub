@@ -253,40 +253,62 @@ class SharePointReader(BaseReader):
         pages_endpoint = f"https://graph.microsoft.com/beta/sites/{self._site_id_with_host_name}/pages"
 
         data = self._get_results_with_odatanext(pages_endpoint)
+        # the maximum is 20 requests per batch
+        # see https://learn.microsoft.com/en-us/graph/json-batching
+        batch_size = 20
         metadata = {}
-        for item in data:
-            try:
-                file_metadata = self._extract_page(item, download_dir)
-                metadata.update(file_metadata)
-            except ValueError:
-                pass
+        for i in range(0, len(data), batch_size):
+            batch = dict(enumerate(data[i : i + batch_size]))
+            batch_endpoint: str = "https://graph.microsoft.com/beta/$batch"
+            body = {
+                "requests": [
+                    {
+                        "url": f"/sites/{self._site_id_with_host_name}/pages/{item['id']}/microsoft.graph.sitepage/webparts",
+                        "method": "GET",
+                        "id": idx,
+                    }
+                    for idx, item in batch.items()
+                ]
+            }
+            batch_response = requests.post(
+                url=batch_endpoint, json=body, headers=self._authorization_headers
+            )
+            for response in batch_response.json()["responses"]:
+                try:
+                    file_metadata = self._extract_page(
+                        item=batch[int(response["id"])],
+                        response=response,
+                        download_dir=download_dir,
+                    )
+                    metadata.update(file_metadata)
+                except ValueError:
+                    pass
         return metadata
 
-    def _extract_page(self, item, download_dir) -> Dict[str, Dict[str, str]]:
+    def _extract_page(self, item, response, download_dir) -> Dict[str, Dict[str, str]]:
         """
         Retrieves the HTML content of the SharePoint page referenced by the 'item' argument
-        from the Microsoft Graph. Stores the content as an .html file in the download_dir.
+        from the Microsoft Graph batch response. Stores the content as an .html file in the download_dir.
 
         Args:
             item (Dict[str, Any]): a sharepoint item that contains
                   the fields 'id', 'name' and 'webUrl'
+            response (Dict[str, Any]): A single Microsoft Graph response from a batch request.
+                                       Expected to be correlated with the given item.
             download_dir (str): A directory to download the file to.
 
         Returns:
             The metadata of the item
         """
-        page_endpoint: str = f"https://graph.microsoft.com/beta/sites/{self._site_id_with_host_name}/pages/{item['id']}/microsoft.graph.sitepage/webparts"
         file_name = item["name"].replace(".aspx", ".html")
-
-        response = requests.get(url=page_endpoint, headers=self._authorization_headers)
         metadata = {}
 
-        if response.status_code == 200:
+        if response.get("status") == 200:
 
             html_content = "\n".join(
                 [
                     i["innerHtml"]
-                    for i in response.json()["value"]
+                    for i in response["body"]["value"]
                     if i["@odata.type"] == "#microsoft.graph.textWebPart"
                 ]
             )
@@ -305,7 +327,9 @@ class SharePointReader(BaseReader):
             return metadata
         else:
             logger.error(response.json()["error"])
-            raise ValueError(response.json()["error"])
+            raise ValueError(
+                f"status: {response['status']}, body: {response['body']['error']}"
+            )
 
     def _get_results_with_odatanext(self, request: str, **kwargs):
         """
