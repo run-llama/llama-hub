@@ -1,11 +1,9 @@
 from pathlib import Path
 from typing import Dict, List, Sequence, Set, Tuple
-import warnings
-from llama_index import PromptTemplate, Response
+from llama_index import PromptTemplate
 from llama_index.langchain_helpers.agents import LlamaIndexTool
 from llama_index.query_engine import CustomQueryEngine
-from llama_index.schema import BaseNode, NodeRelationship
-from pydantic import Field
+from llama_index.schema import BaseNode
 import re
 from llama_hub.file.code.code_hierarchy import CodeHierarchyNodeParser
 
@@ -37,7 +35,7 @@ class CodeHierarchyKeywordQueryEngine(CustomQueryEngine):
                 self.index[key] = (node.metadata["start_byte"], node.text)
 
     def _extract_keywords_from_node(self, node: BaseNode) -> Set[str]:
-        # Add the last scope name and signature to the keywords
+        """Determine the keywords associated with the node in the index."""
         keywords = self._extract_uuid_from_node(node)
         keywords |= self._extract_module_from_node(node)
         keywords |= self._extract_name_from_node(node)

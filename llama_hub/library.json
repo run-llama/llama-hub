@@ -384,7 +384,7 @@
     "author": "mommi84",
     "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
   },
-  "CodeHierarchyReader": {
+  "CodeReader": {
     "id": "file/code",
     "author": "Ryan Peach",
     "keywords": [

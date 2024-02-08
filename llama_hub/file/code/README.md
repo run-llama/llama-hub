@@ -22,25 +22,68 @@ A full example can be found [here in combination with `CodeSplitter`](./CodeHier
 
 # Repo Maps
 
-TODO
+Generate a map of a repository's structure and contents. This is useful for the LLM to understand the structure of a codebase, and to be able to reference specific files or directories.
 
-# Indexing
+For example:
 
-TODO
+- code_hierarchy
+  - _SignatureCaptureType
+  - _SignatureCaptureOptions
+  - _ScopeMethod
+  - _CommentOptions
+  - _ScopeItem
+  - _ChunkNodeOutput
+  - CodeHierarchyNodeParser
+    - class_name
+    - __init__
+    - _get_node_name
+      - recur
+    - _get_node_signature
+      - find_start
+      - find_end
+    - _chunk_node
+    - get_code_hierarchy_from_nodes
+      - get_subdict
+      - recur_inclusive_scope
+      - dict_to_markdown
+    - _parse_nodes
+    - _get_indentation
+    - _get_comment_text
+    - _create_comment_line
+    - _get_replacement_text
+    - _skeletonize
+    - _skeletonize_list
+      - recur
+
+# Query Engine & Langchain Tool
+
+Generates a langchain tool with the following name and description:
+
+```
+name: "Code Search"
+description:
+    Search the tool by any element in this list,
+    or any uuid found in the code,
+    to get more information about that element.
+
+    {repo_map}
+```
 
 # Adding new languages
 
-## SignatureCaptureType
+To add a new language you need to edit `_DEFAULT_SIGNATURE_IDENTIFIERS` in `code_hierarchy.py`.
 
-TODO
+The docstrings are infomative as how you ought to do this and its nuances, it should work for most languages.
 
-## SignatureCaptureOptions
+Please **test your new language** by adding a new file to `tests/file/code/` and testing all your edge cases.
 
-TODO
+People often ask "how do I find the Node Types I need for a new language?" The best way is to use breakpoints.
+I have added a comment `TIP: This is a wonderful place to put a debug breakpoint` in the `code_hierarchy.py` file, put a breakpoint there, input some code in the desired language, and step through it to find the name
+of the node you want to capture.
 
-## DEFAULT_SIGNATURE_IDENTIFIERS
-
-TODO
+The code as it is should handle any language which:
+1. expects you to indent deeper scopes
+2. has a way to comment, either full line or between delimiters
 
 ## Future
 

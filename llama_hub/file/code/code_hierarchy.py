@@ -41,6 +41,9 @@ class _SignatureCaptureType(BaseModel):
 
 
 class _SignatureCaptureOptions(BaseModel):
+    """
+    Options for capturing the signature of a node.
+    """
     start_signature_types: Optional[List[_SignatureCaptureType]] = Field(
         None,
         description=(
