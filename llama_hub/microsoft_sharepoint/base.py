@@ -556,7 +556,7 @@ class SharePointReader(BaseReader):
             )
         if "documents" not in include and (recursive or file_types):
             logger.warning(
-                "'documents' is not in 'included', so 'recursive' and 'file_types' have no effect."
+                "'documents' is not in 'include', so 'recursive' and 'file_types' have no effect."
             )
         try:
             with tempfile.TemporaryDirectory() as temp_dir:
