@@ -1,5 +1,7 @@
 # Docugami KG-RAG - Sec 10-Q
 
+A labelled RAG dataset with SEC 10-Q documents for major tech companies including queries across multiple docs and chunks, with reference answers. See [https://github.com/docugami/KG-RAG-datasets](https://github.com/docugami/KG-RAG-datasets) for details.
+
 ## CLI Usage
 
 You can download `llamadatasets` directly using `llamaindex-cli`, which comes installed with the `llama-index` python package:

@@ -1,3 +1,2 @@
-lxml
-requests
+dgml-utils
 typing
