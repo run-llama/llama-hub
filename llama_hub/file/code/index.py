@@ -7,7 +7,7 @@ from llama_index.query_engine import CustomQueryEngine
 from llama_index.schema import BaseNode, NodeRelationship
 from pydantic import Field
 import re
-from code_hierarchy import CodeHierarchyNodeParser
+from llama_hub.file.code.code_hierarchy import CodeHierarchyNodeParser
 
 
 class CodeHierarchyKeywordQueryEngine(CustomQueryEngine):

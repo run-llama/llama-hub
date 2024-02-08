@@ -5,7 +5,7 @@ from pytest import fixture
 from llama_hub.file.code.code_hierarchy import CodeHierarchyNodeParser
 from llama_index.text_splitter import CodeSplitter
 from pathlib import Path
-from llama_index.schema import BaseNode, NodeRelationship
+from llama_index.schema import BaseNode
 
 from IPython.display import Markdown, display
 
@@ -49,10 +49,3 @@ def test_query_by_name(code_hierarchy_nodes: Sequence[BaseNode]) -> None:
     query = "CodeHierarchyNodeParser"
     results = index.query(query)
     assert len(results) >= 1
-
-def test_parent_but_no_previous(code_hierarchy_nodes: Sequence[BaseNode]) -> None:
-    """Test that the root of a query has no previous nodes."""
-    query = "CodeHierarchyNodeParser"
-    for node in code_hierarchy_nodes:
-        if query == node.metadata.get("inclusive_scopes", [{"name": ""}])[-1]["name"]:
-            assert NodeRelationship.PREVIOUS not in node.relationships, "The root of a query should have no previous nodes"

@@ -384,6 +384,20 @@
     "author": "mommi84",
     "keywords": ["rdf", "n-triples", "graph", "knowledge graph"]
   },
+  "CodeHierarchyReader": {
+    "id": "file/code",
+    "author": "Ryan Peach",
+    "keywords": [
+      "code",
+      "source code",
+      "hierarchy",
+      "python",
+      "javascript",
+      "html",
+      "cpp",
+      "typescript"
+    ]
+  },
   "ReadwiseReader": {
     "id": "readwise",
     "author": "alexbowe",
