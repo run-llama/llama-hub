@@ -2,7 +2,7 @@ from llama_index.schema import Document
 from llama_index.readers.base import BaseReader
 from llama_hub.sec_filings.secData import sec_main
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 import warnings
 import sys
 
@@ -14,7 +14,7 @@ class SECFilingsLoader(BaseReader):
         year: int,
         filing_types: List[str],
         include_amends: bool = True,
-        amount: int = None,
+        amount: Optional[int] = None,
     ):
         """SEC Filings loader for 10-K, 10-Q and S-1 filings
 
