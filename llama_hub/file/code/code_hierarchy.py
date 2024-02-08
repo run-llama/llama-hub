@@ -369,6 +369,8 @@ class CodeHierarchyNodeParser(NodeParser):
                 text=current_chunk,
                 metadata={
                     "inclusive_scopes": [cl.dict() for cl in _context_list],
+                    "start_byte": start_byte,
+                    "end_byte": parent.end_byte,
                 },
                 relationships={
                     NodeRelationship.CHILD: [],
@@ -448,6 +450,7 @@ class CodeHierarchyNodeParser(NodeParser):
     @staticmethod
     def get_code_hierarchy_from_nodes(
         nodes: Sequence[BaseNode],
+        max_depth: int = -1,
     ) -> str:
         """
         Creates a code hierarchy appropriate to put into a tool description or context
@@ -478,7 +481,8 @@ class CodeHierarchyNodeParser(NodeParser):
             if scope["name"] not in this_dict:
                 this_dict[scope["name"]] = defaultdict(dict)
 
-            recur_inclusive_scope(node, i + 1, [*keys, scope["name"]])
+            if i < max_depth or max_depth == -1:
+                recur_inclusive_scope(node, i + 1, [*keys, scope["name"]])
 
         def dict_to_markdown(d: dict[str, Any], depth: int = 0) -> str:
             markdown = ""
@@ -495,7 +499,9 @@ class CodeHierarchyNodeParser(NodeParser):
             return markdown
 
         for node in nodes:
-            recur_inclusive_scope(node, 0, node.metadata["filepath"].split("/"))
+            filepath = node.metadata["filepath"].split("/")
+            filepath[-1] = filepath[-1].split(".")[0]
+            recur_inclusive_scope(node, 0, filepath)
 
         return dict_to_markdown(out)
 

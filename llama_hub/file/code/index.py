@@ -1,75 +1,107 @@
-from typing import Any, Sequence, Set, Union
+from pathlib import Path
+from typing import Dict, List, Sequence, Set, Tuple
+import warnings
+from llama_index import PromptTemplate, Response
+from llama_index.langchain_helpers.agents import LlamaIndexTool
+from llama_index.query_engine import CustomQueryEngine
+from llama_index.schema import BaseNode, NodeRelationship
+from pydantic import Field
+import re
+from code_hierarchy import CodeHierarchyNodeParser
 
-from llama_index.data_structs.data_structs import KeywordTable
-from llama_index.indices.base_retriever import BaseRetriever
-from llama_index.indices.keyword_table.base import (
-    BaseKeywordTableIndex,
-    KeywordTableRetrieverMode,
-)
-from llama_index.schema import BaseNode
-from llama_index.utils import get_tqdm_iterable
 
-
-class CodeHierarchyKeywordTableIndex(BaseKeywordTableIndex):
+class CodeHierarchyKeywordQueryEngine(CustomQueryEngine):
     """A keyword table made specifically to work with the code hierarchy node parser.
-
-    Similar to SimpleKeywordTableIndex, but doesn't use GPT to extract keywords.
     """
 
-    def _extract_keywords(self, text: str) -> Set[str]:
-        """Extract keywords from text."""
-        raise NotImplementedError(
-            "You should not be calling this method "
-            "from within CodeHierarchyKeywordTableIndex."
-        )
+    nodes: Sequence[BaseNode]
+    index: Dict[str, Tuple[int, BaseNode]] | None = None
+    tool_instructions: PromptTemplate = PromptTemplate(
+        template="""
+        Search the tool by any element in this list,
+        or any uuid found in the code,
+        to get more information about that element.
+
+        {repo_map}
+        """
+    )
+
+    def _setup_index(
+        self,
+    ) -> None:
+        """Initialize the index."""
+        self.index = {}
+        for node in self.nodes:
+            keys = self._extract_keywords_from_node(node)
+            for key in keys:
+                self.index[key] = (node.metadata["start_byte"], node.text)
 
     def _extract_keywords_from_node(self, node: BaseNode) -> Set[str]:
-        keywords = []
-        keywords.append(node.node_id)
-        file_path = node.metadata["filepath"]
-        module_path = file_path.replace("/", ".").lstrip(".").rstrip(".py")
-        keywords.append(module_path)
         # Add the last scope name and signature to the keywords
+        keywords = self._extract_uuid_from_node(node)
+        keywords |= self._extract_module_from_node(node)
+        keywords |= self._extract_name_from_node(node)
+        return {k for k in keywords}
+
+    def _extract_uuid_from_node(self, node) -> Set[str]:
+        """Extract the uuid from the node."""
+        return {node.node_id}
+
+    def _extract_module_from_node(self, node) -> Set[str]:
+        """Extract the module name from the node."""
+        keywords = set()
+        if not node.metadata["inclusive_scopes"]:
+            path = Path(node.metadata["filepath"])
+            name = path.name
+            name = re.sub(r"\..*$", "", name)
+            if name in self.index:
+                its_start_byte, _ = self.index[name]
+                if node.metadata["start_byte"] < its_start_byte:
+                    keywords.add(name)
+            else:
+                keywords.add(name)
+        return keywords
+
+    def _extract_name_from_node(self, node) -> Set[str]:
+        """Extract the name and signature from the node."""
+        keywords = set()
         if node.metadata["inclusive_scopes"]:
-            keywords.append(node.metadata["inclusive_scopes"][-1]["name"])
-            keywords.append(node.metadata["inclusive_scopes"][-1]["signature"])
+            name = node.metadata["inclusive_scopes"][-1]["name"]
+            start_byte = node.metadata["start_byte"]
+            if name in self.index:
+                its_start_byte, _ = self.index[name]
+                if start_byte < its_start_byte:
+                    keywords.add(name)
+            else:
+                keywords.add(name)
+        return keywords
 
-        return {k.lower() for k in keywords}
+    def custom_query(self, query: str) -> str:
+        """Query the index. Only use exact matches."""
+        if self.index is None:
+            self._setup_index()
+        return self.index.get(str(query), (0, ""))[1]
 
-    def _add_nodes_to_index(
-        self,
-        index_struct: KeywordTable,
-        nodes: Sequence[BaseNode],
-        show_progress: bool = False,
-    ) -> None:
-        """Add document to index."""
-        nodes_with_progress = get_tqdm_iterable(
-            nodes, show_progress, "Extracting keywords from nodes"
+    def as_langchain_tool(
+            self,
+            include_repo_map: bool = True,
+            repo_map_depth: int = -1,
+            **tool_kwargs,
+        ) -> LlamaIndexTool:
+        """
+        Return the index as a langchain tool.
+        Set a repo map depth of -1 to include all nodes.
+        otherwise set the depth to the desired max depth.
+        """
+        repo_map = {}
+        if include_repo_map:
+            repo_map = CodeHierarchyNodeParser.get_code_hierarchy_from_nodes(
+                self.nodes,
+                max_depth=repo_map_depth
+            )
+        return LlamaIndexTool(
+            name="Code Search",
+            description=self.tool_instructions.format(repo_map=repo_map),
+            query_engine=self,
+            **tool_kwargs
         )
-        for n in nodes_with_progress:
-            index_struct.add_node(list(self._extract_keywords_from_node(n)), n)
-
-    async def _async_add_nodes_to_index(
-        self,
-        index_struct: KeywordTable,
-        nodes: Sequence[BaseNode],
-        show_progress: bool = False,
-    ) -> None:
-        """Add document to index."""
-        return self._add_nodes_to_index(index_struct, nodes, show_progress)
-
-    def _insert(self, nodes: Sequence[BaseNode], **insert_kwargs: Any) -> None:
-        """Insert nodes."""
-        for n in nodes:
-            self._index_struct.add_node(list(self._extract_keywords_from_node(n)), n)
-
-    def as_retriever(
-        self,
-        retriever_mode: Union[str, KeywordTableRetrieverMode, None] = None,
-        **kwargs: Any,
-    ) -> BaseRetriever:
-        if retriever_mode is None:
-            from llama_index.indices.keyword_table.base import KeywordTableRetrieverMode
-
-            retriever_mode = KeywordTableRetrieverMode.SIMPLE
-        return super().as_retriever(retriever_mode=retriever_mode, **kwargs)
