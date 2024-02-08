@@ -49,3 +49,10 @@ def test_query_by_name(code_hierarchy_nodes: Sequence[BaseNode]) -> None:
     query = "CodeHierarchyNodeParser"
     results = index.query(query)
     assert len(results) >= 1
+
+def test_get_tool(code_hierarchy_nodes: Sequence[BaseNode]) -> None:
+    """Test querying the index by signature."""
+    index = CodeHierarchyKeywordQueryEngine(code_hierarchy_nodes)
+    query = "CodeHierarchyNodeParser"
+    results = index.as_langchain_tool().run(query)
+    assert len(results) >= 1
