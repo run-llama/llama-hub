@@ -1,7 +1,6 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
-from datetime import datetime
 
 
 class PrometheusReader(BaseReader):
@@ -16,17 +15,24 @@ class PrometheusReader(BaseReader):
         self.prometheus_url = endpoint
         self.prom_client = PrometheusConnect(url=self.prometheus_url)
 
-    def load_data(
-        self,
-        query: str,
-        start_time: Optional[datetime],
-        end_time: Optional[datetime],
-        step: Optional[str],
-        get_pararameters: Optional[dict],
-        metadata_fields: Optional[list] = [],
-        additional_metadata: Optional[dict] = {},
-    ) -> List[Document]:
+    def load_data(self, query: str, **load_kwargs: Any) -> List[Document]:
+        """Load metrics data from prometheus
 
+        Args:
+            query (str): Prometheus Query Language (PromQL) string
+            start_time (Optional[datetime], optional): Start time of the query. Defaults to None.
+            end_time (Optional[datetime], optional): End time of the query. Defaults to None.
+            step (Optional[str], optional): Step of the query. Defaults to None.
+            get_pararameters (Optional[dict], optional): Additional parameters to pass to the query. Defaults to None.
+            metadata_fields (Optional[list], optional): List of metadata fields to include in the response. Defaults to None.
+            additional_metadata (Optional[dict], optional): Additional metadata to include in the response. Defaults to None.
+        """
+        start_time = load_kwargs.get("start_time", None)
+        end_time = load_kwargs.get("end_time", None)
+        step = load_kwargs.get("step", None)
+        get_pararameters = load_kwargs.get("get_pararameters", None)
+        metadata_fields = load_kwargs.get("metadata_fields", dict())
+        additional_metadata = load_kwargs.get("additional_metadata", dict())
         # Verify if the start_time and end_time is present, to define if is a range query
         if start_time is not None and end_time is not None:
             params = {

@@ -27,16 +27,8 @@ def test_prometheus_reader_with_query_range(mocker) -> None:
     reader = PrometheusReader(endpoint="test-endpoint", size=100)
 
     query = "avg_over_time(test_metric[5m])"
-    metadata_fields = []
 
-    documents = reader.load_data(
-        query=query,
-        start_time=start_time,
-        end_time=end_time,
-        step=None,
-        get_pararameters=None,
-        metadata_fields=metadata_fields,
-    )
+    documents = reader.load_data(query=query, start_time=start_time, end_time=end_time)
     assert len(documents) == 12
     for doc in range(0, len(documents)):
         assert documents[doc].text == str(doc * 5 * 100)
@@ -94,12 +86,7 @@ def test_prometheus_reader_with_query(mocker) -> None:
     metadata_fields = ["Name", "metric_name", "host", "offering"]
     documents = reader.load_data(
         query=query,
-        start_time=None,
-        end_time=None,
-        step=None,
-        get_pararameters=None,
         metadata_fields=metadata_fields,
-        additional_metadata={},
     )
     assert len(documents) == 20
     for doc in documents:
@@ -118,15 +105,7 @@ def test_prometheus_reader_with_empty_result(mocker) -> None:
     )
     reader = PrometheusReader(endpoint="test-endpoint", size=100)
     query = "rate(non_existing_metric[1m])"
-    documents = reader.load_data(
-        query=query,
-        start_time=None,
-        end_time=None,
-        step=None,
-        get_pararameters=None,
-        metadata_fields=[],
-        additional_metadata={},
-    )
+    documents = reader.load_data(query=query)
     assert len(documents) == 0
 
 
@@ -163,8 +142,6 @@ def test_prometheus_reader_with_additional_metadata(mocker) -> None:
         query=query,
         start_time=start_time,
         end_time=end_time,
-        step=None,
-        get_pararameters=None,
         metadata_fields=metadata_fields,
         additional_metadata=additional_metadata,
     )
