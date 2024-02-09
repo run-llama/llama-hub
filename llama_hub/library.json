@@ -866,5 +866,10 @@
       "Capella",
       "NoSQL"
     ]
+  },
+  "OrgReader": {
+    "id": "file/org",
+    "author": "RomainGehrig",
+    "keywords": ["org", "org-mode", "emacs"]
   }
 }
