@@ -3,7 +3,7 @@
 import os
 import logging
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Union
 import tempfile
 
 import requests
