@@ -227,7 +227,7 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 
 ### Step 3: Add your loader to the library.json file
 
-Finally, add your loader to the `llama_hub/library.json` file (or for the equivilant `library.json` under `tools/` or `llama-packs/`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
+Finally, add your loader to the `llama_hub/library.json` file (or for the equivalent `library.json` under `tools/` or `llama-packs/`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
 
 ### Step 4: Make a Pull Request!
 
