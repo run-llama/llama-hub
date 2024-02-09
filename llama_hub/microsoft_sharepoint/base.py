@@ -29,7 +29,7 @@ class SharePointReader(BaseReader):
         client_secret: str,
         tenant_id: str,
         filename_as_id: bool = False,
-        file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None
+        file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
     ) -> None:
         """
         Initializes an instance of SharePoint reader.
@@ -350,9 +350,11 @@ class SharePointReader(BaseReader):
             simple_directory_reader = download_loader("SimpleDirectoryReader")
 
         simple_loader = simple_directory_reader(
-            download_dir, file_metadata=get_metadata, recursive=recursive,
+            download_dir,
+            file_metadata=get_metadata,
+            recursive=recursive,
             filename_as_id=self.filename_as_id,
-            file_extractor=self.file_extractor
+            file_extractor=self.file_extractor,
         )
         documents = simple_loader.load_data()
         return documents
