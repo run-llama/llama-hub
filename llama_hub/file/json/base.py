@@ -79,6 +79,7 @@ class JSONReader(BaseReader):
         file: Path,
         is_jsonl: Optional[bool] = False,
         extra_info: Optional[Dict] = None,
+        encoding: Optional[str] = "utf-8"
     ) -> List[Document]:
         """Load data from the input file.
 
@@ -86,13 +87,14 @@ class JSONReader(BaseReader):
             file (Path): Path to the input file.
             is_jsonl (Optional[bool]): If True, indicates that the file is in JSONL format. Defaults to False.
             extra_info (Optional[Dict]): Additional information. Default is None.
+            encoding: (Optional[str]): Encoding of file. Default is UTF-8
 
         Returns:
-            List[Document]: List of documents.
+            List[Document]: List of documents. 
         """
         if not isinstance(file, Path):
             file = Path(file)
-        with open(file, "r") as f:
+        with open(file, "r", encoding=encoding) as f:
             data = []
             if is_jsonl:
                 for line in f:
