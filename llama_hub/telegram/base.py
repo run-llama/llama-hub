@@ -47,7 +47,8 @@ class TelegramReader(BaseReader):
         self.api_id = api_id
         self.api_hash = api_hash
         self.phone_number = phone_number
-        self.loop = asyncio.get_event_loop()
+        self.loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(self.loop)
 
     def load_data(
         self,
