@@ -12,6 +12,7 @@ from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+import urllib3
 
 class MinioReader(BaseReader):
     """General reader for any Minio file or directory."""
@@ -96,7 +97,6 @@ class MinioReader(BaseReader):
         )
 
         if not self.minio_cert_check:
-            import urllib3
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
         with tempfile.TemporaryDirectory() as temp_dir:
