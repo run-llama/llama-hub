@@ -29,7 +29,7 @@ class SharePointReader(BaseReader):
         client_secret: str,
         tenant_id: str,
         filename_as_id: bool = False,
-        file_extractor: Optional[Dict[str, Union[str, BaseReader]]] = None,
+        file_extractor: Optional[Dict[str, BaseReader]] = None,
     ) -> None:
         """
         Initializes an instance of SharePoint reader.
