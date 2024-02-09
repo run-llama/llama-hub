@@ -12,6 +12,7 @@ from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+
 class MinioReader(BaseReader):
     """General reader for any Minio file or directory."""
 
