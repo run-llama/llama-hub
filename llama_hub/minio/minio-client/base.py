@@ -12,8 +12,6 @@ from llama_index import download_loader
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
-import urllib3
-
 class MinioReader(BaseReader):
     """General reader for any Minio file or directory."""
 
@@ -86,6 +84,7 @@ class MinioReader(BaseReader):
     def load_data(self) -> List[Document]:
         """Load file(s) from Minio."""
         from minio import Minio
+        import urllib3
 
         minio_client = Minio(
             self.minio_endpoint,
