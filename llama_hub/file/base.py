@@ -25,6 +25,7 @@ DEFAULT_FILE_EXTRACTOR: Dict[str, str] = {
     ".eml": "UnstructuredReader",
     ".html": "UnstructuredReader",
     ".json": "JSONReader",
+    ".org": "OrgReader",
 }
 
 
