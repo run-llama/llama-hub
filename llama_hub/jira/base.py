@@ -59,10 +59,10 @@ class JiraReader(BaseReader):
                 server=f"https://{BasicAuth['server_url']}",
             )
 
-    def load_data(self, query: str) -> List[Document]:
+    def load_data(self, query: str, max_results: Optional[int] = [50]) -> List[Document]:
         relevant_issues = []
         start_at = 0
-        max_results = 50
+
         while True:
             chunk_issues = self.jira.search_issues(
                 query, startAt=start_at, maxResults=max_results

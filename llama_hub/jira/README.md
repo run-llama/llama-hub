@@ -20,12 +20,15 @@ You can follow this link for more information regarding Oauth2 -> https://develo
 
 Here's an example of how to use it
 
+Please note max_results parameter is the maximum number of issues you want to fetch from Jira
+max_results optional, defaults to 50
+
 ```python
 
 from llama_hub.jira import JiraReader
 
 reader = JiraReader(email=email, api_token=api_token, server_url="your-jira-server.com")
-documents = reader.load_data(query='project = <your-project>')
+documents = reader.load_data(query='project = <your-project>', max_results = 500)
 
 ```
 
@@ -37,6 +40,6 @@ from llama_index import download_loader
 JiraReader = download_loader('JiraReader')
 
 reader = JiraReader(email=email, api_token=api_token, server_url="your-jira-server.com")
-documents = reader.load_data(query='project = <your-project>')
+documents = reader.load_data(query='project = <your-project>', max_results = 500)
 
 ```
