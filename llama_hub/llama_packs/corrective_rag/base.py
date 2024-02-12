@@ -2,25 +2,26 @@
 from typing import Any, Dict, List
 from prompts import DEFAULT_TRANSFORM_QUERY_TEMPLATE, DEFAULT_RELEVANCY_PROMPT_TEMPLATE
 
-from llama_index import ServiceContext, VectorStoreIndex, SummaryIndex
+from llama_index import VectorStoreIndex, SummaryIndex
 from llama_index.llama_pack.base import BaseLlamaPack
 from llama_index.llms import OpenAI
 from llama_index.schema import Document, NodeWithScore
 from llama_index.query_pipeline.query import QueryPipeline
 from llama_hub.tools.tavily_research.base import TavilyToolSpec
 
+
 class CorrectiveRAGPack(BaseLlamaPack):
-    def __init__(self, 
-                 documents: List[Document],
-                 tavily_ai_apikey: str) -> None:
+    def __init__(self, documents: List[Document], tavily_ai_apikey: str) -> None:
         """Init params."""
 
-        llm = OpenAI(model='gpt-4') 
-        self.relevancy_pipeline = QueryPipeline(chain=[DEFAULT_RELEVANCY_PROMPT_TEMPLATE, 
-                                                       llm])
-        self.transform_query_pipeline = QueryPipeline(chain=[DEFAULT_TRANSFORM_QUERY_TEMPLATE, 
-                                                             llm])
-        
+        llm = OpenAI(model="gpt-4")
+        self.relevancy_pipeline = QueryPipeline(
+            chain=[DEFAULT_RELEVANCY_PROMPT_TEMPLATE, llm]
+        )
+        self.transform_query_pipeline = QueryPipeline(
+            chain=[DEFAULT_TRANSFORM_QUERY_TEMPLATE, llm]
+        )
+
         self.llm = llm
         self.index = VectorStoreIndex.from_documents(documents)
         self.tavily_tool = TavilyToolSpec(api_key=tavily_ai_apikey)
@@ -28,29 +29,39 @@ class CorrectiveRAGPack(BaseLlamaPack):
     def get_modules(self) -> Dict[str, Any]:
         """Get modules."""
         return {"llm": self.llm, "index": self.index}
-    
+
     def retrieve_nodes(self, query_str: str, **kwargs: Any) -> List[NodeWithScore]:
         """Retrieve the relevant nodes for the query"""
         retriever = self.index.as_retriever(**kwargs)
         return retriever.retrieve(query_str)
 
-    def evaluate_relevancy(self, retrieved_nodes: List[Document], query_str: str) -> List[str]:
+    def evaluate_relevancy(
+        self, retrieved_nodes: List[Document], query_str: str
+    ) -> List[str]:
         """Evaluate relevancy of retrieved documents with the query"""
         relevancy_results = []
         for node in retrieved_nodes:
-            relevancy = self.relevancy_pipeline.run(context_str=node.text, query_str=query_str)
+            relevancy = self.relevancy_pipeline.run(
+                context_str=node.text, query_str=query_str
+            )
             relevancy_results.append(relevancy.message.content.lower().strip())
         return relevancy_results
 
-    def extract_relevant_texts(self, retrieved_nodes: List[NodeWithScore], relevancy_results: List[str]) -> str:
+    def extract_relevant_texts(
+        self, retrieved_nodes: List[NodeWithScore], relevancy_results: List[str]
+    ) -> str:
         """Extract relevant texts from retrieved documents"""
-        relevant_texts = [retrieved_nodes[i].text for i, result in enumerate(relevancy_results) if result == 'yes']
-        return '\n'.join(relevant_texts)
+        relevant_texts = [
+            retrieved_nodes[i].text
+            for i, result in enumerate(relevancy_results)
+            if result == "yes"
+        ]
+        return "\n".join(relevant_texts)
 
     def search_with_transformed_query(self, query_str: str) -> str:
         """Search the transformed query with Tavily API"""
         search_results = self.tavily_tool.search(query_str, max_results=2)
-        return '\n'.join([result.text for result in search_results])
+        return "\n".join([result.text for result in search_results])
 
     def get_result(self, relevant_text: str, search_text: str, query_str: str) -> Any:
         """Get result with relevant text"""
@@ -69,13 +80,15 @@ class CorrectiveRAGPack(BaseLlamaPack):
 
         # Extract texts from documents that are deemed relevant based on the evaluation.
         relevant_text = self.extract_relevant_texts(retrieved_nodes, relevancy_results)
-        
+
         # Initialize search_text variable to handle cases where it might not get defined.
-        search_text = ''
-        
+        search_text = ""
+
         # If any document is found irrelevant, transform the query string for better search results.
         if "no" in relevancy_results:
-            transformed_query_str = self.transform_query_pipeline.run(query_str=query_str).message.content
+            transformed_query_str = self.transform_query_pipeline.run(
+                query_str=query_str
+            ).message.content
 
             # Conduct a search with the transformed query string and collect the results.
             search_text = self.search_with_transformed_query(transformed_query_str)
@@ -85,5 +98,4 @@ class CorrectiveRAGPack(BaseLlamaPack):
         if search_text:
             return self.get_result(relevant_text, search_text, query_str)
         else:
-            return self.get_result(relevant_text, '', query_str)
-
+            return self.get_result(relevant_text, "", query_str)

@@ -1,6 +1,10 @@
-# Corrective-RAG Pack
+# Corrective Retrieval Augmented Generation Pack
 
-Create a query engine using completely local and private models -- `HuggingFaceH4/zephyr-7b-beta` for the LLM and `BAAI/bge-base-en-v1.5` for embeddings.
+This LlamaPack implements the Corrective Retrieval Augmented Generation (CRAG) [paper](https://arxiv.org/pdf/2401.15884.pdf)
+
+Corrective Retrieval Augmented Generation (CRAG) is a method designed to enhance the robustness of language model generation by evaluating and augmenting the relevance of retrieved documents through a lightweight evaluator and large-scale web searches, ensuring more accurate and reliable information is used in generation.
+
+This LlamaPack uses [Tavily AI](https://app.tavily.com/home) API for web-searches. So, we recommend you to get the api-key before proceeding further.
 
 ## CLI Usage
 
@@ -25,12 +29,12 @@ CorrectiveRAGPack = download_llama_pack(
 )
 
 # You can use any llama-hub loader to get documents!
-corrective_rag_pack = CorrectiveRAGPack(documents)
+corrective_rag_pack = CorrectiveRAGPack(documents, tavily_ai_api_key)
 ```
 
 From here, you can use the pack, or inspect and modify the pack in `./corrective_rag_pack`.
 
-The `run()` function contains around logic behind Corrective RAG - [CRAG](https://arxiv.org/pdf/2401.15884.pdf) PAPER.
+The `run()` function contains around logic behind Corrective Retrieval Augmented Generation - [CRAG](https://arxiv.org/pdf/2401.15884.pdf) paper.
 
 ```python
 response = corrective_rag_pack.run("What did the author do growing up?", similarity_top_k=2)

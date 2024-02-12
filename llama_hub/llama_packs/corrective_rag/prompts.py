@@ -30,4 +30,5 @@ DEFAULT_TRANSFORM_QUERY_TEMPLATE = PromptTemplate(
     {query_str} 
     \n ------- \n
     Your goal is to rephrase or enhance this query to improve its search performance. Ensure the revised query is concise and directly aligned with the intended search objective. \n
-    Respond with the optimized query only:""")
+    Respond with the optimized query only:"""
+)
