@@ -23,7 +23,7 @@ from llama_hub.github_repo import GithubRepositoryReader, GithubClient
 github_client = GithubClient(os.getenv("GITHUB_TOKEN"))
 loader = GithubRepositoryReader(
     github_client,
-    owner =                  "jerryjliu",
+    owner =                  "run-llama",
     repo =                   "llama_index",
     filter_directories =     (["llama_index", "docs"], GithubRepositoryReader.FilterType.INCLUDE),
     filter_file_extensions = ([".py"], GithubRepositoryReader.FilterType.INCLUDE),
