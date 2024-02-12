@@ -13,6 +13,7 @@
 - add setup_cli.sh (oops) (#941)
 - Update README.md to fix a bug in the example (#942)
 - Added handling of filename_as_id and file_extractor to SharePointReader (#934)
+- Remove links from telegram text messages (#943)
 
 ## v[0.0.78] - 2024-02-05
 
