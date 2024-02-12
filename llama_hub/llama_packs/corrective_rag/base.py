@@ -1,6 +1,5 @@
 """LlamaPack class."""
 from typing import Any, Dict, List
-from prompts import DEFAULT_TRANSFORM_QUERY_TEMPLATE, DEFAULT_RELEVANCY_PROMPT_TEMPLATE
 
 from llama_index import VectorStoreIndex, SummaryIndex
 from llama_index.llama_pack.base import BaseLlamaPack
