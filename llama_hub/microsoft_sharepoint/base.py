@@ -3,7 +3,7 @@
 import os
 import logging
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 import tempfile
 
 import requests
@@ -28,6 +28,8 @@ class SharePointReader(BaseReader):
         client_id: str,
         client_secret: str,
         tenant_id: str,
+        filename_as_id: bool = False,
+        file_extractor: Optional[Dict[str, BaseReader]] = None,
     ) -> None:
         """
         Initializes an instance of SharePoint reader.
@@ -37,11 +39,16 @@ class SharePointReader(BaseReader):
                        The application must alse be configured with MS Graph permissions "Files.ReadAll", "Sites.ReadAll" and BrowserSiteLists.Read.All.
             client_secret: The application secret for the app registered in Azure.
             tenant_id: Unique identifier of the Azure Active Directory Instance.
+            file_extractor (Optional[Dict[str, BaseReader]]): A mapping of file
+                extension to a BaseReader class that specifies how to convert that file
+                to text. See `SimpleDirectoryReader` for more details.
         """
         self.client_id = (client_id,)
         self.client_secret = (client_secret,)
         self.tenant_id = tenant_id
         self._authorization_headers = None
+        self.file_extractor = file_extractor
+        self.filename_as_id = filename_as_id
 
     def _get_access_token(self) -> str:
         """
@@ -343,7 +350,11 @@ class SharePointReader(BaseReader):
             simple_directory_reader = download_loader("SimpleDirectoryReader")
 
         simple_loader = simple_directory_reader(
-            download_dir, file_metadata=get_metadata, recursive=recursive
+            download_dir,
+            file_metadata=get_metadata,
+            recursive=recursive,
+            filename_as_id=self.filename_as_id,
+            file_extractor=self.file_extractor,
         )
         documents = simple_loader.load_data()
         return documents
