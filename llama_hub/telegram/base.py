@@ -1,5 +1,6 @@
 """Telegram reader that reads posts/chats and comments to post from Telegram channel or chat."""
 import asyncio
+import re
 from typing import List, Union
 
 from llama_index.readers.base import BaseReader
@@ -102,5 +103,15 @@ class TelegramReader(BaseReader):
                 entity_name, reply_to=post_id, limit=limit
             ):
                 if isinstance(message.text, str) and message.text != "":
-                    results.append(Document(text=message.text))
+                    results.append(Document(text=self._remove_links(message.text)))
         return results
+
+    def _remove_links(self, string) -> str:
+        """Removes all URLs from a given string, leaving only the base domain name."""
+
+        def replace_match(match):
+            text = match.group(1)
+            return text if text else ""
+
+        url_pattern = r"https?://(?:www\.)?((?!www\.).)+?"
+        return re.sub(url_pattern, replace_match, string)
