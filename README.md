@@ -1,5 +1,9 @@
 # LlamaHub 🦙
 
+> [!CAUTION]
+> With the launch of LlamaIndex v0.10, we are deprecating this `llama_hub` repo - all integrations (data loaders, tools) and packs are now in the core [`llama-index` Python repository](https://github.com/run-llama/llama_index). 
+> LlamaHub will continue to exist. We are revamping [llamahub.ai](https://llamahub.ai/) point to all integrations/packs/datasets available in the `llama-index` repo.
+
 **Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
 
 > 👥 **Contributing**
