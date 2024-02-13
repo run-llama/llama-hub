@@ -876,5 +876,13 @@
       "Capella",
       "NoSQL"
     ]
+  },
+  "PrometheusReader":{
+    "id": "prometheus",
+    "author": "mjimenezp",
+    "keywords":[
+      "prometheus",
+      "metrics"
+    ]
   }
 }
