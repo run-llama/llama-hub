@@ -2,10 +2,9 @@
 import json
 import os
 import re
-import sys
-from typing import List, Optional, Tuple, Union
-
 import requests
+from typing import List, Optional, Tuple, Union
+import sys
 
 if sys.version_info < (3, 8):
     from typing_extensions import Final
@@ -26,12 +25,8 @@ except ImportError:
 
     limits = fake_decorator
     sleep_and_retry = fake_decorator
-try:
-    from llama_hub.sec_filings.prepline_sec_filings.sec_document import (
-        VALID_FILING_TYPES,
-    )
-except ImportError:
-    from prepline_sec_filings.sec_document import VALID_FILING_TYPES
+
+from llama_hub.sec_filings.prepline_sec_filings.sec_document import VALID_FILING_TYPES
 
 SEC_ARCHIVE_URL: Final[str] = "https://www.sec.gov/Archives/edgar/data"
 SEC_SEARCH_URL: Final[str] = "http://www.sec.gov/cgi-bin/browse-edgar"
@@ -39,7 +34,7 @@ SEC_SUBMISSIONS_URL = "https://data.sec.gov/submissions"
 
 
 def get_filing(
-    cik: Union[str, int], accession_number: Union[str, int], company: str, email: str
+    accession_number: Union[str, int], cik: Union[str, int], company: str, email: str
 ) -> str:
     """Fetches the specified filing from the SEC EDGAR Archives. Conforms to the rate
     limits specified on the SEC website.
@@ -55,18 +50,25 @@ def _get_filing(
 ) -> str:
     """Wrapped so filings can be retrieved with an existing session."""
     url = archive_url(cik, accession_number)
-    response = session.get(url)
+    # headers = {
+    # 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    # }
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = session.get(url, headers=headers)
     response.raise_for_status()
     return response.text
 
 
 @sleep_and_retry
 @limits(calls=10, period=1)
-def get_cik_by_ticker(session: requests.Session, ticker: str) -> str:
+def get_cik_by_ticker(ticker: str) -> str:
     """Gets a CIK number from a stock ticker by running a search on the SEC website."""
     cik_re = re.compile(r".*CIK=(\d{10}).*")
     url = _search_url(ticker)
-    response = session.get(url, stream=True)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+    response = requests.get(url, stream=True, headers=headers)
     response.raise_for_status()
     results = cik_re.findall(response.text)
     return str(results[0])

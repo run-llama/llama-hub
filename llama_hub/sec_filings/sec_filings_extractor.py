@@ -14,7 +14,6 @@ try:
         section_string_to_enum,
         validate_section_names,
     )
-    from llama_hub.sec_filings.utils import get_filing_urls_to_download
 finally:
     pass
     # from utils import get_filing_urls_to_download
@@ -128,71 +127,17 @@ def get_regex_enum(section_regex):
 
 
 class SECExtractor:
-    def __init__(
-        self,
-        tickers: List[str],
-        amount: int,
-        filing_type: str,
-        start_date: str = DEFAULT_AFTER_DATE,
-        end_date: str = DEFAULT_BEFORE_DATE,
-        sections: List[str] = ["_ALL"],
-        include_amends: bool = True,
-    ):
+    def __init__(self, ticker: str, sections: List[str] = ["_ALL"]):
         """_summary_
 
         Args:
             tickers (List[str]): list of ticker
-            amount (int): amount of documenteds
             filing_type (str): 10-K or 10-Q
-            start_date (str, optional): start date of getting files. Defaults to DEFAULT_AFTER_DATE.
-            end_date (str, optional): end date of getting files. Defaults to DEFAULT_BEFORE_DATE.
             sections (List[str], optional): sections required, check sections names. Defaults to ["_ALL"].
         """
-        self.tickers = tickers
-        self.amount = amount
-        self.filing_type = filing_type
-        self.start_date = start_date
-        self.end_date = end_date
+
+        self.ticker = ticker
         self.sections = sections
-        self.include_amends = include_amends
-
-    def get_accession_numbers(self, tic: str) -> dict:
-        """Get accession numbers and download URL for the SEC filing
-
-        Args:
-            tic (str): ticker symbol
-
-        Returns:
-            dict: final dictionary for all the urls and years mentioned
-        """
-        final_dict = {}
-        filing_metadata = get_filing_urls_to_download(
-            self.filing_type,
-            tic,
-            self.amount,
-            self.start_date,
-            self.end_date,
-            include_amends=self.include_amends,
-        )
-        # fm.append(filing_metadata)
-        acc_nums_yrs = [
-            [
-                self.get_year(fm.filing_details_url),
-                fm.accession_number.replace("-", ""),
-                fm.full_submission_url,
-            ]
-            for fm in filing_metadata
-        ]
-        for idx, fm in enumerate(acc_nums_yrs[:-1]):
-            if fm[0] is None:
-                fm[0] = acc_nums_yrs[idx + 1][0]
-        for acy in acc_nums_yrs:
-            if tic not in final_dict:
-                final_dict.update({tic: []})
-            final_dict[tic].append(
-                {"year": acy[0], "accession_number": acy[1], "url": acy[2]}
-            )
-        return final_dict
 
     def get_year(self, filing_details: str) -> str:
         """Get the year for 10-K and year,month for 10-Q
@@ -231,7 +176,7 @@ class SECExtractor:
                     all_texts.append(val)
         return " ".join(all_texts)
 
-    def get_text_from_url(self, url: str):
+    def get_section_texts_from_text(self, text):
         """Get the text from filing document URL
 
         Args:
@@ -240,16 +185,14 @@ class SECExtractor:
         Returns:
             _type_: all texts of sections and filing type of the document
         """
-        text = self.get_filing(
-            url, company="Unstructured Technologies", email="support@unstructured.io"
-        )
         all_narratives, filing_type = self.pipeline_api(text, m_section=self.sections)
         all_narrative_dict = dict.fromkeys(all_narratives.keys())
 
         for section in all_narratives:
             all_narrative_dict[section] = self.get_all_text(section, all_narratives)
-
-        return all_narrative_dict, filing_type
+        print(f"Done for filing type {filing_type}")
+        # return all_narrative_dict, filing_type
+        return all_narrative_dict
 
     def pipeline_api(self, text, m_section=[], m_section_regex=[]):
         """Unsturcured API to get the text
@@ -271,8 +214,8 @@ class SECExtractor:
         sec_document = SECDocument.from_string(text)
         if sec_document.filing_type not in VALID_FILING_TYPES:
             raise ValueError(
-                f"SEC document filing type {sec_document.filing_type} is not supported,"
-                f" must be one of {','.join(VALID_FILING_TYPES)}"
+                f"SEC document filing type {sec_document.filing_type} is not supported, "
+                f"must be one of {','.join(VALID_FILING_TYPES)}"
             )
         results = {}
         if m_section == [ALL_SECTIONS]:
@@ -309,6 +252,9 @@ class SECExtractor:
         limits specified on the SEC website.
         ref: https://www.sec.gov/os/accessing-edgar-data"""
         session = self._get_session(company, email)
+        # headers = {
+        #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        # }
         response = session.get(url)
         response.raise_for_status()
         return response.text

@@ -674,7 +674,17 @@
   "SECFilingsLoader": {
     "id": "sec_filings",
     "author": "Athe-kunal",
-    "keywords": ["finance", "SEC Filings", "10-K", "10-Q"]
+    "extra_files":[
+      "secData.py",
+      "sec_filings_extractor.py",
+      "section_names.py"
+    ],
+    "keywords": [
+      "finance",
+      "SEC Filings",
+      "10-K",
+      "10-Q"
+    ]
   },
   "GuruReader": {
     "id": "guru",
