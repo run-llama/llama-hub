@@ -168,12 +168,10 @@ class SharePointReader(BaseReader):
         Returns:
             str: The ID of the SharePoint site folder.
         """
-        if folder_path == "root":
-            folder_id_endpoint = f"{self._drive_id_endpoint}/{self._drive_id}/root"
-        else:
-            folder_id_endpoint = (
-                f"{self._drive_id_endpoint}/{self._drive_id}/root:/{folder_path}"
-            )
+        folder_id_endpoint = f"{self._drive_id_endpoint}/{self._drive_id}/root"
+
+        if folder_path:
+            folder_id_endpoint += f":/{folder_path}"
 
         response = requests.get(
             url=folder_id_endpoint,
@@ -530,7 +528,7 @@ class SharePointReader(BaseReader):
     def load_data(
         self,
         sharepoint_site_name: str,
-        sharepoint_folder_path: str = "root",
+        sharepoint_folder_path: str = "",
         recursive: bool = False,
         include: List[str] = ["documents", "pages"],
         file_types: List[str] = [],
@@ -541,7 +539,7 @@ class SharePointReader(BaseReader):
         Args:
             sharepoint_site_name (str): The name of the SharePoint site.
             sharepoint_folder_path (str): The path of the folder in the SharePoint site.
-                                          If `root`, loads data from the root folder of the
+                                          If `""` (default), loads data from the root folder of the
                                           SharePoint site.
             recursive (bool): If True, files from all subfolders are downloaded.
             include (List[str]): list of Sharepoint objects to include.
