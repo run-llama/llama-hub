@@ -55,10 +55,11 @@ documents = loader.load_data(
 
 ### Example loading a single folder
 To load a single folder, specify the `sharepoint_folder_path` with the name of the folder or path from the root directory. 
+
 Example: `sharepoint_folder_path = "my/folder/path"`
 
 In order to load only the documents from this `sharepoint_folder_path`, and not the pages for the `sharepoint_site_name`, 
-you need to provide the `include` argument as `['documents]`. By default, `include` is equal to `['documents', 'pages']`.
+you need to provide the `include` argument as `['documents']`. By default, `include` is equal to `['documents', 'pages']`.
 
 If you do not want to include files from subfolders for the given `sharepoint_folder_path`, remove the argument `recursive` (defaults to `False`). 
 
@@ -84,9 +85,9 @@ documents = loader.load_data(
 
 ### Example loading just pages
 In order to load only the pages for the `sharepoint_site_name`, 
-you need to provide the `include` argument as `['pages]`. By default, `include` is equal to `['documents', 'pages']`.
+you need to provide the `include` argument as `['pages']`. By default, `include` is equal to `['documents', 'pages']`.
 
-Note: `recursive` and `sharepoint_folder_path` arguments have no effect if `documents` is not in `include`.
+Note: `recursive` and `sharepoint_folder_path` arguments have no effect if `documents` is not in the list of the argument `include`.
 
 ```python
 from llama_index import download_loader 
