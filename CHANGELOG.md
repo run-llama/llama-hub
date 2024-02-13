@@ -1,5 +1,21 @@
 # ChangeLog
 
+## v[0.0.79] - 2024-02-12
+
+### New Features
+- Ionic shopping tool (#915)
+- GeniusReader loader (#819)
+
+### Smaller Features + Bug Fixes / Nits
+- Updated Docugami loader (#771)
+- asyncio bug fix in telegram loader (#928)
+- feat: allow use of self-signed cert for MinIO server with MinioReader (#935)
+- add setup_cli.sh (oops) (#941)
+- Update README.md to fix a bug in the example (#942)
+- Added handling of filename_as_id and file_extractor to SharePointReader (#934)
+- Remove links from telegram text messages (#943)
+- SEC Filings loader bug fixes (#909)
+
 ## v[0.0.78] - 2024-02-05
 
 ### New Features

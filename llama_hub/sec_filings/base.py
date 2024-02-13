@@ -1,107 +1,71 @@
-try:
-    from llama_hub.sec_filings.sec_filings import SECExtractor
-except ImportError:
-    # relative import from file
-    from sec_filings import SECExtractor
-
-import concurrent.futures
-import json
-import os
-import time
-from collections import defaultdict
-from typing import List
-
+from llama_index.schema import Document
 from llama_index.readers.base import BaseReader
+from llama_hub.sec_filings.secData import sec_main
+from datetime import datetime
+from typing import List, Optional
+import warnings
+import sys
 
 
 class SECFilingsLoader(BaseReader):
-    """
-    SEC Filings loader
-    Get the SEC filings of multiple tickers
-    """
-
     def __init__(
         self,
-        tickers: List[str],
-        amount: int,
-        filing_type: str = "10-K",
-        num_workers: int = 2,
-        include_amends: bool = False,
+        ticker: str,
+        year: int,
+        filing_types: List[str],
+        include_amends: bool = True,
+        amount: Optional[int] = None,
     ):
-        assert filing_type in [
-            "10-K",
-            "10-Q",
-        ], "The supported document types are 10-K and 10-Q"
+        """SEC Filings loader for 10-K, 10-Q and S-1 filings
 
-        self.tickers = tickers
-        self.amount = amount
-        self.filing_type = filing_type
-        self.num_workers = num_workers
+        Args:
+            ticker (str): Symbol of the company
+            year (str): Year of the data required
+        """
+        curr_year = datetime.now().year
+        assert year <= curr_year, "The year should be less than current year"
+
+        self.ticker = ticker
+        self.year = str(year)
+        self.filing_types = filing_types
         self.include_amends = include_amends
+        if amount is not None:
+            warnings.warn(
+                "The 'amount' attribute is deprecated and is removed in the current implementation. Please avoid using it, rather provide the specific year.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            sys.exit(1)
 
-        self.se = SECExtractor(
-            tickers, amount, filing_type, include_amends=include_amends
+    def load_data(self) -> List[Document]:
+        section_texts = sec_main(
+            self.ticker, self.year, self.filing_types, self.include_amends
         )
+        docs = []
+        for filings in section_texts:
+            texts_dict = filings[-1]
 
-        os.makedirs("data", exist_ok=True)
-
-    def multiprocess_run(self, tic):
-        # print(f"Started for {tic}")
-        tic_dict = self.se.get_accession_numbers(tic)
-        text_dict = defaultdict(list)
-        for tic, fields in tic_dict.items():
-            os.makedirs(f"data/{tic}", exist_ok=True)
-            print(f"Started for {tic}")
-
-            field_urls = [field["url"] for field in fields]
-            years = [field["year"] for field in fields]
-            with concurrent.futures.ProcessPoolExecutor(
-                max_workers=self.num_workers
-            ) as executor:
-                results = executor.map(self.se.get_text_from_url, field_urls)
-            for idx, res in enumerate(results):
-                all_text, filing_type = res
-                text_dict[tic].append(
-                    {
-                        "year": years[idx],
-                        "ticker": tic,
-                        "all_texts": all_text,
-                        "filing_type": filing_type,
-                    }
+            for section_name, text in texts_dict.items():
+                docs.append(
+                    Document(
+                        text=text,
+                        extra_info={
+                            "accessionNumber": filings[0],
+                            "filing_type": filings[1],
+                            "filingDate": filings[2],
+                            "reportDate": filings[3],
+                            "sectionName": section_name,
+                        },
+                    )
                 )
-        return text_dict
+        return docs
 
-    def load_data(self):
-        start = time.time()
-        thread_workers = min(len(self.tickers), self.num_workers)
-        with concurrent.futures.ThreadPoolExecutor(
-            max_workers=thread_workers
-        ) as executor:
-            results = executor.map(self.multiprocess_run, self.tickers)
 
-        for res in results:
-            curr_tic = list(res.keys())[0]
-            for data in res[curr_tic]:
-                curr_year = data["year"]
-                curr_filing_type = data["filing_type"]
-                if curr_filing_type in ["10-K/A", "10-Q/A"]:
-                    curr_filing_type = curr_filing_type.replace("/", "")
-                if curr_filing_type in ["10-K", "10-KA"]:
-                    os.makedirs(f"data/{curr_tic}/{curr_year}", exist_ok=True)
-                    with open(
-                        f"data/{curr_tic}/{curr_year}/{curr_filing_type}.json", "w"
-                    ) as f:
-                        json.dump(data, f, indent=4)
-                elif curr_filing_type in ["10-Q", "10-QA"]:
-                    os.makedirs(f"data/{curr_tic}/{curr_year[:-2]}", exist_ok=True)
-                    with open(
-                        f"data/{curr_tic}/{curr_year[:-2]}/{curr_filing_type}_{curr_year[-2:]}.json",
-                        "w",
-                    ) as f:
-                        json.dump(data, f, indent=4)
-                print(
-                    f"Done for {curr_tic} for document {curr_filing_type} and year"
-                    f" {curr_year}"
-                )
+# Test case file test.py
 
-        print(f"It took {round(time.time()-start,2)} seconds")
+# from base import SECFilingsLoader
+
+# if __name__ == '__main__':
+#     docs = SECFilingsLoader(ticker="AAPL",year=2023,filing_type=["10-K"])
+#     d = docs.load_data()
+#     print(d)
