@@ -860,6 +860,13 @@
     "id": "telegram",
     "author": "diicell"
   },
+  "OpsgenieReader": {
+    "id": "opsgenie",
+    "author": "ns-gsa",
+    "keywords": [
+      "opsgenie"
+    ]
+  },
   "XMLReader": {
     "id": "file/xml",
     "author": "mmaatouk"
