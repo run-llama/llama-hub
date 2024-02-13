@@ -51,6 +51,10 @@
     "id": "tools/graphql",
     "author": "ajhofmann"
   },
+  "IonicShoppingToolSpec": {
+    "id": "tools/ionic_shopping",
+    "author": "stewartjarod"
+  },
   "MetaphorToolSpec": {
     "id": "tools/metaphor",
     "author": "ajhofmann"

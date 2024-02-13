@@ -1,5 +1,9 @@
 # LlamaHub 🦙
 
+> [!CAUTION]
+> With the launch of LlamaIndex v0.10, we are deprecating this `llama_hub` repo - all integrations (data loaders, tools) and packs are now in the core [`llama-index` Python repository](https://github.com/run-llama/llama_index). 
+> LlamaHub will continue to exist. We are revamping [llamahub.ai](https://llamahub.ai/) point to all integrations/packs/datasets available in the `llama-index` repo.
+
 **Original creator**: Jesse Zhang (GH: [emptycrown](https://github.com/emptycrown), Twitter: [@thejessezhang](https://twitter.com/thejessezhang)), who courteously donated the repo to LlamaIndex!
 
 > 👥 **Contributing**
@@ -227,7 +231,7 @@ Inside your new directory, create a `README.md` that mirrors that of the existin
 
 ### Step 3: Add your loader to the library.json file
 
-Finally, add your loader to the `llama_hub/library.json` file (or for the equivilant `library.json` under `tools/` or `llama-packs/`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
+Finally, add your loader to the `llama_hub/library.json` file (or for the equivalent `library.json` under `tools/` or `llama-packs/`) so that it may be used by others. As is exemplified by the current file, add the class name of your loader or tool, along with its ID, author, etc. This file is referenced by the Llama Hub website and the download function within LlamaIndex.
 
 ### Step 4: Make a Pull Request!
 

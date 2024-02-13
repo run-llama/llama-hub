@@ -1,5 +1,33 @@
 # ChangeLog
 
+## v[0.0.79] - 2024-02-12
+
+### New Features
+- Ionic shopping tool (#915)
+- GeniusReader loader (#819)
+
+### Smaller Features + Bug Fixes / Nits
+- Updated Docugami loader (#771)
+- asyncio bug fix in telegram loader (#928)
+- feat: allow use of self-signed cert for MinIO server with MinioReader (#935)
+- add setup_cli.sh (oops) (#941)
+- Update README.md to fix a bug in the example (#942)
+- Added handling of filename_as_id and file_extractor to SharePointReader (#934)
+- Remove links from telegram text messages (#943)
+- SEC Filings loader bug fixes (#909)
+
+## v[0.0.78] - 2024-02-05
+
+### New Features
+- add local RAG CLI variant  (#916)
+- Simple short-form Self-RAG Pack (#907)
+
+### Smaller Features + Bug Fixes / Nits
+- fix: store the str path instead of the Path object (#917)
+- Update base.py in paged_csv (#839)
+- Fix to confluence loader documentation. (#920)
+- yahoo finance key word addition to read me file for better search experience in llamahub (#897)
+
 ## v[0.0.77] - 2024-01-29
 
 ### New Features

@@ -287,5 +287,10 @@
     "id": "llama_packs/research/infer_retrieve_rerank",
     "author": "jerryjliu",
     "keywords": ["infer", "retrieve", "rerank", "retriever", "rag"]
+  },
+  "LocalRAGCLIPack": {
+    "id": "llama_packs/rag_cli_local",
+    "author": "jerryjliu",
+    "keywords": ["rag", "cli", "local"]
   }
 }
