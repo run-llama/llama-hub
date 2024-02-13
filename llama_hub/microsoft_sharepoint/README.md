@@ -25,7 +25,6 @@ This loader can:
 - Load all files present in the drive of a SharePoint
 - Load all pages under a SharePoint site
 
-This loader loads the files present in a specific folder in sharepoint.
 
 If the files are present in the `Test` folder in SharePoint Site under `root` directory, then the input for the loader for  `file_path` is `Test`
 
