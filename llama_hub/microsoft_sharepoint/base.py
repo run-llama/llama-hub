@@ -87,7 +87,6 @@ class SharePointReader(BaseReader):
         Retrieves the site ID of a SharePoint site using the provided site name.
 
         Args:
-            access_token (str): access_token
             sharepoint_site_name (str): The name of the SharePoint site.
 
         Returns:
