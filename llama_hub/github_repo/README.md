@@ -76,6 +76,7 @@ if docs is None:
         verbose =                True,
         concurrent_requests =    10,
         timeout =                5,
+        retries =                0,
     )
 
     docs = loader.load_data(branch="main")
