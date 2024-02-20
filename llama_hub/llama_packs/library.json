@@ -105,7 +105,7 @@
     "id": "llama_packs/arize_phoenix_query_engine",
     "author": "axiomofjoy",
     "keywords": ["arize", "phoenix", "query", "engine", "index"],
-    "example": true
+    "example": false
   },
   "FuzzyCitationEnginePack": {
     "id": "llama_packs/fuzzy_citation",
@@ -159,7 +159,7 @@
     "id": "llama_packs/rag_evaluator",
     "author": "nerdai",
     "keywords": ["rag", "evaluation", "benchmarks"],
-    "example": true
+    "example": false
   },
   "LlamaDatasetMetadataPack": {
     "id": "llama_packs/llama_dataset_metadata",
@@ -251,7 +251,7 @@
     "id": "llama_packs/agent_search_retriever",
     "author": "logan-markewich",
     "keywords": ["agent", "search", "retriever"],
-    "example": true
+    "example": false
   },
   "ChainOfTablePack": {
     "id": "llama_packs/tables/chain_of_table",
