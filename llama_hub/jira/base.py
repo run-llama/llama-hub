@@ -59,8 +59,18 @@ class JiraReader(BaseReader):
                 server=f"https://{BasicAuth['server_url']}",
             )
 
-    def load_data(self, query: str) -> List[Document]:
-        relevant_issues = self.jira.search_issues(query)
+    def load_data(self, query: str, max_results: Optional[int] = [50]) -> List[Document]:
+        relevant_issues = []
+        start_at = 0
+
+        while True:
+            chunk_issues = self.jira.search_issues(
+                query, startAt=start_at, maxResults=max_results
+            )
+            relevant_issues.extend(chunk_issues)
+            if len(chunk_issues) < max_results:
+                break
+            start_at += max_results
 
         issues = []
 
@@ -92,7 +102,7 @@ class JiraReader(BaseReader):
 
             issues.append(
                 Document(
-                    text=f"{issue.fields.summary} \n {issue.fields.description}",
+                    text=f"{issue.key} {issue.fields.summary} \n {issue.fields.description}",
                     extra_info={
                         "id": issue.id,
                         "title": issue.fields.summary,
